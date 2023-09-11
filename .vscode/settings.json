@@ -1,4 +1,5 @@
 {
+  "dart.sdkPath": ".fvm/flutter_sdk/bin/cache/dart-sdk",
   "dart.flutterSdkPath": ".fvm/flutter_sdk",
   "dart.debugSdkLibraries": false,
   "dart.lineLength": 120,
