@@ -8,13 +8,17 @@
     "files.insertFinalNewline": true
   },
   "files.exclude": {
-    "**/LICENSE": true,
-    "**/CHANGELOG.md": true,
-    "**/README.md": true,
     "**/.dart_tool": true,
     "**/.metadata": true,
     "**/.idea": true,
     "**/*.iml": true,
+    "**/.gitignore": true,
+    "**/pubspec.lock": true,
+    "**/pubspec_overrides.yaml": true,
+    "**/analysis_options.yaml": true,
+    "**/LICENSE": true,
+    "**/CHANGELOG.md": true,
+    "**/README.md": true,
   },
   "files.watcherExclude": {
     "**/.fvm": true
@@ -22,4 +26,5 @@
   "search.exclude": {
     "**/.fvm": true
   },
+  "explorer.sortOrder": "filesFirst",
 }
