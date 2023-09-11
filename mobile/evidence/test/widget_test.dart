@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:evidence_leaf/evidence_leaf.dart';
-import 'package:evidence_foundation_flutter/teste.dart';
+import 'package:evidence_foundation_flutter/test.dart';
 
 import 'package:evidence/main.dart';
 
