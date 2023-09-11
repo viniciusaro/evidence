@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  evidence_foundation_flutter: 0.0.1
+  evidence_foundation_flutter: 0.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
