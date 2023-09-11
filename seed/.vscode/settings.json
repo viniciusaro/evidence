@@ -1,0 +1,17 @@
+{
+  "dart.sdkPath": ".fvm/flutter_sdk/bin/cache/dart-sdk",
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "dart.lineLength": 120,
+  "dart.debugSdkLibraries": false,
+  "dart.onlyAnalyzeProjectsWithOpenFiles": true,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "search.exclude": {
+    "**/.fvm": true
+  },
+}
