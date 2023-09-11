@@ -6,6 +6,3 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  evidence:
-    path: ../evidence
