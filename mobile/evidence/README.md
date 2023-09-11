@@ -6,7 +6,8 @@ Evidence é uma plataforma de discussão estruturada, garantindo que idéias sã
 ### Observabilidade
 ### Analytics
 ### Performance
-### Simplicidade
+### Feature Complexity
+### Library Definition
 
 ## Boas Práticas
 ### Conventional Commits
