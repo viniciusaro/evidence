@@ -1,8 +1,8 @@
 import 'package:evidence_leaf/leaf.dart';
 
 class LeafSpacingScheme {
-  EdgeInsetsGeometry get margin => EdgeInsets.all(space2);
-  EdgeInsetsGeometry get marginTag => EdgeInsets.fromLTRB(spaceHalf, spaceHalf * 0.5, spaceHalf, spaceHalf * 0.5);
+  EdgeInsets get margin => EdgeInsets.all(space2);
+  EdgeInsets get marginTag => EdgeInsets.fromLTRB(spaceHalf, spaceHalf * 0.5, spaceHalf, spaceHalf * 0.5);
 
   final Radius radiusCircular;
   Radius get radiusSmall => Radius.circular(spaceHalf);

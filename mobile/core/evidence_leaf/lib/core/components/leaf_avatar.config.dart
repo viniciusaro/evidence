@@ -8,8 +8,7 @@ enum LeafAvatarSize {
 
 class LeafAvatarData {
   final String url;
-  final LeafAvatarSize size;
-  const LeafAvatarData({required this.url, this.size = LeafAvatarSize.regular});
+  const LeafAvatarData({required this.url});
 }
 
 extension on LeafAvatarSize {
@@ -18,7 +17,7 @@ extension on LeafAvatarSize {
       case LeafAvatarSize.regular:
         return Size.square(theme.spacingScheme.space4);
       case LeafAvatarSize.small:
-        return Size.square(theme.spacingScheme.space2);
+        return Size.square(theme.spacingScheme.space3);
       case LeafAvatarSize.big:
         return Size.square(theme.spacingScheme.space6);
     }

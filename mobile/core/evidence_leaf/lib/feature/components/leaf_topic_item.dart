@@ -2,12 +2,12 @@ import 'package:evidence_leaf/leaf.dart';
 import 'package:evidence_foundation_flutter/foundation.dart';
 import 'package:iconsax/iconsax.dart';
 
-part 'leaf_topic_card.config.dart';
+part 'leaf_topic_item.config.dart';
 
-class LeafThreadCard extends StatelessWidget {
-  final LeafThreadCardData data;
+class LeafTopicItem extends StatelessWidget {
+  final LeafTopicItemData data;
   final InteractionCallback? onTap;
-  const LeafThreadCard({super.key, required this.data, this.onTap});
+  const LeafTopicItem({super.key, required this.data, this.onTap});
 
   @override
   Widget build(BuildContext context) {

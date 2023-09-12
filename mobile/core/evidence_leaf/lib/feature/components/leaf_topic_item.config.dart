@@ -1,88 +1,88 @@
-part of 'leaf_topic_card.dart';
+part of 'leaf_topic_item.dart';
 
-enum LeafThreadCardStatus {
+enum LeafTopicItemStatus {
   debate,
   accepted,
   rejected,
 }
 
-enum LeafThreadCardArgumentType {
+enum LeafTopicItemArgumentType {
   inFavor,
   against,
 }
 
-class LeafThreadCardData {
+class LeafTopicItemData {
   final String title;
   final String text;
   final LeafAvatarData avatar;
-  final LeafThreadCardStatus status;
-  final List<LeafThreadCardArgumentData> arguments;
+  final LeafTopicItemStatus status;
+  final List<LeafTopicItemArgumentData> arguments;
 
-  const LeafThreadCardData({
+  const LeafTopicItemData({
     required this.title,
     required this.text,
     required this.avatar,
     required this.status,
-    required this.arguments,
+    this.arguments = const [],
   });
 }
 
-class LeafThreadCardArgumentData {
-  final LeafThreadCardArgumentType type;
+class LeafTopicItemArgumentData {
+  final LeafTopicItemArgumentType type;
   final String text;
-  const LeafThreadCardArgumentData({required this.type, required this.text});
+  const LeafTopicItemArgumentData({required this.type, required this.text});
 }
 
-extension on LeafThreadCardStatus {
+extension on LeafTopicItemStatus {
   Color iconColor(ThemeData theme) {
     switch (this) {
-      case LeafThreadCardStatus.debate:
+      case LeafTopicItemStatus.debate:
         return theme.colorScheme.outline;
-      case LeafThreadCardStatus.accepted:
+      case LeafTopicItemStatus.accepted:
         return theme.colorScheme.outline;
-      case LeafThreadCardStatus.rejected:
+      case LeafTopicItemStatus.rejected:
         return theme.colorScheme.outline;
     }
   }
 
   IconData icon(ThemeData theme) {
     switch (this) {
-      case LeafThreadCardStatus.debate:
+      case LeafTopicItemStatus.debate:
         return Iconsax.messages_3;
-      case LeafThreadCardStatus.accepted:
+      case LeafTopicItemStatus.accepted:
         return Iconsax.messages_3;
-      case LeafThreadCardStatus.rejected:
+      case LeafTopicItemStatus.rejected:
         return Iconsax.messages_3;
     }
   }
 
   LeafTagData tag(ThemeData theme) {
     switch (this) {
-      case LeafThreadCardStatus.debate:
+      case LeafTopicItemStatus.debate:
         return const LeafTagData(status: LeafTagStatus.debate);
-      case LeafThreadCardStatus.accepted:
+      case LeafTopicItemStatus.accepted:
         return const LeafTagData(status: LeafTagStatus.accepted);
-      case LeafThreadCardStatus.rejected:
+      case LeafTopicItemStatus.rejected:
         return const LeafTagData(status: LeafTagStatus.rejected);
     }
   }
 }
 
-extension on LeafThreadCardArgumentType {
+extension on LeafTopicItemArgumentType {
   Color iconColor(ThemeData theme) {
     switch (this) {
-      case LeafThreadCardArgumentType.inFavor:
+      case LeafTopicItemArgumentType.inFavor:
         return theme.colorScheme.primary;
-      case LeafThreadCardArgumentType.against:
+      case LeafTopicItemArgumentType.against:
         return theme.colorScheme.tertiary;
     }
   }
 
   IconData icon(ThemeData theme) {
     switch (this) {
-      case LeafThreadCardArgumentType.inFavor:
+      case LeafTopicItemArgumentType.inFavor:
         return Iconsax.message_add_15;
-      case LeafThreadCardArgumentType.against:
+      case LeafTopicItemArgumentType.against:
         return Iconsax.message_minus5;
     }
   }
