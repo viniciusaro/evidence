@@ -1,16 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:evidence_leaf/leaf.dart';
 
-sealed class LeafImageData {
-  const LeafImageData._();
-  factory LeafImageData.network({required String url}) = _LeafImageDataNetwork;
-}
-
-class _LeafImageDataNetwork extends LeafImageData {
-  final String url;
-  const _LeafImageDataNetwork({required this.url}) : super._();
-}
+part 'leaf_image.config.dart';
 
 class LeafImage extends StatelessWidget {
   final LeafImageData data;

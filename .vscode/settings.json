@@ -11,6 +11,7 @@
   },
   "files.exclude": {
     "**/.dart_tool": true,
+    "**/build": true,
     "**/.metadata": true,
     "**/.idea": true,
     "**/*.iml": true,
@@ -22,7 +23,6 @@
     "**/analysis_options.yaml": true,
     "**/LICENSE": true,
     "**/CHANGELOG.md": true,
-    "**/README.md": true,
   },
   "files.watcherExclude": {
     "**/.fvm": true
