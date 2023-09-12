@@ -6,8 +6,15 @@ part 'leaf_topic_item.config.dart';
 
 class LeafTopicItem extends StatelessWidget {
   final LeafTopicItemData data;
+  final int? maxLines;
   final InteractionCallback? onTap;
-  const LeafTopicItem({super.key, required this.data, this.onTap});
+
+  const LeafTopicItem({
+    super.key,
+    required this.data,
+    this.maxLines,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +33,7 @@ class LeafTopicItem extends StatelessWidget {
                 child: LeafText(
                   argument.text,
                   style: theme.textTheme.labelSmall,
+                  maxLines: maxLines,
                 ),
               ),
             ],
@@ -40,7 +48,7 @@ class LeafTopicItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LeafText(data.title, style: theme.textTheme.bodySmall),
-        LeafText(data.text, style: theme.textTheme.headlineSmall),
+        LeafText(data.text, style: theme.textTheme.headlineSmall, maxLines: maxLines),
         const LeafSpace(),
         LeafTag(data: data.status.tag(theme)),
       ],

@@ -20,6 +20,11 @@ class LeafTopicArgumentItem extends StatelessWidget {
       color: data.status.backgroundColor(theme),
     );
 
+    final text = LeafText(
+      data.text,
+      style: theme.textTheme.bodyMedium?.copyWith(color: data.status.foregroundColor(theme)),
+    );
+
     final typeIcon = Icon(
       data.type.icon(theme),
       size: theme.spacingScheme.space3,
@@ -37,11 +42,11 @@ class LeafTopicArgumentItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LeafText(data.text, style: theme.textTheme.bodySmall),
+                text,
+                const LeafSpace(),
                 Row(children: [
                   const LeafSpace(axis: Axis.horizontal),
                   typeIcon,
-                  // LeafSpace(axis: Axis.horizontal, spacing: theme.spacingScheme.spaceHalf),
                   statusIcon,
                 ]),
               ],

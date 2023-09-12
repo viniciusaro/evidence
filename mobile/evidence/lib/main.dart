@@ -1,15 +1,13 @@
+import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
 import 'src/screens/home_screen.dart';
 import 'src/screens/topic_detail_screen.dart';
 
+part 'main.data.dart';
+
 void main() {
   runApp(const MyApp());
-}
-
-mixin EvidenceRoutes {
-  static const defaultRouteName = Navigator.defaultRouteName;
-  static const topicDetailRouteName = "topicDetail";
 }
 
 class MyApp extends StatelessWidget {
@@ -22,8 +20,10 @@ class MyApp extends StatelessWidget {
       theme: LeafTheme.regular,
       debugShowCheckedModeBanner: false,
       routes: {
-        EvidenceRoutes.defaultRouteName: (context) => const EvidenceHomeScreen(),
-        EvidenceRoutes.topicDetailRouteName: (context) => EvidenceTopicDetailScreen(id: context.routeArguments()),
+        EvidenceRoutes.defaultRoute.routeName: (context) => //
+            const EvidenceHomeScreen(topics: topics),
+        EvidenceRoutes.topicDetail.routeName: (context) => //
+            EvidenceTopicDetailScreen(topic: context.routeArguments()),
       },
     );
   }

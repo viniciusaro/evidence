@@ -28,6 +28,17 @@ extension EvidenceTopicStatusUI on EvidenceTopicStatus {
   Color foregroundColor(ThemeData theme) {
     switch (this) {
       case EvidenceTopicStatus.debate:
+        return theme.colorScheme.scrim;
+      case EvidenceTopicStatus.accepted:
+        return theme.colorScheme.scrim;
+      case EvidenceTopicStatus.rejected:
+        return theme.colorScheme.scrim.withAlpha(130);
+    }
+  }
+
+  Color onBackgroundColor(ThemeData theme) {
+    switch (this) {
+      case EvidenceTopicStatus.debate:
         return theme.colorScheme.onPrimary;
       case EvidenceTopicStatus.accepted:
         return theme.colorScheme.onPrimary;
@@ -52,7 +63,7 @@ extension EvidenceTopicStatusTag on EvidenceTopicStatus {
   LeafTagData tag(ThemeData theme) {
     return LeafTagData(
       color: backgroundColor(theme),
-      textColor: foregroundColor(theme),
+      textColor: onBackgroundColor(theme),
       text: tagText(theme),
     );
   }
