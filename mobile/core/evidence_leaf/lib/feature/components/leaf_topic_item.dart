@@ -49,7 +49,7 @@ class LeafTopicItem extends StatelessWidget {
     final icon = Column(
       children: [
         LeafSpace(spacing: theme.spacingScheme.space4),
-        Icon(data.status.icon(theme), size: theme.spacingScheme.space4, color: data.status.iconColor(theme)),
+        Icon(data.status.icon(theme), size: theme.spacingScheme.space5, color: data.status.iconColor(theme)),
       ],
     );
 
@@ -66,8 +66,7 @@ class LeafTopicItem extends StatelessWidget {
               icon,
             ],
           ),
-          const LeafSpace(),
-          const LeafSpace(),
+          if (arguments.isNotEmpty) LeafSpace(spacing: theme.spacingScheme.space2),
           ...arguments,
         ],
       ),
