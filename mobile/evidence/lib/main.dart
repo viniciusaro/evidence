@@ -1,7 +1,15 @@
 import 'package:evidence_leaf/leaf.dart';
 
+import 'home_screen.dart';
+import 'topic_detail_screen.dart';
+
 void main() {
   runApp(const MyApp());
+}
+
+mixin EvidenceRoutes {
+  static const defaultRouteName = Navigator.defaultRouteName;
+  static const topicDetailRouteName = "topicDetail";
 }
 
 class MyApp extends StatelessWidget {
@@ -12,43 +20,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Evidence',
       theme: LeafTheme.regular,
-      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        EvidenceRoutes.defaultRouteName: (context) => const EvidenceHomeScreen(),
+        EvidenceRoutes.topicDetailRouteName: (context) => EvidenceTopicDetailScreen(id: context.routeArguments()),
+      },
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return LeafScaffold(
-      appBar: const LeafAppBar(title: LeafText('🌳')),
-      body: ListView(
-        children: const [
-          LeafThreadCard(
-            data: LeafThreadCardData(
-              title: "Vini Rodrigues",
-              text: "Não se deve dar dinheiro para crianças pedintes na rua.",
-              status: LeafThreadCardStatus.debate,
-              avatar: LeafAvatarData(
-                url: "https://pbs.twimg.com/profile_images/1584303098687885312/SljBjw26_400x400.jpg",
-              ),
-              arguments: [
-                LeafThreadCardArgumentData(
-                  type: LeafThreadCardArgumentType.inFavor,
-                  text:
-                      "O dinheiro não fará diferença pra quem está dando, mas fará diferença para quem está recebendo",
-                ),
-                LeafThreadCardArgumentData(
-                  type: LeafThreadCardArgumentType.against,
-                  text: "Esta prática incentiva o trabalho infantil, que deve ser erradicado",
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+extension on BuildContext {
+  T routeArguments<T>() => ModalRoute.of(this)!.settings.arguments as T;
 }

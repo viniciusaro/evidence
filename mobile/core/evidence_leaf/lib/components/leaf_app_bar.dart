@@ -1,20 +1,21 @@
 import 'package:evidence_leaf/leaf.dart';
+import 'package:iconsax/iconsax.dart';
+
+part 'leaf_app_bar.config.dart';
 
 class LeafAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget? title;
-  final Widget? leading;
+  final LeafAppBarData data;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
-  const LeafAppBar({super.key, this.title, this.leading});
+  const LeafAppBar({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: title,
-      leading: leading,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      title: data.title,
+      leading: data.leading,
       scrolledUnderElevation: 0.7,
     );
   }

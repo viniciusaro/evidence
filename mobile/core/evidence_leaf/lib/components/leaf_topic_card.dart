@@ -1,11 +1,13 @@
 import 'package:evidence_leaf/leaf.dart';
+import 'package:evidence_foundation_flutter/foundation.dart';
 import 'package:iconsax/iconsax.dart';
 
-part 'leaf_thread_card.config.dart';
+part 'leaf_topic_card.config.dart';
 
 class LeafThreadCard extends StatelessWidget {
   final LeafThreadCardData data;
-  const LeafThreadCard({super.key, required this.data});
+  final InteractionCallback? onTap;
+  const LeafThreadCard({super.key, required this.data, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class LeafThreadCard extends StatelessWidget {
       ],
     );
 
-    return Padding(
+    final body = Padding(
       padding: theme.spacingScheme.margin,
       child: Column(
         children: [
@@ -69,6 +71,11 @@ class LeafThreadCard extends StatelessWidget {
           ...arguments,
         ],
       ),
+    );
+
+    return InkWell(
+      onTap: onTap?.let((callback) => () => callback(context)),
+      child: body,
     );
   }
 }

@@ -3,6 +3,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
     depend_on_referenced_packages: error
+    implementation_imports: error
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -17,6 +18,7 @@ linter:
   # producing the lint.
   rules:
     - depend_on_referenced_packages
+    - implementation_imports
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

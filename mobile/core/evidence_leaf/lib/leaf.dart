@@ -7,7 +7,9 @@ export 'components/leaf_scaffold.dart';
 export 'components/leaf_space.dart';
 export 'components/leaf_tag.dart';
 export 'components/leaf_text.dart';
-export 'components/leaf_thread_card.dart';
+export 'components/leaf_topic_card.dart';
+
+export 'core/callbacks.dart';
 
 export 'theme/regular.dart';
 export 'theme/spacing_scheme.dart';

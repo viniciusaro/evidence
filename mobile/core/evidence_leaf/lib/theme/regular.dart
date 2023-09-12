@@ -13,6 +13,10 @@ mixin LeafTheme {
           fontWeight: FontWeight.w400,
         ),
       ),
+      appBarTheme: data.appBarTheme.copyWith(
+        actionsIconTheme: data.appBarTheme.actionsIconTheme?.copyWith(size: 10, opticalSize: 20),
+        iconTheme: data.appBarTheme.iconTheme?.copyWith(size: 10, opticalSize: 20),
+      ),
     );
 
     return data;

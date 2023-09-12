@@ -1,4 +1,4 @@
-part of 'leaf_thread_card.dart';
+part of 'leaf_topic_card.dart';
 
 enum LeafThreadCardStatus {
   debate,
