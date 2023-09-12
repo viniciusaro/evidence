@@ -10,6 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  cached_network_image: 3.2.3
+  iconsax: 0.0.8
+
 dev_dependencies:
   evidence_foundation_flutter: 0.2.0
 

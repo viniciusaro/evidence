@@ -5,7 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:evidence_leaf/evidence_leaf.dart';
+import 'package:evidence_leaf/leaf.dart';
 import 'package:evidence_foundation_flutter/test.dart';
 
 import 'package:evidence/main.dart';

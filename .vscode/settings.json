@@ -6,7 +6,8 @@
   "[dart]": {
     "editor.formatOnSave": true,
     "editor.rulers": [120],
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "editor.tabCompletion": "onlySnippets",
   },
   "files.exclude": {
     "**/.dart_tool": true,
@@ -14,6 +15,8 @@
     "**/.idea": true,
     "**/*.iml": true,
     "**/.gitignore": true,
+    "**/.flutter-plugins": true,
+    "**/.flutter-plugins-dependencies": true,
     "**/pubspec.lock": true,
     "**/pubspec_overrides.yaml": true,
     "**/analysis_options.yaml": true,
