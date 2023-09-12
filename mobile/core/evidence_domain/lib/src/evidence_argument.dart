@@ -1,0 +1,4 @@
+enum EvidenceArgumentType {
+  inFavor,
+  against,
+}

@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  evidence_domain: 0.0.1
   evidence_foundation_flutter: 0.2.0
   
   cached_network_image: 3.2.3

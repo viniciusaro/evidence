@@ -1,1 +1,1 @@
-export 'core/extensions/object.dart';
+export 'src/core/extensions/object.dart';

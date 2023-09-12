@@ -1,7 +1,7 @@
 import 'package:evidence_leaf/leaf.dart';
 
-import 'screens/home_screen.dart';
-import 'screens/topic_detail_screen.dart';
+import 'src/screens/home_screen.dart';
+import 'src/screens/topic_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());

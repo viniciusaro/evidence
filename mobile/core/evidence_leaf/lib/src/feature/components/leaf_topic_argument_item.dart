@@ -1,6 +1,6 @@
+import 'package:evidence_domain/domain.dart';
 import 'package:evidence_foundation_flutter/foundation.dart';
 import 'package:evidence_leaf/leaf.dart';
-import 'package:iconsax/iconsax.dart';
 
 part 'leaf_topic_argument_item.config.dart';
 
@@ -14,11 +14,16 @@ class LeafTopicArgumentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final icon = Column(
-      children: [
-        const LeafSpace(),
-        Icon(data.status.icon(theme), size: theme.spacingScheme.space3, color: data.status.iconColor(theme)),
-      ],
+    final statusIcon = Icon(
+      data.status.icon(theme),
+      size: theme.spacingScheme.space3,
+      color: data.status.backgroundColor(theme),
+    );
+
+    final typeIcon = Icon(
+      data.type.icon(theme),
+      size: theme.spacingScheme.space3,
+      color: data.type.iconColor(theme),
     );
 
     final body = Padding(
@@ -33,11 +38,15 @@ class LeafTopicArgumentItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LeafText(data.text, style: theme.textTheme.bodySmall),
+                Row(children: [
+                  const LeafSpace(axis: Axis.horizontal),
+                  typeIcon,
+                  // LeafSpace(axis: Axis.horizontal, spacing: theme.spacingScheme.spaceHalf),
+                  statusIcon,
+                ]),
               ],
             ),
           ),
-          const LeafSpace(axis: Axis.horizontal),
-          icon,
         ],
       ),
     );

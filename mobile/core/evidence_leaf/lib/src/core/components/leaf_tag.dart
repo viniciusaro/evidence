@@ -13,14 +13,14 @@ class LeafTag extends StatelessWidget {
     final borderRadius = BorderRadius.all(theme.spacingScheme.radiusSmall);
 
     return Container(
-      decoration: BoxDecoration(borderRadius: borderRadius, color: data.status.color(theme)),
+      decoration: BoxDecoration(borderRadius: borderRadius, color: data.color),
       child: ClipRRect(
         borderRadius: borderRadius,
         child: Padding(
           padding: theme.spacingScheme.marginTag,
           child: LeafText(
-            data.status.text(theme),
-            style: theme.textTheme.bodySmall?.copyWith(color: data.status.textColor(theme)),
+            data.text,
+            style: theme.textTheme.bodySmall?.copyWith(color: data.textColor),
           ),
         ),
       ),

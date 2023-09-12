@@ -2,7 +2,6 @@ import 'package:evidence_leaf/leaf.dart';
 
 class LeafSeparator extends StatelessWidget {
   final Axis axis;
-
   const LeafSeparator({super.key, this.axis = Axis.horizontal});
 
   @override

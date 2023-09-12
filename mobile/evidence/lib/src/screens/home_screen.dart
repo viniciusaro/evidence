@@ -1,3 +1,4 @@
+import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
 class EvidenceHomeScreen extends StatelessWidget {
@@ -14,18 +15,18 @@ class EvidenceHomeScreen extends StatelessWidget {
             data: const LeafTopicItemData(
               title: "Vini Rodrigues",
               text: "Não se deve dar dinheiro para crianças pedintes na rua.",
-              status: LeafTopicItemStatus.debate,
+              status: EvidenceTopicStatus.debate,
               avatar: LeafAvatarData(
                 url: "https://pbs.twimg.com/profile_images/1584303098687885312/SljBjw26_400x400.jpg",
               ),
               arguments: [
                 LeafTopicItemArgumentData(
-                  type: LeafTopicItemArgumentType.inFavor,
+                  type: EvidenceArgumentType.inFavor,
                   text:
                       "O dinheiro não fará diferença pra quem está dando, mas fará diferença para quem está recebendo",
                 ),
                 LeafTopicItemArgumentData(
-                  type: LeafTopicItemArgumentType.against,
+                  type: EvidenceArgumentType.against,
                   text: "Esta prática incentiva o trabalho infantil, que deve ser erradicado",
                 ),
               ],

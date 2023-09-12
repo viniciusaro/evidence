@@ -3,7 +3,7 @@ import 'package:evidence_leaf/leaf.dart';
 mixin LeafTheme {
   static ThemeData get regular {
     var data = ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       useMaterial3: true,
     );
 

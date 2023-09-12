@@ -1,0 +1,6 @@
+name: evidence_domain
+description: A new Dart package project.
+version: 0.0.1
+
+environment:
+  sdk: '>=3.1.1 <4.0.0'

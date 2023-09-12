@@ -1,6 +1,6 @@
+import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 import 'package:evidence_foundation_flutter/foundation.dart';
-import 'package:iconsax/iconsax.dart';
 
 part 'leaf_topic_item.config.dart';
 
@@ -49,7 +49,11 @@ class LeafTopicItem extends StatelessWidget {
     final icon = Column(
       children: [
         LeafSpace(spacing: theme.spacingScheme.space4),
-        Icon(data.status.icon(theme), size: theme.spacingScheme.space5, color: data.status.iconColor(theme)),
+        Icon(
+          data.status.icon(theme),
+          size: theme.spacingScheme.space5,
+          color: data.status.backgroundColor(theme),
+        ),
       ],
     );
 
