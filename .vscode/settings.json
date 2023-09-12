@@ -20,7 +20,6 @@
     "**/.flutter-plugins-dependencies": true,
     "**/pubspec.lock": true,
     "**/pubspec_overrides.yaml": true,
-    "**/analysis_options.yaml": true,
     "**/LICENSE": true,
     "**/CHANGELOG.md": true,
   },
