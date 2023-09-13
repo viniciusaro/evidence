@@ -2,19 +2,34 @@ part of 'data_source.dart';
 
 class InMemoryJsonKeyValueDataSource with DataSource<Key, JSON> {
   final Map<Key, JSON> storage = {};
+  final Map<Key, StreamController<JSON>> controllers = {};
+
+  InMemoryJsonKeyValueDataSource();
 
   @override
-  Stream<Result<JSON, DataSourceGetException>> get(Key query) {
+  Future<Result<JSON, DataSourceGetException>> get(Key query) {
     final value = storage[query];
 
     return value != null
-        ? Stream.value(Result.success(value)) //
-        : Stream.value(Result.exception(NotFoundException()));
+        ? Future.value(Result.success(value)) //
+        : Future.value(Result.exception(NotFoundException()));
   }
 
   @override
-  Stream<Result<Void, Never>> put(JSON value, Key query) {
+  Stream<Result<JSON, Never>> subscribe(Key query) {
+    final value = storage[query];
+    final controller = controllers[query] ??= StreamController();
+
+    return value != null
+        ? controller.stream.startWith(value).map((json) => Result.success(json))
+        : controller.stream.map((json) => Result.success(json));
+  }
+
+  @override
+  Future<Result<Void, Never>> put(JSON value, Key query) {
     storage[query] = value;
-    return Stream.value(Result.success(unit));
+    final controller = controllers[query] ??= StreamController();
+    controller.add(value);
+    return Future.value(Result.success(unit));
   }
 }

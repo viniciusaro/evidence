@@ -16,6 +16,7 @@ class LeafAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: data.title,
       leading: data.leading,
+      actions: data.actions,
     );
   }
 }

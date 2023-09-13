@@ -1,5 +1,7 @@
 export 'package:rxdart/rxdart.dart';
 
+export 'src/core/extensions/future.dart';
+export 'src/core/extensions/list.dart';
 export 'src/core/extensions/object.dart';
 export 'src/core/extensions/stream.dart';
 

@@ -1,6 +1,7 @@
 enum EvidenceRoutes {
   defaultRoute,
   topicDetail,
+  topicCompositionModal,
 }
 
 extension EvidenceRoutesName on EvidenceRoutes {

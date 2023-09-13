@@ -9,6 +9,7 @@ export 'src/core/components/leaf_scaffold.dart';
 export 'src/core/components/leaf_separator.dart';
 export 'src/core/components/leaf_space.dart';
 export 'src/core/components/leaf_tag.dart';
+export 'src/core/components/leaf_text_field.dart';
 export 'src/core/components/leaf_text.dart';
 
 export 'src/feature/components/leaf_topic_item.dart';

@@ -15,8 +15,10 @@ enum EvidenceTopicStatus {
 
 @freezed
 class EvidenceTopics with _$EvidenceTopics {
+  static String key = "EvidenceTopics";
+
   const factory EvidenceTopics({
-    required List<EvidenceTopic> topics,
+    @Default([]) List<EvidenceTopic> topics,
   }) = _EvidenceTopics;
 
   factory EvidenceTopics.fromJson(Map<String, dynamic> json) => _$EvidenceTopicsFromJson(json);
@@ -24,6 +26,8 @@ class EvidenceTopics with _$EvidenceTopics {
 
 @freezed
 class EvidenceTopic with _$EvidenceTopic {
+  static String key = "EvidenceTopic";
+
   const factory EvidenceTopic({
     required EvidenceTopicId id,
     required String declaration,

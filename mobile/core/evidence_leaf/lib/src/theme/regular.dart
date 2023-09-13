@@ -27,6 +27,10 @@ mixin LeafTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusMedium)),
         ),
       ),
+      appBarTheme: data.appBarTheme.copyWith(
+          iconTheme: data.appBarTheme.iconTheme?.copyWith(
+        color: data.colorScheme.scrim,
+      )),
     );
 
     return data;

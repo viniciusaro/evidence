@@ -5,7 +5,9 @@ class LeafText extends StatelessWidget {
   final TextStyle? style;
   final int? maxLines;
   final TextOverflow? overflow;
-  const LeafText(this.data, {super.key, this.style, this.maxLines, this.overflow});
+  final TextAlign? textAlign;
+
+  const LeafText(this.data, {super.key, this.style, this.maxLines, this.overflow, this.textAlign});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class LeafText extends StatelessWidget {
       style: style,
       maxLines: maxLines,
       overflow: overflow ?? (maxLines != null ? TextOverflow.ellipsis : null),
+      textAlign: textAlign,
     );
   }
 }
