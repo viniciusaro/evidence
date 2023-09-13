@@ -33,6 +33,7 @@
 **/build/
 **/pubspec.lock
 **/pubspec_overrides.yaml
+**/*.g.dart
 
 # Symbolication related
 **/app.*.symbols
