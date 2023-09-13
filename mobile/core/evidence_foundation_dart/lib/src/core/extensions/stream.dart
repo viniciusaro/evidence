@@ -5,8 +5,8 @@ extension ResultStream<T, E> on Stream<Result<T, E>> {
     return map((e) => e.map(transform));
   }
 
-  Stream<Result<U, E>> asyncExpandResult<U>(Stream<Result<U, E>> Function(T) transform) {
-    return asyncExpand((result) {
+  Stream<Result<U, E>> switchMapResult<U>(Stream<Result<U, E>> Function(T) transform) {
+    return switchMap((result) {
       switch (result) {
         case ResultSuccess<T, E> result:
           return transform(result.value);
@@ -17,32 +17,6 @@ extension ResultStream<T, E> on Stream<Result<T, E>> {
       }
     });
   }
-
-  // Stream<Result<T, E>> whereResult<U>(bool Function(T) condition) {
-  //   return where((result) {
-  //     switch (result) {
-  //       case ResultSuccess<T, E> result:
-  //         return condition(result.value);
-  //       case ResultException<T, E> _:
-  //         return false;
-  //       case ResultError<T, E> _:
-  //         return false;
-  //     }
-  //   });
-  // }
-
-  // Stream<Result<T, E>> firstWhereResult<U>(bool Function(T) condition) {
-  //   return firstWhere((result) {
-  //     switch (result) {
-  //       case ResultSuccess<T, E> result:
-  //         return condition(result.value);
-  //       case ResultException<T, E> _:
-  //         return false;
-  //       case ResultError<T, E> _:
-  //         return false;
-  //     }
-  //   }).asStream();
-  // }
 
   Stream<Result<T, Never>> onResultException<U>(T Function(E) transform) {
     return map((result) {

@@ -31,6 +31,6 @@ class DebateRepositoryImpl implements DebateRepository {
         .mapResult(EvidenceTopics.fromJson)
         .onNotFoundReturn(EvidenceTopics(topics: []))
         .mapResult((topics) => topics.copyWith(topics: topics.topics + [topic]))
-        .asyncExpandResult((topics) => dataSource.put(topics.toJson(), "EvidenceTopics").take(1));
+        .switchMapResult((topics) => dataSource.put(topics.toJson(), "EvidenceTopics").take(1));
   }
 }

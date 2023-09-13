@@ -1,3 +1,5 @@
+export 'package:rxdart/rxdart.dart';
+
 export 'src/core/extensions/object.dart';
 export 'src/core/extensions/stream.dart';
 
