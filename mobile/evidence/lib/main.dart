@@ -2,6 +2,7 @@ import 'package:evidence/src/backend/data_source.dart';
 import 'package:evidence/src/backend/debate_repository_impl.dart';
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'src/screens/home_screen.dart';
 import 'src/screens/topic_composition_screen.dart';
@@ -9,16 +10,20 @@ import 'src/screens/topic_detail_screen.dart';
 
 part 'main.data.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await Hive.initFlutter();
+  final box = await Hive.openBox("HiveKeyJsonDataSource", encryptionCipher: HiveAesCipher(key));
+  runApp(MyApp(box: box));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Box box;
+
+  const MyApp({super.key, required this.box});
 
   @override
   Widget build(BuildContext context) {
-    final dataSource = InMemoryJsonKeyValueDataSource();
+    final dataSource = HiveKeyJsonDataSource(box);
     final debateRepository = DebateRepositoryImpl(dataSource: dataSource);
 
     return MaterialApp(
@@ -51,3 +56,38 @@ class MyApp extends StatelessWidget {
 extension on RouteSettings {
   T routeArguments<T>() => arguments as T;
 }
+
+const key = [
+  235,
+  70,
+  149,
+  186,
+  255,
+  171,
+  86,
+  216,
+  229,
+  65,
+  125,
+  223,
+  171,
+  199,
+  30,
+  104,
+  129,
+  150,
+  128,
+  88,
+  198,
+  31,
+  148,
+  165,
+  177,
+  210,
+  74,
+  95,
+  88,
+  92,
+  129,
+  222
+];

@@ -17,18 +17,17 @@ class DebateRepositoryImpl implements DebateRepository {
 
   @override
   Stream<Result<EvidenceTopicPosts, Never>> getTopicPosts() {
-    return dataSource
+    return dataSource //
         .subscribe(EvidenceTopicPosts.key)
-        .mapResult(EvidenceTopicPosts.fromJson)
-        .onNotFoundReturn(EvidenceTopicPosts());
+        .mapResult(EvidenceTopicPosts.fromJson);
   }
 
   @override
   Stream<Result<EvidenceTopics, Never>> getTopics() {
-    return dataSource
+    return dataSource //
         .subscribe(EvidenceTopics.key)
         .mapResult(EvidenceTopics.fromJson)
-        .onNotFoundReturn(EvidenceTopics());
+        .debug(prefix: "get topics ");
   }
 
   @override

@@ -1,10 +1,10 @@
 part of 'data_source.dart';
 
-class InMemoryJsonKeyValueDataSource with DataSource<Key, JSON> {
+class InMemoryKeyJsonDataSource with DataSource<Key, JSON> {
   final Map<Key, JSON> storage = {};
   final Map<Key, StreamController<JSON>> controllers = {};
 
-  InMemoryJsonKeyValueDataSource();
+  InMemoryKeyJsonDataSource();
 
   @override
   Future<Result<JSON, DataSourceGetException>> get(Key query) {

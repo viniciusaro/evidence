@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:evidence_foundation_flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-part 'in_memory_json_key_value_data_source.dart';
+part 'in_memory_key_json_data_source.dart';
+part 'hive_key_json_data_source.dart';
 
 typedef JSON = Map<String, dynamic>;
 typedef Key = String;
