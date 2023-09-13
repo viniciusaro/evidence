@@ -9,32 +9,28 @@ class DebateRepositoryImpl implements DebateRepository {
   DebateRepositoryImpl({required this.dataSource});
 
   @override
-  Stream<Result<Void, Never>> contestTopic(EvidenceTopic topic, EvidenceArgument argument) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<Result<EvidenceArgument, Never>> getArguments(EvidenceTopic topic) {
-    throw UnimplementedError();
-  }
-
-  @override
   Stream<Result<EvidenceTopic, Never>> getTopic(EvidenceTopicId id) {
-    throw UnimplementedError();
+    return getTopics() //
+        .mapResult((topics) => topics.firstWhere((topic) => topic.id == id));
   }
 
   @override
   Stream<Result<List<EvidenceTopic>, Never>> getTopics() {
-    throw UnimplementedError();
+    return dataSource
+        .get("EvidenceTopics")
+        .mapResult(EvidenceTopics.fromJson)
+        .mapResult((topics) => topics.topics)
+        .onNotFoundReturn([]);
   }
 
   @override
-  Stream<Result<Void, Never>> likeTopic(EvidenceTopic topic) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<Result<Void, Never>> supportTopic(EvidenceTopic topic) {
-    throw UnimplementedError();
+  Stream<Result<Void, Never>> registerTopic(EvidenceTopic topic) {
+    return dataSource
+        .get("EvidenceTopics")
+        .take(1)
+        .mapResult(EvidenceTopics.fromJson)
+        .onNotFoundReturn(EvidenceTopics(topics: []))
+        .mapResult((topics) => topics.copyWith(topics: topics.topics + [topic]))
+        .asyncExpandResult((topics) => dataSource.put(topics.toJson(), "EvidenceTopics").take(1));
   }
 }

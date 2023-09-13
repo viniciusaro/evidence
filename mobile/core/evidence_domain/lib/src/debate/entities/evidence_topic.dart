@@ -14,6 +14,15 @@ enum EvidenceTopicStatus {
 }
 
 @freezed
+class EvidenceTopics with _$EvidenceTopics {
+  const factory EvidenceTopics({
+    required List<EvidenceTopic> topics,
+  }) = _EvidenceTopics;
+
+  factory EvidenceTopics.fromJson(Map<String, dynamic> json) => _$EvidenceTopicsFromJson(json);
+}
+
+@freezed
 class EvidenceTopic with _$EvidenceTopic {
   const factory EvidenceTopic({
     required EvidenceTopicId id,
