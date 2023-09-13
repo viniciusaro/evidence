@@ -3,3 +3,8 @@ name: evidence
 packages:
   - evidence
   - core/*
+
+command:
+  bootstrap:
+    hooks:
+      post: cd core/evidence_domain; dart run build_runner build --delete-conflicting-outputs &
