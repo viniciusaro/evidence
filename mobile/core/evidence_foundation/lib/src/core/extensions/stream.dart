@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:evidence_foundation_dart/foundation.dart';
+import 'package:evidence_foundation/foundation.dart';
 
 extension ResultStream<T, E> on Stream<Result<T, E>> {
   Stream<Result<U, E>> mapResult<U>(U Function(T) transform) {

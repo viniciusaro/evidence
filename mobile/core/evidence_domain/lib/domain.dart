@@ -1,4 +1,4 @@
-export 'package:evidence_foundation_dart/foundation.dart';
+export 'package:evidence_foundation/foundation.dart';
 
 export 'src/debate/entities/evidence_argument.dart';
 export 'src/debate/entities/evidence_topic_publisher.dart';

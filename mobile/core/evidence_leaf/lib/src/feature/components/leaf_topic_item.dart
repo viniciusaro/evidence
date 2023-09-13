@@ -1,6 +1,5 @@
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
-import 'package:evidence_foundation_flutter/foundation.dart';
 
 part 'leaf_topic_item.config.dart';
 

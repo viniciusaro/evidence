@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:evidence_foundation_dart/foundation.dart';
+import 'package:evidence_foundation/foundation.dart';
 
 extension FutureExtension<T> on Future<T> {
   Future<U> map<U>(U Function(T) transform) {

@@ -26,8 +26,7 @@ class DebateRepositoryImpl implements DebateRepository {
   Stream<Result<EvidenceTopics, Never>> getTopics() {
     return dataSource //
         .subscribe(EvidenceTopics.key)
-        .mapResult(EvidenceTopics.fromJson)
-        .debug(prefix: "get topics ");
+        .mapResult(EvidenceTopics.fromJson);
   }
 
   @override
@@ -52,7 +51,7 @@ class DebateRepositoryImpl implements DebateRepository {
 
   @override
   Future<Result<EvidenceTopic, Never>> postTopic(EvidenceTopicPost post) async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     final publisher = EvidenceTopicPublisher(
       id: "1",
       name: "Vini Rodrigues",

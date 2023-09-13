@@ -34,7 +34,7 @@ dependencies:
 
   evidence_domain: 0.0.1
   evidence_leaf: 0.0.1
-  evidence_foundation_flutter: 0.2.0
+  evidence_foundation: 0.0.1
   hive_flutter: 1.1.0
 
   # The following adds the Cupertino Icons font to your application.

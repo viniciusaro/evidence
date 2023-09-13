@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:evidence_foundation_flutter/foundation.dart';
+import 'package:evidence_foundation/foundation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
