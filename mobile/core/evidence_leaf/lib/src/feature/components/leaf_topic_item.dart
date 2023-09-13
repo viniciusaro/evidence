@@ -9,6 +9,9 @@ class LeafTopicItem extends StatelessWidget {
   final int? maxLines;
   final bool showActionButtons;
   final InteractionCallback? onTap;
+  final InteractionCallback? onLikeTap;
+  final InteractionCallback? onSupportTap;
+  final InteractionCallback? onContestTap;
 
   const LeafTopicItem({
     super.key,
@@ -16,6 +19,9 @@ class LeafTopicItem extends StatelessWidget {
     this.maxLines,
     this.showActionButtons = true,
     this.onTap,
+    this.onLikeTap,
+    this.onSupportTap,
+    this.onContestTap,
   });
 
   @override
@@ -47,13 +53,18 @@ class LeafTopicItem extends StatelessWidget {
           Row(
             children: [
               LeafButton(
+                data: const LeafButtonData(title: "👍"),
+                onPressed: onLikeTap ?? (_) {},
+              ),
+              const LeafSpace(axis: Axis.horizontal),
+              LeafButton(
                 data: const LeafButtonData(title: "Apoiar"),
-                onPressed: (_) {},
+                onPressed: onSupportTap ?? (_) {},
               ),
               const LeafSpace(axis: Axis.horizontal),
               LeafButton(
                 data: const LeafButtonData(title: "Contestar"),
-                onPressed: (_) {},
+                onPressed: onContestTap ?? (_) {},
               ),
             ],
           ),

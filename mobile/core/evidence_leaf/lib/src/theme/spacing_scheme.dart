@@ -7,6 +7,7 @@ class LeafSpacingScheme {
 
   final Radius radiusCircular;
   Radius get radiusSmall => Radius.circular(spaceHalf);
+  Radius get radiusMedium => Radius.circular(space1);
 
   final double spaceHalf;
   final double space1;

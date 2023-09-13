@@ -15,6 +15,8 @@ class EvidenceTopicDetailScreen extends StatelessWidget {
         status: topic.status,
         avatar: LeafAvatarData(url: topic.publisher.profilePictureUrl),
       ),
+      onSupportTap: (_) {},
+      onContestTap: (_) {},
     );
 
     final argumentData = topic.arguments.map((argument) {

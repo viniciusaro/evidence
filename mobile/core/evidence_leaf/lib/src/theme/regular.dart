@@ -17,14 +17,14 @@ mixin LeafTheme {
         style: OutlinedButton.styleFrom(
           minimumSize: Size.zero,
           padding: spacingScheme.marginButton,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusSmall)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusMedium)),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           minimumSize: Size.zero,
           padding: spacingScheme.marginButton,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusSmall)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusMedium)),
         ),
       ),
     );
