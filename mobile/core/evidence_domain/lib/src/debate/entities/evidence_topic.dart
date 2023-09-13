@@ -1,4 +1,10 @@
 import 'package:evidence_domain/domain.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'evidence_topic.g.dart';
+part 'evidence_topic.extension.dart';
+
+typedef EvidenceTopicId = String;
 
 enum EvidenceTopicStatus {
   debate,
@@ -6,8 +12,7 @@ enum EvidenceTopicStatus {
   rejected,
 }
 
-typedef EvidenceTopicId = String;
-
+@JsonSerializable()
 class EvidenceTopic {
   final EvidenceTopicId id;
   final String declaration;
@@ -23,23 +28,6 @@ class EvidenceTopic {
     this.likeCount = 0,
   });
 
-  EvidenceTopicStatus get status {
-    final minimumArgumentsCount = 10;
-    final inFavorArgumentCount = arguments.where((a) => a.type == EvidenceArgumentType.inFavor).length;
-    final againstArgumentCount = arguments.where((a) => a.type == EvidenceArgumentType.against).length;
-    final acceptanceRate = inFavorArgumentCount / arguments.length;
-    final rejectionRate = againstArgumentCount / arguments.length;
-    final likeRate = likeCount / arguments.length;
-
-    if (arguments.length >= minimumArgumentsCount && acceptanceRate > 0.9) {
-      return EvidenceTopicStatus.accepted;
-    }
-    if (arguments.length >= minimumArgumentsCount && rejectionRate > 0.9) {
-      return EvidenceTopicStatus.rejected;
-    }
-    if (likeRate > 0.95) {
-      return EvidenceTopicStatus.accepted;
-    }
-    return EvidenceTopicStatus.debate;
-  }
+  factory EvidenceTopic.fromJson(Map<String, dynamic> json) => _$EvidenceTopicFromJson(json);
+  Map<String, dynamic> toJson() => _$EvidenceTopicToJson(this);
 }
