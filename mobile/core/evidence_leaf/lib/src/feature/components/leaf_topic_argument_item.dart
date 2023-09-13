@@ -1,14 +1,22 @@
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_foundation_flutter/foundation.dart';
 import 'package:evidence_leaf/leaf.dart';
+import 'package:iconsax/iconsax.dart';
 
 part 'leaf_topic_argument_item.config.dart';
 
 class LeafTopicArgumentItem extends StatelessWidget {
   final LeafTopicArgumentItemData data;
-  final InteractionCallback? onTap;
 
-  const LeafTopicArgumentItem({super.key, required this.data, this.onTap});
+  final InteractionCallback? onTap;
+  final InteractionCallback? onLongPress;
+
+  const LeafTopicArgumentItem({
+    super.key,
+    required this.data,
+    this.onTap,
+    this.onLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +60,15 @@ class LeafTopicArgumentItem extends StatelessWidget {
               ],
             ),
           ),
+          const LeafSpace(axis: Axis.horizontal),
+          Icon(Iconsax.more, size: theme.spacingScheme.space2),
         ],
       ),
     );
 
     return InkWell(
       onTap: onTap?.let((callback) => () => callback(context)),
+      onLongPress: onLongPress?.let((callback) => () => callback(context)),
       child: body,
     );
   }

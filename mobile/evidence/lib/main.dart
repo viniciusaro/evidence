@@ -17,18 +17,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Evidence',
-      theme: LeafTheme.regular,
+      theme: LeafTheme.regular(LeafSpacingScheme.regular),
       debugShowCheckedModeBanner: false,
-      routes: {
-        EvidenceRoutes.defaultRoute.routeName: (context) => //
-            const EvidenceHomeScreen(topics: topics),
-        EvidenceRoutes.topicDetail.routeName: (context) => //
-            EvidenceTopicDetailScreen(topic: context.routeArguments()),
+      onGenerateRoute: (RouteSettings settings) {
+        final evidenceRoute = EvidenceRoutes.values.firstWhere(
+          (route) => route.routeName == settings.name,
+          orElse: () => EvidenceRoutes.defaultRoute,
+        );
+
+        switch (evidenceRoute) {
+          case EvidenceRoutes.defaultRoute:
+            return MaterialPageRoute(builder: (_) => const EvidenceHomeScreen(topics: topics));
+          case EvidenceRoutes.topicDetail:
+            return MaterialPageRoute(builder: (_) => EvidenceTopicDetailScreen(topic: settings.routeArguments()));
+        }
       },
     );
   }
 }
 
-extension on BuildContext {
-  T routeArguments<T>() => ModalRoute.of(this)!.settings.arguments as T;
+extension on RouteSettings {
+  T routeArguments<T>() => arguments as T;
 }

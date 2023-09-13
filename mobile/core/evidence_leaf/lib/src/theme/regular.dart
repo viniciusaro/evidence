@@ -1,9 +1,9 @@
 import 'package:evidence_leaf/leaf.dart';
 
 mixin LeafTheme {
-  static ThemeData get regular {
+  static ThemeData regular(LeafSpacingScheme spacingScheme) {
     var data = ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+      colorSchemeSeed: const Color.fromARGB(255, 112, 86, 0),
       useMaterial3: true,
     );
 
@@ -13,9 +13,19 @@ mixin LeafTheme {
           fontWeight: FontWeight.w400,
         ),
       ),
-      appBarTheme: data.appBarTheme.copyWith(
-        actionsIconTheme: data.appBarTheme.actionsIconTheme?.copyWith(size: 10, opticalSize: 20),
-        iconTheme: data.appBarTheme.iconTheme?.copyWith(size: 10, opticalSize: 20),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          minimumSize: Size.zero,
+          padding: spacingScheme.marginButton,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusSmall)),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: Size.zero,
+          padding: spacingScheme.marginButton,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(spacingScheme.radiusSmall)),
+        ),
       ),
     );
 

@@ -7,12 +7,14 @@ part 'leaf_topic_item.config.dart';
 class LeafTopicItem extends StatelessWidget {
   final LeafTopicItemData data;
   final int? maxLines;
+  final bool showActionButtons;
   final InteractionCallback? onTap;
 
   const LeafTopicItem({
     super.key,
     required this.data,
     this.maxLines,
+    this.showActionButtons = true,
     this.onTap,
   });
 
@@ -20,13 +22,51 @@ class LeafTopicItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final textContent = Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LeafText(data.title, style: theme.textTheme.bodySmall),
+        const LeafSpace(),
+        LeafTag(data: data.status.tag(theme)),
+        const LeafSpace(),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(child: LeafText(data.text, style: theme.textTheme.headlineSmall, maxLines: maxLines)),
+            const LeafSpace(axis: Axis.horizontal),
+            Icon(
+              data.status.icon(theme),
+              size: theme.spacingScheme.space5,
+              color: data.status.backgroundColor(theme),
+            )
+          ],
+        ),
+        const LeafSpace(),
+        if (showActionButtons)
+          Row(
+            children: [
+              LeafButton(
+                data: const LeafButtonData(title: "Apoiar"),
+                onPressed: (_) {},
+              ),
+              const LeafSpace(axis: Axis.horizontal),
+              LeafButton(
+                data: const LeafButtonData(title: "Contestar"),
+                onPressed: (_) {},
+              ),
+            ],
+          ),
+      ],
+    );
+
     final arguments = data.arguments.map(
       (argument) => Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LeafSpace(axis: Axis.horizontal, spacing: theme.spacingScheme.space5),
+              LeafSpace(axis: Axis.horizontal, spacing: theme.spacingScheme.space6),
               Icon(argument.type.icon(theme), size: 16, color: argument.type.iconColor(theme)),
               const LeafSpace(axis: Axis.horizontal),
               Flexible(
@@ -43,28 +83,6 @@ class LeafTopicItem extends StatelessWidget {
       ),
     );
 
-    final textContent = Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        LeafText(data.title, style: theme.textTheme.bodySmall),
-        LeafText(data.text, style: theme.textTheme.headlineSmall, maxLines: maxLines),
-        const LeafSpace(),
-        LeafTag(data: data.status.tag(theme)),
-      ],
-    );
-
-    final icon = Column(
-      children: [
-        LeafSpace(spacing: theme.spacingScheme.space4),
-        Icon(
-          data.status.icon(theme),
-          size: theme.spacingScheme.space5,
-          color: data.status.backgroundColor(theme),
-        ),
-      ],
-    );
-
     final body = Padding(
       padding: theme.spacingScheme.margin,
       child: Column(
@@ -75,10 +93,9 @@ class LeafTopicItem extends StatelessWidget {
               LeafAvatar(data: data.avatar),
               const LeafSpace(axis: Axis.horizontal),
               Flexible(child: textContent),
-              icon,
             ],
           ),
-          if (arguments.isNotEmpty) LeafSpace(spacing: theme.spacingScheme.space2),
+          if (arguments.isNotEmpty) LeafSpace(spacing: theme.spacingScheme.spaceHalf),
           ...arguments,
         ],
       ),

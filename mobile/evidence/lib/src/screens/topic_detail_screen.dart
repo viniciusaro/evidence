@@ -40,6 +40,9 @@ class EvidenceTopicDetailScreen extends StatelessWidget {
                 arguments: topic.arguments[index - 1].topic,
               );
             },
+            onLongPress: (context) {
+              //
+            },
           );
         },
         separatorBuilder: (context, index) {

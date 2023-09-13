@@ -3,6 +3,7 @@ import 'package:evidence_leaf/leaf.dart';
 class LeafSpacingScheme {
   EdgeInsets get margin => EdgeInsets.all(space2);
   EdgeInsets get marginTag => EdgeInsets.fromLTRB(spaceHalf, spaceHalf * 0.5, spaceHalf, spaceHalf * 0.5);
+  EdgeInsets get marginButton => EdgeInsets.fromLTRB(space3, space1 * 0.8, space3, space1 * 0.8);
 
   final Radius radiusCircular;
   Radius get radiusSmall => Radius.circular(spaceHalf);
@@ -38,7 +39,7 @@ class LeafSpacingScheme {
 
 extension ThemeDataSpacing on ThemeData {
   LeafSpacingScheme get spacingScheme {
-    if (this == LeafTheme.regular) {
+    if (this == LeafTheme.regular(LeafSpacingScheme.regular)) {
       return LeafSpacingScheme.regular;
     }
     return LeafSpacingScheme.regular;

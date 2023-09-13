@@ -20,6 +20,8 @@ class EvidenceHomeScreen extends StatelessWidget {
 
       return LeafTopicItem(
         onTap: (context) => Navigator.of(context).pushNamed(EvidenceRoutes.topicDetail.routeName, arguments: topic),
+        maxLines: 5,
+        showActionButtons: false,
         data: LeafTopicItemData(
           title: topic.publisher.name,
           text: topic.declaration,
@@ -27,7 +29,6 @@ class EvidenceHomeScreen extends StatelessWidget {
           avatar: LeafAvatarData(url: topic.publisher.profilePictureUrl),
           arguments: arguments.toList(),
         ),
-        maxLines: 5,
       );
     }).toList();
 

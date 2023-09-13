@@ -4,12 +4,4 @@ Leaf é o nome do Evidence Design System. Contém todos os componentes, tokens, 
 
 ## Estratégia
 
-A estratégia de construção atual busca incluir semântica de negócio dentro dos componentes. Propriedades configuracionais podem ser utilizadas para alterar atributos como cores e estilos, mas, normalmente, as cores e estilos não são configuráveis diretamente.
-
-### Prós
-- Tokens mais isolados, facilitando manutenção e futuras evoluções de tokens.
-- Dependências isoladas, features não se preocupam com importar assets ou outros tipos de recursos para utilizar os componentes.
-- Futuras implementações com SDUI se beneficiam pois menos atributos precisam ser configurados
-
-### Contras
-- Menor reuso. Casos de uso que fujam da semântica previamente codificada podem impedir que um componente seja reutilizado em um novo contexto.
+Componentes são divididos em `core` e `feature`, de modo que os primeiros são totalmente livres de regras de negócio enquanto os segundos podem conter semânticas mais avançadas para os casos de uso existentes. Componentes feature podem acessar propriedades do domínio para definirem seus contratos. Ambos os tipos de componentes estão neste mesmo pacote, de modo que o reuso seja máximo e detalhes de implementação como tokens e assets estejam o mais isolados possível do restante da aplicação.

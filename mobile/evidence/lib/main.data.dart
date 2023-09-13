@@ -52,14 +52,14 @@ const lipsumLipsum1 = EvidenceTopic(
 );
 
 const viniAboutChildren = EvidenceTopic(
-  declaration: "Não se deve dar dinheiro para crianças pedintes na rua.",
+  declaration: "Não se deve dar dinheiro para crianças na rua.",
   publisher: vini,
   status: EvidenceTopicStatus.debate,
   arguments: [
     EvidenceArgument(topic: prioliAboutUnequality, type: EvidenceArgumentType.against),
     EvidenceArgument(topic: lipsumAboutChildWork, type: EvidenceArgumentType.inFavor),
-    EvidenceArgument(topic: lipsumLipsum1, type: EvidenceArgumentType.against),
     EvidenceArgument(topic: lipsumLipsum2, type: EvidenceArgumentType.against),
+    EvidenceArgument(topic: lipsumLipsum1, type: EvidenceArgumentType.against),
   ],
 );
 
