@@ -1,19 +1,15 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'evidence_topic_publisher.freezed.dart';
 part 'evidence_topic_publisher.g.dart';
 
-@JsonSerializable()
-class EvidenceTopicPublisher {
-  final String id;
-  final String name;
-  final String profilePictureUrl;
-
-  const EvidenceTopicPublisher({
-    required this.id,
-    required this.name,
-    required this.profilePictureUrl,
-  });
+@freezed
+class EvidenceTopicPublisher with _$EvidenceTopicPublisher {
+  const factory EvidenceTopicPublisher({
+    required String id,
+    required String name,
+    required String profilePictureUrl,
+  }) = _EvidenceTopicPublisher;
 
   factory EvidenceTopicPublisher.fromJson(Map<String, dynamic> json) => _$EvidenceTopicPublisherFromJson(json);
-  Map<String, dynamic> toJson() => _$EvidenceTopicPublisherToJson(this);
 }

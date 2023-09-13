@@ -1,8 +1,9 @@
 import 'package:evidence_domain/domain.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'evidence_topic.g.dart';
 part 'evidence_topic.extension.dart';
+part 'evidence_topic.freezed.dart';
+part 'evidence_topic.g.dart';
 
 typedef EvidenceTopicId = String;
 
@@ -12,22 +13,15 @@ enum EvidenceTopicStatus {
   rejected,
 }
 
-@JsonSerializable()
-class EvidenceTopic {
-  final EvidenceTopicId id;
-  final String declaration;
-  final EvidenceTopicPublisher publisher;
-  final List<EvidenceArgument> arguments;
-  final int likeCount;
-
-  const EvidenceTopic({
-    required this.id,
-    required this.declaration,
-    required this.publisher,
-    required this.arguments,
-    this.likeCount = 0,
-  });
+@freezed
+class EvidenceTopic with _$EvidenceTopic {
+  const factory EvidenceTopic({
+    required EvidenceTopicId id,
+    required String declaration,
+    required EvidenceTopicPublisher publisher,
+    required List<EvidenceArgument> arguments,
+    @Default(0) int likeCount,
+  }) = _EvidenceTopic;
 
   factory EvidenceTopic.fromJson(Map<String, dynamic> json) => _$EvidenceTopicFromJson(json);
-  Map<String, dynamic> toJson() => _$EvidenceTopicToJson(this);
 }

@@ -1,6 +1,6 @@
 part of 'data_source.dart';
 
-class InMemoryJsonKeyValueDataSource with DataSource<JSON, Key> {
+class InMemoryJsonKeyValueDataSource with DataSource<Key, JSON> {
   final Map<Key, JSON> storage = {};
 
   @override
