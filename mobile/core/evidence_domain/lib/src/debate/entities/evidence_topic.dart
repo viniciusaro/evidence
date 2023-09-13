@@ -6,13 +6,17 @@ enum EvidenceTopicStatus {
   rejected,
 }
 
+typedef EvidenceTopicId = String;
+
 class EvidenceTopic {
+  final EvidenceTopicId id;
   final String declaration;
   final EvidenceTopicPublisher publisher;
   final List<EvidenceArgument> arguments;
   final int likeCount;
 
   const EvidenceTopic({
+    required this.id,
     required this.declaration,
     required this.publisher,
     required this.arguments,

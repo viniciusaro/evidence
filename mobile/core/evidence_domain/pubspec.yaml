@@ -4,3 +4,6 @@ version: 0.0.1
 
 environment:
   sdk: '>=3.1.1 <4.0.0'
+
+dependencies:
+  evidence_foundation_dart: 0.0.1

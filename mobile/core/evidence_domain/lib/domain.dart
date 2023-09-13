@@ -1,4 +1,6 @@
-export 'src/evidence_argument.dart';
-export 'src/evidence_routes.dart';
-export 'src/evidence_topic_publisher.dart';
-export 'src/evidence_topic.dart';
+export 'src/debate/entities/evidence_argument.dart';
+export 'src/debate/entities/evidence_topic_publisher.dart';
+export 'src/debate/entities/evidence_topic.dart';
+export 'src/debate/repositories/debate_repository.dart';
+
+export 'src/routing/evidence_routes.dart';
