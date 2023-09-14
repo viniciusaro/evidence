@@ -39,13 +39,14 @@ class _EvidenceHomeScreenState extends State<EvidenceHomeScreen> {
           );
 
       return LeafTopicItem(
-        onTap: (context) => Navigator.of(context).pushNamed(EvidenceRoutes.topicDetail.routeName, arguments: topic),
+        onTap: (context) => Navigator.of(context).pushNamed(EvidenceRoutes.topicDetail.routeName, arguments: topic.id),
         maxLines: 5,
         showActionButtons: false,
         data: LeafTopicItemData(
           title: topic.publisher.name,
           text: topic.declaration,
           status: topic.status,
+          likeCount: topic.likeCount,
           avatar: LeafAvatarData(url: topic.publisher.profilePictureUrl),
           arguments: arguments.toList(),
         ),

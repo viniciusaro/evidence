@@ -1,22 +1,63 @@
+import 'dart:async';
+
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
-class EvidenceTopicDetailScreen extends StatelessWidget {
-  final EvidenceTopic topic;
+class EvidenceTopicDetailScreen extends StatefulWidget {
+  final EvidenceTopicId topicId;
+  final DebateRepository debateRepository;
 
-  const EvidenceTopicDetailScreen({super.key, required this.topic});
+  const EvidenceTopicDetailScreen({
+    super.key,
+    required this.topicId,
+    required this.debateRepository,
+  });
+
+  @override
+  State<EvidenceTopicDetailScreen> createState() => _EvidenceTopicDetailScreenState();
+}
+
+class _EvidenceTopicDetailScreenState extends State<EvidenceTopicDetailScreen> {
+  EvidenceTopic? _topic;
+  StreamSubscription? _topicSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _topicSubscription = widget.debateRepository.getTopic(widget.topicId).listen((result) {
+      setState(() {
+        _topic = result.get();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final topic = _topic;
+    if (topic != null) {
+      return _buildWithTopic(topic);
+    }
+    return Container(color: Colors.white);
+  }
+
+  Widget _buildWithTopic(EvidenceTopic topic) {
     final topicItem = LeafTopicItem(
       data: LeafTopicItemData(
         title: topic.publisher.name,
         text: topic.declaration,
         status: topic.status,
+        likeCount: topic.likeCount,
         avatar: LeafAvatarData(url: topic.publisher.profilePictureUrl),
       ),
-      onSupportTap: (_) {},
-      onContestTap: (_) {},
+      onLikeTap: (_) async {
+        await widget.debateRepository.likeTopic(topic);
+      },
+      onSupportTap: (_) {
+        //
+      },
+      onContestTap: (_) {
+        //
+      },
     );
 
     final argumentData = topic.arguments.map((argument) {
@@ -53,5 +94,11 @@ class EvidenceTopicDetailScreen extends StatelessWidget {
         itemCount: argumentData.length + 1,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _topicSubscription?.cancel();
+    super.dispose();
   }
 }

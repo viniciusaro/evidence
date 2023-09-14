@@ -53,7 +53,12 @@ class _EvidenceState extends State<EvidenceApp> {
   }
 
   Route _topicDetailRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (_) => EvidenceTopicDetailScreen(topic: settings.routeArguments()));
+    return MaterialPageRoute(
+      builder: (_) => EvidenceTopicDetailScreen(
+        debateRepository: debateRepository,
+        topicId: settings.routeArguments(),
+      ),
+    );
   }
 
   Route _topicCompositionModalRoute(RouteSettings settings) {

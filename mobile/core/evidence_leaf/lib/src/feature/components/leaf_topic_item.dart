@@ -47,7 +47,15 @@ class LeafTopicItem extends StatelessWidget {
             )
           ],
         ),
-        const LeafSpace(),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LeafText(
+              "${data.likeCount} likes",
+              style: theme.textTheme.labelSmall,
+            ),
+          ],
+        ),
         if (showActionButtons)
           Row(
             children: [

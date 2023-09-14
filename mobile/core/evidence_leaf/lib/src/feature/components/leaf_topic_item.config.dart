@@ -3,6 +3,7 @@ part of 'leaf_topic_item.dart';
 class LeafTopicItemData {
   final String title;
   final String text;
+  final int likeCount;
   final LeafAvatarData avatar;
   final EvidenceTopicStatus status;
   final List<LeafTopicItemArgumentData> arguments;
@@ -10,6 +11,7 @@ class LeafTopicItemData {
   const LeafTopicItemData({
     required this.title,
     required this.text,
+    required this.likeCount,
     required this.avatar,
     required this.status,
     this.arguments = const [],

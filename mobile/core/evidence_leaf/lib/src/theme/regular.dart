@@ -10,7 +10,8 @@ mixin LeafTheme {
     data = data.copyWith(
       textTheme: data.textTheme.copyWith(
         labelSmall: data.textTheme.labelSmall!.copyWith(
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w500,
+          color: Colors.grey,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(

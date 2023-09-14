@@ -17,8 +17,6 @@ class EvidenceLoader extends StatefulWidget {
 }
 
 class _EvidenceLoaderState extends State<EvidenceLoader> {
-  bool _hasCalledCallback = false;
-
   Future<AppIntegrationsResult> _foldIntegrations() async {
     var integrationResult = AppIntegrationsResult();
     for (final integration in widget.integrations) {
@@ -32,8 +30,7 @@ class _EvidenceLoaderState extends State<EvidenceLoader> {
     return FutureBuilder(
       future: _foldIntegrations(),
       builder: (context, snapshot) {
-        if (snapshot.hasData && !_hasCalledCallback) {
-          _hasCalledCallback = true;
+        if (snapshot.hasData) {
           return widget.onResult(snapshot.requireData);
         }
         return Container(color: Colors.white);

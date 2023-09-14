@@ -30,6 +30,18 @@ class DebateRepositoryImpl implements DebateRepository {
   }
 
   @override
+  Future<Result<Void, Never>> likeTopic(EvidenceTopic topic) {
+    topic = topic.copyWith(likeCount: topic.likeCount + 1);
+
+    return dataSource
+        .get(EvidenceTopics.key)
+        .mapResult(EvidenceTopics.fromJson)
+        .onNotFoundReturn(EvidenceTopics(topics: []))
+        .mapResult((topics) => topics.copyWith(topics: topics.topics.map((t) => t.id == topic.id ? topic : t).toList()))
+        .flatMapResult((topics) => dataSource.put(topics.toJson(), EvidenceTopics.key));
+  }
+
+  @override
   Future<Result<Void, Never>> registerTopicPost(EvidenceTopicPost topic) {
     return dataSource
         .get(EvidenceTopicPosts.key)
