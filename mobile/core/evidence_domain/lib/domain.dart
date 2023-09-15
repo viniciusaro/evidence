@@ -1,5 +1,6 @@
 export 'package:evidence_foundation/foundation.dart';
 
+export 'src/debate/entities/evidence_argument_post.dart';
 export 'src/debate/entities/evidence_argument.dart';
 export 'src/debate/entities/evidence_topic_publisher.dart';
 export 'src/debate/entities/evidence_topic_post.dart';

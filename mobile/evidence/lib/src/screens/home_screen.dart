@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:evidence/src/screens/topic_upload_screen.dart';
+import 'package:evidence/src/screens/upload_screen.dart';
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
@@ -68,7 +68,7 @@ class _EvidenceHomeScreenState extends State<EvidenceHomeScreen> {
       body: Stack(
         children: [
           body,
-          EvidenceTopicUploadScreen(debateRepository: widget.debateRepository),
+          EvidenceUploadScreen(debateRepository: widget.debateRepository),
         ],
       ),
       floatingActionButton: FloatingActionButton(

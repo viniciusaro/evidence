@@ -1,6 +1,19 @@
 part of 'evidence_topic.dart';
 
-extension EvidenceTopicProperties on EvidenceTopic {
+extension EvidenceTopicsExtension on EvidenceTopics {
+  EvidenceTopics copyWithNewArgumentForTopic(EvidenceArgument argument, EvidenceTopic topic) {
+    return copyWith(
+      topics: topics.map((t) {
+        if (t.id != topic.id) {
+          return t;
+        }
+        return topic.copyWith(arguments: topic.arguments + [argument]);
+      }).toList(),
+    );
+  }
+}
+
+extension EvidenceTopicExtension on EvidenceTopic {
   EvidenceTopicStatus get status {
     final minimumArgumentsCount = 10;
     final inFavorArgumentCount = arguments.where((a) => a.type == EvidenceArgumentType.inFavor).length;

@@ -1,5 +1,6 @@
 import 'package:evidence/backend/data_source.dart';
 import 'package:evidence/backend/debate_repository_impl.dart';
+import 'package:evidence/src/screens/argument_componsition_screen.dart';
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
@@ -24,6 +25,7 @@ class _EvidenceState extends State<EvidenceApp> {
   void initState() {
     super.initState();
     final dataSource = HiveKeyJsonDataSource(widget.appIntegrationsResult.hiveModelBox!);
+    // final dataSource = InMemoryKeyJsonDataSource();
     debateRepository = DebateRepositoryImpl(dataSource: dataSource);
   }
 
@@ -45,6 +47,10 @@ class _EvidenceState extends State<EvidenceApp> {
         return _topicDetailRoute(settings);
       case EvidenceRoutes.topicCompositionModal:
         return _topicCompositionModalRoute(settings);
+      case EvidenceRoutes.inFavorArgumentCompositionModal:
+        return _inFavorArgumentCompositionModalRoute(settings);
+      case EvidenceRoutes.againstArgumentCompositionModal:
+        return _againstArgumentCompositionModalRoute(settings);
     }
   }
 
@@ -64,6 +70,30 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _topicCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
       builder: (_) => EvidenceTopicCompositionScreen(debateRepository: debateRepository),
+      isScrollControlled: true,
+      useSafeArea: true,
+    );
+  }
+
+  Route _inFavorArgumentCompositionModalRoute(RouteSettings settings) {
+    return ModalBottomSheetRoute(
+      builder: (_) => EvidenceArgumentCompositionScreen(
+        debateRepository: debateRepository,
+        topic: settings.routeArguments(),
+        type: EvidenceArgumentType.inFavor,
+      ),
+      isScrollControlled: true,
+      useSafeArea: true,
+    );
+  }
+
+  Route _againstArgumentCompositionModalRoute(RouteSettings settings) {
+    return ModalBottomSheetRoute(
+      builder: (_) => EvidenceArgumentCompositionScreen(
+        debateRepository: debateRepository,
+        topic: settings.routeArguments(),
+        type: EvidenceArgumentType.against,
+      ),
       isScrollControlled: true,
       useSafeArea: true,
     );

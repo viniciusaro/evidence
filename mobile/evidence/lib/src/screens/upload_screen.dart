@@ -3,17 +3,18 @@ import 'dart:async';
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
-class EvidenceTopicUploadScreen extends StatefulWidget {
+class EvidenceUploadScreen extends StatefulWidget {
   final DebateRepository debateRepository;
 
-  const EvidenceTopicUploadScreen({super.key, required this.debateRepository});
+  const EvidenceUploadScreen({super.key, required this.debateRepository});
 
   @override
-  State<EvidenceTopicUploadScreen> createState() => _EvidenceTopicUploadScreenState();
+  State<EvidenceUploadScreen> createState() => _EvidenccUploadScreenState();
 }
 
-class _EvidenceTopicUploadScreenState extends State<EvidenceTopicUploadScreen> {
+class _EvidenccUploadScreenState extends State<EvidenceUploadScreen> {
   StreamSubscription? _topicPostLocalSubscription;
+  StreamSubscription? _argumentPostLocalSubscription;
   bool _isLoading = false;
 
   @override
@@ -31,6 +32,18 @@ class _EvidenceTopicUploadScreenState extends State<EvidenceTopicUploadScreen> {
         _isLoading = false;
       });
     });
+
+    _topicPostLocalSubscription = widget.debateRepository.getArgumentPosts().listen((posts) async {
+      setState(() {
+        _isLoading = true;
+      });
+      for (final post in posts.get().arguments) {
+        await widget.debateRepository.postArgument(post);
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -41,6 +54,7 @@ class _EvidenceTopicUploadScreenState extends State<EvidenceTopicUploadScreen> {
   @override
   void dispose() {
     _topicPostLocalSubscription?.cancel();
+    _argumentPostLocalSubscription?.cancel();
     super.dispose();
   }
 }

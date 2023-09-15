@@ -53,10 +53,16 @@ class _EvidenceTopicDetailScreenState extends State<EvidenceTopicDetailScreen> {
         await widget.debateRepository.likeTopic(topic);
       },
       onSupportTap: (_) {
-        //
+        Navigator.of(context).pushNamed(
+          EvidenceRoutes.inFavorArgumentCompositionModal.routeName,
+          arguments: _topic,
+        );
       },
       onContestTap: (_) {
-        //
+        Navigator.of(context).pushNamed(
+          EvidenceRoutes.againstArgumentCompositionModal.routeName,
+          arguments: _topic,
+        );
       },
     );
 
@@ -80,7 +86,7 @@ class _EvidenceTopicDetailScreenState extends State<EvidenceTopicDetailScreen> {
             onTap: (context) {
               Navigator.of(context).pushNamed(
                 EvidenceRoutes.topicDetail.routeName,
-                arguments: topic.arguments[index - 1].topic,
+                arguments: topic.arguments[index - 1].topic.id,
               );
             },
             onLongPress: (context) {

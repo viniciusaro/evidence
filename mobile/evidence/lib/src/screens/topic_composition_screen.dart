@@ -14,7 +14,7 @@ class EvidenceTopicCompositionScreen extends StatefulWidget {
 }
 
 class _EvidenceTopicCompositionScreenState extends State<EvidenceTopicCompositionScreen> {
-  final topicInputController = TextEditingController();
+  final inputController = TextEditingController();
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _EvidenceTopicCompositionScreenState extends State<EvidenceTopicCompositio
         data: LeafAppBarData.compose().copyWith(actions: [
           LeafAppBarData.composeSendAction(
             onPressed: () async {
-              final topic = EvidenceTopicPost(declaration: topicInputController.text);
+              final topic = EvidenceTopicPost(declaration: inputController.text);
               await widget.debateRepository.registerTopicPost(topic);
               Navigator.of(context).pop();
             },
@@ -39,10 +39,16 @@ class _EvidenceTopicCompositionScreenState extends State<EvidenceTopicCompositio
         children: [
           LeafTextField(
             hintText: "O que você gostaria de debater?",
-            controller: topicInputController,
+            controller: inputController,
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    inputController.dispose();
+    super.dispose();
   }
 }

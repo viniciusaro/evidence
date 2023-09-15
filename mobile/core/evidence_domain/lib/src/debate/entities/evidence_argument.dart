@@ -10,8 +10,22 @@ enum EvidenceArgumentType {
 }
 
 @freezed
+class EvidenceArguments with _$EvidenceArguments {
+  static const key = "EvidenceArguments";
+
+  const factory EvidenceArguments({
+    @Default([]) List<EvidenceArgument> arguments,
+  }) = _EvidenceArguments;
+
+  factory EvidenceArguments.fromJson(Map<String, dynamic> json) => _$EvidenceArgumentsFromJson(json);
+}
+
+@freezed
 class EvidenceArgument with _$EvidenceArgument {
+  static const key = "EvidenceArgument";
+
   const factory EvidenceArgument({
+    required String id,
     required EvidenceTopic topic,
     required EvidenceArgumentType type,
   }) = _EvidenceArgument;

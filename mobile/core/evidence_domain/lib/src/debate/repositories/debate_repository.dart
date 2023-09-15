@@ -5,8 +5,13 @@ mixin DebateRepository {
   Stream<Result<EvidenceTopics, Never>> getTopics();
   Future<Result<Void, Never>> likeTopic(EvidenceTopic topic);
 
+  Future<Result<EvidenceTopic, Never>> postTopic(EvidenceTopicPost post);
+  Future<Result<Void, Never>> registerTopicPost(EvidenceTopicPost post);
+  Future<Result<Void, Never>> unregisterTopicPost(EvidenceTopicPost post);
   Stream<Result<EvidenceTopicPosts, Never>> getTopicPosts();
-  Future<Result<Void, Never>> registerTopicPost(EvidenceTopicPost topic);
-  Future<Result<Void, Never>> unregisterTopicPost(EvidenceTopicPost topic);
-  Future<Result<EvidenceTopic, Never>> postTopic(EvidenceTopicPost topic);
+
+  Future<Result<EvidenceArgument, Never>> postArgument(EvidenceArgumentPost post);
+  Future<Result<Void, Never>> registerArgumentPost(EvidenceArgumentPost post);
+  Future<Result<Void, Never>> unregisterArgumentPost(EvidenceArgumentPost post);
+  Stream<Result<EvidenceArgumentPosts, Never>> getArgumentPosts();
 }

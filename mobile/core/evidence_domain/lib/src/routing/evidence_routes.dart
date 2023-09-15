@@ -2,6 +2,8 @@ enum EvidenceRoutes {
   defaultRoute,
   topicDetail,
   topicCompositionModal,
+  inFavorArgumentCompositionModal,
+  againstArgumentCompositionModal,
 }
 
 extension EvidenceRoutesName on EvidenceRoutes {
