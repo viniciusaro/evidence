@@ -32,3 +32,12 @@ class EvidenceArgument with _$EvidenceArgument {
 
   factory EvidenceArgument.fromJson(Map<String, dynamic> json) => _$EvidenceArgumentFromJson(json);
 }
+
+extension EvidenceArgumentString on EvidenceArgument {
+  String customToString() {
+    return """
+EvidenceArgument id: $id, 
+  topic: ${topic.customToString()}
+""";
+  }
+}

@@ -4,11 +4,15 @@ import 'package:evidence_domain/domain.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 export 'package:hive_flutter/hive_flutter.dart';
+export 'src/data_sources.dart';
 
 Repositories repositories(Box box) {
   final dataSource = HiveKeyJsonDataSource(box);
   final topicRepository = TopicRepositoryImpl(dataSource: dataSource);
-  final argumentRepository = ArgumentRepositoryImpl(dataSource: dataSource);
+  final argumentRepository = ArgumentRepositoryImpl(
+    dataSource: dataSource,
+    topicRepository: topicRepository,
+  );
 
   return Repositories(
     argumentRepository: argumentRepository,

@@ -1,3 +1,4 @@
+export 'package:collection/collection.dart';
 export 'package:rxdart/rxdart.dart';
 
 export 'src/core/extensions/future.dart';

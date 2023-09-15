@@ -21,6 +21,8 @@ class EvidenceArgumentPost with _$EvidenceArgumentPost {
 
   const factory EvidenceArgumentPost({
     required EvidenceTopic aboutTopic,
+    String? relatedTopicId,
+    required EvidenceTopic? relatedTopic,
     required EvidenceArgumentType type,
     required String declaration,
   }) = _EvidenceArgumentPost;

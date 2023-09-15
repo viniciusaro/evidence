@@ -41,9 +41,9 @@ class HiveKeyJsonDataSource with DataSource<Key, JSON> {
   }
 }
 
-extension on Box {
-  JSON getJSON(String key) {
-    final value = get(key);
+extension BoxGetJson on Box {
+  JSON getJSON(String key, {JSON? defaultValue}) {
+    final value = get(key, defaultValue: defaultValue);
     return JSONFactory.fromRecursive(value as Map);
   }
 }

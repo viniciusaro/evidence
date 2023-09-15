@@ -30,6 +30,7 @@ class _EvidenceArgumentCompositionScreenState extends State<EvidenceArgumentComp
           LeafAppBarData.composeSendAction(
             onPressed: () async {
               final argument = EvidenceArgumentPost(
+                relatedTopic: null,
                 aboutTopic: widget.topic,
                 type: widget.type,
                 declaration: inputController.text,

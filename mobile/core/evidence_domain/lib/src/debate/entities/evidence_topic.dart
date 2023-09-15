@@ -38,3 +38,14 @@ class EvidenceTopic with _$EvidenceTopic {
 
   factory EvidenceTopic.fromJson(Map<String, dynamic> json) => _$EvidenceTopicFromJson(json);
 }
+
+extension EvidenceTopicString on EvidenceTopic {
+  String customToString() {
+    return """
+EvidenceTopic id: $id, 
+  declaration: $declaration,
+  likeCount: $likeCount,
+  arguments: ${arguments.map((a) => a.customToString()).join("\n")}
+""";
+  }
+}

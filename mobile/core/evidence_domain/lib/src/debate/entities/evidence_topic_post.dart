@@ -19,6 +19,7 @@ class EvidenceTopicPost with _$EvidenceTopicPost {
   static const key = "EvidenceTopicPost";
 
   const factory EvidenceTopicPost({
+    String? id,
     required String declaration,
   }) = _EvidenceTopicPost;
 

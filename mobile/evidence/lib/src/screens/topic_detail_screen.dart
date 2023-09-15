@@ -70,6 +70,7 @@ class _EvidenceTopicDetailScreenState extends State<EvidenceTopicDetailScreen> {
       return LeafTopicArgumentItemData(
         type: argument.type,
         status: argument.topic.status,
+        likeCount: argument.topic.likeCount,
         text: argument.topic.declaration,
         avatar: LeafAvatarData(url: argument.topic.publisher.profilePictureUrl),
       );

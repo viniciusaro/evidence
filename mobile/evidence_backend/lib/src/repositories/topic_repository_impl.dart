@@ -70,7 +70,7 @@ class TopicRepositoryImpl implements TopicRepository {
     );
 
     final topic = EvidenceTopic(
-      id: Random().nextInt(100000).toString(),
+      id: post.id ?? Random().nextInt(100000).toString(),
       declaration: post.declaration,
       publisher: publisher,
       arguments: [],

@@ -5,8 +5,12 @@ import 'package:evidence_domain/domain.dart';
 
 class ArgumentRepositoryImpl implements ArgumentRepository {
   final DataSource<Key, JSON> dataSource;
+  final TopicRepository topicRepository;
 
-  const ArgumentRepositoryImpl({required this.dataSource});
+  const ArgumentRepositoryImpl({
+    required this.dataSource,
+    required this.topicRepository,
+  });
 
   @override
   Future<Result<EvidenceArgument, Never>> postArgument(EvidenceArgumentPost post) async {
@@ -17,25 +21,19 @@ class ArgumentRepositoryImpl implements ArgumentRepository {
       profilePictureUrl: "https://pbs.twimg.com/profile_images/1584303098687885312/SljBjw26_400x400.jpg",
     );
 
-    final topic = EvidenceTopic(
-      id: Random().nextInt(100000).toString(),
-      declaration: post.declaration,
-      publisher: publisher,
-      arguments: [],
-    );
+    final topic = post.relatedTopic ??
+        EvidenceTopic(
+          id: post.relatedTopicId!,
+          declaration: post.declaration,
+          publisher: publisher,
+          arguments: [],
+        );
 
     final argument = EvidenceArgument(
       id: Random().nextInt(100000).toString(),
       topic: topic,
       type: post.type,
     );
-
-    final postArgumentTopic = () => dataSource
-        .get(EvidenceTopics.key)
-        .mapResult(EvidenceTopics.fromJson)
-        .onNotFoundReturn(EvidenceTopics())
-        .mapResult((topics) => topics.copyWith(topics: topics.topics + [topic]))
-        .flatMapResult((topics) => dataSource.put(topics.toJson(), EvidenceTopics.key));
 
     final postArgumentToAboutTopic = () => dataSource
         .get(EvidenceTopics.key)
@@ -50,20 +48,28 @@ class ArgumentRepositoryImpl implements ArgumentRepository {
         .onNotFoundReturn(EvidenceArguments())
         .mapResult((arguments) => arguments.copyWith(arguments: arguments.arguments + [argument]))
         .flatMapResult((arguments) => dataSource.put(arguments.toJson(), EvidenceArguments.key))
-        .flatMapResult((_) => postArgumentTopic())
         .flatMapResult((_) => postArgumentToAboutTopic())
         .flatMapResult((_) => unregisterArgumentPost(post))
         .mapResult((_) => argument);
   }
 
   @override
-  Future<Result<Void, Never>> registerArgumentPost(EvidenceArgumentPost argument) {
+  Future<Result<Void, Never>> registerArgumentPost(EvidenceArgumentPost post) {
+    final relatedTopicPost = post.relatedTopic == null
+        ? EvidenceTopicPost(id: Random().nextInt(100000).toString(), declaration: post.declaration)
+        : null;
+
+    final postWithId = post.copyWith(relatedTopicId: relatedTopicPost?.id);
+
     return dataSource
         .get(EvidenceArgumentPosts.key)
         .mapResult(EvidenceArgumentPosts.fromJson)
         .onNotFoundReturn(EvidenceArgumentPosts())
-        .mapResult((arguments) => arguments.copyWith(arguments: arguments.arguments + [argument]))
-        .flatMapResult((arguments) => dataSource.put(arguments.toJson(), EvidenceArgumentPosts.key));
+        .mapResult((arguments) => arguments.copyWith(arguments: arguments.arguments + [postWithId]))
+        .flatMapResult((arguments) => dataSource.put(arguments.toJson(), EvidenceArgumentPosts.key))
+        .flatMapResult((_) => relatedTopicPost != null
+            ? topicRepository.registerTopicPost(relatedTopicPost)
+            : Future.value(Result.success(unit)));
   }
 
   @override
