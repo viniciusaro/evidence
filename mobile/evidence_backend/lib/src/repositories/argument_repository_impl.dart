@@ -1,8 +1,7 @@
 import 'dart:math';
 
+import 'package:evidence_backend/src/data_sources.dart';
 import 'package:evidence_domain/domain.dart';
-
-import 'data_source.dart';
 
 class ArgumentRepositoryImpl implements ArgumentRepository {
   final DataSource<Key, JSON> dataSource;

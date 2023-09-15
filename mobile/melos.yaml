@@ -2,6 +2,7 @@ name: evidence
 
 packages:
   - evidence
+  - evidence_backend
   - core/*
 
 command:

@@ -16,7 +16,7 @@ class HiveKeyJsonDataSource with DataSource<Key, JSON> {
   @override
   Future<Result<Void, Never>> put(JSON value, Key query) async {
     await box.put(query, value);
-    return SynchronousFuture(Result.success(unit));
+    return Future.value(Result.success(unit));
   }
 
   @override

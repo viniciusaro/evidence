@@ -1,9 +1,6 @@
+import 'package:evidence_backend/backend.dart' as backend;
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
-
-import '../backend/argument_repository_impl.dart';
-import '../backend/data_source.dart';
-import '../backend/topic_repository_impl.dart';
 
 import 'integrations/integrations.dart';
 
@@ -22,16 +19,12 @@ class EvidenceApp extends StatefulWidget {
 }
 
 class _EvidenceState extends State<EvidenceApp> {
-  late ArgumentRepository argumentRepository;
-  late TopicRepository topicRepository;
+  late backend.Repositories repositories;
 
   @override
   void initState() {
     super.initState();
-    final dataSource = HiveKeyJsonDataSource(widget.appIntegrationsResult.hiveModelBox!);
-    // final dataSource = InMemoryKeyJsonDataSource();
-    argumentRepository = ArgumentRepositoryImpl(dataSource: dataSource);
-    topicRepository = TopicRepositoryImpl(dataSource: dataSource);
+    repositories = backend.repositories(widget.appIntegrationsResult.hiveModelBox!);
   }
 
   @override
@@ -62,8 +55,8 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _defaultRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) => EvidenceHomeScreen(
-        argumentRepository: argumentRepository,
-        topicRepository: topicRepository,
+        argumentRepository: repositories.argumentRepository,
+        topicRepository: repositories.topicRepository,
       ),
     );
   }
@@ -71,7 +64,7 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _topicDetailRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) => EvidenceTopicDetailScreen(
-        topicRepository: topicRepository,
+        topicRepository: repositories.topicRepository,
         topicId: settings.routeArguments(),
       ),
     );
@@ -79,7 +72,7 @@ class _EvidenceState extends State<EvidenceApp> {
 
   Route _topicCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
-      builder: (_) => EvidenceTopicCompositionScreen(topicRepository: topicRepository),
+      builder: (_) => EvidenceTopicCompositionScreen(topicRepository: repositories.topicRepository),
       isScrollControlled: true,
       useSafeArea: true,
     );
@@ -88,7 +81,7 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _inFavorArgumentCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
       builder: (_) => EvidenceArgumentCompositionScreen(
-        argumentRepository: argumentRepository,
+        argumentRepository: repositories.argumentRepository,
         topic: settings.routeArguments(),
         type: EvidenceArgumentType.inFavor,
       ),
@@ -100,7 +93,7 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _againstArgumentCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
       builder: (_) => EvidenceArgumentCompositionScreen(
-        argumentRepository: argumentRepository,
+        argumentRepository: repositories.argumentRepository,
         topic: settings.routeArguments(),
         type: EvidenceArgumentType.against,
       ),

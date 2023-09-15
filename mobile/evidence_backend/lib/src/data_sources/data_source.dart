@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:evidence_foundation/foundation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'in_memory_key_json_data_source.dart';
