@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:evidence_domain/domain.dart';
 import 'package:flutter/foundation.dart';

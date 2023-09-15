@@ -28,6 +28,7 @@ class EvidenceArgument with _$EvidenceArgument {
     required String id,
     required EvidenceTopic topic,
     required EvidenceArgumentType type,
+    @Default(0) int likeCount,
   }) = _EvidenceArgument;
 
   factory EvidenceArgument.fromJson(Map<String, dynamic> json) => _$EvidenceArgumentFromJson(json);
@@ -37,6 +38,7 @@ extension EvidenceArgumentString on EvidenceArgument {
   String customToString() {
     return """
 EvidenceArgument id: $id, 
+  likeCount: $likeCount,
   topic: ${topic.customToString()}
 """;
   }

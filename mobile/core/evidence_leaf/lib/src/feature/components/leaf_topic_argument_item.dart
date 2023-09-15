@@ -43,6 +43,11 @@ class LeafTopicArgumentItem extends StatelessWidget {
       style: theme.textTheme.labelSmall,
     );
 
+    final topicLikeCount = LeafText(
+      " | topic ${data.topicLikeCount} likes",
+      style: theme.textTheme.labelSmall,
+    );
+
     final body = Padding(
       padding: theme.spacingScheme.margin,
       child: Row(
@@ -62,6 +67,7 @@ class LeafTopicArgumentItem extends StatelessWidget {
                   statusIcon,
                   const LeafSpace(axis: Axis.horizontal),
                   likeCount,
+                  topicLikeCount
                 ]),
               ],
             ),
