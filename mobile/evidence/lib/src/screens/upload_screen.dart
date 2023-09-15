@@ -4,9 +4,14 @@ import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
 class EvidenceUploadScreen extends StatefulWidget {
-  final DebateRepository debateRepository;
+  final ArgumentRepository argumentRepository;
+  final TopicRepository topicRepository;
 
-  const EvidenceUploadScreen({super.key, required this.debateRepository});
+  const EvidenceUploadScreen({
+    super.key,
+    required this.argumentRepository,
+    required this.topicRepository,
+  });
 
   @override
   State<EvidenceUploadScreen> createState() => _EvidenccUploadScreenState();
@@ -21,24 +26,24 @@ class _EvidenccUploadScreenState extends State<EvidenceUploadScreen> {
   void initState() {
     super.initState();
 
-    _topicPostLocalSubscription = widget.debateRepository.getTopicPosts().listen((posts) async {
+    _topicPostLocalSubscription = widget.topicRepository.getTopicPosts().listen((posts) async {
       setState(() {
         _isLoading = true;
       });
       for (final post in posts.get().topics) {
-        await widget.debateRepository.postTopic(post);
+        await widget.topicRepository.postTopic(post);
       }
       setState(() {
         _isLoading = false;
       });
     });
 
-    _topicPostLocalSubscription = widget.debateRepository.getArgumentPosts().listen((posts) async {
+    _topicPostLocalSubscription = widget.argumentRepository.getArgumentPosts().listen((posts) async {
       setState(() {
         _isLoading = true;
       });
       for (final post in posts.get().arguments) {
-        await widget.debateRepository.postArgument(post);
+        await widget.argumentRepository.postArgument(post);
       }
       setState(() {
         _isLoading = false;

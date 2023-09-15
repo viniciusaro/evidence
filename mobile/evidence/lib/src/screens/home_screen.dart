@@ -6,9 +6,14 @@ import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
 class EvidenceHomeScreen extends StatefulWidget {
-  final DebateRepository debateRepository;
+  final ArgumentRepository argumentRepository;
+  final TopicRepository topicRepository;
 
-  const EvidenceHomeScreen({super.key, required this.debateRepository});
+  const EvidenceHomeScreen({
+    super.key,
+    required this.argumentRepository,
+    required this.topicRepository,
+  });
 
   @override
   State<EvidenceHomeScreen> createState() => _EvidenceHomeScreenState();
@@ -21,7 +26,7 @@ class _EvidenceHomeScreenState extends State<EvidenceHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _topicsSubscription = widget.debateRepository.getTopics().listen((result) {
+    _topicsSubscription = widget.topicRepository.getTopics().listen((result) {
       setState(() {
         _topics = result.get().topics;
       });
@@ -68,7 +73,10 @@ class _EvidenceHomeScreenState extends State<EvidenceHomeScreen> {
       body: Stack(
         children: [
           body,
-          EvidenceUploadScreen(debateRepository: widget.debateRepository),
+          EvidenceUploadScreen(
+            argumentRepository: widget.argumentRepository,
+            topicRepository: widget.topicRepository,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

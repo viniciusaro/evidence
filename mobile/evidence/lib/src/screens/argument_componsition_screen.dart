@@ -4,13 +4,13 @@ import 'package:evidence_leaf/leaf.dart';
 class EvidenceArgumentCompositionScreen extends StatefulWidget {
   final EvidenceTopic topic;
   final EvidenceArgumentType type;
-  final DebateRepository debateRepository;
+  final ArgumentRepository argumentRepository;
 
   const EvidenceArgumentCompositionScreen({
     super.key,
     required this.topic,
     required this.type,
-    required this.debateRepository,
+    required this.argumentRepository,
   });
 
   @override
@@ -34,7 +34,7 @@ class _EvidenceArgumentCompositionScreenState extends State<EvidenceArgumentComp
                 type: widget.type,
                 declaration: inputController.text,
               );
-              await widget.debateRepository.registerArgumentPost(argument);
+              await widget.argumentRepository.registerArgumentPost(argument);
               Navigator.of(context).pop();
             },
           ),

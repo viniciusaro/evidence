@@ -1,4 +1,3 @@
-import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
 import 'src/evidence_app.dart';

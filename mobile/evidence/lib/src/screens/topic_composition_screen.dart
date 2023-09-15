@@ -2,11 +2,11 @@ import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
 class EvidenceTopicCompositionScreen extends StatefulWidget {
-  final DebateRepository debateRepository;
+  final TopicRepository topicRepository;
 
   const EvidenceTopicCompositionScreen({
     super.key,
-    required this.debateRepository,
+    required this.topicRepository,
   });
 
   @override
@@ -29,7 +29,7 @@ class _EvidenceTopicCompositionScreenState extends State<EvidenceTopicCompositio
           LeafAppBarData.composeSendAction(
             onPressed: () async {
               final topic = EvidenceTopicPost(declaration: inputController.text);
-              await widget.debateRepository.registerTopicPost(topic);
+              await widget.topicRepository.registerTopicPost(topic);
               Navigator.of(context).pop();
             },
           ),

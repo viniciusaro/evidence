@@ -1,10 +1,13 @@
-import 'package:evidence/backend/data_source.dart';
-import 'package:evidence/backend/debate_repository_impl.dart';
-import 'package:evidence/src/screens/argument_componsition_screen.dart';
 import 'package:evidence_domain/domain.dart';
 import 'package:evidence_leaf/leaf.dart';
 
+import '../backend/argument_repository_impl.dart';
+import '../backend/data_source.dart';
+import '../backend/topic_repository_impl.dart';
+
 import 'integrations/integrations.dart';
+
+import 'screens/argument_componsition_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/topic_composition_screen.dart';
 import 'screens/topic_detail_screen.dart';
@@ -19,14 +22,16 @@ class EvidenceApp extends StatefulWidget {
 }
 
 class _EvidenceState extends State<EvidenceApp> {
-  late DebateRepository debateRepository;
+  late ArgumentRepository argumentRepository;
+  late TopicRepository topicRepository;
 
   @override
   void initState() {
     super.initState();
     final dataSource = HiveKeyJsonDataSource(widget.appIntegrationsResult.hiveModelBox!);
     // final dataSource = InMemoryKeyJsonDataSource();
-    debateRepository = DebateRepositoryImpl(dataSource: dataSource);
+    argumentRepository = ArgumentRepositoryImpl(dataSource: dataSource);
+    topicRepository = TopicRepositoryImpl(dataSource: dataSource);
   }
 
   @override
@@ -55,13 +60,18 @@ class _EvidenceState extends State<EvidenceApp> {
   }
 
   Route _defaultRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (_) => EvidenceHomeScreen(debateRepository: debateRepository));
+    return MaterialPageRoute(
+      builder: (_) => EvidenceHomeScreen(
+        argumentRepository: argumentRepository,
+        topicRepository: topicRepository,
+      ),
+    );
   }
 
   Route _topicDetailRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) => EvidenceTopicDetailScreen(
-        debateRepository: debateRepository,
+        topicRepository: topicRepository,
         topicId: settings.routeArguments(),
       ),
     );
@@ -69,7 +79,7 @@ class _EvidenceState extends State<EvidenceApp> {
 
   Route _topicCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
-      builder: (_) => EvidenceTopicCompositionScreen(debateRepository: debateRepository),
+      builder: (_) => EvidenceTopicCompositionScreen(topicRepository: topicRepository),
       isScrollControlled: true,
       useSafeArea: true,
     );
@@ -78,7 +88,7 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _inFavorArgumentCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
       builder: (_) => EvidenceArgumentCompositionScreen(
-        debateRepository: debateRepository,
+        argumentRepository: argumentRepository,
         topic: settings.routeArguments(),
         type: EvidenceArgumentType.inFavor,
       ),
@@ -90,7 +100,7 @@ class _EvidenceState extends State<EvidenceApp> {
   Route _againstArgumentCompositionModalRoute(RouteSettings settings) {
     return ModalBottomSheetRoute(
       builder: (_) => EvidenceArgumentCompositionScreen(
-        debateRepository: debateRepository,
+        argumentRepository: argumentRepository,
         topic: settings.routeArguments(),
         type: EvidenceArgumentType.against,
       ),

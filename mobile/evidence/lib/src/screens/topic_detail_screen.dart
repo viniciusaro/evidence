@@ -5,12 +5,12 @@ import 'package:evidence_leaf/leaf.dart';
 
 class EvidenceTopicDetailScreen extends StatefulWidget {
   final EvidenceTopicId topicId;
-  final DebateRepository debateRepository;
+  final TopicRepository topicRepository;
 
   const EvidenceTopicDetailScreen({
     super.key,
     required this.topicId,
-    required this.debateRepository,
+    required this.topicRepository,
   });
 
   @override
@@ -24,7 +24,7 @@ class _EvidenceTopicDetailScreenState extends State<EvidenceTopicDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _topicSubscription = widget.debateRepository.getTopic(widget.topicId).listen((result) {
+    _topicSubscription = widget.topicRepository.getTopic(widget.topicId).listen((result) {
       setState(() {
         _topic = result.get();
       });
@@ -50,7 +50,7 @@ class _EvidenceTopicDetailScreenState extends State<EvidenceTopicDetailScreen> {
         avatar: LeafAvatarData(url: topic.publisher.profilePictureUrl),
       ),
       onLikeTap: (_) async {
-        await widget.debateRepository.likeTopic(topic);
+        await widget.topicRepository.likeTopic(topic);
       },
       onSupportTap: (_) {
         Navigator.of(context).pushNamed(
