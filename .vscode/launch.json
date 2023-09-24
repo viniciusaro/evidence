@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "evidence",
-            "cwd": "mobile/evidence",
+            "cwd": "mobile/evidence/flutter/evidence",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
