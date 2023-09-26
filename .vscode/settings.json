@@ -1,6 +1,6 @@
 {
-  "dart.sdkPath": "mobile/evidence/flutter/.fvm/flutter_sdk/bin/cache/dart-sdk",
-  "dart.flutterSdkPath": "mobile/evidence/flutter/.fvm/flutter_sdk",
+  "dart.sdkPath": ".fvm/flutter_sdk/bin/cache/dart-sdk",
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
   "dart.debugSdkLibraries": false,
   "dart.lineLength": 120,
   "[dart]": {
