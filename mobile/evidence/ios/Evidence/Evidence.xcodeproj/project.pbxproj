@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6395EDBE2AC39197000EB04A /* EvidenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDBD2AC39197000EB04A /* EvidenceApp.swift */; };
-		6395EDC02AC39197000EB04A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDBF2AC39197000EB04A /* ContentView.swift */; };
 		6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6395EDC12AC39198000EB04A /* Assets.xcassets */; };
 		6395EDC52AC39198000EB04A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6395EDC42AC39198000EB04A /* Preview Assets.xcassets */; };
 		6395EDCF2AC39198000EB04A /* EvidenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDCE2AC39198000EB04A /* EvidenceTests.swift */; };
@@ -38,7 +37,6 @@
 /* Begin PBXFileReference section */
 		6395EDBA2AC39197000EB04A /* Evidence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Evidence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDBD2AC39197000EB04A /* EvidenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceApp.swift; sourceTree = "<group>"; };
-		6395EDBF2AC39197000EB04A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6395EDC12AC39198000EB04A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6395EDC42AC39198000EB04A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6395EDCA2AC39198000EB04A /* EvidenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,7 +134,6 @@
 				6395EDE82AC3A14A000EB04A /* .gitkeep */,
 				6395EDBD2AC39197000EB04A /* EvidenceApp.swift */,
 				8AB20AF82AC56EA900306765 /* AvatarView.swift */,
-				6395EDBF2AC39197000EB04A /* ContentView.swift */,
 			);
 			path = Leaf;
 			sourceTree = "<group>";
@@ -272,7 +269,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6395EDC02AC39197000EB04A /* ContentView.swift in Sources */,
 				6395EDBE2AC39197000EB04A /* EvidenceApp.swift in Sources */,
 				8AB20AF92AC56EA900306765 /* AvatarView.swift in Sources */,
 			);
