@@ -1,1 +1,8 @@
 .fvm/flutter_sdk
+.DS_Store
+*.pbxproj
+*.xcuserstate
+mobile/evidence/ios/Evidence/Evidence.xcodeproj/project.pbxproj
+mobile/evidence/ios/Evidence/Evidence.xcodeproj/xcuserdata/meunomeecris.xcuserdatad/xcschemes/xcschememanagement.plist
+mobile/evidence/ios/Evidence/Evidence.xcodeproj/project.pbxproj
+*.pbxproj
