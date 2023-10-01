@@ -6,44 +6,63 @@
 //
 
 import SwiftUI
+import CachedAsyncImage //Package Dependencies
 
 
 struct AvatarView: View {
-    var imageAvatar: String?
-
+    let urlImage = URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE")
+    
     var body: some View {
-                if let image = imageAvatar {
-                    Image(image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(80 / 2)
-                        .overlay {
-                            Circle()
-                                .stroke(Color.gray, lineWidth: 3)
-                                .frame(width: 80, height: 80)
-                        }
-                } else {
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 70, height: 70)
-                        .foregroundColor(.gray)
-                        .cornerRadius(80/2)
-                        .overlay {
-                            Circle()
-                                .stroke(Color.gray, lineWidth: 3)
-                                .frame(width: 80, height: 80)
-                        }
-                }
+        CachedAsyncImage(url: urlImage) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+                    .frame(width: 43, height: 43)
+            case .success(let image):
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 43, height: 43)
+                    .foregroundColor(.gray)
+                    .cornerRadius(43/2)
+                    .overlay {
+                        Circle()
+                            .stroke(Color.gray, lineWidth: 3)
+                            .frame(width: 50, height: 50)
+                    }
+            case .failure(_):
+                SystemImageView(systemImage: "exclamationmark.circle.fill")
+            @unknown default:
+                SystemImageView(systemImage: "person.circle.fill")
+            }
+        }
     }
-
 }
 
+struct SystemImageView: View {
+    let sizeImage: CGFloat = 43
+    let sizeCircle: CGFloat = 50
+    var systemImage: String
+    
+    var body: some View {
+        Image(systemName: systemImage )
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: sizeImage, height: sizeImage)
+            .foregroundColor(.gray)
+            .cornerRadius(sizeImage/2)
+            .overlay {
+                Circle()
+                    .stroke(Color.gray, lineWidth: 3)
+                    .frame(width: sizeCircle, height: sizeCircle)
+            }
+    }
+}
 
 struct AvatarView_Previews: PreviewProvider {
     static var previews: some View {
         AvatarView()
-        AvatarView(imageAvatar: "avatar")
+        SystemImageView(systemImage: "person.circle.fill")
     }
 }
+

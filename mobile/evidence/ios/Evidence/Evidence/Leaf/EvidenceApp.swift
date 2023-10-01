@@ -11,7 +11,7 @@ import SwiftUI
 struct EvidenceApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AvatarView()
         }
     }
 }
