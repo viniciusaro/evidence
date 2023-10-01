@@ -11,7 +11,7 @@ import SwiftUI
 struct EvidenceApp: App {
     var body: some Scene {
         WindowGroup {
-            AvatarView()
+            AvatarView(urlImage: URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE"))
         }
     }
 }

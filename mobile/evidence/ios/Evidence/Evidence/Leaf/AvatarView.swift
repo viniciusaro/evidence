@@ -10,7 +10,7 @@ import CachedAsyncImage //Package Dependencies
 
 
 struct AvatarView: View {
-    let urlImage = URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE")
+    let urlImage: URL?
     
     var body: some View {
         CachedAsyncImage(url: urlImage) { phase in
@@ -61,5 +61,5 @@ struct SystemImageView: View {
 
 
 #Preview {
-    AvatarView()
+    AvatarView(urlImage: URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE"))
 }
