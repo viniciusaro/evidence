@@ -59,10 +59,7 @@ struct SystemImageView: View {
     }
 }
 
-struct AvatarView_Previews: PreviewProvider {
-    static var previews: some View {
-        AvatarView()
-        SystemImageView(systemImage: "person.circle.fill")
-    }
-}
 
+#Preview {
+    AvatarView()
+}
