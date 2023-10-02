@@ -13,33 +13,59 @@ struct AvatarView: View {
     let urlImage: URL?
     
     var body: some View {
-        CachedAsyncImage(url: urlImage) { phase in
+        CachedAvatarImage(url: urlImage)
+    }
+}
+
+#Preview {
+    AvatarView(urlImage: URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE"))
+}
+
+//MARK: View Extraction
+
+struct CachedAvatarImage: View {
+    let url: URL?
+    
+    var body: some View {
+        CachedAsyncImage(url: url) { phase in
             switch phase {
             case .empty:
                 ProgressView()
                     .frame(width: 43, height: 43)
             case .success(let image):
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 43, height: 43)
-                    .foregroundColor(.gray)
-                    .cornerRadius(43/2)
-                    .overlay {
-                        Circle()
-                            .stroke(Color.gray, lineWidth: 3)
-                            .frame(width: 50, height: 50)
-                    }
+                SuccessImage(image: image)
             case .failure(_):
-                SystemImageView(systemImage: "exclamationmark.circle.fill")
+                ImageView(systemImage: "exclamationmark.circle.fill")
             @unknown default:
-                SystemImageView(systemImage: "person.circle.fill")
+                ImageView(systemImage: "person.circle.fill")
             }
         }
     }
 }
 
-struct SystemImageView: View {
+
+struct SuccessImage: View {
+    let sizeImage: CGFloat = 43
+    let sizeCircle: CGFloat = 50
+    let image: Image
+    
+    var body: some View {
+        image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: sizeImage, height: sizeImage)
+            .foregroundColor(.gray)
+            .cornerRadius(sizeImage/2)
+            .overlay {
+                Circle()
+                    .stroke(Color.gray, lineWidth: 3)
+                    .frame(width: sizeCircle, height: sizeCircle)
+            }
+    }
+}
+
+
+struct ImageView: View {
     let sizeImage: CGFloat = 43
     let sizeCircle: CGFloat = 50
     var systemImage: String
@@ -57,9 +83,4 @@ struct SystemImageView: View {
                     .frame(width: sizeCircle, height: sizeCircle)
             }
     }
-}
-
-
-#Preview {
-    AvatarView(urlImage: URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE"))
 }
