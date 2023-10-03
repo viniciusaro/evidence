@@ -18,7 +18,7 @@ struct AvatarView: View {
 }
 
 #Preview {
-    AvatarView(urlImage: URL(string: "https://www.parismatch.com/lmnr/var/pm/public/media/image/Kristen-Stewart_0.jpg?VersionId=Qvmz.gb9n72R2FTy.F8PVMWaL6SiLrFE"))
+    AvatarView(urlImage: URL(string: "https://shorturl.at/uyWY2"))
 }
 
 //MARK: View Extraction
@@ -58,7 +58,7 @@ struct SuccessImage: View {
             .cornerRadius(sizeImage/2)
             .overlay {
                 Circle()
-                    .stroke(Color.gray, lineWidth: 3)
+                    .stroke(Color.green, lineWidth: 3)
                     .frame(width: sizeCircle, height: sizeCircle)
             }
     }
@@ -79,7 +79,7 @@ struct ImageView: View {
             .cornerRadius(sizeImage/2)
             .overlay {
                 Circle()
-                    .stroke(Color.gray, lineWidth: 3)
+                    .stroke(Color.green, lineWidth: 3)
                     .frame(width: sizeCircle, height: sizeCircle)
             }
     }
