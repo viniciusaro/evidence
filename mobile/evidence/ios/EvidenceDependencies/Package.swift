@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "EvidenceDependencies",
     platforms: [
-        .iOS(.v13), .macOS(.v10_13)
+        .iOS(.v15), .macOS(.v10_15)
     ],
     products: [
         .library(
