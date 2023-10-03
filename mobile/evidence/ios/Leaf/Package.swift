@@ -6,19 +6,27 @@ import PackageDescription
 let package = Package(
     name: "Leaf",
     platforms: [
-        .iOS(.v13), .macOS(.v10_13)
+        .iOS(.v15), .macOS(.v10_15)
     ],
     products: [
         .library(
             name: "Leaf",
-            targets: ["Leaf"]),
+            targets: ["Leaf"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
     ],
     targets: [
         .target(
             name: "Leaf",
-            dependencies: []),
+            dependencies: [
+                .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image")
+            ]
+        ),
         .testTarget(
             name: "LeafTests",
-            dependencies: ["Leaf"]),
+            dependencies: ["Leaf"]
+        ),
     ]
 )
