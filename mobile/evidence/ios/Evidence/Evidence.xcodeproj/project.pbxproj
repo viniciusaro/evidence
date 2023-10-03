@@ -14,7 +14,7 @@
 		6395EDCF2AC39198000EB04A /* EvidenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDCE2AC39198000EB04A /* EvidenceTests.swift */; };
 		6395EDD92AC39198000EB04A /* EvidenceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDD82AC39198000EB04A /* EvidenceUITests.swift */; };
 		6395EDDB2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */; };
-		6395EDE92AC3A14A000EB04A /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 6395EDE82AC3A14A000EB04A /* .gitkeep */; };
+		63F851662ACBA4B900658273 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 63F851652ACBA4B900658273 /* Leaf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +45,7 @@
 		6395EDD42AC39198000EB04A /* EvidenceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDD82AC39198000EB04A /* EvidenceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITests.swift; sourceTree = "<group>"; };
 		6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		6395EDE82AC3A14A000EB04A /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		63F851632ACBA08800658273 /* Leaf */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Leaf; path = ../Leaf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63F851662ACBA4B900658273 /* Leaf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,10 +77,12 @@
 		6395EDB12AC39197000EB04A = {
 			isa = PBXGroup;
 			children = (
+				63F851622ACBA08800658273 /* Packages */,
 				6395EDBC2AC39197000EB04A /* Evidence */,
 				6395EDCD2AC39198000EB04A /* EvidenceTests */,
 				6395EDD72AC39198000EB04A /* EvidenceUITests */,
 				6395EDBB2AC39197000EB04A /* Products */,
+				63F851642ACBA4B900658273 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,7 +99,6 @@
 		6395EDBC2AC39197000EB04A /* Evidence */ = {
 			isa = PBXGroup;
 			children = (
-				6395EDE72AC3A131000EB04A /* Leaf */,
 				6395EDBD2AC39197000EB04A /* EvidenceApp.swift */,
 				6395EDBF2AC39197000EB04A /* ContentView.swift */,
 				6395EDC12AC39198000EB04A /* Assets.xcassets */,
@@ -130,12 +132,19 @@
 			path = EvidenceUITests;
 			sourceTree = "<group>";
 		};
-		6395EDE72AC3A131000EB04A /* Leaf */ = {
+		63F851622ACBA08800658273 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				6395EDE82AC3A14A000EB04A /* .gitkeep */,
+				63F851632ACBA08800658273 /* Leaf */,
 			);
-			path = Leaf;
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		63F851642ACBA4B900658273 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +163,9 @@
 			dependencies = (
 			);
 			name = Evidence;
+			packageProductDependencies = (
+				63F851652ACBA4B900658273 /* Leaf */,
+			);
 			productName = Evidence;
 			productReference = 6395EDBA2AC39197000EB04A /* Evidence.app */;
 			productType = "com.apple.product-type.application";
@@ -226,6 +238,8 @@
 				Base,
 			);
 			mainGroup = 6395EDB12AC39197000EB04A;
+			packageReferences = (
+			);
 			productRefGroup = 6395EDBB2AC39197000EB04A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -242,7 +256,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6395EDE92AC3A14A000EB04A /* .gitkeep in Resources */,
 				6395EDC52AC39198000EB04A /* Preview Assets.xcassets in Resources */,
 				6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */,
 			);
@@ -595,6 +608,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		63F851652ACBA4B900658273 /* Leaf */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Leaf;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6395EDB22AC39197000EB04A /* Project object */;
 }
