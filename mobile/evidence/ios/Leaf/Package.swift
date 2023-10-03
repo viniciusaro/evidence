@@ -11,14 +11,22 @@ let package = Package(
     products: [
         .library(
             name: "Leaf",
-            targets: ["Leaf"]),
+            targets: ["Leaf"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
     ],
     targets: [
         .target(
             name: "Leaf",
-            dependencies: []),
+            dependencies: [
+                .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image")
+            ]
+        ),
         .testTarget(
             name: "LeafTests",
-            dependencies: ["Leaf"]),
+            dependencies: ["Leaf"]
+        ),
     ]
 )

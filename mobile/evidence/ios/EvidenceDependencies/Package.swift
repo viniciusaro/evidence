@@ -11,7 +11,8 @@ let package = Package(
     products: [
         .library(
             name: "EvidenceDependencies",
-            targets: ["EvidenceDependencies"]),
+            targets: ["EvidenceDependencies"]
+        ),
     ],
     dependencies: [
         .package(path: "../Leaf")
@@ -19,6 +20,7 @@ let package = Package(
     targets: [
         .target(
             name: "EvidenceDependencies",
-            dependencies: ["Leaf"]),
+            dependencies: ["Leaf"]
+        ),
     ]
 )
