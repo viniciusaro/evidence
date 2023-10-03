@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6347C56B2ACC327F00F0EE01 /* EvidenceDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 6347C56A2ACC327F00F0EE01 /* EvidenceDependencies */; };
 		6395EDBE2AC39197000EB04A /* EvidenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDBD2AC39197000EB04A /* EvidenceApp.swift */; };
 		6395EDC02AC39197000EB04A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDBF2AC39197000EB04A /* ContentView.swift */; };
 		6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6395EDC12AC39198000EB04A /* Assets.xcassets */; };
@@ -14,7 +15,6 @@
 		6395EDCF2AC39198000EB04A /* EvidenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDCE2AC39198000EB04A /* EvidenceTests.swift */; };
 		6395EDD92AC39198000EB04A /* EvidenceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDD82AC39198000EB04A /* EvidenceUITests.swift */; };
 		6395EDDB2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */; };
-		6395EDE92AC3A14A000EB04A /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 6395EDE82AC3A14A000EB04A /* .gitkeep */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +45,6 @@
 		6395EDD42AC39198000EB04A /* EvidenceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDD82AC39198000EB04A /* EvidenceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITests.swift; sourceTree = "<group>"; };
 		6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		6395EDE82AC3A14A000EB04A /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6347C56B2ACC327F00F0EE01 /* EvidenceDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +80,7 @@
 				6395EDCD2AC39198000EB04A /* EvidenceTests */,
 				6395EDD72AC39198000EB04A /* EvidenceUITests */,
 				6395EDBB2AC39197000EB04A /* Products */,
+				63F851642ACBA4B900658273 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,7 +97,6 @@
 		6395EDBC2AC39197000EB04A /* Evidence */ = {
 			isa = PBXGroup;
 			children = (
-				6395EDE72AC3A131000EB04A /* Leaf */,
 				6395EDBD2AC39197000EB04A /* EvidenceApp.swift */,
 				6395EDBF2AC39197000EB04A /* ContentView.swift */,
 				6395EDC12AC39198000EB04A /* Assets.xcassets */,
@@ -130,12 +130,11 @@
 			path = EvidenceUITests;
 			sourceTree = "<group>";
 		};
-		6395EDE72AC3A131000EB04A /* Leaf */ = {
+		63F851642ACBA4B900658273 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6395EDE82AC3A14A000EB04A /* .gitkeep */,
 			);
-			path = Leaf;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +153,9 @@
 			dependencies = (
 			);
 			name = Evidence;
+			packageProductDependencies = (
+				6347C56A2ACC327F00F0EE01 /* EvidenceDependencies */,
+			);
 			productName = Evidence;
 			productReference = 6395EDBA2AC39197000EB04A /* Evidence.app */;
 			productType = "com.apple.product-type.application";
@@ -226,6 +228,8 @@
 				Base,
 			);
 			mainGroup = 6395EDB12AC39197000EB04A;
+			packageReferences = (
+			);
 			productRefGroup = 6395EDBB2AC39197000EB04A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -242,7 +246,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6395EDE92AC3A14A000EB04A /* .gitkeep in Resources */,
 				6395EDC52AC39198000EB04A /* Preview Assets.xcassets in Resources */,
 				6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */,
 			);
@@ -428,7 +431,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Evidence/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = G3TQDRB2GQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -457,7 +460,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Evidence/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = G3TQDRB2GQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -595,6 +598,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6347C56A2ACC327F00F0EE01 /* EvidenceDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EvidenceDependencies;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6395EDB22AC39197000EB04A /* Project object */;
 }
