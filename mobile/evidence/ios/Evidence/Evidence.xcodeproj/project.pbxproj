@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6347C56B2ACC327F00F0EE01 /* EvidenceDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 6347C56A2ACC327F00F0EE01 /* EvidenceDependencies */; };
 		6395EDBE2AC39197000EB04A /* EvidenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDBD2AC39197000EB04A /* EvidenceApp.swift */; };
 		6395EDC02AC39197000EB04A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDBF2AC39197000EB04A /* ContentView.swift */; };
 		6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6395EDC12AC39198000EB04A /* Assets.xcassets */; };
@@ -14,7 +15,6 @@
 		6395EDCF2AC39198000EB04A /* EvidenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDCE2AC39198000EB04A /* EvidenceTests.swift */; };
 		6395EDD92AC39198000EB04A /* EvidenceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDD82AC39198000EB04A /* EvidenceUITests.swift */; };
 		6395EDDB2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */; };
-		63F851662ACBA4B900658273 /* Leaf in Frameworks */ = {isa = PBXBuildFile; productRef = 63F851652ACBA4B900658273 /* Leaf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6347C5692ACC325100F0EE01 /* EvidenceDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = EvidenceDependencies; path = ../EvidenceDependencies; sourceTree = "<group>"; };
 		6395EDBA2AC39197000EB04A /* Evidence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Evidence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDBD2AC39197000EB04A /* EvidenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceApp.swift; sourceTree = "<group>"; };
 		6395EDBF2AC39197000EB04A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63F851662ACBA4B900658273 /* Leaf in Frameworks */,
+				6347C56B2ACC327F00F0EE01 /* EvidenceDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +136,7 @@
 		63F851622ACBA08800658273 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				6347C5692ACC325100F0EE01 /* EvidenceDependencies */,
 				63F851632ACBA08800658273 /* Leaf */,
 			);
 			name = Packages;
@@ -164,7 +166,7 @@
 			);
 			name = Evidence;
 			packageProductDependencies = (
-				63F851652ACBA4B900658273 /* Leaf */,
+				6347C56A2ACC327F00F0EE01 /* EvidenceDependencies */,
 			);
 			productName = Evidence;
 			productReference = 6395EDBA2AC39197000EB04A /* Evidence.app */;
@@ -441,7 +443,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Evidence/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = G3TQDRB2GQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -470,7 +472,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Evidence/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = G3TQDRB2GQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -610,9 +612,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		63F851652ACBA4B900658273 /* Leaf */ = {
+		6347C56A2ACC327F00F0EE01 /* EvidenceDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Leaf;
+			productName = EvidenceDependencies;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -5,6 +5,9 @@
       location = "container:Evidence/Evidence.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:EvidenceDependencies">
+   </FileRef>
+   <FileRef
       location = "group:Leaf">
    </FileRef>
 </Workspace>
