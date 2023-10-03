@@ -35,7 +35,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6347C5692ACC325100F0EE01 /* EvidenceDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = EvidenceDependencies; path = ../EvidenceDependencies; sourceTree = "<group>"; };
 		6395EDBA2AC39197000EB04A /* Evidence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Evidence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDBD2AC39197000EB04A /* EvidenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceApp.swift; sourceTree = "<group>"; };
 		6395EDBF2AC39197000EB04A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,7 +45,6 @@
 		6395EDD42AC39198000EB04A /* EvidenceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDD82AC39198000EB04A /* EvidenceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITests.swift; sourceTree = "<group>"; };
 		6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		63F851632ACBA08800658273 /* Leaf */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Leaf; path = ../Leaf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +76,6 @@
 		6395EDB12AC39197000EB04A = {
 			isa = PBXGroup;
 			children = (
-				63F851622ACBA08800658273 /* Packages */,
 				6395EDBC2AC39197000EB04A /* Evidence */,
 				6395EDCD2AC39198000EB04A /* EvidenceTests */,
 				6395EDD72AC39198000EB04A /* EvidenceUITests */,
@@ -131,15 +128,6 @@
 				6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */,
 			);
 			path = EvidenceUITests;
-			sourceTree = "<group>";
-		};
-		63F851622ACBA08800658273 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				6347C5692ACC325100F0EE01 /* EvidenceDependencies */,
-				63F851632ACBA08800658273 /* Leaf */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		63F851642ACBA4B900658273 /* Frameworks */ = {
