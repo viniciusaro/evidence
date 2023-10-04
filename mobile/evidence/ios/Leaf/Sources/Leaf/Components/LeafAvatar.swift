@@ -1,15 +1,7 @@
-//
-//  AvatarView.swift
-//  Evidence
-//
-//  Created by Cris Messias on 28/09/23.
-//
-
 import SwiftUI
-import CachedAsyncImage //Package Dependencies
+import CachedAsyncImage
 
-
-struct AvatarView: View {
+struct LeafAvatar: View {
     let urlImage: URL?
     
     var body: some View {
@@ -18,7 +10,9 @@ struct AvatarView: View {
 }
 
 #Preview {
-    AvatarView(urlImage: URL(string: "https://shorturl.at/uyWY2"))
+    LeafThemeView {
+        LeafAvatar(urlImage: URL(string: "https://shorturl.at/uyWY2"))
+    }
 }
 
 //MARK: View Extraction
@@ -48,17 +42,18 @@ struct SuccessImage: View {
     let sizeImage: CGFloat = 43
     let sizeCircle: CGFloat = 50
     let image: Image
+    @Environment(\.leafTheme) private var theme
     
     var body: some View {
         image
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: sizeImage, height: sizeImage)
-            .foregroundColor(.gray)
+            .foregroundColor(theme.color.content.secondary)
             .cornerRadius(sizeImage/2)
             .overlay {
                 Circle()
-                    .stroke(Color.green, lineWidth: 3)
+                    .stroke(theme.color.brand.primary, lineWidth: 3)
                     .frame(width: sizeCircle, height: sizeCircle)
             }
     }
@@ -69,17 +64,18 @@ struct ImageView: View {
     let sizeImage: CGFloat = 43
     let sizeCircle: CGFloat = 50
     var systemImage: String
+    @Environment(\.leafTheme) private var theme
     
     var body: some View {
         Image(systemName: systemImage )
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: sizeImage, height: sizeImage)
-            .foregroundColor(.gray)
+            .foregroundColor(theme.color.content.secondary)
             .cornerRadius(sizeImage/2)
             .overlay {
                 Circle()
-                    .stroke(Color.green, lineWidth: 3)
+                    .stroke(theme.color.brand.primary, lineWidth: 3)
                     .frame(width: sizeCircle, height: sizeCircle)
             }
     }
