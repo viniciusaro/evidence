@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import Leaf
 
 @main
 struct EvidenceApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LeafThemeView {
+                ContentView()
+            }
         }
     }
 }
