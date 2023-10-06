@@ -10,7 +10,9 @@ import Leaf
 
 struct ContentView: View {
     var body: some View {
-        LeafView()
+        Button("Evidence") {
+            
+        }.buttonStyle(LeafPrimaryButtonStyle())
     }
 }
 
