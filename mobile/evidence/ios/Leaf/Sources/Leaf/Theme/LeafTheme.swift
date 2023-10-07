@@ -21,7 +21,6 @@ extension LeafTheme {
         let primary: SwiftUI.Color
         let secondary: SwiftUI.Color
         let tertiary: SwiftUI.Color
-        let quaternary: SwiftUI.Color
     }
 }
 
@@ -30,7 +29,6 @@ extension LeafTheme {
         let title: SwiftUI.Font
         let titleLarge: SwiftUI.Font
         let titleXLarge: SwiftUI.Font
-        let subtitle: SwiftUI.Font
         let body: SwiftUI.Font
         let label: SwiftUI.Font
     }

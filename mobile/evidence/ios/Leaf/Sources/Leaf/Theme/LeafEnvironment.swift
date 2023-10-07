@@ -20,16 +20,14 @@ public let defaultLeafTheme = LeafTheme(
         ),
         content: LeafTheme.ContentColor(
             primary: .black,
-            secondary: Color(red:72/255, green: 72/255, blue: 74/255),
-            tertiary: .gray,
-            quaternary: .green
+            secondary: .gray,
+            tertiary: .green
         )
     ),
     font: LeafTheme.Font(
         title: .title2,
         titleLarge: .title,
         titleXLarge: .largeTitle,
-        subtitle: .headline,
         body: .body,
         label: .caption
     )
@@ -43,17 +41,15 @@ public let darkLeafTheme = LeafTheme(
             tertiary: .black
         ),
         content: LeafTheme.ContentColor(
-            primary: .white,
+            primary: .black,
             secondary: .gray,
-            tertiary: .gray,
-            quaternary: .green
+            tertiary: .green
         )
     ),
     font: LeafTheme.Font(
         title: .title2,
         titleLarge: .title,
         titleXLarge: .largeTitle,
-        subtitle: .headline,
         body: .body,
         label: .caption
     )
