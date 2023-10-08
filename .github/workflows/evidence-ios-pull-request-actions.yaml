@@ -1,0 +1,12 @@
+name: evidence_ios_pull_request_actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [pull_request]
+jobs:
+  validate-unit-tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Leaf tests
+        run: swift test
+        working-directory: mobile/evidence/ios/Leaf
+
