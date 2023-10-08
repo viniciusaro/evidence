@@ -1,6 +1,6 @@
 name: evidence_ios_pull_request_actions
 run-name: ${{ github.actor }} is learning GitHub Actions
-on: [pull_request]
+on: [push]
 jobs:
   validate-unit-tests:
     runs-on: macos-latest
