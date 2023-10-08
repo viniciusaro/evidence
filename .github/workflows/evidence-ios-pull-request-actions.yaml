@@ -1,5 +1,5 @@
 name: evidence_ios_pull_request_actions
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} is running pull request actions
 on: [push]
 jobs:
   validate-unit-tests:
@@ -9,4 +9,6 @@ jobs:
       - name: Run Leaf tests
         run: swift test
         working-directory: mobile/evidence/ios/Leaf
+        with:
+            xcode-version: '15.0'
 
