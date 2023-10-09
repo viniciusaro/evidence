@@ -20,5 +20,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run Leaf tests
-        run: swift test
-        working-directory: mobile/evidence/ios/Leaf
+        uses: sersoft-gmbh/xcodebuild-action@v3
+        with:
+          spm-package: 'mobile/evidence/ios/Leaf'
+          scheme: LeafScheme
+          destination: platform=iOS
+          action: test
