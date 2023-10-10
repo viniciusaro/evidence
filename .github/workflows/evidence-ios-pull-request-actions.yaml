@@ -15,8 +15,6 @@ jobs:
           xcode-version: '15.0'
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Print xcodebuild version
-        run: xcodebuild -version
       - name: Run Leaf tests
         run: xcodebuild \
           -workspace Evidence.xcworkspace \
@@ -24,4 +22,4 @@ jobs:
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
           test
-        working-directory: mobile/evidence/ios/Leaf
+        working-directory: mobile/evidence/ios
