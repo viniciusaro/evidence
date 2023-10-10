@@ -15,7 +15,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image", from: "2.1.1"),
+        .package(
+            url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image",
+            from: "2.1.1"
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-snapshot-testing",
+            from: "1.12.0"
+        ),
     ],
     targets: [
         .target(
@@ -26,7 +33,10 @@ let package = Package(
         ),
         .testTarget(
             name: "LeafTests",
-            dependencies: ["Leaf"]
+            dependencies: [
+                "Leaf",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ]
         ),
     ]
 )
