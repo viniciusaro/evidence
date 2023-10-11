@@ -7,65 +7,92 @@
 
 import SwiftUI
 
+//MARK: - TitleModifier
+
 private struct LeafText: View {
     var body: some View {
-        Text("Evidence")
-            .subtitle()
-        Text("Who come first: the egg or the chicken?")
-            .title()
-        Text("The egg, sure!")
-            .body()
-        Text("1 like")
-            .label()
-        
+        Text("Cris rocks")
+            
     }
 }
-
 #Preview {
     LeafText()
 }
 
-//MARK: - TitleModifier
-public extension Text {
-    func title() -> some View {
-        @Environment(\.leafTheme)  var theme
-        return self
+
+extension Text {
+    func customTextStyle() -> some View {
+        self
+            .font(.title) // Modify the font size and style
+            .foregroundColor(.blue) // Modify the text color
+            .padding() // Add padding to the text
+    }
+}
+
+public struct TitleModifier: ViewModifier {
+    @Environment(\.leafTheme) private var theme
+    public func body(content: Content) -> some View {
+        content
             .font(theme.font.titleLarge)
             .bold()
             .lineSpacing(theme.size.lineSpacingTitle)
             .foregroundStyle(theme.color.content.primary)
+
+    }
+}
+public extension View {
+    func titleModifier() -> some View {
+        self.modifier(TitleModifier())
     }
 }
 
-
 //MARK: - SubtitleModifier
-public extension Text {
-    func subtitle() -> some View {
-        @Environment(\.leafTheme)  var theme
-        return self
+
+public struct SubtitleModifier: ViewModifier {
+    @Environment(\.leafTheme) private var theme
+    public func body(content: Content) -> some View {
+        content
             .font(theme.font.subtitle)
             .bold()
             .foregroundStyle(theme.color.content.secondary)
+        
+    }
+}
+public extension View {
+    func subtitleModifier() -> some View {
+        self.modifier(SubtitleModifier())
     }
 }
 
 //MARK: - BodyModifier
-public extension Text {
-    func body() -> some View {
-        @Environment(\.leafTheme)  var theme
-        return self
+
+public struct BodyModifier: ViewModifier {
+    @Environment(\.leafTheme) private var theme
+    public func body(content: Content) -> some View {
+        content
             .font(theme.font.body)
             .foregroundStyle(theme.color.content.secondary)
     }
 }
+public extension View {
+    func bodyModifier() -> some View {
+        self.modifier(BodyModifier())
+    }
+}
 
 //MARK: - LabelModifier
-public extension Text {
-    func label() -> some View {
-        @Environment(\.leafTheme)  var theme
-        return self
+
+public struct LabelModifier: ViewModifier {
+    @Environment(\.leafTheme) private var theme
+    public func body(content: Content) -> some View {
+        content
             .font(theme.font.label)
             .bold()
             .foregroundStyle(theme.color.content.tertiary)
+    }
+}
+public extension View {
+    func labelModifier() -> some View {
+        self.modifier(LabelModifier())
     }
 }
