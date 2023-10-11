@@ -32,6 +32,10 @@ public let defaultLeafTheme = LeafTheme(
         subtitle: .headline,
         body: .body,
         label: .caption
+    ), 
+    size: LeafTheme.Size(
+        lineSpacingTitle: 0.2
+
     )
 )
 
@@ -56,5 +60,9 @@ public let darkLeafTheme = LeafTheme(
         subtitle: .headline,
         body: .body,
         label: .caption
+    ), 
+    size: LeafTheme.Size(
+        lineSpacingTitle: 0.2
     )
 )
+

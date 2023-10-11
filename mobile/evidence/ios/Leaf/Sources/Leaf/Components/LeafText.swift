@@ -9,13 +9,33 @@ import SwiftUI
 
 //MARK: - TitleModifier
 
+private struct LeafText: View {
+    var body: some View {
+        Text("Cris rocks")
+            
+    }
+}
+#Preview {
+    LeafText()
+}
+
+
+extension Text {
+    func customTextStyle() -> some View {
+        self
+            .font(.title) // Modify the font size and style
+            .foregroundColor(.blue) // Modify the text color
+            .padding() // Add padding to the text
+    }
+}
+
 public struct TitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
             .font(theme.font.titleLarge)
             .bold()
-            .lineSpacing(0.2)
+            .lineSpacing(theme.size.lineSpacingTitle)
             .foregroundStyle(theme.color.content.primary)
 
     }

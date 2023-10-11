@@ -3,6 +3,7 @@ import SwiftUI
 public struct LeafTheme {
     public let color: Color
     public let font: Font
+    public let size: Size
 }
 
 extension LeafTheme {
@@ -33,5 +34,11 @@ extension LeafTheme {
         let subtitle: SwiftUI.Font
         let body: SwiftUI.Font
         let label: SwiftUI.Font
+    }
+}
+
+extension LeafTheme {
+    public struct Size {
+        let lineSpacingTitle: SwiftUI.CGFloat
     }
 }
