@@ -7,29 +7,24 @@
 
 import SwiftUI
 
-//MARK: - TitleModifier
-
 private struct LeafText: View {
     var body: some View {
-        Text("Cris rocks")
-            
+        Text("1 like")
+            .label()
+        Text("How came first, the egg or the chicken?")
+            .title()
+        Text("The chicken, sure!")
+            .subtitle()
+        Text("Evidence")
+            .body()
     }
 }
 #Preview {
     LeafText()
 }
 
-
-extension Text {
-    func customTextStyle() -> some View {
-        self
-            .font(.title) // Modify the font size and style
-            .foregroundColor(.blue) // Modify the text color
-            .padding() // Add padding to the text
-    }
-}
-
-public struct TitleModifier: ViewModifier {
+//MARK: -TitleModifier
+public struct LeafTitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
@@ -40,15 +35,14 @@ public struct TitleModifier: ViewModifier {
 
     }
 }
-public extension View {
-    func titleModifier() -> some View {
-        self.modifier(TitleModifier())
+public extension Text {
+    func title() -> some View {
+        self.modifier(LeafTitleModifier())
     }
 }
 
 //MARK: - SubtitleModifier
-
-public struct SubtitleModifier: ViewModifier {
+public struct LeafSubtitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
@@ -58,15 +52,14 @@ public struct SubtitleModifier: ViewModifier {
         
     }
 }
-public extension View {
-    func subtitleModifier() -> some View {
-        self.modifier(SubtitleModifier())
+public extension Text {
+    func subtitle() -> some View {
+        self.modifier(LeafSubtitleModifier())
     }
 }
 
 //MARK: - BodyModifier
-
-public struct BodyModifier: ViewModifier {
+public struct LeafBodyModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
@@ -74,15 +67,14 @@ public struct BodyModifier: ViewModifier {
             .foregroundStyle(theme.color.content.secondary)
     }
 }
-public extension View {
-    func bodyModifier() -> some View {
-        self.modifier(BodyModifier())
+public extension Text {
+    func body() -> some View {
+        self.modifier(LeafBodyModifier())
     }
 }
 
 //MARK: - LabelModifier
-
-public struct LabelModifier: ViewModifier {
+public struct LeafLabelModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
@@ -91,8 +83,8 @@ public struct LabelModifier: ViewModifier {
             .foregroundStyle(theme.color.content.tertiary)
     }
 }
-public extension View {
-    func labelModifier() -> some View {
-        self.modifier(LabelModifier())
+public extension Text {
+    func label() -> some View {
+        self.modifier(LeafLabelModifier())
     }
 }
