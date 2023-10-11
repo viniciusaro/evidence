@@ -20,7 +20,9 @@ private struct LeafText: View {
     }
 }
 #Preview {
-    LeafText()
+    LeafThemeView {
+        LeafText()
+    }
 }
 
 //MARK: -TitleModifier
