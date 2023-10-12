@@ -9,14 +9,14 @@ import SwiftUI
 
 private struct LeafText: View {
     var body: some View {
-        Text("1 like")
-            .label()
+        Text("Evidence")
+            .body()
         Text("How came first, the egg or the chicken?")
             .title()
         Text("The chicken, sure!")
             .subtitle()
-        Text("Evidence")
-            .body()
+        Text("1 like")
+            .label()
     }
 }
 #Preview {
