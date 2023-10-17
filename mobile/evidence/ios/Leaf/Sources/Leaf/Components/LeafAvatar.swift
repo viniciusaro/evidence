@@ -1,82 +1,47 @@
 import SwiftUI
 import CachedAsyncImage
 
-struct LeafAvatar: View {
-    let urlImage: URL?
+public struct LeafAvatar: View {
+    private let url: URL
+    @Environment(\.leafAvatarStyle) private var style
     
-    var body: some View {
-        CachedAvatarImage(url: urlImage)
+    public init(url: URL) {
+        self.url = url
+    }
+    
+    public var body: some View {
+        let configuration = LeafAvatarConfiguration(avatar: AnyView(
+            CachedAsyncImage(url: url) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                case .success(let image):
+                    image
+                        .resizable()
+                case .failure(_):
+                    Image(systemName: "exclamationmark.circle.fill")
+                        .resizable()
+                @unknown default:
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                }
+            }
+        ))
+        
+        AnyView(style.makeBody(configuration: configuration))
     }
 }
 
 #Preview {
-    LeafThemeView {
-        LeafAvatar(urlImage: URL(string: "https://shorturl.at/uyWY2"))
-    }
-}
-
-//MARK: View Extraction
-
-struct CachedAvatarImage: View {
-    let url: URL?
+    let url1 = "https://pbs.twimg.com/profile_images/1694966619875708928/rbZorQR2_400x400.jpg"
+    let url2 = "https://pbs.twimg.com/profile_images/1584303098687885312/SljBjw26_400x400.jpg"
     
-    var body: some View {
-        CachedAsyncImage(url: url) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-                    .frame(width: 43, height: 43)
-            case .success(let image):
-                SuccessImage(image: image)
-            case .failure(_):
-                ImageView(systemImage: "exclamationmark.circle.fill")
-            @unknown default:
-                ImageView(systemImage: "person.circle.fill")
-            }
+    return LeafThemeView {
+        HStack {
+            LeafAvatar(url: URL(string: url1)!)
+                .avatarStyle(.evident)
+            LeafAvatar(url: URL(string: url2)!)
+                .avatarStyle(.automatic)
         }
-    }
-}
-
-
-struct SuccessImage: View {
-    let sizeImage: CGFloat = 43
-    let sizeCircle: CGFloat = 50
-    let image: Image
-    @Environment(\.leafTheme) private var theme
-    
-    var body: some View {
-        image
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: sizeImage, height: sizeImage)
-            .foregroundColor(theme.color.content.secondary)
-            .cornerRadius(sizeImage/2)
-            .overlay {
-                Circle()
-                    .stroke(theme.color.brand.primary, lineWidth: 3)
-                    .frame(width: sizeCircle, height: sizeCircle)
-            }
-    }
-}
-
-
-struct ImageView: View {
-    let sizeImage: CGFloat = 43
-    let sizeCircle: CGFloat = 50
-    var systemImage: String
-    @Environment(\.leafTheme) private var theme
-    
-    var body: some View {
-        Image(systemName: systemImage )
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: sizeImage, height: sizeImage)
-            .foregroundColor(theme.color.content.secondary)
-            .cornerRadius(sizeImage/2)
-            .overlay {
-                Circle()
-                    .stroke(theme.color.brand.primary, lineWidth: 3)
-                    .frame(width: sizeCircle, height: sizeCircle)
-            }
     }
 }
