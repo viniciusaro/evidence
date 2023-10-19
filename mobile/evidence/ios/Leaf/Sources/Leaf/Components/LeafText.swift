@@ -17,7 +17,7 @@ private struct LeafText: View {
             .subtitle()
         Text("1 like")
             .label()
-    }
+    }	
 }
 #Preview {
     LeafThemeView {

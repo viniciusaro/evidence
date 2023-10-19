@@ -23,6 +23,12 @@ public let defaultLeafTheme = LeafTheme(
             secondary: Color(red:72/255, green: 72/255, blue: 74/255),
             tertiary: .gray,
             quaternary: .green
+        ),
+        auxiliar: LeafTheme.AuxiliarColor(
+            auxiliar: Color(red:29/255, green: 111/255, blue: 171/255),
+            success: .green,
+            error: Color(red:249/255, green: 100/255, blue: 90/255),
+            disabled: Color(red:121/255, green: 128/255, blue: 117/255)
         )
     ),
     font: LeafTheme.Font(
@@ -51,6 +57,12 @@ public let darkLeafTheme = LeafTheme(
             secondary: .gray,
             tertiary: .gray,
             quaternary: .green
+        ),
+        auxiliar: LeafTheme.AuxiliarColor(
+            auxiliar: Color(red:8/255, green: 130/255, blue: 220/255),
+            success: .green,
+            error: Color(red:249/255, green: 100/255, blue: 90/255),
+            disabled: Color(red:121/255, green: 128/255, blue: 117/255)
         )
     ),
     font: LeafTheme.Font(
