@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LeafTag: View {
     private let text: String
-    private var status: StatusTag
+    private let status: StatusTag
     
     init(_ text: String, status: StatusTag) {
         self.text = text
