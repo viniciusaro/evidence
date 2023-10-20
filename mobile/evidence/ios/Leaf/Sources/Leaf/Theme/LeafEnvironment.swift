@@ -23,6 +23,12 @@ public let defaultLeafTheme = LeafTheme(
             secondary: Color(red:72/255, green: 72/255, blue: 74/255),
             tertiary: .gray,
             quaternary: .green
+        ),
+        tag: LeafTheme.TagColor(
+            open: Color(red:3/255, green: 129/255, blue: 220/255),
+            accepted: .green,
+            rejected: Color(red:249/255, green: 100/255, blue: 90/255),
+            closed: Color(red:121/255, green: 128/255, blue: 117/255)
         )
     ),
     font: LeafTheme.Font(
@@ -51,6 +57,12 @@ public let darkLeafTheme = LeafTheme(
             secondary: .gray,
             tertiary: .gray,
             quaternary: .green
+        ),
+        tag: LeafTheme.TagColor(
+            open: Color(red:74/255, green: 179/255, blue: 255/255),
+            accepted: Color(red:68/255, green: 177/255, blue: 16/255),
+            rejected: Color(red:249/255, green: 100/255, blue: 90/255),
+            closed: Color(red:162/255, green: 168/255, blue: 159/255)
         )
     ),
     font: LeafTheme.Font(

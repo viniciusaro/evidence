@@ -10,6 +10,7 @@ extension LeafTheme {
     public struct Color {
         public let brand: BrandColor
         public let content: ContentColor
+        public let tag: TagColor
     }
     
     public struct BrandColor {
@@ -23,6 +24,13 @@ extension LeafTheme {
         let secondary: SwiftUI.Color
         let tertiary: SwiftUI.Color
         let quaternary: SwiftUI.Color
+    }
+    
+    public struct TagColor {
+        let open: SwiftUI.Color
+        let accepted: SwiftUI.Color
+        let rejected: SwiftUI.Color
+        let closed: SwiftUI.Color
     }
 }
 
