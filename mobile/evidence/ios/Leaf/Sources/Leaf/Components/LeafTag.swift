@@ -21,45 +21,35 @@ struct LeafTag: View {
     var body: some View {
         VStack {
             switch status {
-            case .auxiliar:
+            case .open:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.auxiliar.auxiliar)
-                    .background(theme.color.auxiliar.auxiliar.opacity(0.1))
-            case .disabled:
+                    .foregroundColor(theme.color.tag.open)
+                    .background(theme.color.tag.open.opacity(0.1))
+            case .accepted:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.auxiliar.disabled)
-                    .background(theme.color.auxiliar.disabled.opacity(0.1))
-            case .success:
+                    .foregroundColor(theme.color.tag.accepted)
+                    .background(theme.color.tag.accepted.opacity(0.1))
+            case .rejected:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.auxiliar.success)
-                    .background(theme.color.auxiliar.success.opacity(0.1))
-            case .error:
+                    .foregroundColor(theme.color.tag.rejected)
+                    .background(theme.color.tag.rejected.opacity(0.1))
+            case .closed:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.auxiliar.error)
-                    .background(theme.color.auxiliar.error.opacity(0.1))
+                    .foregroundColor(theme.color.tag.closed)
+                    .background(theme.color.tag.closed.opacity(0.1))
             }
         }
         .cornerRadius(20)
     }
 }
 
-#Preview(body: {
-    VStack{
-        LeafTag("open", status: .auxiliar)
-        LeafTag("accepted", status: .success)
-        LeafTag("rejected", status: .error)
-        LeafTag("closed", status: .disabled)
-    }
-})
-
-
 ///
-enum StatusTag: CaseIterable {
-    case success, error, auxiliar, disabled
+enum StatusTag {
+    case open, accepted, rejected, closed
 }
 
 ///
@@ -70,5 +60,15 @@ extension Text {
             .font(.callout)
             .bold()
             .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+    }
+}
+
+///
+#Preview {
+    VStack{
+        LeafTag("open", status: .open)
+        LeafTag("accepted", status: .accepted)
+        LeafTag("rejected", status: .rejected)
+        LeafTag("closed", status: .closed)
     }
 }
