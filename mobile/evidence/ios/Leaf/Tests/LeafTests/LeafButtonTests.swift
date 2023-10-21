@@ -1,11 +1,11 @@
-import XCTest
-import SwiftUI
 import SnapshotTesting
+import SwiftUI
+import XCTest
 
 @testable import Leaf
 
 final class LeafButtonTests: XCTestCase {
-    func testStylePrimary() throws {
+    func testStylePrimary() {
         let sut = LeafThemeView {
             Button("Evidence") {}.buttonStyle(LeafPrimaryButtonStyle())
         }

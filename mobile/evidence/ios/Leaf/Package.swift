@@ -16,19 +16,19 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/lorenzofiamingo/swiftui-cached-async-image",
-            from: "2.1.1"
-        ),
-        .package(
             url: "https://github.com/pointfreeco/swift-snapshot-testing",
             from: "1.12.0"
         ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-dependencies",
+            from: "1.0.0"
+        )
     ],
     targets: [
         .target(
             name: "Leaf",
             dependencies: [
-                .product(name: "CachedAsyncImage", package: "swiftui-cached-async-image")
+                .product(name: "Dependencies", package: "swift-dependencies")
             ]
         ),
         .testTarget(
@@ -36,6 +36,7 @@ let package = Package(
             dependencies: [
                 "Leaf",
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "Dependencies", package: "swift-dependencies")
             ]
         ),
     ]
