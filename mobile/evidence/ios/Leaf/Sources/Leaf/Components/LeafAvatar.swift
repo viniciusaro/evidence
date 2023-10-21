@@ -1,5 +1,4 @@
 import SwiftUI
-import CachedAsyncImage
 
 public struct LeafAvatar: View {
     private let url: URL
@@ -11,36 +10,27 @@ public struct LeafAvatar: View {
     
     public var body: some View {
         let configuration = LeafAvatarConfiguration(avatar: AnyView(
-            CachedAsyncImage(url: url) { phase in
-                switch phase {
-                case .empty:
+            LeafAsyncImage(url: url) { status in
+                switch status {
+                case .loading:
                     ProgressView()
-                case .success(let image):
-                    image
-                        .resizable()
-                case .failure(_):
-                    Image(systemName: "exclamationmark.circle.fill")
-                        .resizable()
-                @unknown default:
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
+                case .loaded(let image):
+                    image.resizable()
+                case .error(_):
+                    Image(systemName: "exclamationmark.circle.fill").resizable()
                 }
             }
         ))
-        
         AnyView(style.makeBody(configuration: configuration))
     }
 }
 
 #Preview {
-    let url1 = "https://pbs.twimg.com/profile_images/1694966619875708928/rbZorQR2_400x400.jpg"
-    let url2 = "https://pbs.twimg.com/profile_images/1584303098687885312/SljBjw26_400x400.jpg"
-    
-    return LeafThemeView {
+    LeafThemeView {
         HStack {
-            LeafAvatar(url: URL(string: url1)!)
+            LeafAvatar(url: URL.documentsDirectory)
                 .avatarStyle(.evident)
-            LeafAvatar(url: URL(string: url2)!)
+            LeafAvatar(url: URL.documentsDirectory)
                 .avatarStyle(.automatic)
         }
     }
