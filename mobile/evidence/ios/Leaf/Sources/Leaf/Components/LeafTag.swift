@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct LeafTag: View {
+public struct LeafTag: View {
     private let text: String
     private let status: StatusTag
     
-    init(_ text: String, status: StatusTag) {
+    public init(_ text: String, status: StatusTag) {
         self.text = text
         self.status = status
     }
     
     @Environment(\.leafTheme) private var theme
     
-    var body: some View {
+    public var body: some View {
         VStack {
             switch status {
             case .open:
@@ -48,7 +48,7 @@ struct LeafTag: View {
 }
 
 ///
-enum StatusTag {
+public enum StatusTag {
     case open, accepted, rejected, closed
 }
 
@@ -57,9 +57,9 @@ extension Text {
     func tagStyle() -> some View {
         self
             .textCase(.uppercase)
-            .font(.callout)
+            .font(.footnote)
             .bold()
-            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+            .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
     }
 }
 
