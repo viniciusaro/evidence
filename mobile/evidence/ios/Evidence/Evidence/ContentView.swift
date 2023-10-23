@@ -4,13 +4,19 @@ import Leaf
 struct ContentView: View {
     var body: some View {
             VStack(alignment: .leading) {
-                VStack(alignment:.leading) {
-                    Text("kstewart")
-                        .subtitle()
-                        .padding(.bottom, 1)
-                    Text("76 answers - 100 views")
-                        .label()
-                        .padding(.bottom)
+                HStack(alignment: .top) {
+                    LeafAvatar(url: URL.documentsDirectory)
+                        .avatarStyle(.automatic)
+                    VStack(alignment:.leading) {
+                        Text("kstewart")
+                            .subtitle()
+                            .padding(.bottom, 1)
+                        Text("76 answers - 100 views")
+                            .label()
+                            .padding(.bottom)
+                    }
+                    Spacer()
+                    LeafTag("Open", status: .accepted)
                 }
                 Text("If you were to start over, would you choose SwiftUI or UIKit? ")
                     .title()
