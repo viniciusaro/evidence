@@ -10,4 +10,7 @@
    <FileRef
       location = "group:Leaf">
    </FileRef>
+   <FileRef
+      location = "group:Features">
+   </FileRef>
 </Workspace>
