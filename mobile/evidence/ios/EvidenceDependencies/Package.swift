@@ -15,12 +15,16 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../Leaf")
+        .package(path: "../Leaf"),
+        .package(path: "../Features"),
     ],
     targets: [
         .target(
             name: "EvidenceDependencies",
-            dependencies: ["Leaf"]
+            dependencies: [
+                "Leaf",
+                .product(name: "Chat", package: "Features"),
+            ]
         ),
     ]
 )
