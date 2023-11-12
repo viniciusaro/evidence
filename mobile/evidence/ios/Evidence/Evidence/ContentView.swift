@@ -15,8 +15,7 @@ struct ContentView: View {
                         Message.mac,
                         Message.link,
                     ]
-                ),
-                urlPreviewClient: .live
+                )
             )
         )
     }

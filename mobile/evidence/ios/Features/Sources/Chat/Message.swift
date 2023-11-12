@@ -1,4 +1,5 @@
 import Combine
+import Dependencies
 import Models
 import SwiftUI
 
@@ -6,21 +7,20 @@ class MessageViewModel: ObservableObject, Identifiable {
     @Published private(set) var loading: Bool
     @Published private(set) var message: Message
     @Published private(set) var preview: Preview?
+    @Dependency(\.urlPreviewClient) var urlPreviewClient
     
     var id: UUID { self.message.id }
     private var previewCancellable: AnyCancellable?
-    private let urlPreviewClient: URLPreviewClient
     
     struct Preview: Equatable {
         let image: URL
         let title: String
     }
     
-    init(message: Message, urlPreviewClient: URLPreviewClient, loading: Bool = false, preview: Preview? = nil) {
+    init(message: Message, loading: Bool = false, preview: Preview? = nil) {
         self.message = message
         self.loading = loading
         self.preview = preview
-        self.urlPreviewClient = urlPreviewClient
     }
     
     func onLoad() {

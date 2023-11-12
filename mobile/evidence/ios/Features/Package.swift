@@ -16,10 +16,19 @@ let package = Package(
             name: "Models",
             targets: ["Models"]),
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/pointfreeco/swift-dependencies",
+            from: "1.0.0"
+        )
+    ],
     targets: [
         .target(
             name: "Chat",
-            dependencies: ["Models"]),
+            dependencies: [
+                "Models",
+                .product(name: "Dependencies", package: "swift-dependencies")
+            ]),
         .testTarget(
             name: "ChatTests",
             dependencies: ["Chat", "Models"]),
