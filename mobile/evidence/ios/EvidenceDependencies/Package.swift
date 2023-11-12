@@ -24,6 +24,7 @@ let package = Package(
             dependencies: [
                 "Leaf",
                 .product(name: "Chat", package: "Features"),
+                .product(name: "Profile", package: "Features"),
             ]
         ),
     ]
