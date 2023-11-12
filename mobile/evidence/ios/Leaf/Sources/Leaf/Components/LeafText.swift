@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-private struct LeafText: View {
-    var body: some View {
+public struct LeafText: View {
+    public var body: some View {
         Text("Evidence")
             .body()
         Text("How came first, the egg or the chicken?")
