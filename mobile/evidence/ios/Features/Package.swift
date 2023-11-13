@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Features",
     platforms: [
-        .iOS(.v16), .macOS(.v12)
+        .iOS(.v16), .macOS(.v13)
     ],
     
     products: [
@@ -24,11 +24,19 @@ let package = Package(
     dependencies: [
         .package(path: "/Users/meunomeecris/Downloads/Developer/evidence/mobile/evidence/ios/Leaf"),
     ],
-    
+    dependencies: [
+        .package(
+            url: "https://github.com/pointfreeco/swift-dependencies",
+            from: "1.0.0"
+        )
+    ],
     targets: [
         .target(
             name: "Chat",
-            dependencies: ["Models"]),
+            dependencies: [
+                "Models",
+                .product(name: "Dependencies", package: "swift-dependencies")
+            ]),
         .testTarget(
             name: "ChatTests",
             dependencies: ["Chat", "Models"]),

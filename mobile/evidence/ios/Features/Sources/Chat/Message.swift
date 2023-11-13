@@ -1,4 +1,5 @@
 import Combine
+import Dependencies
 import Models
 import SwiftUI
 
@@ -6,11 +7,12 @@ class MessageViewModel: ObservableObject, Identifiable {
     @Published private(set) var loading: Bool
     @Published private(set) var message: Message
     @Published private(set) var preview: Preview?
+    @Dependency(\.urlPreviewClient) var urlPreviewClient
     
     var id: UUID { self.message.id }
     private var previewCancellable: AnyCancellable?
     
-    struct Preview {
+    struct Preview: Equatable {
         let image: URL
         let title: String
     }
@@ -27,11 +29,12 @@ class MessageViewModel: ObservableObject, Identifiable {
             self.preview == nil else { return }
         
         self.loading = true
-        self.previewCancellable = requestPreview(url: url)
+        self.previewCancellable = self.urlPreviewClient.get(url)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                self?.preview = $0
                 self?.loading = false
+                guard let (image, title) = $0 else { return }
+                self?.preview = MessageViewModel.Preview(image: image, title: title)
             }
     }
 }
@@ -70,38 +73,5 @@ struct MessageView: View {
             }
         }
         .task { self.model.onLoad() }
-    }
-}
-
-func requestPreview(url: URL) -> AnyPublisher<MessageViewModel.Preview?, Never> {
-    var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
-    request.allHTTPHeaderFields = [
-        "cookie": "ilo0=false",
-    ]
-    return URLSession.shared.dataTaskPublisher(for: request)
-        .map { data, _ in data }
-        .map { String(decoding: $0, as: UTF8.self) }
-        .map { string in
-            guard
-                let imageUrlString = string.findMetaProperty("image"),
-                let image = URL(string: String(imageUrlString)),
-                let title = string.findMetaProperty("title") else {
-                return nil
-            }
-            return MessageViewModel.Preview(image: image, title: title)
-        }
-        .replaceError(with: nil)
-        .eraseToAnyPublisher()
-}
-
-extension String {
-    func findMetaProperty(_ property: String) -> String? {
-        guard
-            let regex = try? Regex("property=\"og:\(property)\" content=\"(.*?)\""),
-            let urlStringMatch = try? regex.firstMatch(in: self),
-            let urlString = urlStringMatch.output[1].substring else {
-                return nil
-            }
-        return String(urlString)
     }
 }
