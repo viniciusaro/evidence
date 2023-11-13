@@ -4,13 +4,8 @@ import Models
 public class ChatViewModel: ObservableObject {
     @Published private(set) var messages: [MessageViewModel]
     
-    public init(chat: Chat, urlPreviewClient: URLPreviewClient) {
-        self.messages = chat.messages.map {
-            MessageViewModel(
-                message: $0,
-                urlPreviewClient: urlPreviewClient
-            )
-        }
+    public init(chat: Chat) {
+        self.messages = chat.messages.map { MessageViewModel(message: $0) }
     }
 }
 
@@ -44,8 +39,7 @@ public struct ChatView: View {
                     Message.link,
                     Message.pr(3),
                 ]
-            ),
-            urlPreviewClient: .live
+            )
         )
     )
 }

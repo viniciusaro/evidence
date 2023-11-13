@@ -1,8 +1,20 @@
 import Combine
+import Dependencies
 import Foundation
 
 public struct URLPreviewClient {
     public var get: (URL) -> AnyPublisher<(image: URL, title: String)?, Never>
+}
+
+extension URLPreviewClient: DependencyKey {
+    public static let liveValue = URLPreviewClient.live
+}
+
+extension DependencyValues {
+    var urlPreviewClient: URLPreviewClient {
+        get { self[URLPreviewClient.self] }
+        set { self[URLPreviewClient.self] = newValue }
+    }
 }
 
 public extension URLPreviewClient {
