@@ -22,9 +22,7 @@ let package = Package(
     ],
     
     dependencies: [
-        .package(path: "/Users/meunomeecris/Downloads/Developer/evidence/mobile/evidence/ios/Leaf"),
-    ],
-    dependencies: [
+        .package(path: "../Leaf"),
         .package(
             url: "https://github.com/pointfreeco/swift-dependencies",
             from: "1.0.0"
