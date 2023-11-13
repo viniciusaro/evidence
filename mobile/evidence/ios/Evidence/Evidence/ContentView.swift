@@ -47,8 +47,13 @@ struct HomeView: View {
 }
 
 struct YouView: View {
+    var model = StatusViewModel()
+    
     var body: some View {
-//        AvatarStatusView(model: StatusViewModel())
-        Text("It's coming!")
+        VStack {
+            AvatarStatusView(model: model)
+            ShowStatusView(model: model)
+            Spacer()
+        }
     }
 }

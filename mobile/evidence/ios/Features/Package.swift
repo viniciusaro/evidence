@@ -39,6 +39,6 @@ let package = Package(
             dependencies: ["Leaf", "Models"]),
         .testTarget(
             name: "ProfileTests",
-            dependencies: ["Leaf", "Models"]),
+            dependencies: ["Leaf", "Models", "Profile"]),
     ]
     )
