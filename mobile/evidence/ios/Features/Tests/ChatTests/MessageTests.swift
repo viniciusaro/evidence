@@ -1,38 +1,39 @@
 import Combine
 import Dependencies
 import XCTest
+import TestHelper
+
 @testable import Chat
 
 class MessageTests: XCTestCase {
-    func testOnLoadSuccess() async throws {
+    func testOnLoadSuccess() {
         let image = URL(string: "url")!
         let title = "title"
+        let viewModel = MessageViewModel(message: .link)
         
-        try await withDependencies {
-            $0.urlPreviewClient = .init { _ in Just((image, title)).eraseToAnyPublisher() }
-        } operation: {
-            let viewModel = MessageViewModel(message: .link)
-            
-            XCTAssertEqual(viewModel.loading, false)
-            viewModel.onLoad()
-            try await Task.sleep(nanoseconds: 100_000)
-            XCTAssertEqual(viewModel.preview, MessageViewModel.Preview(image: image, title: title))
-            XCTAssertEqual(viewModel.loading, false)
-        }
+        assert(
+            publisher: viewModel.$state,
+            act: { viewModel.onLoad() },
+            withDependencies: { $0.urlPreviewClient = .sync((image, title)) },
+            steps: [
+                Step { $0.loading = true },
+                Step { $0.loading = false },
+                Step { $0.preview = .init(image: image, title: title) },
+            ]
+        )
     }
     
-    func testOnLoadFailure() async throws {
-        try await withDependencies {
-            $0.urlPreviewClient = .init { _ in Just(nil).eraseToAnyPublisher() }
-        } operation: {
-            let viewModel = MessageViewModel(message: .link)
-            
-            XCTAssertEqual(viewModel.loading, false)
-            
-            viewModel.onLoad()
-            try await Task.sleep(nanoseconds: 100_000)
-            XCTAssertEqual(viewModel.preview, nil)
-            XCTAssertEqual(viewModel.loading, false)
-        }
+    func testOnLoadFailure() {
+        let viewModel = MessageViewModel(message: .link)
+        
+        assert(
+            publisher: viewModel.$state,
+            act: { viewModel.onLoad() },
+            withDependencies: { $0.urlPreviewClient = .sync(nil) },
+            steps: [
+                Step { $0.loading = true },
+                Step { $0.loading = false }
+            ]
+        )
     }
 }

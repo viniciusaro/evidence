@@ -15,11 +15,18 @@ let package = Package(
         .library(
             name: "Models",
             targets: ["Models"]),
+        .library(
+            name: "TestHelper",
+            targets: ["TestHelper"]),
     ],
     dependencies: [
         .package(
             url: "https://github.com/pointfreeco/swift-dependencies",
             from: "1.0.0"
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-custom-dump",
+            from: "1.1.1"
         )
     ],
     targets: [
@@ -28,11 +35,23 @@ let package = Package(
             dependencies: [
                 "Models",
                 .product(name: "Dependencies", package: "swift-dependencies")
-            ]),
+            ]
+        ),
         .testTarget(
             name: "ChatTests",
-            dependencies: ["Chat", "Models"]),
+            dependencies: [
+                "Chat", "TestHelper"
+            ]
+        ),
         .target(
-            name: "Models"),
+            name: "Models"
+        ),
+        .target(
+            name: "TestHelper",
+            dependencies: [
+                .product(name: "CustomDump", package: "swift-custom-dump"),
+                .product(name: "Dependencies", package: "swift-dependencies")
+            ]
+        ),
     ]
 )
