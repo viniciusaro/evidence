@@ -47,7 +47,7 @@ struct HomeView: View {
 }
 
 struct YouView: View {
-    var model = StatusViewModel()
+    @StateObject var model = StatusViewModel()
     
     var body: some View {
         VStack {

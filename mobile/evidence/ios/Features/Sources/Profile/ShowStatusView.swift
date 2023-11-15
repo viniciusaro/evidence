@@ -18,7 +18,7 @@ public struct ShowStatusView: View {
     
     public var body: some View {
         Button(action: {
-            model.isModalShowing()
+            model.statusInputButtonTapped()
         }) {
             ZStack(alignment: .leading) {
                 HStack {
@@ -35,10 +35,9 @@ public struct ShowStatusView: View {
                             .body()
                     }
                     Spacer()
+                    
                     Button(action: {
-                        model.clearStatus()
-                        model.toggleButton()
-                        model.isAlertShowing()
+                        model.clearStatusInputButtonTapped()
                     }){
                         if !model.statusInput.isEmpty {
                             Image(systemName: "xmark")

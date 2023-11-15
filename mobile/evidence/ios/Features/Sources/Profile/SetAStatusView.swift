@@ -27,7 +27,7 @@ public struct SetAStatusView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        model.isModalShowing()
+                        model.modalCloseButtonTapped()
                     }) {
                         Image(systemName: "xmark")
                             .foregroundStyle(theme.color.content.primary)
@@ -36,16 +36,13 @@ public struct SetAStatusView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        if model.isClearButtonShowing { 
-                            model.clearStatus()
-                            model.toggleButton()
+                        if model.showClearButton { //true
+                            model.clearButtonTapped()
                         } else {
-                            model.saveStatusButton()
-                            model.isAlertShowing()
-                            model.toggleButton()
+                            model.saveButtonTapped() //falsetw
                         }
                     }) {
-                        if model.isClearButtonShowing {
+                        if model.showClearButton {
                             Text("Clear")
                                 .foregroundStyle(theme.color.tag.rejected)
                         } else {
@@ -84,8 +81,7 @@ struct InputStatus: View {
             }
             Spacer()
             Button(action: {
-                model.clearStatus()
-                model.toggleButton()
+                model.clearStatusInputTextFieldTapped()
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")

@@ -9,47 +9,66 @@ import SwiftUI
 import Models
 
 public class StatusViewModel: ObservableObject {
-    @Published private(set) var currentState: Profile = .active
-    @Published private(set) var showModal = false
+    @Published private(set) var status: Profile = .active
     @Published var statusInput: String = ""
+    @Published private(set) var showModal = false
     @Published private(set) var showAlert = false
-    @Published private(set) var isButtonSaveTapped = false
-    @Published private(set) var isClearButtonShowing = false
+    @Published private(set) var showClearButton = false
     
-    public init(currentState: Profile = .active, showModal: Bool = false, statusInput: String = "", showAlert: Bool = false, isButtonSaveTapped: Bool = false, isClearButtonShowing: Bool = false) {
-        self.currentState = currentState
+    public init(currentState: Profile = .active, showModal: Bool = false, statusInput: String = "", showAlert: Bool = false,  isClearButtonShowing: Bool = false) {
+        self.status = currentState
         self.showModal = showModal
         self.statusInput = statusInput
         self.showAlert = showAlert
-        self.isButtonSaveTapped = isButtonSaveTapped
-        self.isClearButtonShowing = isClearButtonShowing
+        self.showClearButton = isClearButtonShowing
     }
     
-    func isModalShowing() { 
-        showModal.toggle()
+    func statusInputButtonTapped() {
+        showModal = true
     }
     
-    func saveStatusButton() {
-        if statusInput.isEmpty {
-            showModal = true
-        } else {
-            showModal = false
-        }
+    func modalCloseButtonTapped() {
+        showModal = false
     }
     
-    func toggleButton() {
-        isClearButtonShowing.toggle()
-    }
-    
-    func clearStatus() {
+    func clearStatusInputButtonTapped() {
         statusInput = ""
+        showClearButton = false
+        isAlertShowing()
+    }
+    
+    func clearStatusInputTextFieldTapped() {
+        statusInput = ""
+        showClearButton = false
+    }
+    
+    func clearButtonTapped() {
+        statusInput = ""
+        showClearButton = false
+    }
+    
+    func saveButtonTapped() {
+        func closeModal() {
+            if statusInput.isEmpty {
+                showModal = true
+            } else {
+                showModal = false
+            }
+        }
+        
+        if !statusInput.isEmpty {
+            isAlertShowing()
+            showClearButton = true
+            closeModal()
+        }
     }
     
     func isAlertShowing() {
         showAlert = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.showAlert = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.showAlert = false
         }
     }
+    
 }
 

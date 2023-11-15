@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Leaf
+import Leaf 
 
 public struct AvatarStatusView: View {
     @ObservedObject var model: StatusViewModel
@@ -22,7 +22,7 @@ public struct AvatarStatusView: View {
                 LeafAvatar(url: URL.documentsDirectory)
                     .avatarStyle(.evident)
                 Circle()
-                    .foregroundStyle(model.currentState == .active ? theme.color.brand.primary : theme.color.content.tertiary )
+                    .foregroundStyle(model.status == .active ? theme.color.brand.primary : theme.color.content.tertiary )
                     .frame(width: 15, height: 15)
                     .overlay {
                         Circle()
@@ -32,7 +32,7 @@ public struct AvatarStatusView: View {
             VStack (alignment: .leading) {
                 Text("Cris Messias")
                     .title()
-                Text("\(model.currentState == .active ? "Active": "Away")")
+                Text("\(model.status == .active ? "Active": "Away")")
                     .subtitle()
             }
             Spacer()
