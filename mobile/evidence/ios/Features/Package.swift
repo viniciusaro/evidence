@@ -17,6 +17,7 @@ let package = Package(
             targets: ["Models"]),
     ],
     dependencies: [
+        .package(path: "../Leaf"),
         .package(
             url: "https://github.com/pointfreeco/swift-dependencies",
             from: "1.0.0"
@@ -26,6 +27,7 @@ let package = Package(
         .target(
             name: "Chat",
             dependencies: [
+                "Leaf",
                 "Models",
                 .product(name: "Dependencies", package: "swift-dependencies")
             ]),
