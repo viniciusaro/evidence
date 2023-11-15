@@ -8,6 +8,7 @@ let package = Package(
     platforms: [
         .iOS(.v16), .macOS(.v13)
     ],
+    
     products: [
         .library(
             name: "Chat",
@@ -16,9 +17,13 @@ let package = Package(
             name: "Models",
             targets: ["Models"]),
         .library(
+            name: "Profile",
+            targets: ["Profile"]),
+        .library(
             name: "TestHelper",
             targets: ["TestHelper"]),
     ],
+    
     dependencies: [
         .package(path: "../Leaf"),
         .package(
@@ -47,6 +52,14 @@ let package = Package(
         ),
         .target(
             name: "Models"
+        ),
+        .target(
+            name: "Profile",
+            dependencies: ["Leaf", "Models"]
+        ),
+        .testTarget(
+            name: "ProfileTests",
+            dependencies: ["Leaf", "Models", "Profile"]
         ),
         .target(
             name: "TestHelper",
