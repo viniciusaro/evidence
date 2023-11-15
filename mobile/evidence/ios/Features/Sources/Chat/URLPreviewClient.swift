@@ -47,6 +47,12 @@ public extension URLPreviewClient {
             title: "It is not evident, it needs discussion"
         )).eraseToAnyPublisher()
     }
+    
+    static func sync(_ value: (image: URL, title: String)?) -> URLPreviewClient {
+        URLPreviewClient { _ in
+            Just(value).eraseToAnyPublisher()
+        }
+    }
 }
 
 extension String {
