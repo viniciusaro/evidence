@@ -37,30 +37,17 @@ public class StatusViewModel: ObservableObject {
         isAlertShowing()
     }
     
-    func clearStatusInputTextFieldTapped() {
-        statusInput = ""
-        showClearButton = false
-    }
-    
-    func clearButtonTapped() {
+    func clearStatusInputTextField() {
         statusInput = ""
         showClearButton = false
     }
     
     func saveButtonTapped() {
-        func closeModal() {
-            if statusInput.isEmpty {
-                showModal = true
-            } else {
-                showModal = false
-            }
-        }
-        
         if !statusInput.isEmpty {
             isAlertShowing()
             showClearButton = true
-            closeModal()
-        }
+            showModal = false
+        } 
     }
     
     func isAlertShowing() {
