@@ -37,6 +37,7 @@ public struct SetAStatusView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         model.clearOrSaveButtonTapped()
+
                     }) {
                         if model.showClearButton {
                             Text("Clear")
@@ -77,7 +78,7 @@ struct InputStatus: View {
             }
             Spacer()
             Button(action: {
-                model.clearStatusInputTextFieldTapped()
+                model.clearStatusInputTextField()
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")

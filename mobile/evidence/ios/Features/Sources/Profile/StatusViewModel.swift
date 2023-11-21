@@ -42,7 +42,6 @@ public class StatusViewModel: ObservableObject {
         showClearButton = false
     }
     
-    
     func showClearButtonAndCloseModal() {
         showClearButton = true
         showModal = false
