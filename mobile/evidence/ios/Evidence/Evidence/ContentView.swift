@@ -52,7 +52,7 @@ struct YouView: View {
     var body: some View {
         VStack {
             AvatarStatusView(model: model)
-            ShowStatusView(model: model)
+            StatusView(model: model)
             Spacer()
         }
     }

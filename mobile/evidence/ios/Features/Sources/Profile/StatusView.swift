@@ -1,5 +1,5 @@
 //
-//  ShowStatusView.swift
+//  StatusView.swift
 //  
 //
 //  Created by Cris Messias on 12/11/23.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Leaf
 
-public struct ShowStatusView: View {
+public struct StatusView: View {
     @ObservedObject var model: StatusViewModel
     @Environment(\.leafTheme) private var theme
     
@@ -65,6 +65,6 @@ public struct ShowStatusView: View {
 }
 
 #Preview {
-    ShowStatusView(model: StatusViewModel())
+    StatusView(model: StatusViewModel())
 }
 

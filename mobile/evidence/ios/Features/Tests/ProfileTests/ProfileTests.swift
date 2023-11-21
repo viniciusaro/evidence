@@ -10,89 +10,52 @@ import XCTest
 @testable import Models
 
 final class ProfileTests: XCTestCase {
-    
-//    func statusInputButtonTapped() {
-//        showModal = true
-//    }
  
     func testStatusInputButtonTrue() {
-        // Given - Arrange
         let model = StatusViewModel()
-        
-        // When - Act
-        let test = model.showModal
         model.statusInputButtonTapped()
-        
-        // Then - Assert
-        XCTAssertTrue(test)
+        XCTAssertTrue(model.showModal)
     }
-//    
-//    func testModalShowingToggle() {
-//        // Given - Arrange
-//        let model = StatusViewModel()
-//        
-//        // When - Act
-//        let initialState =  model.showModal
-//        model.
-//        let finalState = model.showModal
-//        
-//        // Then - Assert
-//        XCTAssertNotEqual(initialState, finalState, "Not equal")
-//    }
-//    
-//    func testSaveStatusButtonEmptyInput() {
-//        // Given - Arrange
-//        let model = StatusViewModel()
-//        model.statusInput = ""
-//
-//        // When - Act
-//        model.saveStatusButton()
-//        
-//        // Then - Assert
-//        XCTAssertTrue(model.showModal, "is True")
-//    }
-//    
-//    func testSaveStatusButtonNotEmptyInput() {
-//        // Given - Arrange
-//        let model = StatusViewModel()
-//        model.statusInput = "False"
-//        
-//        // When - Act
-//        model.saveStatusButton()
-//        
-//        // Then - Assert
-//        XCTAssertFalse(model.showModal, "is False")
-//    }
-//    
-//    
-//    func testSuccessClearStatus() {
-//        // Given - Arrange
-//        let model = StatusViewModel()
-//        model.statusInput = "Not Empty"
-//        
-//        // When - Act
-//        model.clearStatus()
-//        
-//        // Then - Assert
-//        XCTAssertTrue(model.statusInput.isEmpty, "Is Empty")
-//    }
-//    
-//    func testAlertaIsShowing() {
-//        // Given - Arrange
-//        let model = StatusViewModel()
-//        
-//        // When - Act
-//        model.isAlertShowing()
-//        
-//        // Then - Assert
-//        let expectation = XCTestExpectation(description: "Wait for showAlert to be set to false")
-//        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-//            XCTAssertFalse(model.showAlert, "showAlert should be false after 1 second")
-//            expectation.fulfill()
-//        }
-//        
-//        wait(for: [expectation], timeout: 2)
-//    }
-}
+    
+    func testModalCloseButtonFalse() {
+        let model = StatusViewModel()
+        model.modalCloseButtonTapped()
+        XCTAssertFalse(model.showModal)
+    }
+    
+    func testClearStatusInputButtonSuccess() {
+        let model = StatusViewModel()
+        model.statusInput = "Some input"
+        model.clearStatusInputButtonTapped()
+        XCTAssertTrue(model.statusInput.isEmpty)
+        XCTAssertFalse(model.showClearButton)
+    }
+    
+    func testClearStatusInputTextFieldSuccess() {
+        let model = StatusViewModel()
+        model.statusInput = "Some input"
+        model.clearStatusInputTextField()
+        XCTAssertTrue(model.statusInput.isEmpty)
+        XCTAssertFalse(model.showClearButton)
+    }
+    
+    func testSaveButtonNotEmptyStatusInput() {
+        let model = StatusViewModel()
+        model.statusInput = "Some input"
+        model.saveButtonTapped()
+        XCTAssertTrue(model.showAlert)
+        XCTAssertTrue(model.showClearButton)
+        XCTAssertFalse(model.showModal)
+    }
 
+    func testAlertaIsShowingSuccess() {
+        let model = StatusViewModel()
+        model.isAlertShowing()
+        let expectation = XCTestExpectation(description: "Wait for showAlert to be set to false")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            XCTAssertFalse(model.showAlert)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2)
+    }
+}
