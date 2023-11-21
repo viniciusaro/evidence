@@ -14,39 +14,39 @@ extension LeafTheme {
     }
     
     public struct BrandColor {
-        let primary: SwiftUI.Color
-        let secondary: SwiftUI.Color
-        let tertiary: SwiftUI.Color
+        public let primary: SwiftUI.Color
+        public let secondary: SwiftUI.Color
+        public let tertiary: SwiftUI.Color
     }
     
     public struct ContentColor {
-        let primary: SwiftUI.Color
-        let secondary: SwiftUI.Color
-        let tertiary: SwiftUI.Color
-        let quaternary: SwiftUI.Color
+        public let primary: SwiftUI.Color
+        public let secondary: SwiftUI.Color
+        public let tertiary: SwiftUI.Color
+        public let quaternary: SwiftUI.Color
     }
     
     public struct TagColor {
-        let open: SwiftUI.Color
-        let accepted: SwiftUI.Color
-        let rejected: SwiftUI.Color
-        let closed: SwiftUI.Color
+        public let open: SwiftUI.Color
+        public let accepted: SwiftUI.Color
+        public let rejected: SwiftUI.Color
+        public let closed: SwiftUI.Color
     }
 }
 
 extension LeafTheme {
     public struct Font {
-        let title: SwiftUI.Font
-        let titleLarge: SwiftUI.Font
-        let titleXLarge: SwiftUI.Font
-        let subtitle: SwiftUI.Font
-        let body: SwiftUI.Font
-        let label: SwiftUI.Font
+        public let title: SwiftUI.Font
+        public let titleLarge: SwiftUI.Font
+        public let titleXLarge: SwiftUI.Font
+        public let subtitle: SwiftUI.Font
+        public let body: SwiftUI.Font
+        public let label: SwiftUI.Font
     }
 }
 
 extension LeafTheme {
     public struct Size {
-        let lineSpacingTitle: SwiftUI.CGFloat
+        public let lineSpacingTitle: SwiftUI.CGFloat
     }
 }

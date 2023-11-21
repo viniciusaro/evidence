@@ -1,0 +1,16 @@
+name: evidence_ios_pull_request_actions
+run-name: ${{ github.actor }} is running pull request actions
+on: [pull_request]
+jobs:
+  validate-unit-tests:
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run Chat Tests
+        uses: mxcl/xcodebuild@v1
+        with:
+          xcode: 15.0.1
+          platform: iOS
+          workspace: mobile/evidence/ios/Evidence.xcworkspace
+          scheme: ChatTests
