@@ -34,9 +34,16 @@ final class ProfileTests: XCTestCase {
     func testClearStatusInputTextFieldSuccess() {
         let model = StatusViewModel()
         model.statusInput = "Some input"
-        model.clearStatusInputTextField()
+        model.clearStatusInputTextFieldTapped()
         XCTAssertTrue(model.statusInput.isEmpty)
         XCTAssertFalse(model.showClearButton)
+    }
+    
+    func testShowClearButtonAndCloseModalSuccess() {
+        let model = StatusViewModel()
+        model.showClearButtonAndCloseModal()
+        XCTAssertTrue(model.showClearButton)
+        XCTAssertFalse(model.showModal)
     }
     
     func testSaveButtonNotEmptyStatusInput() {
@@ -44,14 +51,13 @@ final class ProfileTests: XCTestCase {
         model.statusInput = "Some input"
         model.saveButtonTapped()
         XCTAssertTrue(model.showAlert)
-        XCTAssertTrue(model.showClearButton)
-        XCTAssertFalse(model.showModal)
     }
 
-    func testAlertaIsShowingSuccess() {
+    func testAlertIsShowingSuccess() {
         let model = StatusViewModel()
-        model.isAlertShowing()
-        let expectation = XCTestExpectation(description: "Wait for showAlert to be set to false")
+        model.publicFuncIsAlertShowing()
+        XCTAssertTrue(model.showAlert)
+        let expectation = XCTestExpectation(description: "Wait for showAlert to be set to true")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             XCTAssertFalse(model.showAlert)
             expectation.fulfill()

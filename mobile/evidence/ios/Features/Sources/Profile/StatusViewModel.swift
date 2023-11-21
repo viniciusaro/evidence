@@ -37,20 +37,33 @@ public class StatusViewModel: ObservableObject {
         isAlertShowing()
     }
     
-    func clearStatusInputTextField() {
+    func clearStatusInputTextFieldTapped() {
         statusInput = ""
         showClearButton = false
+    }
+    
+    
+    func showClearButtonAndCloseModal() {
+        showClearButton = true
+        showModal = false
     }
     
     func saveButtonTapped() {
         if !statusInput.isEmpty {
             isAlertShowing()
-            showClearButton = true
-            showModal = false
-        } 
+            showClearButtonAndCloseModal()
+        }
     }
     
-    func isAlertShowing() {
+    func clearOrSaveButtonTapped() {
+        if showClearButton {
+            clearStatusInputTextFieldTapped()
+        } else {
+            saveButtonTapped()
+        }
+    }
+    
+    private func isAlertShowing() {
         showAlert = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.showAlert = false
@@ -59,3 +72,8 @@ public class StatusViewModel: ObservableObject {
     
 }
 
+extension StatusViewModel {
+    public func publicFuncIsAlertShowing() {
+        return self.isAlertShowing()
+    }
+}
