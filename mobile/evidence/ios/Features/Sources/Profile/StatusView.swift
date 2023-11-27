@@ -44,7 +44,7 @@ public struct StatusView: View {
                                 .foregroundStyle(theme.color.content.tertiary)
                         }
                     }
-                    .alert(isPresented: Binding.constant(model.showAlert)) {
+                    .alert(isPresented: Binding.constant(model.isAlertShowing)) {
                         Alert(
                             title: Text("✅"),
                             message: Text("Status Cleared")
@@ -58,7 +58,7 @@ public struct StatusView: View {
             }
             .padding(.horizontal, 16)
         }
-        .sheet(isPresented: Binding.constant(model.showModal), content: {
+        .sheet(isPresented: Binding.constant(model.isModalShowing), content: {
             SetAStatusView(model: model)
         })
     }
