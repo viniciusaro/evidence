@@ -28,15 +28,15 @@ final class ProfileTests: XCTestCase {
         model.statusInput = "Some input"
         model.clearStatusInputButtonTapped()
         XCTAssertTrue(model.statusInput.isEmpty)
-        XCTAssertFalse(model.showClearButton)
+        XCTAssertFalse(model.isClearButtonShowing)
     }
     
     func testClearStatusInputTextFieldSuccess() {
         let model = StatusViewModel()
         model.statusInput = "Some input"
-        model.clearStatusInputTextField()
+        model.clearStatusInputTextFieldTapped()
         XCTAssertTrue(model.statusInput.isEmpty)
-        XCTAssertFalse(model.showClearButton)
+        XCTAssertFalse(model.isClearButtonShowing)
     }
     
     func testSaveButtonNotEmptyStatusInput() {
@@ -44,7 +44,7 @@ final class ProfileTests: XCTestCase {
         model.statusInput = "Some input"
         model.saveButtonTapped()
         XCTAssertTrue(model.showAlert)
-        XCTAssertTrue(model.showClearButton)
+        XCTAssertTrue(model.isClearButtonShowing)
         XCTAssertFalse(model.showModal)
     }
 

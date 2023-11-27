@@ -20,41 +20,11 @@ public struct StatusView: View {
         Button(action: {
             model.statusInputButtonTapped()
         }) {
-            ZStack(alignment: .leading) {
-                HStack {
-                    HStack {
-                        if model.statusInput.isEmpty {
-                            Image(systemName: "smiley")
-                                .foregroundColor(theme.color.content.tertiary)
-                        }  else {
-                            Text("💬")
-                        }
-                        
-                        Text(model.statusInput.isEmpty ? "What's your status?" : model.statusInput)
-                            .foregroundColor(model.statusInput.isEmpty ? theme.color.content.tertiary : theme.color.content.primary)
-                            .body()
-                    }
-                    Spacer()
-                    
-                    Button(action: {
-                        model.clearStatusInputButtonTapped()
-                    }){
-                        if !model.statusInput.isEmpty {
-                            Image(systemName: "xmark")
-                                .foregroundStyle(theme.color.content.tertiary)
-                        }
-                    }
-                    .alert(isPresented: Binding.constant(model.showAlert)) {
-                        Alert(
-                            title: Text("✅"),
-                            message: Text("Status Cleared")
-                        )
-                    }
-                }
-                .padding(.horizontal, 16)
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(theme.color.content.tertiary, lineWidth: 0.5)
-                    .frame(height: 55)
+            ZStack() {
+                StatusButtonView(model: model)
+                LeafPopup(text: model.popupText)
+                    .frame(width: 170, height: 150)
+                    .offset(x: 0, y: model.offSetY)
             }
             .padding(.horizontal, 16)
         }
@@ -64,7 +34,43 @@ public struct StatusView: View {
     }
 }
 
+struct StatusButtonView: View {
+    @ObservedObject var model: StatusViewModel
+    @Environment(\.leafTheme) private var theme
+    var body: some View {
+        HStack {
+            HStack {
+                if model.statusInput.isEmpty {
+                    Image(systemName: "smiley")
+                        .foregroundColor(theme.color.content.tertiary)
+                }  else {
+                    Text("💬")
+                }
+                
+                Text(model.statusInput.isEmpty ? "What's your status?" : model.statusInput)
+                    .foregroundColor(model.statusInput.isEmpty ? theme.color.content.tertiary : theme.color.content.primary)
+                    .body()
+            }
+            Spacer()
+            
+            Button(action: {
+                model.clearStatusInputButtonTapped()
+            }){
+                if !model.statusInput.isEmpty {
+                    Image(systemName: "xmark")
+                        .foregroundStyle(theme.color.content.tertiary)
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .overlay(content: {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(theme.color.content.tertiary, lineWidth: 0.5)
+                .frame(height: 55)
+        })
+    }
+}
+
 #Preview {
     StatusView(model: StatusViewModel())
 }
-

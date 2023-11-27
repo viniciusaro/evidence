@@ -19,9 +19,9 @@ public struct SetAStatusView: View {
     
     public var body: some View {
         NavigationView {
-            VStack {
-                InputStatus(model: model)
-                Spacer()
+                VStack {
+                    InputStatus(model: model)
+                    Spacer()
             }
             .padding(.horizontal, 16)
             .toolbar {
@@ -33,28 +33,21 @@ public struct SetAStatusView: View {
                             .foregroundStyle(theme.color.content.primary)
                     }
                 }
-                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        if model.showClearButton {
-                            model.clearStatusInputTextField()
+                        if model.isClearButtonShowing {
+                            model.clearStatusInputTextFieldTapped()
                         } else {
                             model.saveButtonTapped()
                         }
                     }) {
-                        if model.showClearButton {
+                        if model.isClearButtonShowing {
                             Text("Clear")
                                 .foregroundStyle(theme.color.tag.rejected)
                         } else {
                             Image(systemName: "checkmark")
                                 .foregroundColor(!model.statusInput.isEmpty ? theme.color.brand.primary : theme.color.content.tertiary)
                         }
-                    }
-                    .alert(isPresented: Binding.constant(model.showAlert)) {
-                        Alert(
-                            title: Text("✅"),
-                            message: Text("Set Status")
-                        )
                     }
                 }
             }
@@ -81,7 +74,7 @@ struct InputStatus: View {
             }
             Spacer()
             Button(action: {
-                model.clearStatusInputTextField()
+                model.clearStatusInputTextFieldTapped()
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")

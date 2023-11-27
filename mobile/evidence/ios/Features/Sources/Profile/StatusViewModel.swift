@@ -9,18 +9,20 @@ import SwiftUI
 import Models
 
 public class StatusViewModel: ObservableObject {
-    @Published private(set) var status: Profile = .active
-    @Published var statusInput: String = ""
-    @Published private(set) var showModal = false
-    @Published private(set) var showAlert = false
-    @Published private(set) var showClearButton = false
+    @Published private(set) var status: Profile
+    @Published var statusInput: String
+    @Published private(set) var showModal: Bool
+    @Published private(set) var isClearButtonShowing: Bool
+    @Published var offSetY: CGFloat
+    @Published var popupText: String
     
-    public init(currentState: Profile = .active, showModal: Bool = false, statusInput: String = "", showAlert: Bool = false,  isClearButtonShowing: Bool = false) {
-        self.status = currentState
-        self.showModal = showModal
+    public init(status: Profile = .active, statusInput: String = "", showModal: Bool = false, showClearButton: Bool = false, offSetY: CGFloat = 1000, popupText: String = "Set Status") {
+        self.status = status
         self.statusInput = statusInput
-        self.showAlert = showAlert
-        self.showClearButton = isClearButtonShowing
+        self.showModal = showModal
+        self.isClearButtonShowing = showClearButton
+        self.offSetY = offSetY
+        self.popupText = popupText
     }
     
     func statusInputButtonTapped() {
@@ -33,27 +35,32 @@ public class StatusViewModel: ObservableObject {
     
     func clearStatusInputButtonTapped() {
         statusInput = ""
-        showClearButton = false
-        isAlertShowing()
+        isClearButtonShowing = false
+        popupText = "Status Cleared"
+        isPopupShowing()
     }
     
-    func clearStatusInputTextField() {
+    func clearStatusInputTextFieldTapped() {
         statusInput = ""
-        showClearButton = false
+        isClearButtonShowing = false
+        showModal = false
+        popupText = "Status Cleared"
+        isPopupShowing()
     }
     
     func saveButtonTapped() {
         if !statusInput.isEmpty {
-            isAlertShowing()
-            showClearButton = true
+            isClearButtonShowing = true
             showModal = false
-        } 
+            popupText = "Set Status"
+            isPopupShowing()
+        }
     }
     
-    func isAlertShowing() {
-        showAlert = true
+    func isPopupShowing() {
+        offSetY = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.showAlert = false
+            self?.offSetY = 10000
         }
     }
     
