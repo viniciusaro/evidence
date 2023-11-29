@@ -11,53 +11,61 @@ import Models
 public class StatusViewModel: ObservableObject {
     @Published private(set) var status: Profile
     @Published var statusInput: String
-    @Published private(set) var showModal: Bool
+    @Published private(set) var isModalShowing: Bool
     @Published private(set) var isClearButtonShowing: Bool
     @Published var offSetY: CGFloat
     @Published var popupText: String
     
-    public init(status: Profile = .active, statusInput: String = "", showModal: Bool = false, showClearButton: Bool = false, offSetY: CGFloat = 1000, popupText: String = "Set Status") {
+    public init(status: Profile = .active, statusInput: String = "", showModal: Bool = false, showClearButton: Bool = false, offSetY: CGFloat = 1000, popupText: String = "") {
         self.status = status
         self.statusInput = statusInput
-        self.showModal = showModal
+        self.isModalShowing = showModal
         self.isClearButtonShowing = showClearButton
         self.offSetY = offSetY
         self.popupText = popupText
     }
     
-    func statusInputButtonTapped() {
-        showModal = true
+    func openModalButtonTapped() {
+        isModalShowing = true
     }
     
-    func modalCloseButtonTapped() {
-        showModal = false
+    func closeModalButtonTapped() {
+        isModalShowing = false
     }
     
     func clearStatusInputButtonTapped() {
         statusInput = ""
         isClearButtonShowing = false
         popupText = "Status Cleared"
-        popupSaveOrClearActions()
+        saveOrClearPopupAppears()
     }
     
     func clearStatusInputTextFieldTapped() {
         statusInput = ""
         isClearButtonShowing = false
-        showModal = false
+        isModalShowing = false
         popupText = "Status Cleared"
-        popupSaveOrClearActions()
+        saveOrClearPopupAppears()
+    }
+    
+    func clearOrSaveButtonTapped() {
+        if isClearButtonShowing {
+            clearStatusInputTextFieldTapped()
+        } else {
+            saveButtonTapped()
+        }
     }
     
     func saveButtonTapped() {
         if !statusInput.isEmpty {
             isClearButtonShowing = true
-            showModal = false
+            isModalShowing = false
             popupText = "Set Status"
-            popupSaveOrClearActions()
+            saveOrClearPopupAppears()
         }
     }
     
-    func popupSaveOrClearActions() {
+    func saveOrClearPopupAppears() {
         offSetY = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.offSetY = 1000
@@ -65,4 +73,3 @@ public class StatusViewModel: ObservableObject {
     }
     
 }
-

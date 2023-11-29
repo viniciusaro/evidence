@@ -18,7 +18,7 @@ public struct StatusView: View {
     
     public var body: some View {
         Button(action: {
-            model.statusInputButtonTapped()
+            model.openModalButtonTapped()
         }) {
             ZStack() {
                 StatusButtonView(model: model)
@@ -28,8 +28,8 @@ public struct StatusView: View {
             }
             .padding(.horizontal, 16)
         }
-        .sheet(isPresented: Binding.constant(model.showModal), content: {
-            SetAStatusView(model: model)
+        .sheet(isPresented: Binding.constant(model.isModalShowing), content: {
+            SetStatusView(model: model)
         })
     }
 }

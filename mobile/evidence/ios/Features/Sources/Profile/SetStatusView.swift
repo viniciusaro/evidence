@@ -1,5 +1,5 @@
 //
-//  SetAStatusView.swift
+//  SetStatusView.swift
 //  Evidence
 //
 //  Created by Cris Messias on 09/11/23.
@@ -9,7 +9,7 @@ import SwiftUI
 import Leaf
 
 
-public struct SetAStatusView: View {
+public struct SetStatusView: View {
     @ObservedObject var model: StatusViewModel
     @Environment(\.leafTheme) private var theme
     
@@ -27,7 +27,7 @@ public struct SetAStatusView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        model.modalCloseButtonTapped()
+                        model.closeModalButtonTapped()
                     }) {
                         Image(systemName: "xmark")
                             .foregroundStyle(theme.color.content.primary)
@@ -35,11 +35,7 @@ public struct SetAStatusView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        if model.isClearButtonShowing {
-                            model.clearStatusInputTextFieldTapped()
-                        } else {
-                            model.saveButtonTapped()
-                        }
+                        model.clearOrSaveButtonTapped()
                     }) {
                         if model.isClearButtonShowing {
                             Text("Clear")
@@ -88,5 +84,5 @@ struct InputStatus: View {
 }
 
 #Preview {
-    SetAStatusView(model: StatusViewModel())
+    SetStatusView(model: StatusViewModel())
 }
