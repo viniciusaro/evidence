@@ -37,7 +37,7 @@ public class StatusViewModel: ObservableObject {
         statusInput = ""
         isClearButtonShowing = false
         popupText = "Status Cleared"
-        isPopupShowing()
+        popupSaveOrClearActions()
     }
     
     func clearStatusInputTextFieldTapped() {
@@ -45,7 +45,7 @@ public class StatusViewModel: ObservableObject {
         isClearButtonShowing = false
         showModal = false
         popupText = "Status Cleared"
-        isPopupShowing()
+        popupSaveOrClearActions()
     }
     
     func saveButtonTapped() {
@@ -53,14 +53,14 @@ public class StatusViewModel: ObservableObject {
             isClearButtonShowing = true
             showModal = false
             popupText = "Set Status"
-            isPopupShowing()
+            popupSaveOrClearActions()
         }
     }
     
-    func isPopupShowing() {
+    func popupSaveOrClearActions() {
         offSetY = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.offSetY = 10000
+            self?.offSetY = 1000
         }
     }
     

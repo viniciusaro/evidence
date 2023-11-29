@@ -43,17 +43,17 @@ final class ProfileTests: XCTestCase {
         let model = StatusViewModel()
         model.statusInput = "Some input"
         model.saveButtonTapped()
-        XCTAssertTrue(model.showAlert)
         XCTAssertTrue(model.isClearButtonShowing)
         XCTAssertFalse(model.showModal)
     }
 
-    func testAlertaIsShowingSuccess() {
+    func testpopupSaveOrClearActionsAppearsAndDisappears() {
         let model = StatusViewModel()
-        model.isAlertShowing()
-        let expectation = XCTestExpectation(description: "Wait for showAlert to be set to false")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            XCTAssertFalse(model.showAlert)
+        model.popupSaveOrClearActions()
+        XCTAssertTrue(model.offSetY == 0)
+        let expectation = XCTestExpectation(description: "Wait for offSety to be set to equal to 1000")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            XCTAssertTrue(model.offSetY == 1000)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)
