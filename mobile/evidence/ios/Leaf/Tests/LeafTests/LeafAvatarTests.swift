@@ -24,6 +24,7 @@ final class LeafAvatarTests: XCTestCase {
     func testLoaded() {
         withDependencies {
             $0.leafAsyncImageClient = .system("checkmark.circle.fill")
+            $0.mainQueue = .immediate
         } operation: {
             let sut = LeafThemeView {
                 LeafAvatar(url: URL.documentsDirectory)
@@ -39,6 +40,7 @@ final class LeafAvatarTests: XCTestCase {
     func testError() {
         withDependencies {
             $0.leafAsyncImageClient = .error
+            $0.mainQueue = .immediate
         } operation: {
             let sut = LeafThemeView {
                 LeafAvatar(url: URL.documentsDirectory)
