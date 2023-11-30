@@ -7,23 +7,7 @@
 
 import SwiftUI
 
-private struct LeafText: View {
-    var body: some View {
-        Text("Evidence")
-            .body()
-        Text("How came first, the egg or the chicken?")
-            .title()
-        Text("The chicken, sure!")
-            .subtitle()
-        Text("1 like")
-            .label()
-    }	
-}
-#Preview {
-    LeafThemeView {
-        LeafText()
-    }
-}
+
 
 //MARK: -TitleModifier
 public struct LeafTitleModifier: ViewModifier {
@@ -33,7 +17,7 @@ public struct LeafTitleModifier: ViewModifier {
             .font(theme.font.titleLarge)
             .bold()
             .lineSpacing(theme.size.lineSpacingTitle)
-            .foregroundStyle(theme.color.content.primary)
+            .foregroundStyle(theme.color.core.black)
 
     }
 }
@@ -50,8 +34,8 @@ public struct LeafSubtitleModifier: ViewModifier {
         content
             .font(theme.font.subtitle)
             .bold()
-            .foregroundStyle(theme.color.content.secondary)
-        
+            .foregroundStyle(theme.color.core.black)
+
     }
 }
 public extension Text {
@@ -66,7 +50,7 @@ public struct LeafBodyModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .font(theme.font.body)
-            .foregroundStyle(theme.color.content.secondary)
+            .foregroundStyle(theme.color.core.black)
     }
 }
 public extension Text {
@@ -82,11 +66,27 @@ public struct LeafLabelModifier: ViewModifier {
         content
             .font(theme.font.label)
             .bold()
-            .foregroundStyle(theme.color.content.tertiary)
+            .foregroundStyle(theme.color.gray.primary50)
     }
 }
 public extension Text {
     func label() -> some View {
         self.modifier(LeafLabelModifier())
+    }
+}
+
+#Preview {
+    LeafThemeView {
+        VStack(alignment: .leading) {
+            Text("Secondary palette20")
+                .title()
+            Text("Usage")
+                .subtitle()
+            Text("We give our core palette more dimension with a set of vibrant, sophisticated colors heavily featured in our photography and illustration.")
+                .body()
+            Text("1 like")
+                .label()
+        }
+        .padding(20)
     }
 }

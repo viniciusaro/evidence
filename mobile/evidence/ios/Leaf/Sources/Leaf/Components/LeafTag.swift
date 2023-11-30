@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  LeafTag.swift
 //  
 //
 //  Created by Cris Messias on 15/10/23.
@@ -24,23 +24,23 @@ public struct LeafTag: View {
             case .open:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.open)
-                    .background(theme.color.tag.open.opacity(0.1))
+                    .foregroundColor(theme.color.core.green)
+                    .background(theme.color.core.green.opacity(0.1))
             case .accepted:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.accepted)
-                    .background(theme.color.tag.accepted.opacity(0.1))
+                    .foregroundColor(theme.color.core.blue)
+                    .background(theme.color.core.blue.opacity(0.1))
             case .rejected:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.rejected)
-                    .background(theme.color.tag.rejected.opacity(0.1))
+                    .foregroundColor(theme.color.core.red)
+                    .background(theme.color.core.red.opacity(0.1))
             case .closed:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.closed)
-                    .background(theme.color.tag.closed.opacity(0.1))
+                    .foregroundColor(theme.color.gray.primary50)
+                    .background(theme.color.gray.primary50.opacity(0.1))
             }
         }
         .cornerRadius(20)
@@ -63,7 +63,6 @@ extension Text {
     }
 }
 
-///
 #Preview {
     VStack{
         LeafTag("open", status: .open)
