@@ -32,14 +32,18 @@ struct HomeView: View {
     var body: some View {
         ChatView(
             model: ChatViewModel(
-                chat: Chat(
+                state: ChatViewState(
                     messages: [
-                        Message.hi,
-                        Message.hello,
-                        Message.howAreYouDoing,
-                        Message.mac,
-                        Message.link,
-                    ]
+                        Message.vini("hi"),
+                        Message.vini("hello"),
+                        Message.vini("howAreYouDoing"),
+                        Message.mac(id: UUID(1)),
+                    ].map {
+                        MessageViewModel(
+                            state: MessageViewState(message: $0)
+                        )
+                    },
+                    highlightedMessageId: UUID(1)
                 )
             )
         )

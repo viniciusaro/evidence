@@ -1,19 +1,17 @@
-import Combine
-import Dependencies
 import XCTest
 import TestHelper
 
 @testable import Chat
 
 class MessageTests: XCTestCase {
-    func testOnLoadSuccess() {
+    func testOnViewAppearSuccess() {
         let image = URL(string: "url")!
         let title = "title"
-        let viewModel = MessageViewModel(message: .link)
+        let viewModel = MessageViewModel(state: MessageViewState(message: .link))
         
         assert(
             publisher: viewModel.$state,
-            act: { viewModel.onLoad() },
+            act: { viewModel.onViewAppear() },
             withDependencies: { $0.urlPreviewClient = .sync((image, title)) },
             steps: [
                 Step { $0.loading = true },
@@ -23,12 +21,12 @@ class MessageTests: XCTestCase {
         )
     }
     
-    func testOnLoadFailure() {
-        let viewModel = MessageViewModel(message: .link)
+    func testOnViewAppearFailure() {
+        let viewModel = MessageViewModel(state: MessageViewState(message: .link))
         
         assert(
             publisher: viewModel.$state,
-            act: { viewModel.onLoad() },
+            act: { viewModel.onViewAppear() },
             withDependencies: { $0.urlPreviewClient = .sync(nil) },
             steps: [
                 Step { $0.loading = true },

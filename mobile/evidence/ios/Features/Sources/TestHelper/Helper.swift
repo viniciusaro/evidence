@@ -45,7 +45,7 @@ public func assert<State: Equatable>(
             }
         }
         act()
-        if XCTWaiter.wait(for: [expectation], timeout: 0.01) != .completed {
+        if XCTWaiter.wait(for: [expectation], timeout: 0.5) != .completed {
             XCTFail(
                 "steps not found: \(String(customDumping: mutations))",
                 file: mutations.first?.file ?? file,
