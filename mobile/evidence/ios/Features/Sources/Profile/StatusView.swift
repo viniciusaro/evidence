@@ -25,13 +25,13 @@ public struct StatusView: View {
                     HStack {
                         if model.statusInput.isEmpty {
                             Image(systemName: "smiley")
-                                .foregroundColor(theme.color.content.tertiary)
+                                .foregroundColor(theme.color.gray.primary70)
                         }  else {
                             Text("💬")
                         }
                         
                         Text(model.statusInput.isEmpty ? "What's your status?" : model.statusInput)
-                            .foregroundColor(model.statusInput.isEmpty ? theme.color.content.tertiary : theme.color.content.primary)
+                            .foregroundColor(model.statusInput.isEmpty ? theme.color.gray.primary70 : theme.color.core.black)
                             .body()
                     }
                     Spacer()
@@ -41,7 +41,7 @@ public struct StatusView: View {
                     }){
                         if !model.statusInput.isEmpty {
                             Image(systemName: "xmark")
-                                .foregroundStyle(theme.color.content.tertiary)
+                                .foregroundStyle(theme.color.gray.primary50)
                         }
                     }
                     .alert(isPresented: Binding.constant(model.isAlertShowing)) {
@@ -53,7 +53,7 @@ public struct StatusView: View {
                 }
                 .padding(.horizontal, 16)
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(theme.color.content.tertiary, lineWidth: 0.5)
+                    .stroke(theme.color.gray.primary50, lineWidth: 0.5)
                     .frame(height: 55)
             }
             .padding(.horizontal, 16)

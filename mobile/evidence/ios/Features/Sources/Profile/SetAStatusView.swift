@@ -30,7 +30,7 @@ public struct SetAStatusView: View {
                         model.CloseModalButtonTapped()
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.content.primary)
+                            .foregroundStyle(theme.color.core.black)
                     }
                 }
                 
@@ -41,10 +41,10 @@ public struct SetAStatusView: View {
                     }) {
                         if model.isClearButtonShowing {
                             Text("Clear")
-                                .foregroundStyle(theme.color.tag.rejected)
+                                .foregroundStyle(theme.color.core.red)
                         } else {
                             Image(systemName: "checkmark")
-                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.brand.primary : theme.color.content.tertiary)
+                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.secondary.sky : theme.color.gray.primary13)
                         }
                     }
                     .alert(isPresented: Binding.constant(model.isAlertShowing)) {
@@ -70,7 +70,7 @@ struct InputStatus: View {
             HStack {
                 if model.statusInput.isEmpty {
                     Image(systemName: "smiley")
-                        .foregroundColor(theme.color.content.tertiary)
+                        .foregroundColor(theme.color.gray.primary70)
                 }  else {
                     Text("💬")
                 }
@@ -82,7 +82,7 @@ struct InputStatus: View {
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(theme.color.content.tertiary)
+                        .foregroundStyle(theme.color.gray.primary50)
                 }
             }
         }

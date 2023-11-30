@@ -17,23 +17,27 @@ public struct AvatarStatusView: View {
     }
 
     public var body: some View {
-        HStack {
+        HStack { 
             ZStack(alignment: .bottomTrailing) {
                 LeafAvatar(url: URL.documentsDirectory)
                     .avatarStyle(.evident)
                 Circle()
-                    .foregroundStyle(model.status == .active ? theme.color.brand.primary : theme.color.content.tertiary )
+                    .foregroundStyle(model.status == .active ? theme.color.core.green : theme.color.gray.primary50 )
                     .frame(width: 15, height: 15)
                     .overlay {
                         Circle()
-                            .stroke(Color.white, lineWidth: 3)
+                            .stroke(theme.color.core.white, lineWidth: 3)
                     }
             }
             VStack (alignment: .leading) {
                 Text("Cris Messias")
-                    .title()
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(theme.color.core.black)
+                    
                 Text("\(model.status == .active ? "Active": "Away")")
-                    .subtitle()
+                    .font(.headline)
+                    .foregroundStyle(theme.color.gray.primary50)
             }
             Spacer()
         }
