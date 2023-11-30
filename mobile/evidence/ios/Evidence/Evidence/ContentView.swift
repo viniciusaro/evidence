@@ -56,6 +56,7 @@ struct YouView: View {
     var body: some View {
         VStack {
             AvatarStatusView(model: model)
+                .padding(.top, 20)
             StatusView(model: model)
             Spacer()
         }

@@ -1,5 +1,5 @@
 //
-//  SetAStatusView.swift
+//  SetStatusView.swift
 //  Evidence
 //
 //  Created by Cris Messias on 09/11/23.
@@ -9,7 +9,7 @@ import SwiftUI
 import Leaf
 
 
-public struct SetAStatusView: View {
+public struct SetStatusView: View {
     @ObservedObject var model: StatusViewModel
     @Environment(\.leafTheme) private var theme
     
@@ -19,25 +19,23 @@ public struct SetAStatusView: View {
     
     public var body: some View {
         NavigationView {
-            VStack {
-                InputStatus(model: model)
-                Spacer()
+                VStack {
+                    InputStatus(model: model)
+                    Spacer()
             }
             .padding(.horizontal, 16)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        model.CloseModalButtonTapped()
+                        model.closeModalButtonTapped()
                     }) {
                         Image(systemName: "xmark")
                             .foregroundStyle(theme.color.content.primary)
                     }
                 }
-                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         model.clearOrSaveButtonTapped()
-
                     }) {
                         if model.isClearButtonShowing {
                             Text("Clear")
@@ -46,12 +44,6 @@ public struct SetAStatusView: View {
                             Image(systemName: "checkmark")
                                 .foregroundColor(!model.statusInput.isEmpty ? theme.color.brand.primary : theme.color.content.tertiary)
                         }
-                    }
-                    .alert(isPresented: Binding.constant(model.isAlertShowing)) {
-                        Alert(
-                            title: Text("✅"),
-                            message: Text("Set Status")
-                        )
                     }
                 }
             }
@@ -92,5 +84,5 @@ struct InputStatus: View {
 }
 
 #Preview {
-    SetAStatusView(model: StatusViewModel())
+    SetStatusView(model: StatusViewModel())
 }

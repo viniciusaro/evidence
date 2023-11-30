@@ -7,23 +7,7 @@
 
 import SwiftUI
 
-private struct LeafText: View {
-    var body: some View {
-        Text("Evidence")
-            .body()
-        Text("How came first, the egg or the chicken?")
-            .title()
-        Text("The chicken, sure!")
-            .subtitle()
-        Text("1 like")
-            .label()
-    }	
-}
-#Preview {
-    LeafThemeView {
-        LeafText()
-    }
-}
+
 
 //MARK: -TitleModifier
 public struct LeafTitleModifier: ViewModifier {
@@ -88,5 +72,20 @@ public struct LeafLabelModifier: ViewModifier {
 public extension Text {
     func label() -> some View {
         self.modifier(LeafLabelModifier())
+    }
+}
+
+#Preview {
+    LeafThemeView {
+        VStack {
+            Text("Evidence")
+                .body()
+            Text("How came first, the egg or the chicken?")
+                .title()
+            Text("The chicken, sure!")
+                .subtitle()
+            Text("1 like")
+                .label()
+        }
     }
 }

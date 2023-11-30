@@ -13,13 +13,13 @@ final class ProfileTests: XCTestCase {
  
     func testStatusInputButtonTrue() {
         let model = StatusViewModel()
-        model.statusInputButtonTapped()
+        model.openModalButtonTapped()
         XCTAssertTrue(model.isModalShowing)
     }
     
     func testCloseModalButtonFalse() {
         let model = StatusViewModel()
-        model.CloseModalButtonTapped()
+        model.closeModalButtonTapped()
         XCTAssertFalse(model.isModalShowing)
     }
     
@@ -29,6 +29,7 @@ final class ProfileTests: XCTestCase {
         model.clearStatusInputButtonTapped()
         XCTAssertTrue(model.statusInput.isEmpty)
         XCTAssertFalse(model.isClearButtonShowing)
+        XCTAssertTrue(model.popupState == .clear)
     }
     
     func testClearStatusInputTextFieldSuccess() {
@@ -36,15 +37,26 @@ final class ProfileTests: XCTestCase {
         model.statusInput = "Some input"
         model.clearStatusInputTextFieldTapped()
         XCTAssertTrue(model.statusInput.isEmpty)
-        XCTAssertFalse(model.isClearButtonShowing)
     }
     
     func testSaveButtonNotEmptyStatusInput() {
         let model = StatusViewModel()
         model.statusInput = "Some input"
         model.saveButtonTapped()
-        XCTAssertTrue(model.isAlertShowing)
         XCTAssertTrue(model.isClearButtonShowing)
         XCTAssertFalse(model.isModalShowing)
+        XCTAssertTrue(model.popupState == .save)
+    }
+
+    func testSaveOrClearPopupAppearsAndDisappears() {
+        let model = StatusViewModel()
+        model.saveOrClearPopupAppears()
+        XCTAssertTrue(model.offSetY == 0)
+        let expectation = XCTestExpectation(description: "Wait for offSety to be set to equal to 1000")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            XCTAssertTrue(model.offSetY == 1000)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2)
     }
 }
