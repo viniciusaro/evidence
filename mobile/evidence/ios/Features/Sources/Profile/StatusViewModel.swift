@@ -10,20 +10,20 @@ import Models
 import Leaf
 
 public class StatusViewModel: ObservableObject {
-    @Published private(set) var avatarStatus: Profile
+    @Published private(set) var status: Profile
     @Published var statusInput: String
     @Published private(set) var isModalShowing: Bool
     @Published private(set) var isClearButtonShowing: Bool
     @Published private(set) var offSetY: CGFloat
     @Published private(set) var popupState: PopupState
     
-    public init(status: Profile = .active, statusInput: String = "", showModal: Bool = false, showClearButton: Bool = false, offSetY: CGFloat = 1000, popupText: PopupState = .clear) {
-        self.avatarStatus = status
+    public init(status: Profile = .active, statusInput: String = "", showModal: Bool = false, showClearButton: Bool = false, offSetY: CGFloat = 1000, popupState: PopupState = .clear) {
+        self.status = status
         self.statusInput = statusInput
         self.isModalShowing = showModal
         self.isClearButtonShowing = showClearButton
         self.offSetY = offSetY
-        self.popupState = popupText
+        self.popupState = popupState
     }
     
     func openModalButtonTapped() {
