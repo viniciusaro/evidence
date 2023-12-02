@@ -28,9 +28,9 @@ public struct StatusView: View {
             }
             .padding(.horizontal, 16)
         }
-        .sheet(isPresented: Binding.constant(model.isModalShowing), content: {
-            SetStatusView(model: model)
-        })
+        .sheet(item: $model.setStatusViewModel) { setStatusViewModel in
+            SetStatusView(model: setStatusViewModel)
+        }
     }
 }
 
