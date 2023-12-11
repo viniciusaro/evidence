@@ -9,7 +9,7 @@ public struct Chat: Identifiable, Equatable {
     }
 }
 
-public struct Message: Identifiable, Equatable {
+public struct Message: Identifiable, Equatable, Hashable {
     public let id: UUID
     public var content: String
     public var recipient: Recipient
@@ -23,7 +23,7 @@ public struct Message: Identifiable, Equatable {
     }
 }
 
-public struct Recipient: Identifiable, Equatable {
+public struct Recipient: Identifiable, Equatable, Hashable {
     public let id = UUID()
     public let name: String
 }

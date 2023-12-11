@@ -31,6 +31,10 @@ let package = Package(
             from: "1.0.0"
         ),
         .package(
+            url: "https://github.com/pointfreeco/swift-case-paths",
+            from: "1.1.2"
+        ),
+        .package(
             url: "https://github.com/pointfreeco/swift-custom-dump",
             from: "1.1.1"
         )
@@ -41,7 +45,8 @@ let package = Package(
             dependencies: [
                 "Leaf",
                 "Models",
-                .product(name: "Dependencies", package: "swift-dependencies")
+                .product(name: "Dependencies", package: "swift-dependencies"),
+                .product(name: "CasePaths", package: "swift-case-paths")
             ]
         ),
         .testTarget(

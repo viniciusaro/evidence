@@ -4,79 +4,81 @@ import Leaf
 import Models
 import SwiftUI
 
-public struct MessageViewState: Equatable {
-    public var loading: Bool
-    public var message: Message
-    public var preview: Preview?
+public struct MessageFeature {
+    @Dependency(\.urlPreviewClient) static var urlPreviewClient
     
-    public struct Preview: Equatable {
+    public struct State: Equatable, Hashable {
+        var loading: Bool = false
+        var message: Message
+        var preview: Preview?
+        
+        public init(loading: Bool = false, message: Message, preview: Preview? = nil) {
+            self.loading = loading
+            self.message = message
+            self.preview = preview
+        }
+    }
+    
+    public struct Preview: Equatable, Hashable {
         let image: URL
         let title: String
     }
     
-    public init(
-        message: Message,
-        loading: Bool = false, 
-        preview: Preview? = nil
-    ) {
-        self.loading = loading
-        self.message = message
-        self.preview = preview
+    public enum Action {
+        case onViewAppear
+        case onPreviewLoaded(Preview)
+        case onPreviewLoadError
+    }
+    
+    public static func reducer(_ state: inout State, _ action: Action) -> Effect<Action> {
+        switch action {
+        case .onViewAppear:
+            guard let url = state.url, state.preview == nil else { return .none }
+            state.loading = true
+            return .publisher(
+                urlPreviewClient.get(url)
+                    .map { .onPreviewLoaded(.init($0)) }
+                    .replaceError(with: .onPreviewLoadError)
+                    .receive(on: DispatchQueue.main)
+            )
+            
+        case let .onPreviewLoaded(preview):
+            state.loading = false
+            state.preview = preview
+            return .none
+            
+        case .onPreviewLoadError:
+            return .none
+        }
     }
 }
 
-public class MessageViewModel: Equatable, ObservableObject, Identifiable {
-    @Published private(set) var state: MessageViewState
-    @Dependency(\.urlPreviewClient) private var urlPreviewClient
-    
-    public var id: UUID { self.state.message.id }
-    private var previewCancellable: AnyCancellable?
-    
-    public init(state: MessageViewState) {
-        self.state = state
-        self.startWithLoadingIfTheresPreview()
+extension MessageFeature.State {
+    var url: URL? {
+        let url = URL(string: message.content)
+        return url?.host() != nil ? url : nil
     }
-    
-    func onViewAppear() {
-        self.loadPreviewIfNeeded()
-    }
-    
-    private func startWithLoadingIfTheresPreview() {
-        if let url = URL(string: self.state.message.content),
-           url.host() != nil,
-           self.state.preview == nil {
-                self.state.loading = true
-        }
-    }
-    
-    private func loadPreviewIfNeeded() {
-        guard let url = URL(string: self.state.message.content),
-            url.host() != nil,
-            self.state.preview == nil else { return }
-        
-        self.state.loading = true
-        self.previewCancellable = self.urlPreviewClient.get(url)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.state.loading = false
-                guard let (image, title) = $0 else { return }
-                self?.state.preview = .init(image: image, title: title)
-            }
-    }
-    
-    public static func == (lhs: MessageViewModel, rhs: MessageViewModel) -> Bool {
-        lhs.state == rhs.state
+}
+
+extension MessageFeature.State: Identifiable {
+    public var id: UUID { self.message.id }
+}
+
+extension MessageFeature.Preview {
+    init(_ tuple: (image: URL, title: String)) {
+        self.image = tuple.image
+        self.title = tuple.title
     }
 }
 
 struct MessageView: View {
-    @ObservedObject var model: MessageViewModel
+    @ObservedObject var store: Store<MessageFeature.State, MessageFeature.Action>
     
     var body: some View {
         VStack(spacing: 16) {
-            Text(self.model.state.message.content)
+            Text(self.store.state.message.content)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            if let preview = self.model.state.preview {
+            if let preview = self.store.state.preview {
                 VStack(alignment: .leading) {
                     LeafAsyncImage(url: preview.image) { status in
                         switch status {
@@ -95,7 +97,7 @@ struct MessageView: View {
                         .lineLimit(1)
                         .font(.caption)
                 }
-            } else if self.model.state.loading {
+            } else if self.store.state.loading {
                 VStack(alignment: .leading) {
                     Rectangle()
                         .opacity(0)
@@ -107,15 +109,16 @@ struct MessageView: View {
             }
         }
         .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
-        .onAppear { self.model.onViewAppear() }
+        .onAppear { self.store.send(.onViewAppear) }
     }
 }
 
 #Preview {
     LeafThemeView {
         MessageView(
-            model: MessageViewModel(
-                state: .init(message: .link)
+            store: Store(
+                state: MessageFeature.State(message: .link),
+                reducer: MessageFeature.reducer
             )
         )
     }

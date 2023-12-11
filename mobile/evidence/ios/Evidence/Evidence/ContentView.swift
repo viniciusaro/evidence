@@ -1,8 +1,9 @@
-import SwiftUI
 import Chat
+import CasePaths
 import Profile
 import Leaf
 import Models
+import SwiftUI
 
 struct ContentView: View {
     var body: some View {
@@ -31,19 +32,25 @@ struct ContentView: View {
 struct HomeView: View {
     var body: some View {
         ChatView(
-            model: ChatViewModel(
-                state: ChatViewState(
+            store: Store(
+                state: ChatFeature.State(
                     messages: [
                         Message.vini("hi"),
                         Message.vini("hello"),
                         Message.vini("howAreYouDoing"),
                         Message.mac(id: UUID(1)),
                     ].map {
-                        MessageViewModel(
-                            state: MessageViewState(message: $0)
-                        )
+                        .init(message: $0)
                     },
                     highlightedMessageId: UUID(1)
+                ),
+                reducer: combine(
+                    ChatFeature.reducer,
+                    forEach(
+                        MessageFeature.reducer,
+                        state: \.messages,
+                        action: AnyCasePath(\ChatFeature.Action.Cases.message)
+                    )
                 )
             )
         )
