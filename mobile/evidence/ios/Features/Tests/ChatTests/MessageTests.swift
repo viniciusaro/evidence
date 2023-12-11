@@ -1,9 +1,22 @@
+import Dependencies
 import XCTest
 import TestHelper
 
 @testable import Chat
 
 class MessageTests: XCTestCase {
+    func testMemoryLeaks() {
+        withDependencies {
+            $0.urlPreviewClient = .mock
+        } operation: {
+            var viewModel: MessageViewModel? = .init(state: .init(message: .link))
+            weak var weakRef = viewModel
+            viewModel?.onViewAppear()
+            viewModel = nil
+            XCTAssertNil(weakRef)
+        }
+    }
+    
     func testOnViewAppearSuccess() {
         let image = URL(string: "url")!
         let title = "title"

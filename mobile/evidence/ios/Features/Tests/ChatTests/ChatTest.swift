@@ -7,6 +7,23 @@ import TestHelper
 
 @MainActor
 final class ChatTest: XCTestCase {
+    func testMemoryLeaks() {
+        withDependencies {
+            $0.suspendingClock = ImmediateClock()
+        } operation: {
+            var viewModel: ChatViewModel? = .init(state:
+                    .init(messages: [.link].map {
+                        .init(state: .init(message: $0)) }
+                    )
+            )
+            weak var weakRef = viewModel
+            viewModel?.onViewAppear()
+            _ = viewModel?.isHighlighted(.init(state: .init(message: .link)))
+            viewModel = nil
+            XCTAssertNil(weakRef)
+        }
+    }
+    
     func testHighlightsMessage() {
         let messages = [
             Message.vini(id: UUID(0), "Hi"),
