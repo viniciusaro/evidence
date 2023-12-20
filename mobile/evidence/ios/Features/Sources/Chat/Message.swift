@@ -3,6 +3,7 @@ import Dependencies
 import Leaf
 import Models
 import SwiftUI
+import Leaf
 
 public struct MessageViewState: Equatable {
     public var loading: Bool
@@ -71,6 +72,7 @@ public class MessageViewModel: Equatable, ObservableObject, Identifiable {
 
 struct MessageView: View {
     @ObservedObject var model: MessageViewModel
+    @Environment(\.leafTheme) private var theme
     
     var body: some View {
         VStack(spacing: 16) {
@@ -94,6 +96,7 @@ struct MessageView: View {
                     Text(preview.title)
                         .lineLimit(1)
                         .font(.caption)
+                        .foregroundStyle(theme.color.gray.primary50)
                 }
             } else if self.model.state.loading {
                 VStack(alignment: .leading) {
