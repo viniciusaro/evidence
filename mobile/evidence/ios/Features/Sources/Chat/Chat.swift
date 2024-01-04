@@ -72,10 +72,6 @@ public struct ChatFeature {
         case .scrollToMessageId:
             return .none
             
-        case let .message((.onPreviewLoaded(preview), index)):
-            state.messages[index].preview = preview
-            return .none
-        
         case .message:
             return .none
         }
