@@ -1,6 +1,6 @@
 //
 //  ProfileTests.swift
-//  
+//
 //
 //  Created by Cris Messias on 12/11/23.
 //
@@ -10,42 +10,62 @@ import XCTest
 @testable import Models
 
 final class ProfileTests: XCTestCase {
- 
-    func testStatusInputButtonTrue() {
-        let model = StatusViewModel()
-        model.openModalButtonTapped()
-        XCTAssertTrue(model.isModalShowing)
-    }
-    
-    func testCloseModalButtonFalse() {
-        let model = StatusViewModel()
-        model.closeModalButtonTapped()
-        XCTAssertFalse(model.isModalShowing)
-    }
-    
-    func testClearStatusInputButtonSuccess() {
-        let model = StatusViewModel()
-        model.statusInput = "Some input"
-        model.clearStatusInputButtonTapped()
-        XCTAssertTrue(model.statusInput.isEmpty)
-        XCTAssertFalse(model.isClearButtonShowing)
-        XCTAssertTrue(model.popupState == .clear)
-    }
-    
-    func testClearStatusInputTextFieldSuccess() {
-        let model = StatusViewModel()
-        model.statusInput = "Some input"
+
+    /// Set Status View Model
+    func testClearStatusInputTextFieldTapped() {
+        let model = SetStatusViewModel(statusInput: "Some Text")
         model.clearStatusInputTextFieldTapped()
         XCTAssertTrue(model.statusInput.isEmpty)
     }
-    
-    func testSaveButtonNotEmptyStatusInput() {
-        let model = StatusViewModel()
-        model.statusInput = "Some input"
+
+    func testClearAndSaveButtonTapped() {
+        let model = SetStatusViewModel(statusInput: "Some Text")
+        var status: String?
+        model.delegateSaveButtonTapped = { newStatus in
+            status = newStatus
+        }
+        model.clearAndSaveButtonTapped()
+        XCTAssertTrue(model.statusInput.isEmpty)
+        XCTAssertEqual(status, "")
+    }
+
+    func testSaveButtonTapped() {
+        let model = SetStatusViewModel(statusInput: "Some Text")
+        var status: String?
+        model.delegateSaveButtonTapped = { newStatus in
+            status = newStatus
+        }
         model.saveButtonTapped()
-        XCTAssertTrue(model.isClearButtonShowing)
-        XCTAssertFalse(model.isModalShowing)
-        XCTAssertTrue(model.popupState == .save)
+        XCTAssertEqual(status, model.statusInput)
+    }
+
+    func testCloseButtonTapped() {
+        let model = SetStatusViewModel()
+        var closeButtonTappedCalled = false
+        model.delegateCloseButtonTapped = {
+            closeButtonTappedCalled = true
+        }
+        model.closeButtonTapped()
+        XCTAssertTrue(closeButtonTappedCalled)
+    }
+    
+    /// Status View Model
+    func testOpenModalButtonTapped() {
+        let model = StatusViewModel()
+        model.openModalButtonTapped()
+        XCTAssertNotNil(model.setStatusViewModel)
+    }
+
+    func testCloseModalButtonTapped() {
+        let model = StatusViewModel()
+        model.closeModalButtonTapped()
+        XCTAssertNil(model.setStatusViewModel)
+    }
+
+    func testClearStatusInputButtonTapped() {
+        let model = StatusViewModel()
+        model.clearStatusInputButtonTapped()
+        XCTAssertTrue(model.statusInput.isEmpty)
     }
 
     func testSaveOrClearPopupAppearsAndDisappears() {
