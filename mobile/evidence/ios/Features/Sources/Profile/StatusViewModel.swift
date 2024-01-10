@@ -11,63 +11,60 @@ import Leaf
 
 public class StatusViewModel: ObservableObject {
     @Published private(set) var status: Profile
-    @Published var statusInput: String
-    @Published private(set) var isModalShowing: Bool
-    @Published private(set) var isClearButtonShowing: Bool
     @Published private(set) var offSetY: CGFloat
     @Published private(set) var popupState: PopupState
-    
-    public init(status: Profile = .active, statusInput: String = "", showModal: Bool = false, showClearButton: Bool = false, offSetY: CGFloat = 1000, popupState: PopupState = .clear) {
+    @Published var setStatusViewModel: SetStatusViewModel?
+    @Published var statusInput: String {
+        didSet {
+            if statusInput.isEmpty {
+                popupState = .clear
+                offSetY = 1000
+                saveOrClearPopupAppears()
+            } else {
+                popupState = .save
+                offSetY = 0
+                saveOrClearPopupAppears()
+            }
+        }
+    }
+
+    public init(
+        status: Profile = .active,
+        offSetY: CGFloat = 1000,
+        popupState: PopupState = .clear,
+        setStatusViewModel: SetStatusViewModel? = nil,
+        statusInput: String = ""
+    ) {
         self.status = status
-        self.statusInput = statusInput
-        self.isModalShowing = showModal
-        self.isClearButtonShowing = showClearButton
         self.offSetY = offSetY
         self.popupState = popupState
+        self.setStatusViewModel = setStatusViewModel
+        self.statusInput = statusInput
     }
-    
+
     func openModalButtonTapped() {
-        isModalShowing = true
+        setStatusViewModel = SetStatusViewModel(statusInput: statusInput)
+        setStatusViewModel?.delegateSaveButtonTapped = { newStatus in
+            self.statusInput = newStatus
+            self.setStatusViewModel = nil
+        }
+        setStatusViewModel?.delegateCloseButtonTapped = {
+            self.setStatusViewModel = nil
+        }
     }
-    
+
     func closeModalButtonTapped() {
-        isModalShowing = false
+        setStatusViewModel = nil
     }
-    
+
     func clearStatusInputButtonTapped() {
         statusInput = ""
-        isClearButtonShowing = false
-        popupState = .clear
-        saveOrClearPopupAppears()
     }
-    
-    func clearStatusInputTextFieldTapped() {
-        statusInput = ""
-        isClearButtonShowing = false
-    }
-    
-    func clearOrSaveButtonTapped() {
-        if isClearButtonShowing {
-            clearStatusInputTextFieldTapped()
-        } else {
-            saveButtonTapped()
-        }
-    }
-    
-    func saveButtonTapped() {
-        if !statusInput.isEmpty {
-            isClearButtonShowing = true
-            isModalShowing = false
-            popupState = .save
-            saveOrClearPopupAppears()
-        }
-    }
-    
+
     func saveOrClearPopupAppears() {
         offSetY = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.offSetY = 1000
         }
     }
-    
 }

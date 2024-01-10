@@ -10,52 +10,58 @@ import Leaf
 
 
 public struct SetStatusView: View {
-    @ObservedObject var model: StatusViewModel
+    @ObservedObject var model: SetStatusViewModel
     @Environment(\.leafTheme) private var theme
-    
-    public init(model: StatusViewModel) {
+
+    public init(model: SetStatusViewModel) {
         self.model = model
     }
-    
+
     public var body: some View {
         NavigationView {
-                VStack {
-                    InputStatus(model: model)
-                    Spacer()
+            VStack {
+                InputStatus(model: model)
+                Spacer()
             }
             .padding(.horizontal, 16)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        model.closeModalButtonTapped()
+                        model.closeButtonTapped()
                     }) {
                         Image(systemName: "xmark")
                             .foregroundStyle(theme.color.core.black)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        model.clearOrSaveButtonTapped()
-                    }) {
-                        if model.isClearButtonShowing {
+                    if model.isClearButtonShowing {
+                        Button(action: {
+                            model.clearAndSaveButtonTapped()
+                        }, label: {
                             Text("Clear")
-                                .foregroundStyle(theme.color.core.red)
-                        } else {
+                                .foregroundStyle(theme.color.tag.rejected)
+                        })
+                    } else {
+                        Button(action: {
+                            model.saveButtonTapped()
+                        }, label: {
                             Image(systemName: "checkmark")
-                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.secondary.sky : theme.color.gray.primary13)
-                        }
+                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.brand.primary : theme.color.content.tertiary
+                                )
+                        })
+
+                        .navigationBarTitle("Set a Status", displayMode: .inline)
                     }
                 }
             }
-            .navigationBarTitle("Set a Status", displayMode: .inline)
         }
     }
 }
 
 struct InputStatus: View {
-    @ObservedObject var model: StatusViewModel
+    @ObservedObject var model: SetStatusViewModel
     @Environment(\.leafTheme) private var theme
-    
+
     var body: some View {
         Divider()
         HStack {
@@ -84,5 +90,5 @@ struct InputStatus: View {
 }
 
 #Preview {
-    SetStatusView(model: StatusViewModel())
+    SetStatusView(model: SetStatusViewModel())
 }
