@@ -17,7 +17,7 @@ public struct LeafTitleModifier: ViewModifier {
             .font(theme.font.titleLarge)
             .bold()
             .lineSpacing(theme.size.lineSpacingTitle)
-            .foregroundStyle(theme.color.core.black)
+            .foregroundStyle(theme.color.system.primary)
 
     }
 }
@@ -34,7 +34,7 @@ public struct LeafSubtitleModifier: ViewModifier {
         content
             .font(theme.font.subtitle)
             .bold()
-            .foregroundStyle(theme.color.core.black)
+            .foregroundStyle(theme.color.system.primary)
 
     }
 }
@@ -50,7 +50,7 @@ public struct LeafBodyModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .font(theme.font.body)
-            .foregroundStyle(theme.color.core.black)
+            .foregroundStyle(theme.color.system.primary)
     }
 }
 public extension Text {
@@ -66,7 +66,7 @@ public struct LeafLabelModifier: ViewModifier {
         content
             .font(theme.font.label)
             .bold()
-            .foregroundStyle(theme.color.gray.primary50)
+            .foregroundStyle(theme.color.system.secondary)
     }
 }
 public extension Text {

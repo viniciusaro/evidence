@@ -24,23 +24,23 @@ public struct LeafTag: View {
             case .open:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.core.green)
-                    .background(theme.color.core.green.opacity(0.1))
+                    .foregroundColor(theme.color.system.successGreen)
+                    .background(theme.color.system.successGreen.opacity(0.1))
             case .accepted:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.core.blue)
-                    .background(theme.color.core.blue.opacity(0.1))
+                    .foregroundColor(theme.color.system.alert)
+                    .background(theme.color.system.alert.opacity(0.1))
             case .rejected:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.core.red)
-                    .background(theme.color.core.red.opacity(0.1))
+                    .foregroundColor(theme.color.system.error)
+                    .background(theme.color.system.error.opacity(0.1))
             case .closed:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.gray.primary50)
-                    .background(theme.color.gray.primary50.opacity(0.1))
+                    .foregroundColor(theme.color.system.secondary)
+                    .background(theme.color.system.secondary.opacity(0.1))
             }
         }
         .cornerRadius(20)

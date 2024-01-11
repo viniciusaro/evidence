@@ -22,22 +22,22 @@ public struct AvatarStatusView: View {
                 LeafAvatar(url: URL.documentsDirectory)
                     .avatarStyle(.evident)
                 Circle()
-                    .foregroundStyle(model.status == .active ? theme.color.core.green : theme.color.gray.primary50 )
+                    .foregroundStyle(model.status == .active ? theme.color.system.successGreen : theme.color.system.secondary )
                     .frame(width: 15, height: 15)
                     .overlay {
                         Circle()
-                            .stroke(theme.color.core.white, lineWidth: 3)
+                            .stroke(Color(.white), lineWidth: 3)
                     }
             }
             VStack (alignment: .leading) {
                 Text("Cris Messias")
                     .font(.title)
                     .bold()
-                    .foregroundStyle(theme.color.core.black)
-                    
+                    .foregroundStyle(theme.color.system.primary)
+
                 Text("\(model.status == .active ? "Active": "Away")")
                     .font(.headline)
-                    .foregroundStyle(theme.color.gray.primary50)
+                    .foregroundStyle(theme.color.system.secondary)
             }
             Spacer()
         }

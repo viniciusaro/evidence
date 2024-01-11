@@ -30,7 +30,7 @@ public struct SetStatusView: View {
                         model.closeButtonTapped()
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.core.black)
+                            .foregroundStyle(theme.color.system.primary)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -39,17 +39,16 @@ public struct SetStatusView: View {
                             model.clearAndSaveButtonTapped()
                         }, label: {
                             Text("Clear")
-                                .foregroundStyle(theme.color.tag.rejected)
+                                .foregroundStyle(theme.color.system.error)
                         })
                     } else {
                         Button(action: {
                             model.saveButtonTapped()
                         }, label: {
                             Image(systemName: "checkmark")
-                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.brand.primary : theme.color.content.tertiary
+                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.system.successBlue: theme.color.system.secondary
                                 )
                         })
-
                         .navigationBarTitle("Set a Status", displayMode: .inline)
                     }
                 }
@@ -68,7 +67,7 @@ struct InputStatus: View {
             HStack {
                 if model.statusInput.isEmpty {
                     Image(systemName: "smiley")
-                        .foregroundColor(theme.color.gray.primary70)
+                        .foregroundColor(theme.color.system.secondary)
                 }  else {
                     Text("💬")
                 }
@@ -80,7 +79,7 @@ struct InputStatus: View {
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(theme.color.gray.primary50)
+                        .foregroundStyle(theme.color.system.secondary)
                 }
             }
         }

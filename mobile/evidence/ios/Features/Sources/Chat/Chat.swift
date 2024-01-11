@@ -79,7 +79,7 @@ public struct ChatView: View {
                         MessageView(model: messageModel)
                             .background(
                                 self.model.isHighlighted(messageModel) ?
-                                self.theme.color.secondary.sandbar : nil
+                                self.theme.color.system.alert : nil
                             )
                             .animation(
                                 Animation.easeIn,
