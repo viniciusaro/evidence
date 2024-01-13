@@ -72,6 +72,7 @@ struct InputStatus: View {
                     Text("💬")
                 }
                 TextField("What's your status?", text: $model.statusInput)
+                    .font(.bodyLeaf)
             }
             Spacer()
             Button(action: {
@@ -90,4 +91,5 @@ struct InputStatus: View {
 
 #Preview {
     SetStatusView(model: SetStatusViewModel())
+        .previewCustomFonts()
 }

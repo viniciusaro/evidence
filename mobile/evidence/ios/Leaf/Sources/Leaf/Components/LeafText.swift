@@ -14,7 +14,7 @@ public struct LeafTitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-            .font(theme.font.titleLarge)
+//            .font(theme.font.titleLarge)
             .bold()
             .lineSpacing(theme.size.lineSpacingTitle)
             .foregroundStyle(theme.color.system.primary)
@@ -32,7 +32,7 @@ public struct LeafSubtitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-            .font(theme.font.subtitle)
+//            .font(theme.font.subtitle)
             .bold()
             .foregroundStyle(theme.color.system.primary)
 
@@ -49,7 +49,7 @@ public struct LeafBodyModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-            .font(theme.font.body)
+//            .font(theme.font.body)
             .foregroundStyle(theme.color.system.primary)
     }
 }
@@ -64,7 +64,7 @@ public struct LeafLabelModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-            .font(theme.font.label)
+//            .font(theme.font.label)
             .bold()
             .foregroundStyle(theme.color.system.secondary)
     }

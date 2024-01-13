@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct LeafTheme {
     public let color: Color
-    public let font: Font
     public let size: Size
 }
 
@@ -29,18 +28,8 @@ extension LeafTheme {
 }
 
 extension LeafTheme {
-    public struct Font {
-        public let title: SwiftUI.Font
-        public let titleLarge: SwiftUI.Font
-        public let titleXLarge: SwiftUI.Font
-        public let subtitle: SwiftUI.Font
-        public let body: SwiftUI.Font
-        public let label: SwiftUI.Font
-    }
-}
-
-extension LeafTheme {
     public struct Size {
         public let lineSpacingTitle: SwiftUI.CGFloat
     }
 }
+

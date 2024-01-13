@@ -29,7 +29,10 @@ let package = Package(
             name: "Leaf",
             dependencies: [
                 .product(name: "Dependencies", package: "swift-dependencies")
-            ]
+            ],
+            resources: [
+                .process("Components/Fonts")
+                ]
         ),
         .testTarget(
             name: "LeafTests",

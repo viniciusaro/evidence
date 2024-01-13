@@ -95,7 +95,6 @@ struct MessageView: View {
                     }
                     Text(preview.title)
                         .lineLimit(1)
-                        .font(.caption)
                         .foregroundStyle(theme.color.system.primary)
                 }
             } else if self.model.state.loading {
@@ -105,7 +104,7 @@ struct MessageView: View {
                         .frame(height: 100)
                     Text("loading")
                         .redacted(reason: .placeholder)
-                        .font(.caption)
+                        .font(.bodyLeaf)
                 }
             }
         }
@@ -122,4 +121,5 @@ struct MessageView: View {
             )
         )
     }
+    .previewCustomFonts()
 }

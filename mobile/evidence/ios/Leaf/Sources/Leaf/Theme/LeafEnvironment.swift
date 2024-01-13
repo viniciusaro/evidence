@@ -27,14 +27,6 @@ public let defaultLeafTheme = LeafTheme(
             floatButton: Color(red: 74/255, green: 21/255, blue: 75/255)
         )
     ),
-    font: LeafTheme.Font(
-        title: .title2,
-        titleLarge: .title,
-        titleXLarge: .largeTitle,
-        subtitle: .headline,
-        body: .body,
-        label: .caption
-    ),
     size: LeafTheme.Size(
         lineSpacingTitle: 0.2
     )
@@ -55,14 +47,6 @@ public let darkLeafTheme = LeafTheme(
             topBar: Color(red: 74/255, green: 21/255, blue: 75/255),
             floatButton: Color(red: 74/255, green: 21/255, blue: 75/255)
         )
-    ),
-    font: LeafTheme.Font(
-        title: .title2,
-        titleLarge: .title,
-        titleXLarge: .largeTitle,
-        subtitle: .headline,
-        body: .body,
-        label: .caption
     ),
     size: LeafTheme.Size(
         lineSpacingTitle: 0.2

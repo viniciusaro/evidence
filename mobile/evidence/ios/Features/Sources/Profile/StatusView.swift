@@ -49,7 +49,7 @@ struct StatusButtonView: View {
                 
                 Text(model.statusInput.isEmpty ? "What's your status?" : model.statusInput)
                     .foregroundColor(model.statusInput.isEmpty ? theme.color.system.secondary : theme.color.system.primary)
-                    .body()
+                    .font(.bodyLeaf)
             }
             Spacer()
             
@@ -73,4 +73,5 @@ struct StatusButtonView: View {
 
 #Preview {
     StatusView(model: StatusViewModel())
+        .previewCustomFonts()
 }

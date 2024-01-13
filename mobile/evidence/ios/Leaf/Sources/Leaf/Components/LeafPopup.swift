@@ -32,6 +32,7 @@ public enum PopupState {
 }
 
 struct PopupView: View {
+    @Environment(\.leafTheme) private var theme
     private var image: String
     private var text: String
     
@@ -43,13 +44,14 @@ struct PopupView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
-                .foregroundColor(Color.black)
+                .foregroundStyle(theme.color.system.primary)
                 .opacity(0.7)
             VStack {
                 Image(systemName: image)
                     .font(.system(size: 56, weight: .semibold))
                     .padding(8)
                 Text(text)
+                    .font(.bodyLeaf)
             }
             .foregroundStyle(.white)
         }
@@ -58,4 +60,5 @@ struct PopupView: View {
 
 #Preview {
     LeafPopup(state: .save)
+        .previewCustomFonts()
 }

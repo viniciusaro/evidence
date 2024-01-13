@@ -14,7 +14,7 @@ private struct LeafPrimaryButton: View {
     
     var body: some View {
         configuration
-            .label.font(theme.font.body)
+            .label.font(.bodyLeaf)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
             .foregroundColor(theme.color.custom.floatButton)
             .buttonBorderShape(.roundedRectangle)
@@ -29,6 +29,8 @@ private struct LeafPrimaryButton: View {
     LeafThemeView {
         Button("Evidence") {
             
-        }.buttonStyle(LeafPrimaryButtonStyle())
+        }
+        .buttonStyle(LeafPrimaryButtonStyle())
+        .previewCustomFonts()
     }
 }

@@ -91,6 +91,8 @@ public struct ChatView: View {
             }
             .scrollPosition(id: self.$model.state.scrollToMessageId)
             .navigationTitle("Chat")
+            .font(.bodyLeaf)
+            .foregroundStyle(theme.color.system.primary)
         }
         .onAppear { self.model.onViewAppear() }
     }
@@ -138,4 +140,5 @@ public struct ChatView: View {
             )
         )
     )
+    .previewCustomFonts()
 }

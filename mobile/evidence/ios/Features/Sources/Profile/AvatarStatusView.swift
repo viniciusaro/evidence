@@ -31,21 +31,20 @@ public struct AvatarStatusView: View {
             }
             VStack (alignment: .leading) {
                 Text("Cris Messias")
-                    .font(.title)
-                    .bold()
+                    .font(.titleBoldLeaf)
                     .foregroundStyle(theme.color.system.primary)
 
                 Text("\(model.status == .active ? "Active": "Away")")
-                    .font(.headline)
+                    .font(.subtitleRegularLeaf)
                     .foregroundStyle(theme.color.system.secondary)
             }
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.bottom, 30)
     }
 }    
 
 #Preview {
     AvatarStatusView(model: StatusViewModel())
+        .previewCustomFonts()
 }
