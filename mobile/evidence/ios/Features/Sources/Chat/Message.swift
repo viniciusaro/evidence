@@ -78,6 +78,7 @@ struct MessageView: View {
         VStack(spacing: 16) {
             Text(self.model.state.message.content)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .body()
             if let preview = self.model.state.preview {
                 VStack(alignment: .leading) {
                     LeafAsyncImage(url: preview.image) { status in
@@ -94,6 +95,7 @@ struct MessageView: View {
                         }
                     }
                     Text(preview.title)
+                        .link()
                         .lineLimit(1)
                         .foregroundStyle(theme.color.system.primary)
                 }
@@ -104,7 +106,7 @@ struct MessageView: View {
                         .frame(height: 100)
                     Text("loading")
                         .redacted(reason: .placeholder)
-                        .font(.bodyLeaf)
+                        .body()
                 }
             }
         }

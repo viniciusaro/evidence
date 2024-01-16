@@ -14,14 +14,12 @@ public struct LeafTitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-//            .font(theme.font.titleLarge)
-            .bold()
-            .lineSpacing(theme.size.lineSpacingTitle)
+            .font(.custom("Lato-Black", size: 20))
             .foregroundStyle(theme.color.system.primary)
 
     }
 }
-public extension Text {
+public extension View {
     func title() -> some View {
         self.modifier(LeafTitleModifier())
     }
@@ -32,13 +30,12 @@ public struct LeafSubtitleModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-//            .font(theme.font.subtitle)
-            .bold()
-            .foregroundStyle(theme.color.system.primary)
+            .font(.custom("Lato-Regular", size: 17))
+            .foregroundStyle(theme.color.system.secondary)
 
     }
 }
-public extension Text {
+public extension View {
     func subtitle() -> some View {
         self.modifier(LeafSubtitleModifier())
     }
@@ -49,13 +46,30 @@ public struct LeafBodyModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-//            .font(theme.font.body)
+            .font(.custom("Lato-Regular", size: 17))
             .foregroundStyle(theme.color.system.primary)
     }
 }
-public extension Text {
+public extension View {
     func body() -> some View {
         self.modifier(LeafBodyModifier())
+    }
+}
+
+//MARK: - LinkModifier
+public struct LeafLinkModifier: ViewModifier {
+    @Environment(\.leafTheme) private var theme
+    public func body(content: Content) -> some View {
+        content
+            .font(.custom("Lato-Bold", size: 17))
+            .bold()
+            .foregroundStyle(theme.color.system.link)
+    }
+}
+
+public extension View {
+    func link() -> some View {
+        self.modifier(LeafLinkModifier())
     }
 }
 
@@ -64,29 +78,32 @@ public struct LeafLabelModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-//            .font(theme.font.label)
-            .bold()
+            .font(.custom("Lato-Light", size: 14))
             .foregroundStyle(theme.color.system.secondary)
     }
 }
-public extension Text {
+public extension View {
     func label() -> some View {
         self.modifier(LeafLabelModifier())
     }
 }
 
+
 #Preview {
     LeafThemeView {
         VStack(alignment: .leading) {
-            Text("Secondary palette20")
+            Text("Cris Messias")
                 .title()
-            Text("Usage")
+            Text("Away")
                 .subtitle()
-            Text("We give our core palette more dimension with a set of vibrant, sophisticated colors heavily featured in our photography and illustration.")
+                .padding(.bottom, 12)
+            Text("I am not crazy! I am freeeeeee!")
                 .body()
-            Text("1 like")
+            Text("I am not crazy! I am freeeeeee!")
+                .link()
+            Text("1 hours ago")
                 .label()
         }
-        .padding(20)
     }
+    .previewCustomFonts()
 }

@@ -31,11 +31,11 @@ public struct AvatarStatusView: View {
             }
             VStack (alignment: .leading) {
                 Text("Cris Messias")
-                    .font(.titleBoldLeaf)
+                    .title()
                     .foregroundStyle(theme.color.system.primary)
 
                 Text("\(model.status == .active ? "Active": "Away")")
-                    .font(.subtitleRegularLeaf)
+                    .subtitle()
                     .foregroundStyle(theme.color.system.secondary)
             }
             Spacer()

@@ -57,8 +57,7 @@ extension Text {
     func tagStyle() -> some View {
         self
             .textCase(.uppercase)
-            .font(.headlineLightLeaf)
-            .bold()
+            .font(.custom("Lato-Bold", size: 12))
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
     }
 }

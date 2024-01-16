@@ -51,7 +51,8 @@ struct PopupView: View {
                     .font(.system(size: 56, weight: .semibold))
                     .padding(8)
                 Text(text)
-                    .font(.bodyLeaf)
+//                    .font(.bodyLeaf)
+                    .body()
             }
             .foregroundStyle(.white)
         }

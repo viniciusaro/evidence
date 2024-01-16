@@ -72,7 +72,7 @@ struct InputStatus: View {
                     Text("💬")
                 }
                 TextField("What's your status?", text: $model.statusInput)
-                    .font(.bodyLeaf)
+                    .body()
             }
             Spacer()
             Button(action: {
