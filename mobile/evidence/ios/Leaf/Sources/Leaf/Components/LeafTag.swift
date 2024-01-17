@@ -24,8 +24,8 @@ public struct LeafTag: View {
             case .open:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.system.successGreen)
-                    .background(theme.color.system.successGreen.opacity(0.1))
+                    .foregroundColor(theme.color.system.success)
+                    .background(theme.color.system.success.opacity(0.1))
             case .accepted:
                 Text(text)
                     .tagStyle()
@@ -39,8 +39,8 @@ public struct LeafTag: View {
             case .closed:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.system.secondary)
-                    .background(theme.color.system.secondary.opacity(0.1))
+                    .foregroundColor(theme.color.font.secondary)
+                    .background(theme.color.font.secondary.opacity(0.1))
             }
         }
         .cornerRadius(20)

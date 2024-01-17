@@ -15,6 +15,6 @@ public struct LeafThemeView<C: View>: View {
     public var body: some View {
         childView
             .environment(\.leafTheme, theme)
-            .tint(theme.color.system.primary)
+            .tint(theme.color.font.primary)
     }
 }

@@ -30,7 +30,7 @@ public struct SetStatusView: View {
                         model.closeButtonTapped()
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.system.primary)
+                            .foregroundStyle(theme.color.font.primary)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -46,7 +46,7 @@ public struct SetStatusView: View {
                             model.saveButtonTapped()
                         }, label: {
                             Image(systemName: "checkmark")
-                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.system.successBlue: theme.color.system.secondary
+                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.system.success: theme.color.font.secondary
                                 )
                         })
                         .navigationBarTitle("Set a Status", displayMode: .inline)
@@ -67,7 +67,7 @@ struct InputStatus: View {
             HStack {
                 if model.statusInput.isEmpty {
                     Image(systemName: "smiley")
-                        .foregroundColor(theme.color.system.secondary)
+                        .foregroundColor(theme.color.font.secondary)
                 }  else {
                     Text("💬")
                 }
@@ -80,7 +80,7 @@ struct InputStatus: View {
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(theme.color.system.secondary)
+                        .foregroundStyle(theme.color.font.secondary)
                 }
             }
         }

@@ -13,12 +13,15 @@ extension EnvironmentValues {
 
 public let defaultLeafTheme = LeafTheme(
     color: LeafTheme.Color(
-        system: LeafTheme.SystemColors(
+        font: LeafTheme.FontColors(
             primary: Color(red: 29/255, green: 28/255, blue: 29/255),
-            secondary: Color(red: 134/255, green: 134/255, blue: 134/255),
-            link: Color(red: 54/255, green: 197/255, blue: 240/255),
-            successGreen: Color(red: 46/255, green: 182/255, blue: 125/255),
-            successBlue: Color(red: 14/255, green: 157/255, blue: 211/255),
+            secondary: Color(red: 29/255, green: 28/255, blue: 29/255, opacity: 0.7),
+            link: Color(red: 18/255, green: 100/255, blue: 163/255)
+        ),
+        system: LeafTheme.SystemColors(
+            buttonPrimary: Color(red: 0/255, green: 122/255, blue: 90/255),
+            avatarActive: Color(red: 46/255, green: 182/255, blue: 125/255),
+            success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
             error: Color(red: 224/255, green: 30/255, blue: 90/255)
         ),
@@ -34,12 +37,15 @@ public let defaultLeafTheme = LeafTheme(
 
 public let darkLeafTheme = LeafTheme(
     color: LeafTheme.Color(
-        system: LeafTheme.SystemColors(
+        font: LeafTheme.FontColors(
             primary: Color(red: 255/255, green: 255/255, blue: 255/255),
             secondary: Color(red: 244/255, green: 237/255, blue: 228/255),
-            link: Color(red: 54/255, green: 197/255, blue: 240/255),
-            successGreen: Color(red: 46/255, green: 182/255, blue: 125/255),
-            successBlue: Color(red: 14/255, green: 157/255, blue: 211/255),
+            link: Color(red: 18/255, green: 100/255, blue: 163/255)
+        ),
+        system: LeafTheme.SystemColors(
+            buttonPrimary: Color(red: 0/255, green: 122/255, blue: 90/255),
+            avatarActive: Color(red: 46/255, green: 182/255, blue: 125/255),
+            success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
             error: Color(red: 224/255, green: 30/255, blue: 90/255)
         ),
