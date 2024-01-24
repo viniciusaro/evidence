@@ -15,18 +15,18 @@ public struct LoginEmailView: View {
     public var body: some View {
         NavigationStack {
             Divider()
-            VStack(spacing: 16) {
+            VStack(spacing: 32) {
                 EmailInput(model: model)
-                PassowrdInput(model: model)
-                    .padding(.bottom, 24)
+                Text("We will send you an email to confirm your address")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .subtitle()
                 Button("Log in") {
-
+                    //Authentication
                 }
                 .buttonStyle(LeafPrimaryButton())
                 Spacer()
             }
-            .padding([.leading,.trailing], 16)
-            .padding(.top, 16)
+            .padding(.top, 24)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
@@ -37,6 +37,7 @@ public struct LoginEmailView: View {
                     }
                 }
             }
+            .padding([.leading,.trailing], 16)
             .navigationTitle("Log in with email")
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -56,7 +57,7 @@ struct EmailInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Enter your email")
-                .label()
+                .body()
             HStack {
                 TextField("nom@email", text: $model.emailInput)
                     .textInputAutocapitalization(.never)
@@ -85,37 +86,3 @@ struct EmailInput: View {
     }
 }
 
-struct PassowrdInput: View {
-    @Environment(\.leafTheme) private var theme
-    @ObservedObject var model: LoginEmailViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Enter your password")
-                .label()
-            HStack {
-                SecureField("my password", text: $model.passwordInput)
-                    .autocorrectionDisabled(true)
-                    .foregroundStyle(theme.color.font.primary)
-                    .body()
-                    .frame(height: 50)
-                Button(action: {
-                    withAnimation {
-                        model.isPasswordSecureTapped()
-                    }
-                }){
-                    if !model.passwordInput.isEmpty {
-                        Image(systemName: model.isPasswordSecure ? "eye.slash" : "eye")
-                            .foregroundStyle(theme.color.font.secondary)
-                    }
-                }
-            }
-            .padding([.leading, .trailing], 16)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(theme.color.font.secondary, lineWidth: 0.5)
-            }
-
-        }
-    }
-}

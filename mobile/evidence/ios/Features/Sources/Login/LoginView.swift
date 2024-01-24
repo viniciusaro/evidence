@@ -22,16 +22,12 @@ public struct LoginView: View {
                 .foregroundStyle(.white)
                 .font(.custom("Lato-Bold", size: 26))
                 .padding(EdgeInsets(.init(top: 40, leading: 16, bottom: 0, trailing: 16)))
-
             Spacer()
-
             Image("login-image")
                 .resizable()
                 .scaledToFit()
                 .padding(.leading, 20)
-
             Spacer()
-
             Button("Getting started") {
                 model.openModalTapped()
             }

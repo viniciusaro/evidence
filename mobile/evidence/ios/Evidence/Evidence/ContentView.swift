@@ -8,7 +8,7 @@ import Login
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
     var body: some View {
-        /*@START_MENU_TOKEN@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
+        LoginTestView()
     }
 }
 
