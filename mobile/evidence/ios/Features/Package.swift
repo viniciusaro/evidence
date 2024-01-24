@@ -22,6 +22,10 @@ let package = Package(
         .library(
             name: "TestHelper",
             targets: ["TestHelper"]),
+        .library(
+            name: "Login",
+            targets: ["Login"]
+        )
     ],
     
     dependencies: [
@@ -67,6 +71,14 @@ let package = Package(
                 .product(name: "CustomDump", package: "swift-custom-dump"),
                 .product(name: "Dependencies", package: "swift-dependencies")
             ]
+        ),
+        .target(
+            name: "Login",
+            dependencies: ["Leaf", "Models"]
+        ),
+        .testTarget(
+            name: "LoginTests",
+            dependencies: ["Leaf", "Models", "Login"]
         ),
     ]
 )

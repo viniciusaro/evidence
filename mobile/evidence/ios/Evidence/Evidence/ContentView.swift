@@ -3,24 +3,12 @@ import Chat
 import Profile
 import Leaf
 import Models
+import Login
 
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
     var body: some View {
-        TabView() {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-            
-            YouView()
-                .tabItem {
-                    Image(systemName: "face.dashed")
-                    Text("You")
-                }
-        }
-        .tint(theme.color.font.primary)
+        /*@START_MENU_TOKEN@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
     }
 }
 
@@ -62,5 +50,12 @@ struct YouView: View {
             StatusView(model: model)
             Spacer()
         }
+    }
+}
+
+struct LoginTestView: View {
+    @StateObject var model = LoginViewModel()
+    var body: some View {
+        LoginView(model: model)
     }
 }
