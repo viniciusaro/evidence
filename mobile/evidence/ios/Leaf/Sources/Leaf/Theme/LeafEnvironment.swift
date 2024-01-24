@@ -16,6 +16,7 @@ public let defaultLeafTheme = LeafTheme(
         font: LeafTheme.FontColors(
             primary: Color(red: 29/255, green: 28/255, blue: 29/255),
             secondary: Color(red: 29/255, green: 28/255, blue: 29/255, opacity: 0.7),
+            white: Color(red: 255/255, green: 255/255, blue: 255/255),
             link: Color(red: 18/255, green: 100/255, blue: 163/255)
         ),
         system: LeafTheme.SystemColors(
@@ -24,6 +25,10 @@ public let defaultLeafTheme = LeafTheme(
             success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
             error: Color(red: 224/255, green: 30/255, blue: 90/255)
+        ),
+        brand: LeafTheme.BrandColors(
+            aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),
+            blueGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
         ),
         custom: LeafTheme.CustomThemeColors(
             topBar: Color(red: 74/255, green: 21/255, blue: 75/255),
@@ -40,6 +45,7 @@ public let darkLeafTheme = LeafTheme(
         font: LeafTheme.FontColors(
             primary: Color(red: 255/255, green: 255/255, blue: 255/255),
             secondary: Color(red: 244/255, green: 237/255, blue: 228/255),
+            white: Color(red: 255/255, green: 255/255, blue: 255/255),
             link: Color(red: 18/255, green: 100/255, blue: 163/255)
         ),
         system: LeafTheme.SystemColors(
@@ -48,6 +54,10 @@ public let darkLeafTheme = LeafTheme(
             success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
             error: Color(red: 224/255, green: 30/255, blue: 90/255)
+        ),
+        brand: LeafTheme.BrandColors(
+            aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),
+            blueGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
         ),
         custom: LeafTheme.CustomThemeColors(
             topBar: Color(red: 74/255, green: 21/255, blue: 75/255),

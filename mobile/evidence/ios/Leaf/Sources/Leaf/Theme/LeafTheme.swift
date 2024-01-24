@@ -9,13 +9,20 @@ extension LeafTheme {
     public struct Color {
         public let font: FontColors
         public let system: SystemColors
+        public let brand: BrandColors
         public let custom: CustomThemeColors
     }
 
     public struct FontColors {
         public let primary: SwiftUI.Color
         public let secondary: SwiftUI.Color
+        public let white: SwiftUI.Color
         public let link: SwiftUI.Color
+    }
+
+    public struct BrandColors {
+        public let aubergine: SwiftUI.Color
+        public let blueGoogle: SwiftUI.Color
     }
 
     public struct SystemColors {
