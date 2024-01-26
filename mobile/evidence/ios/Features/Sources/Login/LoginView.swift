@@ -9,11 +9,11 @@ import SwiftUI
 import Leaf
 
 public struct LoginView: View {
-    @ObservedObject var model: LoginViewModel
+    @ObservedObject var viewModel: LoginViewModel
     @Environment(\.leafTheme) private var theme
 
     public init(model: LoginViewModel) {
-        self.model = model
+        self.viewModel = model
     }
 
     public var body: some View {
@@ -21,21 +21,21 @@ public struct LoginView: View {
             Text("Slack brings teams together, wherever you are")
                 .foregroundStyle(.white)
                 .font(.custom("Lato-Bold", size: 26))
-                .padding(EdgeInsets(.init(top: 40, leading: 16, bottom: 0, trailing: 16)))
+                .padding(EdgeInsets(top: 40, leading: 16, bottom: 0, trailing: 16))
             Spacer()
             Image("login-image")
                 .resizable()
                 .scaledToFit()
                 .padding(.leading, 20)
             Spacer()
-            Button("Getting started") {
-                model.openModalTapped()
+            Button("Getting Started") {
+                viewModel.openModalTapped()
             }
             .buttonStyle(LeafSecondaryButton())
-            .padding(.bottom,40)
-            .sheet(isPresented: $model.showLoginTypes) {
-                LoginDifferentTypes(model: model)
-                    .presentationDetents([.height(300)])
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
+            .sheet(isPresented: $viewModel.showLoginTypes) {
+                LoginDifferentTypes(model: viewModel)
+                    .presentationDetents([.height(220)])
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -47,7 +47,6 @@ public struct LoginView: View {
 #Preview {
     LoginView(model: LoginViewModel())
         .previewCustomFonts()
-
 }
 
 
@@ -59,7 +58,7 @@ struct LoginDifferentTypes: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                Button("Start with Gmail") {
+                Button("Continue with Gmail") {
                     model.showModalGoogle = true //model
                 }
                 .buttonStyle(LeafGoogleLoginButton())
@@ -67,21 +66,22 @@ struct LoginDifferentTypes: View {
 
                 }
 
-                Button("Start with Email") {
+                Button("Continue with Email") {
                     model.buttonLoginEmailTapped()
                 }
                 .buttonStyle(LeafPrimaryButton())
                 .sheet(item: $model.loginEmailViewModel) { loginEmailViewModel in
-                    LoginEmailView(model: loginEmailViewModel)
+                    LoginEmailView(viewModel: loginEmailViewModel)
 
                 }
             }
+            .padding([.leading, .trailing], 16)
         }
     }
 }
 
-#Preview {
-    LoginDifferentTypes(model: LoginViewModel())
-        .previewCustomFonts()
-
-}
+//#Preview {
+//    LoginDifferentTypes(model: LoginViewModel())
+//        .previewCustomFonts()
+//
+//}

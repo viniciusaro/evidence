@@ -13,7 +13,6 @@ public class LoginViewModel: ObservableObject {
     @Published var showModalEmail: Bool
     @Published var loginEmailViewModel: LoginEmailViewModel?
 
-
     public init(
         showLoginTypes: Bool = false,
         showModalGoogle: Bool = false,

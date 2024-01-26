@@ -7,15 +7,20 @@
 
 import Foundation
 
+
 public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Published var emailInput: String
-    @Published var isPasswordSecure: Bool
+    @Published var emailValid: Bool
+    @Published var buttonPressed: Bool
+    @Published var isFocused: Bool
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
-
-    public init(emailInput: String = "", showPasswordInput: Bool = false) {
+    
+    public init(emailInput: String = "", emailValid: Bool = false, buttonPressed: Bool = false, isFocused: Bool = false) {
         self.emailInput = emailInput
-        self.isPasswordSecure = showPasswordInput
+        self.emailValid = emailValid
+        self.buttonPressed = buttonPressed
+        self.isFocused = isFocused
     }
     
     func closeButtonTapped() {
@@ -24,5 +29,16 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     func clearEmailInputTapped() {
         emailInput = ""
+        buttonPressed = false
+    }
+
+    func buttonNextTapped() {
+        emailValid = isValidEmail(emailInput)
+        buttonPressed = true
+    }
+
+    func isValidEmail(_ email: String) -> Bool {
+        let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", options: [.caseInsensitive])
+        return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
     }
 }
