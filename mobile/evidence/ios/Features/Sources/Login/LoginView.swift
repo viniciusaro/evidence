@@ -12,65 +12,84 @@ public struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.leafTheme) private var theme
 
-    public init(model: LoginViewModel) {
-        self.viewModel = model
+    public init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
     }
 
     public var body: some View {
         VStack {
-            Text("Slack brings teams together, wherever you are")
-                .foregroundStyle(.white)
-                .font(.custom("Lato-Bold", size: 26))
-                .padding(EdgeInsets(top: 40, leading: 16, bottom: 0, trailing: 16))
+            Title()
             Spacer()
-            Image("login-image")
-                .resizable()
-                .scaledToFit()
-                .padding(.leading, 20)
+            ImageView(imageName: "login-image")
             Spacer()
-            Button("Getting Started") {
-                viewModel.openModalTapped()
-            }
-            .buttonStyle(LeafSecondaryButton())
-            .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
-            .sheet(isPresented: $viewModel.showLoginTypes) {
-                LoginDifferentTypes(model: viewModel)
-                    .presentationDetents([.height(220)])
-            }
+            ButtonGettingStarted(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accentColor(Color.white)
         .background(theme.color.brand.aubergine)
     }
 }
 
 #Preview {
-    LoginView(model: LoginViewModel())
+    LoginView(viewModel: LoginViewModel())
         .previewCustomFonts()
 }
+struct Title: View {
+    var body: some View {
+        Text("Slack brings teams together, wherever you are")
+            .foregroundStyle(.white)
+            .font(.custom("Lato-Bold", size: 26))
+            .padding(EdgeInsets(top: 40, leading: 16, bottom: 0, trailing: 16))
+    }
+}
 
+struct ImageView: View {
+    var imageName: String
 
-struct LoginDifferentTypes: View {
+    var body: some View {
+        Image(systemName: imageName)
+            .resizable()
+            .scaledToFit()
+            .padding(.leading, 20)
+    }
+}
+
+struct ButtonGettingStarted: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var model: LoginViewModel
+    @ObservedObject var viewModel: LoginViewModel
+
+    var body: some View {
+        Button("Getting Started") {
+            viewModel.buttonOpenModalTapped()
+        }
+        .buttonStyle(LeafSecondaryButton())
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
+        .sheet(isPresented: $viewModel.showLoginAuth) {
+            LoginAuth(viewModel: viewModel)
+                .presentationDetents([.height(220)])
+        }
+    }
+}
+
+struct LoginAuth: View {
+    @Environment(\.leafTheme) private var theme
+    @ObservedObject var viewModel: LoginViewModel
 
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
                 Button("Continue with Gmail") {
-                    model.showModalGoogle = true //model
+                    viewModel.showAuthGoogle = true //model
                 }
                 .buttonStyle(LeafGoogleLoginButton())
-                .sheet(isPresented: $model.showModalGoogle) {
-
+                .sheet(isPresented: $viewModel.showAuthGoogle) {
                 }
 
                 Button("Continue with Email") {
-                    model.buttonLoginEmailTapped()
+                    viewModel.buttonLoginEmailTapped()
                 }
                 .buttonStyle(LeafPrimaryButton())
-                .sheet(item: $model.loginEmailViewModel) { loginEmailViewModel in
+                .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
                     LoginEmailView(viewModel: loginEmailViewModel)
 
                 }
@@ -80,8 +99,8 @@ struct LoginDifferentTypes: View {
     }
 }
 
-//#Preview {
-//    LoginDifferentTypes(model: LoginViewModel())
-//        .previewCustomFonts()
-//
-//}
+#Preview {
+    LoginAuth(viewModel: LoginViewModel())
+        .previewCustomFonts()
+
+}

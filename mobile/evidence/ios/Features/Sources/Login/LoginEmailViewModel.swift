@@ -14,13 +14,21 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published var emailValid: Bool
     @Published var buttonPressed: Bool
     @Published var isFocused: Bool
+    @Published var loginCheckViewModel: LoginCheckViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
-    
-    public init(emailInput: String = "", emailValid: Bool = false, buttonPressed: Bool = false, isFocused: Bool = false) {
+
+    public init(
+        emailInput: String = "",
+        emailValid: Bool = false,
+        buttonPressed: Bool = false,
+        isFocused: Bool = false,
+        loginCheckViewModel: LoginCheckViewModel? = nil
+    ) {
         self.emailInput = emailInput
         self.emailValid = emailValid
         self.buttonPressed = buttonPressed
         self.isFocused = isFocused
+        self.loginCheckViewModel = loginCheckViewModel
     }
     
     func closeButtonTapped() {
@@ -33,6 +41,7 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
     }
 
     func buttonNextTapped() {
+        loginCheckViewModel = LoginCheckViewModel()
         emailValid = isValidEmail(emailInput)
         buttonPressed = true
     }

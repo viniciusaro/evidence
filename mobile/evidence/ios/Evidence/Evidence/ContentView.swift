@@ -8,7 +8,8 @@ import Login
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
     var body: some View {
-        LoginTestView()
+        LoginView(viewModel: LoginViewModel())
+//        LoginCheckView(viewModel: LoginCheckViewModel())
     }
 }
 
@@ -50,12 +51,5 @@ struct YouView: View {
             StatusView(model: model)
             Spacer()
         }
-    }
-}
-
-struct LoginTestView: View {
-    @StateObject var model = LoginViewModel()
-    var body: some View {
-        LoginView(model: model)
     }
 }

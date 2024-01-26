@@ -18,10 +18,7 @@ public struct LoginEmailView: View {
             VStack(alignment:.leading, spacing: 24) {
                 EmailInput(viewModel: viewModel)
                 Label()
-                Button("Next") {
-                    viewModel.buttonNextTapped()
-                }
-                .buttonStyle(LeafPrimaryButton())
+                ButtonNext(viewModel: viewModel)
                 Spacer()
             }
             .padding(.top, 24)
@@ -49,12 +46,31 @@ public struct LoginEmailView: View {
 
 struct Label: View {
     @Environment(\.leafTheme) private var theme
+
     var body: some View {
         Text("We'll send you an email to confirm your address.")
             .frame(maxWidth: .infinity, alignment: .leading)
             .label()
     }
 }
+
+struct ButtonNext: View {
+    @Environment(\.leafTheme) private var theme
+    @ObservedObject var viewModel: LoginEmailViewModel
+
+    var body: some View {
+        NavigationStack {
+            Button("Next") {
+                viewModel.buttonNextTapped()
+            }
+            .buttonStyle(LeafPrimaryButton())
+            .navigationDestination(isPresented: $viewModel.emailValid) {
+                LoginCheckView(viewModel: viewModel.loginCheckViewModel ?? LoginCheckViewModel() )
+            }
+        }
+    }
+}
+
 struct EmailInput: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginEmailViewModel
@@ -99,7 +115,7 @@ struct EmailInput: View {
         }
         if viewModel.buttonPressed && viewModel.emailInput.isEmpty {
             LeafError(message: "No email provided.")
-        } else if viewModel.buttonPressed == true && !viewModel.emailInput.isEmpty && viewModel.emailValid == false {
+        } else if viewModel.buttonPressed == true && viewModel.emailValid == false {
             LeafError(message: "That doesn't look like a valid email address!")
         }
     }

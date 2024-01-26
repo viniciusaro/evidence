@@ -8,29 +8,29 @@
 import Foundation
 
 public class LoginViewModel: ObservableObject {
-    @Published var showLoginTypes: Bool
-    @Published var showModalGoogle: Bool
-    @Published var showModalEmail: Bool
+    @Published var showLoginAuth: Bool
+    @Published var showAuthGoogle: Bool
+    @Published var showAuthEmail: Bool
     @Published var loginEmailViewModel: LoginEmailViewModel?
 
     public init(
-        showLoginTypes: Bool = false,
-        showModalGoogle: Bool = false,
-        showModalEmail: Bool = false,
+        showLoginModalConnect: Bool = false,
+        showAuthGoogle: Bool = false,
+        showAuthEmail: Bool = false,
         loginEmailViewModel: LoginEmailViewModel? = nil
     ) {
-        self.showLoginTypes = showLoginTypes
-        self.showModalGoogle = showModalGoogle
-        self.showModalEmail = showModalEmail
+        self.showLoginAuth = showLoginModalConnect
+        self.showAuthGoogle = showAuthGoogle
+        self.showAuthEmail = showAuthEmail
         self.loginEmailViewModel = loginEmailViewModel
     }
 
-    func openModalTapped() {
-        showLoginTypes = true
+    func buttonOpenModalTapped() {
+        showLoginAuth = true
     }
 
     func buttonLoginEmailTapped() {
-        loginEmailViewModel = LoginEmailViewModel() // iniciando
+        loginEmailViewModel = LoginEmailViewModel() 
         loginEmailViewModel?.delegateCloseButtonTapped = {
             self.loginEmailViewModel = nil
         }
