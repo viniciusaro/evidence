@@ -24,7 +24,8 @@ public let defaultLeafTheme = LeafTheme(
             avatarActive: Color(red: 46/255, green: 182/255, blue: 125/255),
             success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
-            error: Color(red: 224/255, green: 30/255, blue: 90/255)
+            error: Color(red: 224/255, green: 30/255, blue: 90/255), 
+            errorBG: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1)
         ),
         brand: LeafTheme.BrandColors(
             aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),
@@ -53,7 +54,8 @@ public let darkLeafTheme = LeafTheme(
             avatarActive: Color(red: 46/255, green: 182/255, blue: 125/255),
             success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
-            error: Color(red: 224/255, green: 30/255, blue: 90/255)
+            error: Color(red: 224/255, green: 30/255, blue: 90/255),
+            errorBG: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1)
         ),
         brand: LeafTheme.BrandColors(
             aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),

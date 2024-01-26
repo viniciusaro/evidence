@@ -31,6 +31,7 @@ extension LeafTheme {
         public let success: SwiftUI.Color
         public let alert: SwiftUI.Color
         public let error: SwiftUI.Color
+        public let errorBG: SwiftUI.Color
     }
 
     public struct CustomThemeColors {

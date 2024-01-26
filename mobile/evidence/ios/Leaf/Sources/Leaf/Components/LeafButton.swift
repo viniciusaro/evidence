@@ -15,12 +15,12 @@ private struct LeafPrimaryButtonStyle: View {
     var body: some View {
         configuration
             .label
-            .frame(width: 310, height: 42)
+            .frame(maxWidth: .infinity, maxHeight: 40)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
             .foregroundColor(.white)
-            .title()
+            .subtitle()
             .background(theme.color.system.buttonPrimary)
-            .cornerRadius(5)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
 
@@ -40,12 +40,12 @@ private struct LeafSecondaryButtonStyle: View {
     var body: some View {
         configuration
             .label
-            .frame(width: 310, height: 42)
+            .frame(maxWidth: .infinity, maxHeight: 40)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
             .foregroundColor(theme.color.brand.aubergine)
-            .title()
+            .subtitle()
             .background(theme.color.font.white)
-            .cornerRadius(5)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
 public struct LeafGoogleLoginButton: ButtonStyle {
@@ -63,12 +63,12 @@ private struct LeafGoogleLoginButtonStyle: View {
     var body: some View {
         configuration
             .label
-            .frame(width: 310, height: 42)
+            .frame(maxWidth: .infinity, maxHeight: 40)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
             .foregroundColor(.white)
-            .title()
+            .subtitle()
             .background(theme.color.brand.blueGoogle)
-            .cornerRadius(5)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
 
