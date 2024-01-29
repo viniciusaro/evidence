@@ -30,7 +30,7 @@ public struct SetStatusView: View {
                         model.closeButtonTapped()
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.content.primary)
+                            .foregroundStyle(theme.color.text.primary)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -39,17 +39,16 @@ public struct SetStatusView: View {
                             model.clearAndSaveButtonTapped()
                         }, label: {
                             Text("Clear")
-                                .foregroundStyle(theme.color.tag.rejected)
+                                .foregroundStyle(theme.color.warning.error)
                         })
                     } else {
                         Button(action: {
                             model.saveButtonTapped()
                         }, label: {
                             Image(systemName: "checkmark")
-                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.brand.primary : theme.color.content.tertiary
+                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.warning.success: theme.color.state.disabled
                                 )
                         })
-
                         .navigationBarTitle("Set a Status", displayMode: .inline)
                     }
                 }
@@ -68,11 +67,12 @@ struct InputStatus: View {
             HStack {
                 if model.statusInput.isEmpty {
                     Image(systemName: "smiley")
-                        .foregroundColor(theme.color.content.tertiary)
+                        .foregroundColor(theme.color.text.secondary)
                 }  else {
                     Text("💬")
                 }
                 TextField("What's your status?", text: $model.statusInput)
+                    .body()
             }
             Spacer()
             Button(action: {
@@ -80,7 +80,7 @@ struct InputStatus: View {
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(theme.color.content.tertiary)
+                        .foregroundStyle(theme.color.text.secondary)
                 }
             }
         }
@@ -91,4 +91,5 @@ struct InputStatus: View {
 
 #Preview {
     SetStatusView(model: SetStatusViewModel())
+        .previewCustomFonts()
 }

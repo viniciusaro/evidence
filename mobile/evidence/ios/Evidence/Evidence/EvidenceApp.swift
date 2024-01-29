@@ -10,6 +10,9 @@ import Leaf
 
 @main
 struct EvidenceApp: App {
+    init() {
+        CustomFonts.registerCustomFonts()
+    }
     var body: some Scene {
         WindowGroup {
             LeafThemeView {

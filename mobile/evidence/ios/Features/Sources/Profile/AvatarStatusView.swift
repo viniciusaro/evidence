@@ -17,31 +17,34 @@ public struct AvatarStatusView: View {
     }
 
     public var body: some View {
-        HStack {
+        HStack { 
             ZStack(alignment: .bottomTrailing) {
                 LeafAvatar(url: URL.documentsDirectory)
                     .avatarStyle(.evident)
                 Circle()
-                    .foregroundStyle(model.status == .active ? theme.color.brand.primary : theme.color.content.tertiary )
+                    .foregroundStyle(model.status == .active ? theme.color.state.active : theme.color.state.disabled )
                     .frame(width: 15, height: 15)
                     .overlay {
                         Circle()
-                            .stroke(Color.white, lineWidth: 3)
+                            .stroke(Color(.white), lineWidth: 3)
                     }
             }
             VStack (alignment: .leading) {
                 Text("Cris Messias")
                     .title()
+                    .foregroundStyle(theme.color.text.primary)
+
                 Text("\(model.status == .active ? "Active": "Away")")
                     .subtitle()
+                    .foregroundStyle(theme.color.text.secondary)
             }
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.bottom, 30)
     }
 }    
 
 #Preview {
     AvatarStatusView(model: StatusViewModel())
+        .previewCustomFonts()
 }

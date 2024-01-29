@@ -2,46 +2,51 @@ import SwiftUI
 
 public struct LeafTheme {
     public let color: Color
-    public let font: Font
     public let size: Size
 }
 
 extension LeafTheme {
     public struct Color {
-        public let brand: BrandColor
-        public let content: ContentColor
-        public let tag: TagColor
+        public let text: TextColors
+        public let button: ButtonColors
+        public let warning: WarningColors
+        public let backgrond: BackgroundColors
+        public let state: StateColors
+        public let custom: CustomThemeColors
     }
-    
-    public struct BrandColor {
-        public let primary: SwiftUI.Color
-        public let secondary: SwiftUI.Color
-        public let tertiary: SwiftUI.Color
-    }
-    
-    public struct ContentColor {
-        public let primary: SwiftUI.Color
-        public let secondary: SwiftUI.Color
-        public let tertiary: SwiftUI.Color
-        public let quaternary: SwiftUI.Color
-    }
-    
-    public struct TagColor {
-        public let open: SwiftUI.Color
-        public let accepted: SwiftUI.Color
-        public let rejected: SwiftUI.Color
-        public let closed: SwiftUI.Color
-    }
-}
 
-extension LeafTheme {
-    public struct Font {
-        public let title: SwiftUI.Font
-        public let titleLarge: SwiftUI.Font
-        public let titleXLarge: SwiftUI.Font
-        public let subtitle: SwiftUI.Font
-        public let body: SwiftUI.Font
-        public let label: SwiftUI.Font
+    public struct TextColors {
+        public let primary: SwiftUI.Color
+        public let secondary: SwiftUI.Color
+        public let tertiaryLight: SwiftUI.Color
+        public let link: SwiftUI.Color
+    }
+
+    public struct ButtonColors {
+        public let buttonPrimary: SwiftUI.Color
+        public let buttonSecondary: SwiftUI.Color
+        public let buttonGoogle: SwiftUI.Color
+    }
+
+    public struct WarningColors {
+        public let success: SwiftUI.Color
+        public let alert: SwiftUI.Color
+        public let error: SwiftUI.Color
+    }
+
+    public struct BackgroundColors {
+        public let aubergine: SwiftUI.Color
+        public let red: SwiftUI.Color
+    }
+
+    public struct StateColors {
+        public let active: SwiftUI.Color
+        public let disabled: SwiftUI.Color
+    }
+
+    public struct CustomThemeColors {
+        public let topBar: SwiftUI.Color
+        public let floatButton: SwiftUI.Color
     }
 }
 
@@ -50,3 +55,4 @@ extension LeafTheme {
         public let lineSpacingTitle: SwiftUI.CGFloat
     }
 }
+

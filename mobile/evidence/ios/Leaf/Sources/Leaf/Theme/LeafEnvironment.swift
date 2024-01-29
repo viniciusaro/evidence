@@ -13,68 +13,72 @@ extension EnvironmentValues {
 
 public let defaultLeafTheme = LeafTheme(
     color: LeafTheme.Color(
-        brand: LeafTheme.BrandColor(
-            primary: .green,
-            secondary: Color(red: 104/255, green: 93/255, blue: 67/255),
-            tertiary: .black
+        text: LeafTheme.TextColors(
+            primary: Color(red: 29/255, green: 28/255, blue: 29/255),
+            secondary: Color(red: 29/255, green: 28/255, blue: 29/255, opacity: 0.7),
+            tertiaryLight: Color(red: 255/255, green: 255/255, blue: 255/255),
+            link: Color(red: 18/255, green: 100/255, blue: 163/255)
         ),
-        content: LeafTheme.ContentColor(
-            primary: .black,
-            secondary: Color(red:72/255, green: 72/255, blue: 74/255),
-            tertiary: .gray,
-            quaternary: .green
+        button: LeafTheme.ButtonColors(
+            buttonPrimary: Color(red: 0/255, green: 122/255, blue: 90/255),
+            buttonSecondary: Color(red: 255/255, green: 255/255, blue: 255/255),
+            buttonGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
+        ), 
+        warning: LeafTheme.WarningColors(
+            success: Color(red: 18/255, green: 100/255, blue: 163/255),
+            alert: Color(red: 236/255, green: 178/255, blue: 46/255),
+            error: Color(red: 224/255, green: 30/255, blue: 90/255)
         ),
-        tag: LeafTheme.TagColor(
-            open: Color(red:3/255, green: 129/255, blue: 220/255),
-            accepted: .green,
-            rejected: Color(red:249/255, green: 100/255, blue: 90/255),
-            closed: Color(red:121/255, green: 128/255, blue: 117/255)
+        backgrond: LeafTheme.BackgroundColors(
+            aubergine: Color(red: 74/255, green: 21/255, blue: 75/255), 
+            red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1)
+        ),
+        state: LeafTheme.StateColors(
+            active: Color(red: 29/255, green: 28/255, blue: 29/255, opacity: 0.4),
+            disabled: Color(red: 46/255, green: 182/255, blue: 125/255)
+        ),
+        custom: LeafTheme.CustomThemeColors(
+            topBar: Color(red: 74/255, green: 21/255, blue: 75/255),
+            floatButton: Color(red: 74/255, green: 21/255, blue: 75/255)
         )
     ),
-    font: LeafTheme.Font(
-        title: .title2,
-        titleLarge: .title,
-        titleXLarge: .largeTitle,
-        subtitle: .headline,
-        body: .body,
-        label: .caption
-    ), 
     size: LeafTheme.Size(
         lineSpacingTitle: 0.2
-
     )
 )
 
 public let darkLeafTheme = LeafTheme(
     color: LeafTheme.Color(
-        brand: LeafTheme.BrandColor(
-            primary: .blue,
-            secondary: Color(red: 104/255, green: 93/255, blue: 67/255),
-            tertiary: .black
+        text: LeafTheme.TextColors(
+            primary: Color(red: 255/255, green: 255/255, blue: 255/255),
+            secondary: Color(red: 244/255, green: 237/255, blue: 228/255),
+            tertiaryLight: Color(red: 255/255, green: 255/255, blue: 255/255),
+            link: Color(red: 18/255, green: 100/255, blue: 163/255)
         ),
-        content: LeafTheme.ContentColor(
-            primary: .white,
-            secondary: .gray,
-            tertiary: .gray,
-            quaternary: .green
+        button: LeafTheme.ButtonColors(
+            buttonPrimary: Color(red: 0/255, green: 122/255, blue: 90/255),
+            buttonSecondary: Color(red: 255/255, green: 255/255, blue: 255/255),
+            buttonGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
         ),
-        tag: LeafTheme.TagColor(
-            open: Color(red:74/255, green: 179/255, blue: 255/255),
-            accepted: Color(red:68/255, green: 177/255, blue: 16/255),
-            rejected: Color(red:249/255, green: 100/255, blue: 90/255),
-            closed: Color(red:162/255, green: 168/255, blue: 159/255)
+        warning: LeafTheme.WarningColors(
+            success: Color(red: 18/255, green: 100/255, blue: 163/255),
+            alert: Color(red: 236/255, green: 178/255, blue: 46/255),
+            error: Color(red: 224/255, green: 30/255, blue: 90/255)
+        ),
+        backgrond: LeafTheme.BackgroundColors(
+            aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),
+            red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1)
+        ),
+        state: LeafTheme.StateColors(
+            active: Color(red: 244/255, green: 237/255, blue: 228/255, opacity: 0.5),
+            disabled: Color(red: 46/255, green: 182/255, blue: 125/255)
+        ),
+        custom: LeafTheme.CustomThemeColors(
+            topBar: Color(red: 74/255, green: 21/255, blue: 75/255),
+            floatButton: Color(red: 74/255, green: 21/255, blue: 75/255)
         )
     ),
-    font: LeafTheme.Font(
-        title: .title2,
-        titleLarge: .title,
-        titleXLarge: .largeTitle,
-        subtitle: .headline,
-        body: .body,
-        label: .caption
-    ), 
     size: LeafTheme.Size(
         lineSpacingTitle: 0.2
     )
 )
-

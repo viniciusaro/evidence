@@ -14,13 +14,13 @@ private struct LeafPrimaryButton: View {
     
     var body: some View {
         configuration
-            .label.font(theme.font.body)
+            .label
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
-            .foregroundColor(theme.color.content.secondary)
+            .foregroundColor(theme.color.button.buttonPrimary)
             .buttonBorderShape(.roundedRectangle)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(theme.color.brand.primary, lineWidth: 2)
+                    .stroke(theme.color.button.buttonPrimary, lineWidth: 2)
             }
     }
 }
@@ -29,6 +29,8 @@ private struct LeafPrimaryButton: View {
     LeafThemeView {
         Button("Evidence") {
             
-        }.buttonStyle(LeafPrimaryButtonStyle())
+        }
+        .buttonStyle(LeafPrimaryButtonStyle())
+        .previewCustomFonts()
     }
 }

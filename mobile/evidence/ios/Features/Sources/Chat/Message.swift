@@ -3,6 +3,7 @@ import Dependencies
 import Leaf
 import Models
 import SwiftUI
+import Leaf
 
 public struct MessageViewState: Equatable {
     public var loading: Bool
@@ -71,11 +72,13 @@ public class MessageViewModel: Equatable, ObservableObject, Identifiable {
 
 struct MessageView: View {
     @ObservedObject var model: MessageViewModel
+    @Environment(\.leafTheme) private var theme
     
     var body: some View {
         VStack(spacing: 16) {
             Text(self.model.state.message.content)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .body()
             if let preview = self.model.state.preview {
                 VStack(alignment: .leading) {
                     LeafAsyncImage(url: preview.image) { status in
@@ -92,8 +95,9 @@ struct MessageView: View {
                         }
                     }
                     Text(preview.title)
+                        .link()
                         .lineLimit(1)
-                        .font(.caption)
+                        .foregroundStyle(theme.color.text.primary)
                 }
             } else if self.model.state.loading {
                 VStack(alignment: .leading) {
@@ -102,7 +106,7 @@ struct MessageView: View {
                         .frame(height: 100)
                     Text("loading")
                         .redacted(reason: .placeholder)
-                        .font(.caption)
+                        .body()
                 }
             }
         }
@@ -119,4 +123,5 @@ struct MessageView: View {
             )
         )
     }
+    .previewCustomFonts()
 }

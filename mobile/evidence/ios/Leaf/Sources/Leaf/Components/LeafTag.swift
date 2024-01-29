@@ -24,23 +24,23 @@ public struct LeafTag: View {
             case .open:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.open)
-                    .background(theme.color.tag.open.opacity(0.1))
+                    .foregroundColor(theme.color.warning.success)
+                    .background(theme.color.warning.success.opacity(0.1))
             case .accepted:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.accepted)
-                    .background(theme.color.tag.accepted.opacity(0.1))
+                    .foregroundColor(theme.color.warning.alert)
+                    .background(theme.color.warning.alert.opacity(0.1))
             case .rejected:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.rejected)
-                    .background(theme.color.tag.rejected.opacity(0.1))
+                    .foregroundColor(theme.color.warning.error)
+                    .background(theme.color.warning.error.opacity(0.1))
             case .closed:
                 Text(text)
                     .tagStyle()
-                    .foregroundColor(theme.color.tag.closed)
-                    .background(theme.color.tag.closed.opacity(0.1))
+                    .foregroundColor(theme.color.text.secondary)
+                    .background(theme.color.text.secondary.opacity(0.1))
             }
         }
         .cornerRadius(20)
@@ -57,13 +57,11 @@ extension Text {
     func tagStyle() -> some View {
         self
             .textCase(.uppercase)
-            .font(.footnote)
-            .bold()
+            .font(.custom("Lato-Bold", size: 12))
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
     }
 }
 
-///
 #Preview {
     VStack{
         LeafTag("open", status: .open)
