@@ -7,31 +7,41 @@ public struct LeafTheme {
 
 extension LeafTheme {
     public struct Color {
-        public let font: FontColors
-        public let system: SystemColors
-        public let brand: BrandColors
+        public let text: TextColors
+        public let button: ButtonColors
+        public let warning: WarningColors
+        public let backgrond: BackgroundColors
+        public let state: StateColors
         public let custom: CustomThemeColors
     }
 
-    public struct FontColors {
+    public struct TextColors {
         public let primary: SwiftUI.Color
         public let secondary: SwiftUI.Color
-        public let white: SwiftUI.Color
+        public let tertiaryLight: SwiftUI.Color
         public let link: SwiftUI.Color
     }
 
-    public struct BrandColors {
-        public let aubergine: SwiftUI.Color
-        public let blueGoogle: SwiftUI.Color
+    public struct ButtonColors {
+        public let primary: SwiftUI.Color
+        public let secondary: SwiftUI.Color
+        public let authGoogle: SwiftUI.Color
     }
 
-    public struct SystemColors {
-        public let buttonPrimary: SwiftUI.Color
-        public let avatarActive: SwiftUI.Color
+    public struct WarningColors {
         public let success: SwiftUI.Color
         public let alert: SwiftUI.Color
         public let error: SwiftUI.Color
-        public let errorBG: SwiftUI.Color
+    }
+
+    public struct BackgroundColors {
+        public let aubergine: SwiftUI.Color
+        public let red: SwiftUI.Color
+    }
+
+    public struct StateColors {
+        public let active: SwiftUI.Color
+        public let disabled: SwiftUI.Color
     }
 
     public struct CustomThemeColors {

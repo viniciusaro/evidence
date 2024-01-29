@@ -17,9 +17,9 @@ private struct LeafPrimaryButtonStyle: View {
             .label
             .frame(maxWidth: .infinity, maxHeight: 40)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
-            .foregroundColor(.white)
+            .foregroundColor(theme.color.text.tertiaryLight)
             .subtitle()
-            .background(theme.color.system.buttonPrimary)
+            .background(theme.color.button.primary)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
@@ -42,9 +42,9 @@ private struct LeafSecondaryButtonStyle: View {
             .label
             .frame(maxWidth: .infinity, maxHeight: 40)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
-            .foregroundColor(theme.color.brand.aubergine)
+            .foregroundColor(theme.color.backgrond.aubergine)
             .subtitle()
-            .background(theme.color.font.white)
+            .background(theme.color.text.tertiaryLight)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
@@ -65,9 +65,9 @@ private struct LeafGoogleLoginButtonStyle: View {
             .label
             .frame(maxWidth: .infinity, maxHeight: 40)
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
-            .foregroundColor(.white)
+            .foregroundColor(theme.color.text.tertiaryLight)
             .subtitle()
-            .background(theme.color.brand.blueGoogle)
+            .background(theme.color.button.authGoogle)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }

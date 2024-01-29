@@ -25,7 +25,7 @@ public struct LoginView: View {
             ButtonGettingStarted(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.color.brand.aubergine)
+        .background(theme.color.backgrond.aubergine)
     }
 }
 

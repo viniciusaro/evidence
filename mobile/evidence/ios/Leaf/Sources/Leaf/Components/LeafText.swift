@@ -15,7 +15,7 @@ public struct LeafTitleModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .font(.custom("Lato-Black", size: 20))
-            .foregroundStyle(theme.color.font.primary)
+            .foregroundStyle(theme.color.text.primary)
 
     }
 }
@@ -31,7 +31,7 @@ public struct LeafSubtitleModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .font(.custom("Lato-Regular", size: 17))
-            .foregroundStyle(theme.color.font.secondary)
+            .foregroundStyle(theme.color.text.secondary)
 
     }
 }
@@ -47,7 +47,7 @@ public struct LeafBodyModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .font(.custom("Lato-Regular", size: 17))
-            .foregroundStyle(theme.color.font.primary)
+            .foregroundStyle(theme.color.text.primary)
     }
 }
 public extension View {
@@ -63,7 +63,7 @@ public struct LeafLinkModifier: ViewModifier {
         content
             .font(.custom("Lato-Bold", size: 17))
             .bold()
-            .foregroundStyle(theme.color.font.link)
+            .foregroundStyle(theme.color.text.link)
     }
 }
 
@@ -79,7 +79,7 @@ public struct LeafLabelModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .font(.custom("Lato-Regular", size: 14))
-            .foregroundStyle(theme.color.font.primary)
+            .foregroundStyle(theme.color.text.primary)
     }
 }
 public extension View {

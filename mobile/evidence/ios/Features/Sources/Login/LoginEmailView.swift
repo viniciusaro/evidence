@@ -28,7 +28,7 @@ public struct LoginEmailView: View {
                         viewModel.closeButtonTapped()
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.font.primary)
+                            .foregroundStyle(theme.color.text.primary)
                     }
                 }
             }
@@ -86,7 +86,7 @@ struct EmailInput: View {
                     .textInputAutocapitalization(.never)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled(true)
-                    .foregroundStyle(theme.color.font.primary)
+                    .foregroundStyle(theme.color.text.primary)
                     .body()
                     .frame(height: 50)
                     .onTapGesture {
@@ -103,14 +103,14 @@ struct EmailInput: View {
                 }) {
                     if !viewModel.emailInput.isEmpty {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(theme.color.font.secondary)
+                            .foregroundStyle(theme.color.text.secondary)
                     }
                 }
             }
             .padding([.leading, .trailing], 16)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(theme.color.font.secondary, lineWidth: 0.5)
+                    .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
         }
         if viewModel.buttonPressed && viewModel.emailInput.isEmpty {

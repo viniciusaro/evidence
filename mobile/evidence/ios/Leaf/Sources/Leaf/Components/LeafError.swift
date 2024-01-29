@@ -18,7 +18,7 @@ public struct LeafError: View {
     public var body: some View {
         HStack {
             Image(systemName: "exclamationmark.circle.fill")
-                .foregroundStyle(theme.color.system.error)
+                .foregroundStyle(theme.color.warning.error)
                 .title()
             Text(message)
                 .label()
@@ -26,7 +26,7 @@ public struct LeafError: View {
         }
         .padding(EdgeInsets(top: 8, leading: 16, bottom: 12, trailing: 8))
         .frame(maxWidth: .infinity)
-        .background(theme.color.system.errorBG)
+        .background(theme.color.backgrond.red)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
