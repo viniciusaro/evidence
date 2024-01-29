@@ -13,7 +13,7 @@ extension EnvironmentValues {
 
 public let defaultLeafTheme = LeafTheme(
     color: LeafTheme.Color(
-        text: LeafTheme.TextColors(
+        font: LeafTheme.TextColors(
             primary: Color(red: 29/255, green: 28/255, blue: 29/255),
             secondary: Color(red: 29/255, green: 28/255, blue: 29/255, opacity: 0.7),
             tertiaryLight: Color(red: 255/255, green: 255/255, blue: 255/255),
@@ -49,7 +49,7 @@ public let defaultLeafTheme = LeafTheme(
 
 public let darkLeafTheme = LeafTheme(
     color: LeafTheme.Color(
-        text: LeafTheme.TextColors(
+        font: LeafTheme.TextColors(
             primary: Color(red: 255/255, green: 255/255, blue: 255/255),
             secondary: Color(red: 244/255, green: 237/255, blue: 228/255),
             tertiaryLight: Color(red: 255/255, green: 255/255, blue: 255/255),

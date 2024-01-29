@@ -30,7 +30,7 @@ public struct SetStatusView: View {
                         model.closeButtonTapped()
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.text.primary)
+                            .foregroundStyle(theme.color.font.primary)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -39,14 +39,14 @@ public struct SetStatusView: View {
                             model.clearAndSaveButtonTapped()
                         }, label: {
                             Text("Clear")
-                                .foregroundStyle(theme.color.warning.error)
+                                .foregroundStyle(theme.color.system.error)
                         })
                     } else {
                         Button(action: {
                             model.saveButtonTapped()
                         }, label: {
                             Image(systemName: "checkmark")
-                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.warning.success: theme.color.state.disabled
+                                .foregroundColor(!model.statusInput.isEmpty ? theme.color.system.success: theme.color.font.secondary
                                 )
                         })
                         .navigationBarTitle("Set a Status", displayMode: .inline)
@@ -67,7 +67,7 @@ struct InputStatus: View {
             HStack {
                 if model.statusInput.isEmpty {
                     Image(systemName: "smiley")
-                        .foregroundColor(theme.color.text.secondary)
+                        .foregroundColor(theme.color.font.secondary)
                 }  else {
                     Text("💬")
                 }
@@ -80,7 +80,7 @@ struct InputStatus: View {
             }){
                 if !model.statusInput.isEmpty {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(theme.color.text.secondary)
+                        .foregroundStyle(theme.color.font.secondary)
                 }
             }
         }

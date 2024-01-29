@@ -16,11 +16,11 @@ private struct LeafPrimaryButton: View {
         configuration
             .label
             .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
-            .foregroundColor(theme.color.button.buttonPrimary)
+            .foregroundColor(theme.color.system.buttonPrimary)
             .buttonBorderShape(.roundedRectangle)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(theme.color.button.buttonPrimary, lineWidth: 2)
+                    .stroke(theme.color.system.buttonPrimary, lineWidth: 2)
             }
     }
 }

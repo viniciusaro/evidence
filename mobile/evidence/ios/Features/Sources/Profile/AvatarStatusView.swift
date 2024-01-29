@@ -22,7 +22,7 @@ public struct AvatarStatusView: View {
                 LeafAvatar(url: URL.documentsDirectory)
                     .avatarStyle(.evident)
                 Circle()
-                    .foregroundStyle(model.status == .active ? theme.color.state.active : theme.color.state.disabled )
+                    .foregroundStyle(model.status == .active ? theme.color.system.avatarActive : theme.color.font.secondary )
                     .frame(width: 15, height: 15)
                     .overlay {
                         Circle()
@@ -32,11 +32,11 @@ public struct AvatarStatusView: View {
             VStack (alignment: .leading) {
                 Text("Cris Messias")
                     .title()
-                    .foregroundStyle(theme.color.text.primary)
+                    .foregroundStyle(theme.color.font.primary)
 
                 Text("\(model.status == .active ? "Active": "Away")")
                     .subtitle()
-                    .foregroundStyle(theme.color.text.secondary)
+                    .foregroundStyle(theme.color.font.secondary)
             }
             Spacer()
         }
