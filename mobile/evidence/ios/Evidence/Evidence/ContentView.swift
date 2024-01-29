@@ -8,6 +8,7 @@ import Login
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
     var body: some View {
+<<<<<<< HEAD
 //        LoginView(viewModel: LoginViewModel())
 //        LoginCheckView(viewModel: LoginCheckViewModel())
         TabView() {
@@ -16,6 +17,9 @@ struct ContentView: View {
                     Image(systemName: "person.circle")
                     Text("Login")
                 }
+=======
+        TabView() {
+>>>>>>> main
             HomeView()
                 .tabItem {
                     Image(systemName: "house.fill")
@@ -28,7 +32,11 @@ struct ContentView: View {
                     Text("You")
                 }
         }
+<<<<<<< HEAD
         .tint(theme.color.text.tertiaryLight)
+=======
+        .tint(theme.color.text.primary)
+>>>>>>> main
     }
 }
 
