@@ -44,7 +44,7 @@ struct PopupView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
-                .foregroundStyle(theme.color.font.primary)
+                .foregroundStyle(theme.color.text.primary)
                 .opacity(0.7)
             VStack {
                 Image(systemName: image)

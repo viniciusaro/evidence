@@ -79,7 +79,7 @@ public struct ChatView: View {
                         MessageView(model: messageModel)
                             .background(
                                 self.model.isHighlighted(messageModel) ?
-                                self.theme.color.system.alert : nil
+                                self.theme.color.warning.alert : nil
                             )
                             .animation(
                                 Animation.easeIn,
@@ -92,7 +92,7 @@ public struct ChatView: View {
             .body()
             .scrollPosition(id: self.$model.state.scrollToMessageId)
             .navigationTitle("Chat")
-            .foregroundStyle(theme.color.font.primary)
+            .foregroundStyle(theme.color.text.primary)
         }
         .onAppear { self.model.onViewAppear() }
     }

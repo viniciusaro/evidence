@@ -7,7 +7,7 @@ public struct LeafTheme {
 
 extension LeafTheme {
     public struct Color {
-        public let font: TextColors
+        public let text: TextColors
         public let button: ButtonColors
         public let warning: WarningColors
         public let backgrond: BackgroundColors
