@@ -20,7 +20,7 @@ struct ContentView: View {
                     Text("You")
                 }
         }
-        .tint(theme.color.font.primary)
+        .tint(theme.color.text.primary)
     }
 }
 

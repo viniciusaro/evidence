@@ -97,7 +97,7 @@ struct MessageView: View {
                     Text(preview.title)
                         .link()
                         .lineLimit(1)
-                        .foregroundStyle(theme.color.font.primary)
+                        .foregroundStyle(theme.color.text.primary)
                 }
             } else if self.model.state.loading {
                 VStack(alignment: .leading) {
