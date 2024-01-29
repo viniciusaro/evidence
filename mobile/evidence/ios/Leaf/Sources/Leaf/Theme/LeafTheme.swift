@@ -10,14 +10,15 @@ extension LeafTheme {
         public let font: TextColors
         public let button: ButtonColors
         public let warning: WarningColors
-        public let system: SystemColors
+        public let backgrond: BackgroundColors
+        public let state: StateColors
         public let custom: CustomThemeColors
     }
 
     public struct TextColors {
         public let primary: SwiftUI.Color
         public let secondary: SwiftUI.Color
-        public let tertiary: SwiftUI.Color
+        public let tertiaryLight: SwiftUI.Color
         public let link: SwiftUI.Color
     }
 
@@ -31,13 +32,16 @@ extension LeafTheme {
         public let success: SwiftUI.Color
         public let alert: SwiftUI.Color
         public let error: SwiftUI.Color
-        public let errorBG: SwiftUI.Color
     }
 
-    public struct SystemColors {
-        public let aubergineBG: SwiftUI.Color
-        public let avatarActive: SwiftUI.Color
-        public let avatarAway: SwiftUI.Color
+    public struct BackgroundColors {
+        public let aubergine: SwiftUI.Color
+        public let red: SwiftUI.Color
+    }
+
+    public struct StateColors {
+        public let active: SwiftUI.Color
+        public let disabled: SwiftUI.Color
     }
 
     public struct CustomThemeColors {
