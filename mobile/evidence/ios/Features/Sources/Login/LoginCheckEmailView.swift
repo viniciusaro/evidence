@@ -20,10 +20,9 @@ public struct LoginCheckView: View {
         NavigationStack {
             Divider()
             VStack(spacing: 24) {
-                ImageLoginCheck(imageName: "check-email")
                 Message(viewModel: viewModel)
                 Spacer()
-                ButtonOpenEmailApp()
+                OpenEmailAppButton()
             }
             .padding([.leading, .trailing], 16)
             .navigationTitle("Email Sent")
@@ -35,19 +34,6 @@ public struct LoginCheckView: View {
 #Preview {
     LoginCheckView(viewModel: LoginCheckViewModel())
         .previewCustomFonts()
-}
-
-struct ImageLoginCheck: View {
-    var imageName: String
-    var body: some View {
-        Image(systemName: imageName)
-            .resizable()
-            .frame(maxWidth: .infinity, maxHeight: 300)
-            .background(.green)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .scaledToFit()
-            .padding(.top, 24)
-    }
 }
 
 struct Message: View {
@@ -64,7 +50,7 @@ struct Message: View {
     }
 }
 
-struct ButtonOpenEmailApp: View {
+struct OpenEmailAppButton: View {
     @Environment(\.leafTheme) private var theme
     var body: some View {
         Button("Open Email App") {
