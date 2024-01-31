@@ -20,9 +20,7 @@ public struct LoginView: View {
         VStack {
             Title()
             Spacer()
-            ImageView(imageName: "login-image")
-            Spacer()
-            ButtonGettingStarted(viewModel: viewModel)
+            GettingStartedButton(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(theme.color.backgrond.aubergine)
@@ -33,6 +31,7 @@ public struct LoginView: View {
     LoginView(viewModel: LoginViewModel())
         .previewCustomFonts()
 }
+
 struct Title: View {
     var body: some View {
         Text("Slack brings teams together, wherever you are")
@@ -53,40 +52,37 @@ struct ImageView: View {
     }
 }
 
-struct ButtonGettingStarted: View {
+struct GettingStartedButton: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginViewModel
 
     var body: some View {
         Button("Getting Started") {
-            viewModel.buttonOpenModalTapped()
+            viewModel.gettingStartedButtonTapped()
         }
         .buttonStyle(LeafSecondaryButton())
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
-        .sheet(isPresented: $viewModel.showLoginAuth) {
-            LoginAuth(viewModel: viewModel)
+        .sheet(isPresented: $viewModel.showLoginAuthModal) {
+            LoginAuthModal(viewModel: viewModel)
                 .presentationDetents([.height(220)])
         }
     }
 }
 
-struct LoginAuth: View {
+struct LoginAuthModal: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginViewModel
-
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
                 Button("Continue with Gmail") {
-                    viewModel.showAuthGoogle = true //model
+
                 }
                 .buttonStyle(LeafGoogleLoginButton())
-                .sheet(isPresented: $viewModel.showAuthGoogle) {
-                }
 
                 Button("Continue with Email") {
-                    viewModel.buttonLoginEmailTapped()
+                    viewModel.loginEmailButtonTapped()
                 }
                 .buttonStyle(LeafPrimaryButton())
                 .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
@@ -100,7 +96,7 @@ struct LoginAuth: View {
 }
 
 #Preview {
-    LoginAuth(viewModel: LoginViewModel())
+    LoginAuthModal(viewModel: LoginViewModel())
         .previewCustomFonts()
 
 }

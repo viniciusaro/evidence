@@ -61,7 +61,6 @@ struct HomeView: View {
 
 struct YouView: View {
     @StateObject var model = StatusViewModel()
-    
     var body: some View {
         VStack {
             AvatarStatusView(model: model)
@@ -74,7 +73,6 @@ struct YouView: View {
 
 struct LoginFlowView: View {
     @StateObject var viewModel = LoginViewModel()
-    
     var body: some View {
         LoginView(viewModel: viewModel)
     }

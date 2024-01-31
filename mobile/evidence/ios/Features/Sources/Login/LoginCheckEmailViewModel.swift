@@ -7,8 +7,8 @@
 
 import Foundation
 
-final public class LoginCheckViewModel: ObservableObject, Identifiable, Hashable {
-    public static func == (lhs: LoginCheckViewModel, rhs: LoginCheckViewModel) -> Bool {
+final public class LoginCheckEmailViewModel: ObservableObject, Identifiable, Hashable {
+    public static func == (lhs: LoginCheckEmailViewModel, rhs: LoginCheckEmailViewModel) -> Bool {
         return lhs.mockEmail == rhs.mockEmail
     }
     public func hash(into hasher: inout Hasher) { hasher.combine(mockEmail) }

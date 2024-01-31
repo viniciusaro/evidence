@@ -7,27 +7,27 @@
 
 import Foundation
 
-
-public class LoginEmailViewModel: ObservableObject, Identifiable {
+final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Published var emailInput: String
-    @Published var emailValid: Bool
-    @Published var buttonPressed: Bool
-    @Published var isFocused: Bool
-    @Published var loginCheckViewModel: LoginCheckViewModel?
+    @Published var isValidEmail: Bool
+    @Published var isNextButtonPressed: Bool
+    @Published var isEmailInputFocused: Bool
+    @Published var loginCheckViewModel: LoginCheckEmailViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
+
 
     public init(
         emailInput: String = "",
-        emailValid: Bool = false,
-        buttonPressed: Bool = false,
-        isFocused: Bool = false,
-        loginCheckViewModel: LoginCheckViewModel? = nil
+        isValidEmail: Bool = false,
+        isNextButtonPressed: Bool = false,
+        isInputEmailFocused: Bool = false,
+        loginCheckViewModel: LoginCheckEmailViewModel? = nil
     ) {
         self.emailInput = emailInput
-        self.emailValid = emailValid
-        self.buttonPressed = buttonPressed
-        self.isFocused = isFocused
+        self.isValidEmail = isValidEmail
+        self.isNextButtonPressed = isNextButtonPressed
+        self.isEmailInputFocused = isInputEmailFocused
         self.loginCheckViewModel = loginCheckViewModel
     }
     
@@ -37,13 +37,28 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     func clearEmailInputTapped() {
         emailInput = ""
-        buttonPressed = false
+        isNextButtonPressed = false
+    }
+
+    func inputEmailTapped() {
+        isNextButtonPressed = false
     }
 
     func buttonNextTapped() {
-        loginCheckViewModel = LoginCheckViewModel()
-        emailValid = isValidEmail(emailInput)
-        buttonPressed = true
+        isValidEmail = isValidEmail(emailInput)
+        isNextButtonPressed = true
+        if isValidEmail == true {
+            loginCheckViewModel = LoginCheckEmailViewModel()
+        }
+    }
+
+    func errorMessage() -> String? {
+        if isNextButtonPressed && emailInput.isEmpty {
+            return "No email provided."
+        } else if isNextButtonPressed == true && isValidEmail == false {
+            return "That doesn't look like a valid email address!"
+        }
+        return nil
     }
 
     func isValidEmail(_ email: String) -> Bool {
@@ -51,3 +66,4 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
         return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
     }
 }
+

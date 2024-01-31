@@ -74,7 +74,8 @@ let package = Package(
         ),
         .target(
             name: "Login",
-            dependencies: ["Leaf", "Models"]
+            dependencies: [
+                "Leaf", "Models"]
         ),
         .testTarget(
             name: "LoginTests",
@@ -82,3 +83,4 @@ let package = Package(
         ),
     ]
 )
+

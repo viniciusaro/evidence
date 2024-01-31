@@ -8,11 +8,11 @@
 import SwiftUI
 import Leaf
 
-public struct LoginCheckView: View {
+public struct LoginCheckEmailView: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginCheckViewModel
+    @ObservedObject var viewModel: LoginCheckEmailViewModel
 
-    public init(viewModel: LoginCheckViewModel) {
+    public init(viewModel: LoginCheckEmailViewModel) {
         self.viewModel = viewModel
     }
 
@@ -32,13 +32,13 @@ public struct LoginCheckView: View {
 }
 
 #Preview {
-    LoginCheckView(viewModel: LoginCheckViewModel())
+    LoginCheckEmailView(viewModel: LoginCheckEmailViewModel())
         .previewCustomFonts()
 }
 
 struct Message: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginCheckViewModel
+    @ObservedObject var viewModel: LoginCheckEmailViewModel
 
     var body: some View {
         VStack(spacing: 8) {

@@ -18,7 +18,7 @@ public struct LoginEmailView: View {
             VStack(alignment:.leading, spacing: 24) {
                 EmailInput(viewModel: viewModel)
                 Label()
-                ButtonNext(viewModel: viewModel)
+                NextButton(viewModel: viewModel)
                 Spacer()
             }
             .padding(.top, 24)
@@ -54,7 +54,7 @@ struct Label: View {
     }
 }
 
-struct ButtonNext: View {
+struct NextButton: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginEmailViewModel
 
@@ -64,8 +64,8 @@ struct ButtonNext: View {
                 viewModel.buttonNextTapped()
             }
             .buttonStyle(LeafPrimaryButton())
-            .navigationDestination(isPresented: $viewModel.emailValid) {
-                LoginCheckView(viewModel: viewModel.loginCheckViewModel ?? LoginCheckViewModel() )
+            .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in
+                LoginCheckEmailView(viewModel: loginCheckViewModel)
             }
         }
     }
@@ -80,6 +80,7 @@ struct EmailInput: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Enter You Email Address")
                 .body()
+
             HStack {
                 TextField("nome@email. com", text: $viewModel.emailInput)
                     .focused($isFocused)
@@ -90,14 +91,15 @@ struct EmailInput: View {
                     .body()
                     .frame(height: 50)
                     .onTapGesture {
-                        viewModel.buttonPressed = false
+                        viewModel.inputEmailTapped()
                     }
                     .onAppear  {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             self.isFocused = true
                         }
-                        self.isFocused = viewModel.isFocused
+                        self.isFocused = viewModel.isEmailInputFocused
                     }
+
                 Button(action: {
                     viewModel.clearEmailInputTapped()
                 }) {
@@ -106,17 +108,17 @@ struct EmailInput: View {
                             .foregroundStyle(theme.color.text.secondary)
                     }
                 }
+
             }
             .padding([.leading, .trailing], 16)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
+
         }
-        if viewModel.buttonPressed && viewModel.emailInput.isEmpty {
-            LeafError(message: "No email provided.")
-        } else if viewModel.buttonPressed == true && viewModel.emailValid == false {
-            LeafError(message: "That doesn't look like a valid email address!")
+        if let errorMessage = viewModel.errorMessage() {
+            LeafError(message: errorMessage)
         }
     }
 }
