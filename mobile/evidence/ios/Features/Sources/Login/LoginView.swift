@@ -11,24 +11,44 @@ import Leaf
 public struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.leafTheme) private var theme
+    @State private var isUserAuthenticated: Bool
+    var loginSettingViewModel: LoginSettingModel
 
-    public init(viewModel: LoginViewModel) {
+    public init(
+        viewModel: LoginViewModel,
+        isUserAuthenticated: Bool = false,
+        loginSettingViewModel: LoginSettingModel
+    ) {
         self.viewModel = viewModel
+        self.isUserAuthenticated = isUserAuthenticated
+        self.loginSettingViewModel = loginSettingViewModel
     }
 
     public var body: some View {
-        VStack {
-            Title()
-            Spacer()
-            GettingStartedButton(viewModel: viewModel)
+        ZStack {
+            NavigationStack {
+                LoginSetting(viewModel: loginSettingViewModel, isUserAuthenticated: $isUserAuthenticated)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.color.backgrond.aubergine)
+        .onAppear {
+            let autheUser = try? LoginManager.shared.getAuthenticationUser()
+            isUserAuthenticated = autheUser == nil
+        }
+        .fullScreenCover(isPresented: $isUserAuthenticated, content: {
+            VStack {
+                Title()
+                Spacer()
+                GettingStartedButton(viewModel: viewModel)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(theme.color.backgrond.aubergine)
+        })
+
     }
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel())
+    LoginView(viewModel: LoginViewModel(), loginSettingViewModel: LoginSettingModel())
         .previewCustomFonts()
 }
 

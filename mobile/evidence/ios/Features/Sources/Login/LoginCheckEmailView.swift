@@ -52,6 +52,7 @@ struct Message: View {
 
 struct OpenEmailAppButton: View {
     @Environment(\.leafTheme) private var theme
+
     var body: some View {
         Button("Open Email App") {
 
@@ -60,3 +61,4 @@ struct OpenEmailAppButton: View {
         .padding(24)
     }
 }
+

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
@@ -24,7 +25,7 @@ final public class LoginViewModel: ObservableObject {
     }
 
     func loginEmailButtonTapped() {
-        loginEmailViewModel = LoginEmailViewModel() 
+        loginEmailViewModel = LoginEmailViewModel()
         loginEmailViewModel?.delegateCloseButtonTapped = {
             self.loginEmailViewModel = nil
         }

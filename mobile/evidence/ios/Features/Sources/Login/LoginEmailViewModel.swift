@@ -10,6 +10,7 @@ import Foundation
 final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Published var emailInput: String
+    @Published var passwordInputMock: String
     @Published var isValidEmail: Bool
     @Published var isNextButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
@@ -19,18 +20,37 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     public init(
         emailInput: String = "",
+        passwordInput: String = "123456",
         isValidEmail: Bool = false,
         isNextButtonPressed: Bool = false,
         isInputEmailFocused: Bool = false,
         loginCheckViewModel: LoginCheckEmailViewModel? = nil
     ) {
         self.emailInput = emailInput
+        self.passwordInputMock = passwordInput
         self.isValidEmail = isValidEmail
         self.isNextButtonPressed = isNextButtonPressed
         self.isEmailInputFocused = isInputEmailFocused
         self.loginCheckViewModel = loginCheckViewModel
     }
-    
+
+    func signIn() {
+        guard !emailInput.isEmpty else {
+            print("No email found.")
+            return
+        }
+        
+        Task {
+            do {
+                let returnUserData = try await LoginManager.shared.creatUser(email: emailInput, password: passwordInputMock)
+                print("Success!")
+                print(returnUserData)
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+
     func closeButtonTapped() {
         delegateCloseButtonTapped()
     }
@@ -48,6 +68,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isValidEmail = isValidEmail(emailInput)
         isNextButtonPressed = true
         if isValidEmail == true {
+            signIn()
             loginCheckViewModel = LoginCheckEmailViewModel()
         }
     }

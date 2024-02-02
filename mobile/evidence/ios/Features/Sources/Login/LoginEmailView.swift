@@ -57,7 +57,7 @@ struct Label: View {
 struct NextButton: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginEmailViewModel
-
+    
     var body: some View {
         NavigationStack {
             Button("Next") {

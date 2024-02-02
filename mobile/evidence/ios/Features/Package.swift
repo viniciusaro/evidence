@@ -37,6 +37,10 @@ let package = Package(
         .package(
             url: "https://github.com/pointfreeco/swift-custom-dump",
             from: "1.1.1"
+        ),
+        .package(
+            url: "https://github.com/firebase/firebase-ios-sdk",
+            from: "10.20.0"
         )
     ],
     targets: [
@@ -75,7 +79,10 @@ let package = Package(
         .target(
             name: "Login",
             dependencies: [
-                "Leaf", "Models"]
+                "Leaf",
+                "Models",
+                .product (name: "FirebaseAuth", package: "firebase-ios-sdk" )
+            ]
         ),
         .testTarget(
             name: "LoginTests",
