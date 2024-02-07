@@ -6,29 +6,19 @@
 //
 
 import SwiftUI
-
-public class LoginSettingModel: ObservableObject {
-    public init() {}
-    func signOut() throws {
-        try LoginManager.shared.signOut()
-    }
-}
+import Leaf
 
 public struct LoginSetting: View {
-    @ObservedObject var viewModel: LoginSettingModel
+    @Environment(\.leafTheme) private var theme
+    @ObservedObject var viewModel: LoginSettingViewModel
     @Binding var isUserAuthenticated: Bool
+
 
     public var body: some View {
         List {
             Button("Log Out") {
-                Task {
-                    do {
-                        try viewModel.signOut()
-                        isUserAuthenticated = true
-                    } catch {
-                        print(error)
-                    }
-                }
+                viewModel.signOutButtonTapped()
+                isUserAuthenticated = true
             }
         }
         .navigationTitle("Settings")
@@ -36,5 +26,5 @@ public struct LoginSetting: View {
 }
 
 #Preview {
-    LoginSetting(viewModel: LoginSettingModel(), isUserAuthenticated: .constant(true))
+    LoginSetting(viewModel: LoginSettingViewModel(), isUserAuthenticated: .constant(true))
 }

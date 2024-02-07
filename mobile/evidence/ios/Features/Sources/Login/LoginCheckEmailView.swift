@@ -32,7 +32,7 @@ public struct LoginCheckEmailView: View {
 }
 
 #Preview {
-    LoginCheckEmailView(viewModel: LoginCheckEmailViewModel())
+    LoginCheckEmailView(viewModel: LoginCheckEmailViewModel(emailInput: "eu@2u.com"))
         .previewCustomFonts()
 }
 
@@ -44,7 +44,7 @@ struct Message: View {
         VStack(spacing: 8) {
             Text("Check your email!")
                 .title()
-            Text("To confirm your email address, tap the button in the email we sent to **\(viewModel.mockEmail)**")
+            Text("To confirm your email address, tap the button in the email we sent to **\(viewModel.emailInput)**")
                 .body()
         }
     }
@@ -55,7 +55,6 @@ struct OpenEmailAppButton: View {
 
     var body: some View {
         Button("Open Email App") {
-
         }
         .buttonStyle(LeafPrimaryButton())
         .padding(24)

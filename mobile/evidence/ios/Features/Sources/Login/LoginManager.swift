@@ -41,4 +41,9 @@ final public class LoginManager {
     func signOut() throws {
         try Auth.auth().signOut()
     }
+
+    func userEmailLogged() {
+        let authUser = try? LoginManager.shared.getAuthenticationUser()
+        _ = authUser?.email
+    }
 }

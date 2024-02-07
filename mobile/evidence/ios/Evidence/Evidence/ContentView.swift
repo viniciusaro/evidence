@@ -7,6 +7,7 @@ import Login
 
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
+<<<<<<< Updated upstream
     @StateObject var loginViewModel = LoginViewModel()
     @StateObject var loginSettingViewModel = LoginSettingModel()
 
@@ -33,6 +34,46 @@ struct ContentView: View {
         //                }
         //                .tint(theme.color.text.primary)
         //    }
+=======
+<<<<<<< Updated upstream
+    var body: some View {
+        TabView() {
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Home")
+                }
+            
+            YouView()
+                .tabItem {
+                    Image(systemName: "face.dashed")
+                    Text("You")
+                }
+        }
+        .tint(theme.color.text.primary)
+=======
+    @StateObject var loginViewModel = LoginViewModel()
+
+    var body: some View {
+        LoginView(viewModel: LoginViewModel())
+//        NavigationStack {
+//            TabView() {
+//                HomeView()
+//                    .tabItem {
+//                        Image(systemName: "house.fill")
+//                        Text("Home")
+//                    }
+//
+//                YouView()
+//                    .tabItem {
+//                        Image(systemName: "face.dashed")
+//                        Text("You")
+//                    }
+//            }
+//            .tint(theme.color.text.primary)
+//        }
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     }
 }
 

@@ -11,30 +11,21 @@ import Leaf
 public struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.leafTheme) private var theme
-    @State private var isUserAuthenticated: Bool
-    var loginSettingViewModel: LoginSettingModel
 
-    public init(
-        viewModel: LoginViewModel,
-        isUserAuthenticated: Bool = false,
-        loginSettingViewModel: LoginSettingModel
-    ) {
+    public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
-        self.isUserAuthenticated = isUserAuthenticated
-        self.loginSettingViewModel = loginSettingViewModel
     }
 
     public var body: some View {
         ZStack {
             NavigationStack {
-                LoginSetting(viewModel: loginSettingViewModel, isUserAuthenticated: $isUserAuthenticated)
+                LoginSetting(viewModel: viewModel.loginSettingViewModel, isUserAuthenticated: $viewModel.isUserAuthenticated)
             }
         }
         .onAppear {
-            let autheUser = try? LoginManager.shared.getAuthenticationUser()
-            isUserAuthenticated = autheUser == nil
+            viewModel.getAuthenticationUser()
         }
-        .fullScreenCover(isPresented: $isUserAuthenticated, content: {
+        .fullScreenCover(isPresented: $viewModel.isUserAuthenticated, content: {
             VStack {
                 Title()
                 Spacer()
@@ -48,8 +39,7 @@ public struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(), loginSettingViewModel: LoginSettingModel())
-        .previewCustomFonts()
+    LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
 }
 
 struct Title: View {
@@ -107,7 +97,6 @@ struct LoginAuthModal: View {
                 .buttonStyle(LeafPrimaryButton())
                 .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
                     LoginEmailView(viewModel: loginEmailViewModel)
-
                 }
             }
             .padding([.leading, .trailing], 16)
@@ -118,5 +107,5 @@ struct LoginAuthModal: View {
 #Preview {
     LoginAuthModal(viewModel: LoginViewModel())
         .previewCustomFonts()
-
 }
+

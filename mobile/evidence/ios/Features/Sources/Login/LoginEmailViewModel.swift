@@ -35,11 +35,6 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     }
 
     func signIn() {
-        guard !emailInput.isEmpty else {
-            print("No email found.")
-            return
-        }
-        
         Task {
             do {
                 let returnUserData = try await LoginManager.shared.creatUser(email: emailInput, password: passwordInputMock)
@@ -69,7 +64,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isNextButtonPressed = true
         if isValidEmail == true {
             signIn()
-            loginCheckViewModel = LoginCheckEmailViewModel()
+            loginCheckViewModel = LoginCheckEmailViewModel(emailInput: emailInput)
         }
     }
 
