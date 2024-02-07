@@ -28,6 +28,7 @@ public struct LoginView: View {
         .fullScreenCover(isPresented: $viewModel.isUserAuthenticated, content: {
             VStack {
                 Title()
+                LeafImageLogin()
                 Spacer()
                 GettingStartedButton(viewModel: viewModel)
             }

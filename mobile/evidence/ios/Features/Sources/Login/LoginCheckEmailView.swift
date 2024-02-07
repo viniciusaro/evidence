@@ -20,6 +20,7 @@ public struct LoginCheckEmailView: View {
         NavigationStack {
             Divider()
             VStack(spacing: 24) {
+                LeafImageLoginCheckEmail()
                 Message(viewModel: viewModel)
                 Spacer()
                 OpenEmailAppButton()
