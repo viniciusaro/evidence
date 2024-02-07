@@ -31,7 +31,8 @@ let package = Package(
                 .product(name: "Dependencies", package: "swift-dependencies")
             ],
             resources: [
-                .process("Components/Fonts")
+                .process("Components/Fonts"),
+                .process("Components/Media.xcassets")
                 ]
         ),
         .testTarget(
