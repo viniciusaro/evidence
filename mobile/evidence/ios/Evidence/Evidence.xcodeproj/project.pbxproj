@@ -15,20 +15,10 @@
 		6395EDCF2AC39198000EB04A /* EvidenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDCE2AC39198000EB04A /* EvidenceTests.swift */; };
 		6395EDD92AC39198000EB04A /* EvidenceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDD82AC39198000EB04A /* EvidenceUITests.swift */; };
 		6395EDDB2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */; };
-<<<<<<< Updated upstream
-		8AEE33792B6BEF0700386FE0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AEE33782B6BEF0700386FE0 /* GoogleService-Info.plist */; };
-		8AEE337C2B6BEF7A00386FE0 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8AEE337B2B6BEF7A00386FE0 /* FirebaseAnalytics */; };
-		8AEE337E2B6BEF7A00386FE0 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AEE337D2B6BEF7A00386FE0 /* FirebaseAnalyticsSwift */; };
-		8AEE33802B6BEF7A00386FE0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8AEE337F2B6BEF7A00386FE0 /* FirebaseAuth */; };
-=======
-<<<<<<< Updated upstream
-=======
 		8AC158B82B72789900C65D52 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC158B72B72789900C65D52 /* GoogleService-Info.plist */; };
 		8AEE337C2B6BEF7A00386FE0 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8AEE337B2B6BEF7A00386FE0 /* FirebaseAnalytics */; };
 		8AEE337E2B6BEF7A00386FE0 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AEE337D2B6BEF7A00386FE0 /* FirebaseAnalyticsSwift */; };
 		8AEE33802B6BEF7A00386FE0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8AEE337F2B6BEF7A00386FE0 /* FirebaseAuth */; };
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,14 +49,7 @@
 		6395EDD42AC39198000EB04A /* EvidenceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6395EDD82AC39198000EB04A /* EvidenceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITests.swift; sourceTree = "<group>"; };
 		6395EDDA2AC39198000EB04A /* EvidenceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceUITestsLaunchTests.swift; sourceTree = "<group>"; };
-<<<<<<< Updated upstream
-		8AEE33782B6BEF0700386FE0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
-=======
-<<<<<<< Updated upstream
-=======
 		8AC158B72B72789900C65D52 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,14 +262,7 @@
 			files = (
 				6395EDC52AC39198000EB04A /* Preview Assets.xcassets in Resources */,
 				6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */,
-<<<<<<< Updated upstream
-				8AEE33792B6BEF0700386FE0 /* GoogleService-Info.plist in Resources */,
-=======
-<<<<<<< Updated upstream
-=======
 				8AC158B82B72789900C65D52 /* GoogleService-Info.plist in Resources */,
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
