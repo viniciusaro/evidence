@@ -21,8 +21,6 @@ struct Login {
 }
 
 final public class LoginManager {
-    static var shared = LoginManager()
-    private init() {}
 
     func creatUser(email: String, password: String) async throws -> Login {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -40,10 +38,5 @@ final public class LoginManager {
 
     func signOut() throws {
         try Auth.auth().signOut()
-    }
-
-    func userEmailLogged() {
-        let authUser = try? LoginManager.shared.getAuthenticationUser()
-        _ = authUser?.email
     }
 }

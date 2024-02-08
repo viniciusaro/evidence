@@ -10,20 +10,20 @@ import FirebaseAuth
 
 final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
+    @Published var isUserAuthenticated: Bool
     @Published var loginEmailViewModel: LoginEmailViewModel?
     @Published var loginSettingViewModel: LoginSettingViewModel
-    @Published var isUserAuthenticated: Bool
 
     public init(
         showLoginAuth: Bool = false,
+        isUserAuthenticated: Bool = false,
         loginEmailViewModel: LoginEmailViewModel? = nil,
-        loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel(), //source of truth
-        isUserAuthenticated: Bool = false
+        loginSettingViewModel: LoginSettingViewModel
     ) {
         self.showLoginAuthModal = showLoginAuth
-        self.loginEmailViewModel = loginEmailViewModel
-        self.loginSettingViewModel = loginSettingViewModel
         self.isUserAuthenticated = isUserAuthenticated
+        self.loginEmailViewModel = loginEmailViewModel
+        self.loginSettingViewModel = loginSettingViewModel 
     }
 
     func gettingStartedButtonTapped() {
@@ -37,8 +37,8 @@ final public class LoginViewModel: ObservableObject {
         }
     }
 
-    func getAuthenticationUser() {
-        let autheUser = try? LoginManager.shared.getAuthenticationUser()
+    func getAuthenticationUser(loginManager: LoginManager) {
+        let autheUser = try? loginManager.getAuthenticationUser()
         if autheUser == nil {
             isUserAuthenticated = true
         } 

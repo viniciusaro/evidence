@@ -9,15 +9,15 @@ import Foundation
 
 public class LoginSettingViewModel: ObservableObject {
     public init() {}
-    
-    func signOut() throws {
-        try LoginManager.shared.signOut()
+
+    func signOut(loginManager: LoginManager) throws {
+        try loginManager.signOut()
     }
 
-    func signOutButtonTapped() {
+    func signOutButtonTapped(loginManager: LoginManager) {
         Task {
             do {
-                try signOut()
+                try signOut(loginManager: loginManager)
             } catch {
                 print(error)
             }

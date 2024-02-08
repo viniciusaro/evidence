@@ -10,6 +10,7 @@ import Leaf
 
 public struct LoginSetting: View {
     @Environment(\.leafTheme) private var theme
+    @Environment(\.loginManager) private var loginManager
     @ObservedObject var viewModel: LoginSettingViewModel
     @Binding var isUserAuthenticated: Bool
 
@@ -17,7 +18,7 @@ public struct LoginSetting: View {
     public var body: some View {
         List {
             Button("Log Out") {
-                viewModel.signOutButtonTapped()
+                viewModel.signOutButtonTapped(loginManager: loginManager)
                 isUserAuthenticated = true
             }
         }

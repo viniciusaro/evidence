@@ -56,12 +56,13 @@ struct Label: View {
 
 struct NextButton: View {
     @Environment(\.leafTheme) private var theme
+    @Environment(\.loginManager) private var loginManager
     @ObservedObject var viewModel: LoginEmailViewModel
     
     var body: some View {
         NavigationStack {
             Button("Next") {
-                viewModel.buttonNextTapped()
+                viewModel.buttonNextTapped(loginManager: loginManager)
             }
             .buttonStyle(LeafPrimaryButton())
             .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in

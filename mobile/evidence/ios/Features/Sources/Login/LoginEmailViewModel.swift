@@ -17,7 +17,6 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published var loginCheckViewModel: LoginCheckEmailViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
 
-
     public init(
         emailInput: String = "",
         passwordInput: String = "123456",
@@ -34,10 +33,10 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         self.loginCheckViewModel = loginCheckViewModel
     }
 
-    func signIn() {
+    func signIn(loginManager: LoginManager) {
         Task {
             do {
-                let returnUserData = try await LoginManager.shared.creatUser(email: emailInput, password: passwordInputMock)
+                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInputMock)
                 print("Success!")
                 print(returnUserData)
             } catch {
@@ -59,11 +58,11 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isNextButtonPressed = false
     }
 
-    func buttonNextTapped() {
+    func buttonNextTapped(loginManager: LoginManager) {
         isValidEmail = isValidEmail(emailInput)
         isNextButtonPressed = true
-        if isValidEmail == true {
-            signIn()
+        if isValidEmail {
+            signIn(loginManager: loginManager)
             loginCheckViewModel = LoginCheckEmailViewModel(emailInput: emailInput)
         }
     }

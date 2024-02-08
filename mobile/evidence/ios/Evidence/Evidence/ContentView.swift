@@ -7,10 +7,9 @@ import Login
 
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
-    @StateObject var loginViewModel = LoginViewModel()
 
     var body: some View {
-        LoginView(viewModel: LoginViewModel())
+        LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
 //        NavigationStack {
 //            TabView() {
 //                HomeView()

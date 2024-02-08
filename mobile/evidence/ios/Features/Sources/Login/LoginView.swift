@@ -11,6 +11,7 @@ import Leaf
 public struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.leafTheme) private var theme
+    @Environment(\.loginManager) private var loginManager
 
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -23,7 +24,7 @@ public struct LoginView: View {
             }
         }
         .onAppear {
-            viewModel.getAuthenticationUser()
+            viewModel.getAuthenticationUser(loginManager: loginManager)
         }
         .fullScreenCover(isPresented: $viewModel.isUserAuthenticated, content: {
             VStack {
@@ -35,7 +36,6 @@ public struct LoginView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(theme.color.backgrond.aubergine)
         })
-
     }
 }
 
@@ -106,7 +106,7 @@ struct LoginAuthModal: View {
 }
 
 #Preview {
-    LoginAuthModal(viewModel: LoginViewModel())
+    LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
         .previewCustomFonts()
 }
 
