@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Dependencies
 
 final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
@@ -16,6 +17,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published var isEmailInputFocused: Bool
     @Published var loginCheckViewModel: LoginCheckEmailViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
+    @Dependency(\.loginManager) private var loginManager
 
     public init(
         emailInput: String = "",
@@ -33,7 +35,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         self.loginCheckViewModel = loginCheckViewModel
     }
 
-    func signIn(loginManager: LoginManager) {
+    func signIn() {
         Task {
             do {
                 let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInputMock)
@@ -58,11 +60,11 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isNextButtonPressed = false
     }
 
-    func buttonNextTapped(loginManager: LoginManager) {
+    func buttonNextTapped() {
         isValidEmail = isValidEmail(emailInput)
         isNextButtonPressed = true
         if isValidEmail {
-            signIn(loginManager: loginManager)
+            signIn()
             loginCheckViewModel = LoginCheckEmailViewModel(emailInput: emailInput)
         }
     }

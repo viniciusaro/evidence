@@ -8,10 +8,10 @@
 import SwiftUI
 import Leaf
 
+
 public struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.leafTheme) private var theme
-    @Environment(\.loginManager) private var loginManager
 
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -24,7 +24,7 @@ public struct LoginView: View {
             }
         }
         .onAppear {
-            viewModel.getAuthenticationUser(loginManager: loginManager)
+            viewModel.getAuthenticationUser()
         }
         .fullScreenCover(isPresented: $viewModel.isUserAuthenticated, content: {
             VStack {

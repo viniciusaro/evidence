@@ -81,7 +81,8 @@ let package = Package(
             dependencies: [
                 "Leaf",
                 "Models",
-                .product (name: "FirebaseAuth", package: "firebase-ios-sdk" )
+                .product (name: "FirebaseAuth", package: "firebase-ios-sdk"),
+                .product(name: "Dependencies", package: "swift-dependencies")
             ]
         ),
         .testTarget(

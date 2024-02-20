@@ -7,12 +7,14 @@
 
 import Foundation
 import FirebaseAuth
+import Dependencies
 
 final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
     @Published var isUserAuthenticated: Bool
     @Published var loginEmailViewModel: LoginEmailViewModel?
     @Published var loginSettingViewModel: LoginSettingViewModel
+    @Dependency(\.loginManager) private var loginManager
 
     public init(
         showLoginAuth: Bool = false,
@@ -37,7 +39,7 @@ final public class LoginViewModel: ObservableObject {
         }
     }
 
-    func getAuthenticationUser(loginManager: LoginManager) {
+    func getAuthenticationUser() {
         let autheUser = try? loginManager.getAuthenticationUser()
         if autheUser == nil {
             isUserAuthenticated = true

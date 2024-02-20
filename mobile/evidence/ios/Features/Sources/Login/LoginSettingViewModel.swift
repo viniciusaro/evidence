@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import Dependencies
 
 public class LoginSettingViewModel: ObservableObject {
+    @Dependency(\.loginManager) private var loginManager
+    
     public init() {}
 
-    func signOut(loginManager: LoginManager) throws {
+    func signOut() throws {
         try loginManager.signOut()
     }
 
-    func signOutButtonTapped(loginManager: LoginManager) {
+    func signOutButtonTapped() {
         Task {
             do {
-                try signOut(loginManager: loginManager)
+                try signOut()
             } catch {
                 print(error)
             }
