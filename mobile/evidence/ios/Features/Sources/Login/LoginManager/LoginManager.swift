@@ -12,7 +12,9 @@ struct Login {
     let uid: String
     let email: String?
     let photoURL: String?
+}
 
+extension Login {
     init(user: User) {
         self.uid = user.uid
         self.email = user.email
@@ -20,8 +22,7 @@ struct Login {
     }
 }
 
-final public class LoginManager {
-
+final public class FirebaseLoginManager: LoginManager {
     func creatUser(email: String, password: String) async throws -> Login {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return Login(user: authDataResult.user)
@@ -38,5 +39,21 @@ final public class LoginManager {
 
     func signOut() throws {
         try Auth.auth().signOut()
+    }
+}
+
+final public class AuthenticatedLoginManager: LoginManager {
+
+    func creatUser(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
+    func getAuthenticationUser() throws -> Login {
+        let uid = UUID().uuidString
+        return Login(uid: uid, email: "eu@eu.com", photoURL: "photo_url")
+    }
+
+    func signOut() throws {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 }
