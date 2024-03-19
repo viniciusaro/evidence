@@ -13,13 +13,13 @@ import XCTest
 final class LoginTests: XCTestCase {
     ///LoginViewModel()
     func testGettingStartedButtonTapped() {
-        let viewModel = LoginViewModel()
+        let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
         viewModel.gettingStartedButtonTapped()
         XCTAssertTrue(viewModel.showLoginAuthModal, "Should to be true")
     }
 
     func testLoginEmailButtonTapped() {
-        let viewModel = LoginViewModel()
+        let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
         viewModel.loginEmailButtonTapped()
         XCTAssertNotNil(viewModel.loginEmailViewModel, "Should create an instance of LoginEmailViewModel()")
     }
