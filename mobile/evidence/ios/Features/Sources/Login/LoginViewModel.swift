@@ -11,16 +11,16 @@ import Dependencies
 
 final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
-    @Published var isUserAuthenticated: Bool
+    @Published public var isUserAuthenticated: Bool
     @Published var loginEmailViewModel: LoginEmailViewModel?
-    @Published var loginSettingViewModel: LoginSettingViewModel
+    @Published var loginSettingViewModel: LoginSettingViewModel?
     @Dependency(\.loginManager) private var loginManager
 
     public init(
         showLoginAuth: Bool = false,
         isUserAuthenticated: Bool = false,
         loginEmailViewModel: LoginEmailViewModel? = nil,
-        loginSettingViewModel: LoginSettingViewModel
+        loginSettingViewModel: LoginSettingViewModel? = nil
     ) {
         self.showLoginAuthModal = showLoginAuth
         self.isUserAuthenticated = isUserAuthenticated
@@ -39,7 +39,14 @@ final public class LoginViewModel: ObservableObject {
         }
     }
 
-    func getAuthenticationUser() {
+    func logOutButtobTapped() {
+//        loginSettingViewModel = LoginSettingViewModel()
+        loginSettingViewModel?.delegateIsUserAuthenticated = {
+            self.isUserAuthenticated = true
+        }
+    }
+
+    public func getAuthenticationUser() {
         let autheUser = try? loginManager.getAuthenticationUser()
         if autheUser == nil {
             isUserAuthenticated = true

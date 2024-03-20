@@ -18,24 +18,12 @@ public struct LoginView: View {
     }
 
     public var body: some View {
-        ZStack {
-            NavigationStack {
-                LoginSetting(viewModel: viewModel.loginSettingViewModel, isUserAuthenticated: $viewModel.isUserAuthenticated)
-            }
+        VStack {
+            Title()
+            LeafImageLogin()
+            Spacer()
+            GettingStartedButton(viewModel: viewModel)
         }
-        .onAppear {
-            viewModel.getAuthenticationUser()
-        }
-        .fullScreenCover(isPresented: $viewModel.isUserAuthenticated, content: {
-            VStack {
-                Title()
-                LeafImageLogin()
-                Spacer()
-                GettingStartedButton(viewModel: viewModel)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(theme.color.backgrond.aubergine)
-        })
     }
 }
 
