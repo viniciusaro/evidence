@@ -10,7 +10,8 @@ import Dependencies
 
 public class LoginSettingViewModel: ObservableObject {
     @Dependency(\.loginManager) private var loginManager
-    
+    var delegateIsUserAuthenticated: () -> Void = { fatalError() }
+
     public init() {}
 
     func signOut() throws {
@@ -25,5 +26,6 @@ public class LoginSettingViewModel: ObservableObject {
                 print(error)
             }
         }
+        delegateIsUserAuthenticated()
     }
 }

@@ -1,5 +1,5 @@
 //
-//  LoginSetting.swift
+//  LoginSettingView.swift
 //
 //
 //  Created by Cris Messias on 02/02/24.
@@ -8,17 +8,19 @@
 import SwiftUI
 import Leaf
 
-public struct LoginSetting: View {
+public struct LoginSettingView: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginSettingViewModel
-    @Binding var isUserAuthenticated: Bool
-
+//    @Binding public var isUserAuthenticated: Bool
+    
+    public init(viewModel: LoginSettingViewModel) {
+        self.viewModel = viewModel
+    }
 
     public var body: some View {
         List {
             Button("Log Out") {
                 viewModel.signOutButtonTapped()
-                isUserAuthenticated = true
             }
         }
         .navigationTitle("Settings")
@@ -26,5 +28,5 @@ public struct LoginSetting: View {
 }
 
 #Preview {
-    LoginSetting(viewModel: LoginSettingViewModel(), isUserAuthenticated: .constant(true))
+    LoginSettingView(viewModel: LoginSettingViewModel())
 }
