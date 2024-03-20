@@ -24,6 +24,17 @@ final class LoginTests: XCTestCase {
         XCTAssertNotNil(viewModel.loginEmailViewModel, "Should create an instance of LoginEmailViewModel()")
     }
 
+    func testGetAuthenticationUserSuccess() {
+        let autheUser = try? AuthenticatedLoginManager().getAuthenticationUser()
+        XCTAssertNotNil(autheUser, "The user should exist")
+    }
+
+    func testGetAuthenticationUserFailure() {
+        let autheUser = try? FailureAuthenticationLoginManager().getAuthenticationUser()
+//        viewModel.getAuthenticationUser()
+        XCTAssertNil(autheUser, "Shouldn't exist")
+    }
+
     ///LoginEmailViewModel()
     func testCloseButtonTapped() {
         let viewModel = LoginEmailViewModel()
@@ -106,6 +117,4 @@ final class LoginTests: XCTestCase {
         let viewModel = LoginEmailViewModel()
         XCTAssertFalse(viewModel.isValidEmail(""))
     }
-
-    ///LoginCheckEmailViewModel()
 }

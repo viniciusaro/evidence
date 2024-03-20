@@ -57,3 +57,18 @@ final public class AuthenticatedLoginManager: LoginManager {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 }
+
+final public class FailureAuthenticationLoginManager: LoginManager {
+
+    func creatUser(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
+    func getAuthenticationUser() throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
+    func signOut() throws {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+}
