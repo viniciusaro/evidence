@@ -10,7 +10,7 @@ import Dependencies
 
 public class LoginSettingViewModel: ObservableObject {
     @Dependency(\.loginManager) private var loginManager
-    var delegateIsUserAuthenticated: () -> Void = { fatalError() }
+    var delegateIsUserAuthenticated: () -> Void = { fatalError("delegateIsUserAuthenticated isn't working!") }
 
     public init() {}
 

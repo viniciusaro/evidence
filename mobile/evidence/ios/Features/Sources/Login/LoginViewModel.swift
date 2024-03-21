@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  LoginViewModel.swift
 //
 //
 //  Created by Cris Messias on 23/01/24.
@@ -39,7 +39,7 @@ final public class LoginViewModel: ObservableObject {
         }
     }
 
-    func logOutButtobTapped() {
+    func logOutButtonTapped() {
 //        loginSettingViewModel = LoginSettingViewModel()
         loginSettingViewModel?.delegateIsUserAuthenticated = {
             self.isUserAuthenticated = true

@@ -9,7 +9,7 @@ import SwiftUI
 import Dependencies
 
 private struct LoginManagerEnvironmentDependency: DependencyKey {
-    static var liveValue: LoginManager = FirebaseLoginManager()
+    static var liveValue: LoginManager = AuthenticatedLoginManager()
     static var previewValue: LoginManager = AuthenticatedLoginManager()
 }
 
