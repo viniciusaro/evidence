@@ -27,9 +27,9 @@ public struct LoginView: View {
     }
 }
 
-#Preview {
-    LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
-}
+//#Preview {
+//    LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+//}
 
 struct Title: View {
     var body: some View {
@@ -93,8 +93,8 @@ struct LoginAuthModal: View {
     }
 }
 
-#Preview {
-    LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
-        .previewCustomFonts()
-}
+//#Preview {
+//    LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+//        .previewCustomFonts()
+//}
 

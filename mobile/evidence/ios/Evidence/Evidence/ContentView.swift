@@ -25,7 +25,7 @@ struct ContentView: View {
                             Text("You")
                         }
 
-                    LoginSettingView(viewModel: LoginSettingViewModel())
+                    LoginSettingView(viewModel: loginViewModel.loginSettingViewModel)
                         .tabItem {
                             Image(systemName: "gearshape.circle.fill")
                             Text("Setting")
@@ -37,7 +37,7 @@ struct ContentView: View {
         .onAppear {
             loginViewModel.getAuthenticationUser()
         }
-        .fullScreenCover(isPresented: $loginViewModel.isUserAuthenticated, content: {
+        .fullScreenCover(isPresented: $loginViewModel.isUserNotAuthenticated, content: {
            LoginView(viewModel: loginViewModel)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(theme.color.backgrond.aubergine)

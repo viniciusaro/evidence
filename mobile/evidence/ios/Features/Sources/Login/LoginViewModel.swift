@@ -11,21 +11,25 @@ import Dependencies
 
 final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
-    @Published public var isUserAuthenticated: Bool
+    @Published public var isUserNotAuthenticated: Bool
     @Published var loginEmailViewModel: LoginEmailViewModel?
-    @Published var loginSettingViewModel: LoginSettingViewModel?
+    public let loginSettingViewModel:  LoginSettingViewModel
     @Dependency(\.loginManager) private var loginManager
 
     public init(
         showLoginAuth: Bool = false,
         isUserAuthenticated: Bool = false,
         loginEmailViewModel: LoginEmailViewModel? = nil,
-        loginSettingViewModel: LoginSettingViewModel? = nil
+        loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel()
     ) {
         self.showLoginAuthModal = showLoginAuth
-        self.isUserAuthenticated = isUserAuthenticated
+        self.isUserNotAuthenticated = isUserAuthenticated
         self.loginEmailViewModel = loginEmailViewModel
-        self.loginSettingViewModel = loginSettingViewModel 
+        self.loginSettingViewModel = loginSettingViewModel
+
+        loginSettingViewModel.delegateIsUserAuthenticated = {
+            self.isUserNotAuthenticated = true
+        }
     }
 
     func gettingStartedButtonTapped() {
@@ -39,17 +43,10 @@ final public class LoginViewModel: ObservableObject {
         }
     }
 
-    func logOutButtonTapped() {
-//        loginSettingViewModel = LoginSettingViewModel()
-        loginSettingViewModel?.delegateIsUserAuthenticated = {
-            self.isUserAuthenticated = true
-        }
-    }
-
     public func getAuthenticationUser() {
         let autheUser = try? loginManager.getAuthenticationUser()
         if autheUser == nil {
-            isUserAuthenticated = true
+            isUserNotAuthenticated = true
         } 
     }
 }
