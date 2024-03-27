@@ -63,7 +63,7 @@ struct NextButton: View {
             Button("Next") {
                 viewModel.buttonNextTapped()
             }
-            .buttonStyle(LeafPrimaryButton())
+            .buttonStyle(LeafPrimaryButtonStyle())
             .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in
                 LoginCheckEmailView(viewModel: loginCheckViewModel)
             }
@@ -118,7 +118,7 @@ struct EmailInput: View {
 
         }
         if let errorMessage = viewModel.errorMessage() {
-            LeafError(message: errorMessage)
+            LeafErrorMessage(message: errorMessage)
         }
     }
 }

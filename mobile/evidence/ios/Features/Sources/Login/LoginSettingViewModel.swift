@@ -14,7 +14,7 @@ public class LoginSettingViewModel: ObservableObject {
 
     public init() {}
 
-    func signOut() throws {
+    private func signOut() throws {
         try loginManager.signOut()
     }
 
@@ -22,8 +22,9 @@ public class LoginSettingViewModel: ObservableObject {
         Task {
             do {
                 try signOut()
+                print("signOut")
             } catch {
-                print(error)
+                print("SignOut", error)
             }
         }
         delegateIsUserAuthenticated()

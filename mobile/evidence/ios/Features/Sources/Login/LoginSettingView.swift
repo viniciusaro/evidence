@@ -11,7 +11,6 @@ import Leaf
 public struct LoginSettingView: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginSettingViewModel
-//    @Binding public var isUserAuthenticated: Bool
     
     public init(viewModel: LoginSettingViewModel) {
         self.viewModel = viewModel
@@ -30,3 +29,4 @@ public struct LoginSettingView: View {
 #Preview {
     LoginSettingView(viewModel: LoginSettingViewModel())
 }
+

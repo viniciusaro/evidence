@@ -10,14 +10,15 @@ import Dependencies
 
 final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
+    @Dependency(\.loginManager) private var loginManager
     @Published var emailInput: String
     @Published var passwordInputMock: String
-    @Published var isValidEmail: Bool
+    @Published private(set) var isValidEmail: Bool
     @Published var isNextButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
     @Published var loginCheckViewModel: LoginCheckEmailViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
-    @Dependency(\.loginManager) private var loginManager
+
 
     public init(
         emailInput: String = "",
@@ -35,11 +36,11 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         self.loginCheckViewModel = loginCheckViewModel
     }
 
-    func signIn() {
+     private func signIn() {
         Task {
             do {
                 let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInputMock)
-                print("Success!")
+                print("User created!")
                 print(returnUserData)
             } catch {
                 print("Error: \(error)")

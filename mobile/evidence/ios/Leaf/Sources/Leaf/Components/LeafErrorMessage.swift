@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct LeafError: View {
+public struct LeafErrorMessage: View {
     @Environment(\.leafTheme) private var theme
     var message: String
 
@@ -32,7 +32,7 @@ public struct LeafError: View {
 }
 
 #Preview {
-    LeafError(message: "No email provided.")
+    LeafErrorMessage(message: "No email provided.")
         .padding(16)
         .previewCustomFonts()
 }

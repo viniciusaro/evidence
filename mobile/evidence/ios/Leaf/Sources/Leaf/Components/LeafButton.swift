@@ -1,16 +1,16 @@
 import SwiftUI
 
-public struct LeafPrimaryButton: ButtonStyle {
+public struct LeafPrimaryButtonStyle: ButtonStyle {
     public init() {}
 
     public func makeBody(configuration: Configuration) -> some View {
-        LeafPrimaryButtonStyle(configuration: configuration)
+        LeafPrimaryButton(configuration: configuration)
     }
 }
 
-private struct LeafPrimaryButtonStyle: View {
+private struct LeafPrimaryButton: View {
     @Environment(\.leafTheme) private var theme
-    let configuration: LeafPrimaryButton.Configuration
+    let configuration: LeafPrimaryButtonStyle.Configuration
 
     var body: some View {
         configuration
@@ -25,17 +25,17 @@ private struct LeafPrimaryButtonStyle: View {
 }
 
 
-public struct LeafSecondaryButton: ButtonStyle {
+public struct LeafSecondaryButtonStyle: ButtonStyle {
     public init() {}
 
     public func makeBody(configuration: Configuration) -> some View {
-        LeafSecondaryButtonStyle(configuration: configuration)
+        LeafSecondaryButton(configuration: configuration)
     }
 }
 
-private struct LeafSecondaryButtonStyle: View {
+private struct LeafSecondaryButton: View {
     @Environment(\.leafTheme) private var theme
-    let configuration: LeafSecondaryButton.Configuration
+    let configuration: LeafSecondaryButtonStyle.Configuration
 
     var body: some View {
         configuration
@@ -48,17 +48,17 @@ private struct LeafSecondaryButtonStyle: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
-public struct LeafGoogleLoginButton: ButtonStyle {
+public struct LeafGoogleLoginButtonStyle: ButtonStyle {
     public init() {}
 
     public func makeBody(configuration: Configuration) -> some View {
-        LeafGoogleLoginButtonStyle(configuration: configuration)
+        LeafGoogleLoginButton(configuration: configuration)
     }
 }
 
-private struct LeafGoogleLoginButtonStyle: View {
+private struct LeafGoogleLoginButton: View {
     @Environment(\.leafTheme) private var theme
-    let configuration: LeafGoogleLoginButton.Configuration
+    let configuration: LeafGoogleLoginButtonStyle.Configuration
 
     var body: some View {
         configuration
@@ -79,7 +79,7 @@ private struct LeafGoogleLoginButtonStyle: View {
             Button("Getting started") {
 
             }
-            .buttonStyle(LeafGoogleLoginButton())
+            .buttonStyle(LeafGoogleLoginButtonStyle())
 
         }
         .padding(20)

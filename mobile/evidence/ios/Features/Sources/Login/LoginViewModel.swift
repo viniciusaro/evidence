@@ -18,12 +18,12 @@ final public class LoginViewModel: ObservableObject {
 
     public init(
         showLoginAuth: Bool = false,
-        isUserAuthenticated: Bool = false,
+        isUserNotAuthenticated: Bool = true,
         loginEmailViewModel: LoginEmailViewModel? = nil,
         loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel()
     ) {
         self.showLoginAuthModal = showLoginAuth
-        self.isUserNotAuthenticated = isUserAuthenticated
+        self.isUserNotAuthenticated = isUserNotAuthenticated
         self.loginEmailViewModel = loginEmailViewModel
         self.loginSettingViewModel = loginSettingViewModel
 
@@ -45,8 +45,8 @@ final public class LoginViewModel: ObservableObject {
 
     public func getAuthenticationUser() {
         let autheUser = try? loginManager.getAuthenticationUser()
-        if autheUser == nil {
-            isUserNotAuthenticated = true
-        } 
+        if autheUser != nil {
+            isUserNotAuthenticated = false
+        }
     }
 }

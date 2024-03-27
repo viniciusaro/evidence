@@ -57,7 +57,7 @@ struct OpenEmailAppButton: View {
     var body: some View {
         Button("Open Email App") {
         }
-        .buttonStyle(LeafPrimaryButton())
+        .buttonStyle(LeafPrimaryButtonStyle())
         .padding(24)
     }
 }

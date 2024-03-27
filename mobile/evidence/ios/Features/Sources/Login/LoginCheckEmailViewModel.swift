@@ -9,7 +9,7 @@ import Foundation
 
 final public class LoginCheckEmailViewModel: ObservableObject, Identifiable, Hashable {
     public static func == (lhs: LoginCheckEmailViewModel, rhs: LoginCheckEmailViewModel) -> Bool {
-        return lhs.emailInput == rhs.emailInput
+        return lhs.emailInput == rhs.emailInput && lhs.id == rhs.id
     }
     public func hash(into hasher: inout Hasher) { hasher.combine(emailInput) }
     public var id = UUID()
