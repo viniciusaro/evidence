@@ -3,24 +3,29 @@ import Chat
 import Profile
 import Leaf
 import Models
+import Login
 
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
+
     var body: some View {
-        TabView() {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-            
-            YouView()
-                .tabItem {
-                    Image(systemName: "face.dashed")
-                    Text("You")
-                }
-        }
-        .tint(theme.color.text.primary)
+        LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+//        NavigationStack {
+//            TabView() {
+//                HomeView()
+//                    .tabItem {
+//                        Image(systemName: "house.fill")
+//                        Text("Home")
+//                    }
+//
+//                YouView()
+//                    .tabItem {
+//                        Image(systemName: "face.dashed")
+//                        Text("You")
+//                    }
+//            }
+//            .tint(theme.color.text.primary)
+//        }
     }
 }
 
@@ -54,7 +59,6 @@ struct HomeView: View {
 
 struct YouView: View {
     @StateObject var model = StatusViewModel()
-    
     var body: some View {
         VStack {
             AvatarStatusView(model: model)
@@ -64,3 +68,4 @@ struct YouView: View {
         }
     }
 }
+

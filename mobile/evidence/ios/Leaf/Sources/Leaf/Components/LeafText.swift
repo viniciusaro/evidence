@@ -78,8 +78,8 @@ public struct LeafLabelModifier: ViewModifier {
     @Environment(\.leafTheme) private var theme
     public func body(content: Content) -> some View {
         content
-            .font(.custom("Lato-Light", size: 14))
-            .foregroundStyle(theme.color.text.secondary)
+            .font(.custom("Lato-Regular", size: 14))
+            .foregroundStyle(theme.color.text.primary)
     }
 }
 public extension View {

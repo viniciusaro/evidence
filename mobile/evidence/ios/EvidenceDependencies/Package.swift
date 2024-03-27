@@ -25,6 +25,7 @@ let package = Package(
                 "Leaf",
                 .product(name: "Chat", package: "Features"),
                 .product(name: "Profile", package: "Features"),
+                .product(name: "Login", package: "Features"),
             ]
         ),
     ]
