@@ -63,7 +63,7 @@ struct NextButton: View {
             Button("Next") {
                 viewModel.buttonNextTapped()
             }
-            .buttonStyle(LeafPrimaryButton())
+            .buttonStyle(LeafPrimaryButtonStyle())
             .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in
                 LoginCheckEmailView(viewModel: loginCheckViewModel)
             }
@@ -75,6 +75,8 @@ struct EmailInput: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginEmailViewModel
     @FocusState private var isFocused: Bool
+
+    
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -118,7 +120,7 @@ struct EmailInput: View {
 
         }
         if let errorMessage = viewModel.errorMessage() {
-            LeafError(message: errorMessage)
+            LeafErrorMessage(message: errorMessage)
         }
     }
 }

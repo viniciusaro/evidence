@@ -20,13 +20,13 @@ public struct LoginView: View {
     public var body: some View {
         ZStack {
             NavigationStack {
-                LoginSetting(viewModel: viewModel.loginSettingViewModel, isUserAuthenticated: $viewModel.isUserAuthenticated)
+                LoginSetting(viewModel: viewModel.loginSettingViewModel, isUserNotAuthenticated: $viewModel.isUserNotAuthenticated)
             }
         }
         .onAppear {
             viewModel.getAuthenticationUser()
         }
-        .fullScreenCover(isPresented: $viewModel.isUserAuthenticated, content: {
+        .fullScreenCover(isPresented: $viewModel.isUserNotAuthenticated, content: {
             VStack {
                 Title()
                 LeafImageLogin()
@@ -71,7 +71,7 @@ struct GettingStartedButton: View {
         Button("Getting Started") {
             viewModel.gettingStartedButtonTapped()
         }
-        .buttonStyle(LeafSecondaryButton())
+        .buttonStyle(LeafSecondaryButtonStyle())
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
         .sheet(isPresented: $viewModel.showLoginAuthModal) {
             LoginAuthModal(viewModel: viewModel)
@@ -90,12 +90,12 @@ struct LoginAuthModal: View {
                 Button("Continue with Gmail") {
 
                 }
-                .buttonStyle(LeafGoogleLoginButton())
+                .buttonStyle(LeafGoogleLoginButtonStyle())
 
                 Button("Continue with Email") {
                     viewModel.loginEmailButtonTapped()
                 }
-                .buttonStyle(LeafPrimaryButton())
+                .buttonStyle(LeafPrimaryButtonStyle())
                 .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
                     LoginEmailView(viewModel: loginEmailViewModel)
                 }

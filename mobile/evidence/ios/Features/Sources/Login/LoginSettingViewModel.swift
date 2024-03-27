@@ -10,10 +10,10 @@ import Dependencies
 
 public class LoginSettingViewModel: ObservableObject {
     @Dependency(\.loginManager) private var loginManager
-    
+
     public init() {}
 
-    func signOut() throws {
+    private func signOut() throws {
         try loginManager.signOut()
     }
 
@@ -22,7 +22,7 @@ public class LoginSettingViewModel: ObservableObject {
             do {
                 try signOut()
             } catch {
-                print(error)
+                print("SignOut", error)
             }
         }
     }

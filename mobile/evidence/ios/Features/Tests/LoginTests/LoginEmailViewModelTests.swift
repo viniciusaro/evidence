@@ -1,41 +1,16 @@
 //
-//  LoginTests.swift
+//  LoginTestsViewModel.swift
 //  
 //
-//  Created by Cris Messias on 19/01/24.
+//  Created by Cris Messias on 27/03/24.
 //
 
 import XCTest
 @testable import Login
 @testable import Models
 
+final class LoginEmailViewModelTests: XCTestCase {
 
-final class LoginTests: XCTestCase {
-    ///LoginViewModel()
-    func testGettingStartedButtonTapped() {
-        let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
-        viewModel.gettingStartedButtonTapped()
-        XCTAssertTrue(viewModel.showLoginAuthModal, "Should to be true")
-    }
-
-    func testLoginEmailButtonTapped() {
-        let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
-        viewModel.loginEmailButtonTapped()
-        XCTAssertNotNil(viewModel.loginEmailViewModel, "Should create an instance of LoginEmailViewModel()")
-    }
-
-    func testGetAuthenticationUserSuccess() {
-        let autheUser = try? AuthenticatedLoginManager().getAuthenticationUser()
-        XCTAssertNotNil(autheUser, "The user should exist")
-    }
-
-    func testGetAuthenticationUserFailure() {
-        let autheUser = try? FailureAuthenticationLoginManager().getAuthenticationUser()
-//        viewModel.getAuthenticationUser()
-        XCTAssertNil(autheUser, "Shouldn't exist")
-    }
-
-    ///LoginEmailViewModel()
     func testCloseButtonTapped() {
         let viewModel = LoginEmailViewModel()
         var closeButtonCalled = false
@@ -96,11 +71,11 @@ final class LoginTests: XCTestCase {
 
     func testErrorMessageValidEmail() {
         let viewModel = LoginEmailViewModel()
-        viewModel.isNextButtonPressed = true
         viewModel.emailInput = "email@valid.com"
-        viewModel.isValidEmail = true
+        viewModel.buttonNextTapped()
         let result = viewModel.errorMessage()
-        XCTAssertNil(result, "Not expecting error message for valid email")
+        XCTAssertTrue(viewModel.isValidEmail, "Shoud set true")
+        XCTAssertNil(result, "Should not return any message")
     }
 
     func testIsValidEmailValid() {
@@ -117,4 +92,5 @@ final class LoginTests: XCTestCase {
         let viewModel = LoginEmailViewModel()
         XCTAssertFalse(viewModel.isValidEmail(""))
     }
+
 }

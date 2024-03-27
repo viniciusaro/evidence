@@ -30,7 +30,7 @@ final public class FirebaseLoginManager: LoginManager {
     
     func getAuthenticationUser() throws -> Login {
         guard let user = Auth.auth().currentUser else {
-            print("error")
+            print("Not authenticated")
             throw URLError(.badServerResponse)
         }
 

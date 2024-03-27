@@ -11,14 +11,14 @@ import Leaf
 public struct LoginSetting: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginSettingViewModel
-    @Binding var isUserAuthenticated: Bool
+    @Binding var isUserNotAuthenticated: Bool
 
 
     public var body: some View {
         List {
             Button("Log Out") {
                 viewModel.signOutButtonTapped()
-                isUserAuthenticated = true
+                isUserNotAuthenticated = true
             }
         }
         .navigationTitle("Settings")
@@ -26,5 +26,5 @@ public struct LoginSetting: View {
 }
 
 #Preview {
-    LoginSetting(viewModel: LoginSettingViewModel(), isUserAuthenticated: .constant(true))
+    LoginSetting(viewModel: LoginSettingViewModel(), isUserNotAuthenticated: .constant(true))
 }
