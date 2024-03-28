@@ -14,6 +14,7 @@
 		6369AD742BB36C850067E2EC /* EvidenceLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD732BB36C850067E2EC /* EvidenceLabTests.swift */; };
 		6369AD7E2BB36C850067E2EC /* EvidenceLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */; };
 		6369AD802BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */; };
+		6375E6D82BB47EC2002E47F3 /* PreviewClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		6369AD792BB36C850067E2EC /* EvidenceLabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceLabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITests.swift; sourceTree = "<group>"; };
 		6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				6369AD642BB36C840067E2EC /* ContentView.swift */,
 				6369AD662BB36C850067E2EC /* Assets.xcassets */,
 				6369AD682BB36C850067E2EC /* Preview Content */,
+				6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */,
 			);
 			path = EvidenceLab;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			files = (
 				6369AD652BB36C840067E2EC /* ContentView.swift in Sources */,
 				6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */,
+				6375E6D82BB47EC2002E47F3 /* PreviewClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

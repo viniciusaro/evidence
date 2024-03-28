@@ -9,7 +9,10 @@ let chatsUpdate = [
     Chat(
         name: "Lili ❤️‍🔥",
         messages: [
-            Message(content: "Oi amor")
+            Message(content: "Oi amor"),
+            Message(content:
+                "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5"
+            ),
         ]
     ),
     Chat(
@@ -48,8 +51,48 @@ struct ContentView: View {
                         switch action {
                         case .load:
                             state.chats = chatsUpdate
+                            return .none
                         case let .chatDetail(id: id):
-                            state.chatDetail = state.chats.first(where: { $0.id == id })
+                            let chat = state.chats.first(where: { $0.id == id })
+                            state.chatDetail = chat
+                            
+                            if let chat = chat {
+                                let url = chat.messages
+                                    .map { URL(string: $0.content) }
+                                    .filter { $0?.host() != nil }
+                                    .map { $0! }
+                                    .first
+                                
+                                let message = chat.messages
+                                    .filter { URL(string: $0.content)?.host() != nil }
+                                    .first
+                                
+                                if let url = url, message?.preview == nil {
+                                    return .publisher(
+                                        URLPreviewClient.live
+                                            .get(url)
+                                            .receive(on: DispatchQueue.main)
+                                            .filter { $0 != nil }
+                                            .map { $0! }
+                                            .map { Preview(image: $0.image, title: $0.title) }
+                                            .map { AppAction.previewLoaded(id: message!.id, $0) }
+                                            .eraseToAnyPublisher()
+                                    )
+                                }
+                                return .none
+                            } else {
+                                return .none
+                            }
+                        case let .previewLoaded(id: messageId, preview):
+                            if let chatIndex = state.chats.firstIndex(where: {
+                                $0.messages.first(where: { $0.id == messageId }) != nil
+                            }) {
+                                let chat = state.chats[chatIndex]
+                                if let messageIndex = chat.messages.firstIndex(where: { $0.id == messageId }) {
+                                    state.chats[chatIndex].messages[messageIndex].preview = preview
+                                }
+                            }
+                            return .none
                         }
                     }
                     .debug(before: false)
@@ -104,6 +147,18 @@ struct ChatView: View {
                 ForEach(viewStore.state.chat(id).messages) { message in
                     VStack(alignment: .leading) {
                         Text(message.content)
+                        if let preview = message.preview {
+                            AsyncImage(url: preview.image) { phase in
+                                if let image = phase.image {
+                                    image.resizable()
+                                        .frame(height: 100)
+                                        .aspectRatio(contentMode: .fit)
+                                        .clipped()
+                                } else {
+                                    VStack {}
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -133,6 +188,7 @@ struct WithViewStore<State, Action>: View {
 enum AppAction {
     case load
     case chatDetail(id: UUID?)
+    case previewLoaded(id: UUID, Preview)
 }
 
 struct AppState {
@@ -147,12 +203,18 @@ struct AppState {
 struct Chat: Identifiable, Equatable, Hashable {
     let id = UUID()
     let name: String
-    let messages: [Message]
+    var messages: [Message]
 }
 
 struct Message: Identifiable, Equatable, Hashable {
     let id = UUID()
     let content: String
+    var preview: Preview? = nil
+}
+
+struct Preview: Equatable, Hashable {
+    let image: URL
+    let title: String
 }
 
 @dynamicMemberLookup
@@ -181,6 +243,7 @@ class ViewStore<State, Action>: ObservableObject {
 class Store<State, Action> {
     @Published fileprivate var state: State
     private let reducer: Reducer<State, Action>
+    private var effectCancellables: [any EffectCancellable] = []
     
     init(initialState: State, reducer: Reducer<State, Action>) {
         self.state = initialState
@@ -188,12 +251,17 @@ class Store<State, Action> {
     }
     
     func send(_ action: Action) {
-        reducer.run(&state, action)
+        let effect = reducer.run(&state, action)
+        effectCancellables.append(effect.run(send))
+    }
+    
+    deinit {
+        effectCancellables.forEach { $0.cancel() }
     }
 }
 
 struct Reducer<State, Action> {
-    let run: (_ state: inout State, _ action: Action) -> Void
+    let run: (_ state: inout State, _ action: Action) -> Effect<Action>
 }
 
 extension Reducer {
@@ -205,13 +273,40 @@ extension Reducer {
                 dump(state, to: &before)
                 print("before: \(before)")
             }
-            self.run(&state, action)
+            let effect = self.run(&state, action)
             if after {
                 print("------")
                 var after = String()
                 dump(state, to: &after)
                 print("after: \(after)")
             }
+            return effect
+        }
+    }
+}
+
+struct Effect<Action> {
+    let run: (@escaping (Action) -> Void) -> any EffectCancellable
+}
+
+protocol EffectCancellable: Identifiable {
+    func cancel()
+}
+
+extension UUID: EffectCancellable, Identifiable {
+    public var id: UUID { return self }
+    func cancel() {}
+}
+extension AnyCancellable: EffectCancellable {}
+
+extension Effect {
+    static var none: Effect<Action> {
+        return Effect { _ in UUID() }
+    }
+    
+    static func publisher(_ publisher: AnyPublisher<Action, Never>) -> Effect<Action> {
+        return Effect { send in
+            publisher.sink(receiveValue: send)
         }
     }
 }
