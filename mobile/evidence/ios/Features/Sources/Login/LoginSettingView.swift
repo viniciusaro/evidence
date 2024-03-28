@@ -11,18 +11,22 @@ import Leaf
 public struct LoginSettingView: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: LoginSettingViewModel
-    
+
     public init(viewModel: LoginSettingViewModel) {
         self.viewModel = viewModel
     }
 
     public var body: some View {
-        List {
-            Button("Log Out") {
-                viewModel.signOutButtonTapped()
-            }
+        NavigationStack {
+                Button("Log Out") {
+                    viewModel.signOutButtonTapped()
+                }
+                .foregroundColor(.white)
+                .padding()
+                .background(theme.color.backgrond.aubergine)
+            .cornerRadius(10)
+            .navigationTitle("Settings")
         }
-        .navigationTitle("Settings")
     }
 }
 

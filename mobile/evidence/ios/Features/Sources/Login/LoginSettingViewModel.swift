@@ -14,14 +14,10 @@ public class LoginSettingViewModel: ObservableObject {
 
     public init() {}
 
-    private func signOut() throws {
-        try loginManager.signOut()
-    }
-
     func signOutButtonTapped() {
         Task {
             do {
-                try signOut()
+                try loginManager.signOut()
             } catch {
                 print("SignOut button with error", error)
             }

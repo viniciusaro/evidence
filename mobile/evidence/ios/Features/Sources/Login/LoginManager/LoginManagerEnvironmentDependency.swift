@@ -10,7 +10,7 @@ import Dependencies
 
 private struct LoginManagerEnvironmentDependency: DependencyKey {
     static var liveValue: LoginManager = AuthenticatedLoginManager()
-    static var previewValue: LoginManager = FirebaseLoginManager()
+    static var previewValue: LoginManager = AuthenticatedLoginManager()
 }
 
 extension DependencyValues {

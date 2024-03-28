@@ -48,18 +48,28 @@ final public class FirebaseLoginManager: LoginManager {
 }
 
 final public class AuthenticatedLoginManager: LoginManager {
-    
+    var authenticatedUser: Login?
     func creatUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 
     func getAuthenticationUser() throws -> Login {
         let uid = UUID().uuidString
-        return Login(uid: uid, email: "email@test.com", photoURL: "photo_url")
+        let userAuth = Login(uid: uid, email: "email@test.com", photoURL: "photo_url")
+        authenticatedUser = userAuth
+
+        guard let user = authenticatedUser else {
+            throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+        }
+        return user
     }
 
     func signOut() throws {
-        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+        guard authenticatedUser != nil else {
+            throw NSError(domain: "signOut", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+        }
+        authenticatedUser = nil
+
     }
 }
 
