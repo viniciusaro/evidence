@@ -205,38 +205,41 @@ struct WithViewStore<State, Action>: View {
 
 enum AppAction {
     case chatListAppear
-    case chatDetail(id: UUID?)
-    case messageViewAppear(id: UUID)
-    case messagePreviewLoaded(id: UUID, Preview)
+    case chatDetail(id: ChatID?)
+    case messageViewAppear(id: MessageID)
+    case messagePreviewLoaded(id: MessageID, Preview)
 }
 
 struct AppState {
     var chats: [Chat] = []
     var chatDetail: Chat?
     
-    func chat(_ id: UUID) -> Chat {
+    func chat(_ id: ChatID) -> Chat {
         chats.first(where: { $0.id == id })!
     }
     
-    func chatFromMessage(_ id: UUID) -> Chat {
+    func chatFromMessage(_ id: MessageID) -> Chat {
         chats.first(where: { $0.messages.first(where: { $0.id == id }) != nil })!
     }
     
-    func message(_ id: UUID) -> Message {
+    func message(_ id: MessageID) -> Message {
         chats
             .first(where: { $0.messages.first(where: { $0.id == id }) != nil })!
             .messages.first(where: { $0.id == id })!
     }
 }
 
+typealias MessageID = UUID
+typealias ChatID = UUID
+
 struct Chat: Identifiable, Equatable, Hashable {
-    let id = UUID()
+    let id = ChatID()
     let name: String
     var messages: [Message]
 }
 
 struct Message: Identifiable, Equatable, Hashable {
-    let id = UUID()
+    let id = MessageID()
     let content: String
     var preview: Preview? = nil
 }
