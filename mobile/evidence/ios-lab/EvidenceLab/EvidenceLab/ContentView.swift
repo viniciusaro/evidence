@@ -144,25 +144,38 @@ struct ChatView: View {
         WithViewStore(store: store) { viewStore in
             List {
                 ForEach(viewStore.state.chat(id).messages) { message in
-                    VStack(alignment: .leading) {
-                        Text(message.content)
-                        if let preview = message.preview {
-                            AsyncImage(url: preview.image) { phase in
-                                if let image = phase.image {
-                                    image.resizable()
-                                        .frame(height: 100)
-                                        .aspectRatio(contentMode: .fit)
-                                        .clipped()
-                                } else {
-                                    VStack {}
-                                }
-                            }
-                        }
-                    }
+                    MessageView(id: message.id, store: store)
                 }
             }
             .listStyle(.plain)
             .navigationTitle(viewStore.state.chat(id).name)
+        }
+    }
+}
+
+struct MessageView: View {
+    let id: UUID
+    let store: Store<AppState, AppAction>
+    
+    var body: some View {
+        WithViewStore(store: store) { viewStore in
+            let message = viewStore.state.message(id)
+            
+            VStack(alignment: .leading) {
+                Text(message.content)
+                if let preview = message.preview {
+                    AsyncImage(url: preview.image) { phase in
+                        if let image = phase.image {
+                            image.resizable()
+                                .frame(height: 100)
+                                .aspectRatio(contentMode: .fit)
+                                .clipped()
+                        } else {
+                            VStack {}
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -196,6 +209,12 @@ struct AppState {
     
     func chat(_ id: UUID) -> Chat {
         chats.first(where: { $0.id == id })!
+    }
+    
+    func message(_ id: UUID) -> Message {
+        return chats
+            .first(where: { $0.messages.first(where: { $0.id == id }) != nil })!
+            .messages.first(where: { $0.id == id })!
     }
 }
 
