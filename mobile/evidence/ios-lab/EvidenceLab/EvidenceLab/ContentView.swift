@@ -95,7 +95,6 @@ struct ContentView: View {
                             return .none
                         }
                     }
-                    .debug(before: false)
                 )
             )
         }
@@ -267,20 +266,23 @@ struct Reducer<State, Action> {
 extension Reducer {
     func debug(before: Bool = true, after: Bool = true) -> Reducer<State, Action> {
         return Reducer { state, action in
-            print("receiving \(action)")
+            var messages = [String]()
+            messages.append("receiving \(action)")
             if before {
                 var before = String()
                 dump(state, to: &before)
-                print("before: \(before)")
+                messages.append("before: \(before)")
             }
             let effect = self.run(&state, action)
             if after {
-                print("------")
+                messages.append("------")
                 var after = String()
                 dump(state, to: &after)
-                print("after: \(after)")
+                messages.append("after: \(after)")
             }
-            return effect
+            return .merge(effect, .fireAndForget { 
+                messages.forEach { print($0)
+            }})
         }
     }
 }
@@ -293,20 +295,53 @@ protocol EffectCancellable: Identifiable {
     func cancel()
 }
 
+struct SomeEffectCancellable: EffectCancellable {
+    private let _cancel: () -> Void
+    let id = UUID()
+    
+    init(_ cancel: @escaping () -> Void) {
+        self._cancel = cancel
+    }
+    
+    func cancel() {
+        _cancel()
+    }
+}
+
 extension UUID: EffectCancellable, Identifiable {
     public var id: UUID { return self }
     func cancel() {}
 }
+
 extension AnyCancellable: EffectCancellable {}
 
 extension Effect {
-    static var none: Effect<Action> {
-        return Effect { _ in UUID() }
+    static var none: Effect {
+        Effect { _ in UUID() }
     }
     
-    static func publisher(_ publisher: AnyPublisher<Action, Never>) -> Effect<Action> {
-        return Effect { send in
+    static func fireAndForget(_ computation: @escaping () -> Void) -> Effect {
+        Effect { _ in
+            computation()
+            return UUID()
+        }
+    }
+    
+    static func publisher(_ publisher: AnyPublisher<Action, Never>) -> Effect {
+        Effect { send in
             publisher.sink(receiveValue: send)
+        }
+    }
+    
+    static func merge(_ effects: Effect...) -> Effect {
+        Effect { send in
+            var cancellables = [any EffectCancellable]()
+            for effect in effects {
+                cancellables.append(effect.run(send))
+            }
+            return SomeEffectCancellable {
+                cancellables.forEach { $0.cancel() }
+            }
         }
     }
 }
