@@ -2,7 +2,12 @@ import Combine
 import SwiftUI
 
 #Preview {
-    ContentView()
+    ContentView(
+        store: Store(
+            initialState: AppState(),
+            reducer: appReducer
+        )
+    )
 }
 
 let chatsUpdate = [
@@ -41,63 +46,73 @@ let chatsUpdate = [
     ),
 ]
 
+let appReducer = Reducer<AppState, AppAction> { state, action in
+    switch action {
+    case .appLoad:
+        print("track some analytics")
+        return .none
+        
+    case .chatListLoad:
+        state.chats = chatsUpdate
+        return .none
+        
+    case let .chatDetail(id: id):
+        let chat = state.chats.first(where: { $0.id == id })
+        state.chatDetail = chat
+        return .none
+    
+    case let .messageViewLoad(id: messageId):
+        let chat = state.chatFromMessage(messageId)
+        let url = chat.messages
+            .map { URL(string: $0.content) }
+            .filter { $0?.host() != nil }
+            .map { $0! }
+            .first
+        
+        let message = chat.messages
+            .filter { URL(string: $0.content)?.host() != nil }
+            .first
+        
+        if let url = url, message?.preview == nil {
+            return .publisher(
+                URLPreviewClient.live
+                    .get(url)
+                    .receive(on: DispatchQueue.main)
+                    .filter { $0 != nil }
+                    .map { $0! }
+                    .map { Preview(image: $0.image, title: $0.title) }
+                    .map { AppAction.messagePreviewLoaded(id: message!.id, $0) }
+                    .eraseToAnyPublisher()
+            )
+        }
+        return .none
+        
+    case let .messagePreviewLoaded(id: messageId, preview):
+        if let chatIndex = state.chats.firstIndex(where: {
+            $0.messages.first(where: { $0.id == messageId }) != nil
+        }) {
+            let chat = state.chats[chatIndex]
+            if let messageIndex = chat.messages.firstIndex(where: { $0.id == messageId }) {
+                state.chats[chatIndex].messages[messageIndex].preview = preview
+            }
+        }
+        return .none
+    }
+}
+
 struct ContentView: View {
+    let store: Store<AppState, AppAction>
+    
+    init(store: Store<AppState, AppAction>) {
+        self.store = store
+    }
+    
     var body: some View {
         NavigationStack {
-            ChatListView(
-                store: Store(
-                    initialState: AppState(),
-                    reducer: Reducer { state, action in
-                        switch action {
-                        case .chatListAppear:
-                            state.chats = chatsUpdate
-                            return .none
-                            
-                        case let .chatDetail(id: id):
-                            let chat = state.chats.first(where: { $0.id == id })
-                            state.chatDetail = chat
-                            return .none
-                        
-                        case let .messageViewAppear(id: messageId):
-                            let chat = state.chatFromMessage(messageId)
-                            let url = chat.messages
-                                .map { URL(string: $0.content) }
-                                .filter { $0?.host() != nil }
-                                .map { $0! }
-                                .first
-                            
-                            let message = chat.messages
-                                .filter { URL(string: $0.content)?.host() != nil }
-                                .first
-                            
-                            if let url = url, message?.preview == nil {
-                                return .publisher(
-                                    URLPreviewClient.live
-                                        .get(url)
-                                        .receive(on: DispatchQueue.main)
-                                        .filter { $0 != nil }
-                                        .map { $0! }
-                                        .map { Preview(image: $0.image, title: $0.title) }
-                                        .map { AppAction.messagePreviewLoaded(id: message!.id, $0) }
-                                        .eraseToAnyPublisher()
-                                )
-                            }
-                            return .none
-                            
-                        case let .messagePreviewLoaded(id: messageId, preview):
-                            if let chatIndex = state.chats.firstIndex(where: {
-                                $0.messages.first(where: { $0.id == messageId }) != nil
-                            }) {
-                                let chat = state.chats[chatIndex]
-                                if let messageIndex = chat.messages.firstIndex(where: { $0.id == messageId }) {
-                                    state.chats[chatIndex].messages[messageIndex].preview = preview
-                                }
-                            }
-                            return .none
-                        }
-                    }
-                )
-            )
+            ChatListView(store: store)
+            .onViewDidLoad {
+                store.send(.appLoad)
+            }
         }
     }
 }
@@ -132,8 +147,8 @@ struct ChatListView: View {
                 )) { chat in
                     ChatView(id: chat.id, store: store)
                 }
-            .onAppear {
-                store.send(.chatListAppear)
+            .onViewDidLoad {
+                store.send(.chatListLoad)
             }
         }
     }
@@ -179,8 +194,8 @@ struct MessageView: View {
                     }
                 }
             }
-            .onAppear {
-                viewStore.send(.messageViewAppear(id: id))
+            .onViewDidLoad {
+                viewStore.send(.messageViewLoad(id: id))
             }
         }
     }
@@ -204,9 +219,10 @@ struct WithViewStore<State, Action>: View {
 }
 
 enum AppAction {
-    case chatListAppear
+    case appLoad
+    case chatListLoad
     case chatDetail(id: ChatID?)
-    case messageViewAppear(id: MessageID)
+    case messageViewLoad(id: MessageID)
     case messagePreviewLoaded(id: MessageID, Preview)
 }
 
@@ -298,7 +314,7 @@ struct Reducer<State, Action> {
 
 extension Reducer {
     func debug(before: Bool = true, after: Bool = true) -> Reducer<State, Action> {
-        return Reducer { state, action in
+        Reducer { state, action in
             var messages = [String]()
             messages.append("receiving \(action)")
             if before {
@@ -317,6 +333,19 @@ extension Reducer {
                 messages.forEach { print($0)
             }})
         }
+    }
+    
+    static func combine(_ reducers: [Reducer]) -> Reducer {
+        Reducer { state, action in
+            let effects = reducers.reduce([]) { effects, reducer in
+                effects + [reducer.run(&state, action)]
+            }
+            return .merge(effects)
+        }
+    }
+    
+    static func combine(_ reducers: Reducer...) -> Reducer {
+        return combine(reducers)
     }
 }
 
@@ -366,7 +395,7 @@ extension Effect {
         }
     }
     
-    static func merge(_ effects: Effect...) -> Effect {
+    static func merge(_ effects: [Effect]) -> Effect {
         Effect { send in
             var cancellables = [any EffectCancellable]()
             for effect in effects {
@@ -376,5 +405,30 @@ extension Effect {
                 cancellables.forEach { $0.cancel() }
             }
         }
+    }
+    
+    static func merge(_ effects: Effect...) -> Effect {
+        return merge(effects)
+    }
+}
+
+struct ViewDidLoadModifier: ViewModifier {
+    @State private var viewDidLoad = false
+    let action: (() -> Void)?
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                if viewDidLoad == false {
+                    viewDidLoad = true
+                    action?()
+                }
+            }
+    }
+}
+
+extension View {
+    func onViewDidLoad(perform action: (() -> Void)? = nil) -> some View {
+        self.modifier(ViewDidLoadModifier(action: action))
     }
 }
