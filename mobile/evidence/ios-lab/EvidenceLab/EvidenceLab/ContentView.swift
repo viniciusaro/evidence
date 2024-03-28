@@ -52,38 +52,39 @@ struct ContentView: View {
                         case .load:
                             state.chats = chatsUpdate
                             return .none
+                            
                         case let .chatDetail(id: id):
                             let chat = state.chats.first(where: { $0.id == id })
                             state.chatDetail = chat
+                            return .none
+                        
+                        case let .messageViewAppear(id: messageId):
+                            let chat = state.chatFromMessage(messageId)
+                            let url = chat.messages
+                                .map { URL(string: $0.content) }
+                                .filter { $0?.host() != nil }
+                                .map { $0! }
+                                .first
                             
-                            if let chat = chat {
-                                let url = chat.messages
-                                    .map { URL(string: $0.content) }
-                                    .filter { $0?.host() != nil }
-                                    .map { $0! }
-                                    .first
-                                
-                                let message = chat.messages
-                                    .filter { URL(string: $0.content)?.host() != nil }
-                                    .first
-                                
-                                if let url = url, message?.preview == nil {
-                                    return .publisher(
-                                        URLPreviewClient.live
-                                            .get(url)
-                                            .receive(on: DispatchQueue.main)
-                                            .filter { $0 != nil }
-                                            .map { $0! }
-                                            .map { Preview(image: $0.image, title: $0.title) }
-                                            .map { AppAction.previewLoaded(id: message!.id, $0) }
-                                            .eraseToAnyPublisher()
-                                    )
-                                }
-                                return .none
-                            } else {
-                                return .none
+                            let message = chat.messages
+                                .filter { URL(string: $0.content)?.host() != nil }
+                                .first
+                            
+                            if let url = url, message?.preview == nil {
+                                return .publisher(
+                                    URLPreviewClient.live
+                                        .get(url)
+                                        .receive(on: DispatchQueue.main)
+                                        .filter { $0 != nil }
+                                        .map { $0! }
+                                        .map { Preview(image: $0.image, title: $0.title) }
+                                        .map { AppAction.messagePreviewLoaded(id: message!.id, $0) }
+                                        .eraseToAnyPublisher()
+                                )
                             }
-                        case let .previewLoaded(id: messageId, preview):
+                            return .none
+                            
+                        case let .messagePreviewLoaded(id: messageId, preview):
                             if let chatIndex = state.chats.firstIndex(where: {
                                 $0.messages.first(where: { $0.id == messageId }) != nil
                             }) {
@@ -176,6 +177,9 @@ struct MessageView: View {
                     }
                 }
             }
+            .onAppear {
+                viewStore.send(.messageViewAppear(id: id))
+            }
         }
     }
 }
@@ -200,7 +204,8 @@ struct WithViewStore<State, Action>: View {
 enum AppAction {
     case load
     case chatDetail(id: UUID?)
-    case previewLoaded(id: UUID, Preview)
+    case messageViewAppear(id: UUID)
+    case messagePreviewLoaded(id: UUID, Preview)
 }
 
 struct AppState {
@@ -211,8 +216,12 @@ struct AppState {
         chats.first(where: { $0.id == id })!
     }
     
+    func chatFromMessage(_ id: UUID) -> Chat {
+        chats.first(where: { $0.messages.first(where: { $0.id == id }) != nil })!
+    }
+    
     func message(_ id: UUID) -> Message {
-        return chats
+        chats
             .first(where: { $0.messages.first(where: { $0.id == id }) != nil })!
             .messages.first(where: { $0.id == id })!
     }
