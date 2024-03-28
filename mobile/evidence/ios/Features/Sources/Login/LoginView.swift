@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  LoginViewModel.swift
 //
 //
 //  Created by Cris Messias on 19/01/24.
@@ -28,7 +28,7 @@ public struct LoginView: View {
 }
 
 //#Preview {
-//    LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+//    LoginViewModel(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
 //}
 
 struct Title: View {
