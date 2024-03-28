@@ -22,9 +22,8 @@ public class LoginSettingViewModel: ObservableObject {
         Task {
             do {
                 try signOut()
-                print("signOut")
             } catch {
-                print("SignOut", error)
+                print("SignOut button with error", error)
             }
         }
         delegateIsUserAuthenticated()

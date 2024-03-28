@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Cris Messias on 01/02/24.
 //
@@ -27,7 +27,7 @@ final public class FirebaseLoginManager: LoginManager {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return Login(user: authDataResult.user)
     }
-    
+
     func getAuthenticationUser() throws -> Login {
         guard let user = Auth.auth().currentUser else {
             print("Not authenticated")
@@ -38,19 +38,24 @@ final public class FirebaseLoginManager: LoginManager {
     }
 
     func signOut() throws {
-        try Auth.auth().signOut()
+        do {
+            try Auth.auth().signOut()
+            print("Logout successful")
+        } catch {
+            print("Logout error: \(error.localizedDescription)")
+        }
     }
 }
 
 final public class AuthenticatedLoginManager: LoginManager {
-
+    
     func creatUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 
     func getAuthenticationUser() throws -> Login {
         let uid = UUID().uuidString
-        return Login(uid: uid, email: "eu@eu.com", photoURL: "photo_url")
+        return Login(uid: uid, email: "email@test.com", photoURL: "photo_url")
     }
 
     func signOut() throws {
