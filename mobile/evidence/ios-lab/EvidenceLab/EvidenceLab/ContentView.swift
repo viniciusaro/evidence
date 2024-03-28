@@ -49,7 +49,7 @@ struct ContentView: View {
                     initialState: AppState(),
                     reducer: Reducer { state, action in
                         switch action {
-                        case .load:
+                        case .chatListAppear:
                             state.chats = chatsUpdate
                             return .none
                             
@@ -107,7 +107,6 @@ struct ChatListView: View {
     
     init(store: Store<AppState, AppAction>) {
         self.store = store
-        store.send(.load)
     }
     
     var body: some View {
@@ -133,6 +132,9 @@ struct ChatListView: View {
                 )) { chat in
                     ChatView(id: chat.id, store: store)
                 }
+            .onAppear {
+                store.send(.chatListAppear)
+            }
         }
     }
 }
@@ -202,7 +204,7 @@ struct WithViewStore<State, Action>: View {
 }
 
 enum AppAction {
-    case load
+    case chatListAppear
     case chatDetail(id: UUID?)
     case messageViewAppear(id: UUID)
     case messagePreviewLoaded(id: UUID, Preview)
