@@ -1,5 +1,5 @@
 //
-//  LoginEmailViewModel.swift
+//  CreateAccountEmailViewModel.swift
 //
 //
 //  Created by Cris Messias on 24/01/24.
@@ -8,13 +8,14 @@
 import Foundation
 import Dependencies
 
-final public class LoginEmailViewModel: ObservableObject, Identifiable {
+final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Published var emailInput: String
-    @Published var passwordInputMock: String
+    @Published var passwordInput: String
     @Published private(set) var isValidEmail: Bool
-    @Published var isNextButtonPressed: Bool
+    @Published private(set) var isValidPassword: Bool
+    @Published var isCreateAccountButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
     @Published var loginCheckViewModel: LoginCheckEmailViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
@@ -22,16 +23,18 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     public init(
         emailInput: String = "",
-        passwordInput: String = "123456",
+        passwordInput: String = "",
         isValidEmail: Bool = false,
-        isNextButtonPressed: Bool = false,
+        isValidPassword: Bool = false,
+        isCreateAccountButtonPressed: Bool = false,
         isInputEmailFocused: Bool = false,
         loginCheckViewModel: LoginCheckEmailViewModel? = nil
     ) {
         self.emailInput = emailInput
-        self.passwordInputMock = passwordInput
+        self.passwordInput = passwordInput
         self.isValidEmail = isValidEmail
-        self.isNextButtonPressed = isNextButtonPressed
+        self.isValidPassword = isValidPassword
+        self.isCreateAccountButtonPressed = isCreateAccountButtonPressed
         self.isEmailInputFocused = isInputEmailFocused
         self.loginCheckViewModel = loginCheckViewModel
     }
@@ -39,7 +42,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
      private func signIn() {
         Task {
             do {
-                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInputMock)
+                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
                 print("User created!")
                 print(returnUserData)
             } catch {
@@ -54,27 +57,34 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     func clearEmailInputTapped() {
         emailInput = ""
-        isNextButtonPressed = false
+        isCreateAccountButtonPressed = false
+    }
+
+    func clearPasswordInputTapped() {
+        passwordInput = ""
+        isCreateAccountButtonPressed = false
     }
 
     func inputEmailTapped() {
-        isNextButtonPressed = false
+        isCreateAccountButtonPressed = false
     }
 
     func buttonNextTapped() {
         isValidEmail = isValidEmail(emailInput)
-        isNextButtonPressed = true
-        if isValidEmail {
+        isValidPassword = isValidPassword(passwordInput)
+
+        isCreateAccountButtonPressed = true
+        if isValidEmail && isValidPassword {
             signIn()
             loginCheckViewModel = LoginCheckEmailViewModel(emailInput: emailInput)
         }
     }
 
     func errorMessage() -> String? {
-        if isNextButtonPressed && emailInput.isEmpty {
-            return "No email provided."
-        } else if isNextButtonPressed == true && isValidEmail == false {
-            return "That doesn't look like a valid email address!"
+        if isCreateAccountButtonPressed && (emailInput.isEmpty || passwordInput.isEmpty){
+            return "Email or password not provided."
+        } else if isCreateAccountButtonPressed == true && (isValidEmail == false || isValidPassword == false) {
+            return "Email or password not valid."
         }
         return nil
     }
@@ -82,6 +92,12 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     func isValidEmail(_ email: String) -> Bool {
         let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", options: [.caseInsensitive])
         return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
+    }
+
+
+    func isValidPassword(_ password: String) -> Bool {
+        let passwordRegex = #"^.{8,}$"#
+        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)
     }
 }
 

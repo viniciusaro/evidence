@@ -12,14 +12,14 @@ import Dependencies
 final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
     @Published public var isUserNotAuthenticated: Bool
-    @Published var loginEmailViewModel: LoginEmailViewModel?
+    @Published var loginEmailViewModel: CreateAccountEmailViewModel?
     public let loginSettingViewModel:  LoginSettingViewModel
     @Dependency(\.loginManager) private var loginManager
 
     public init(
         showLoginAuth: Bool = false,
         isUserNotAuthenticated: Bool = true,
-        loginEmailViewModel: LoginEmailViewModel? = nil,
+        loginEmailViewModel: CreateAccountEmailViewModel? = nil,
         loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel()
     ) {
         self.showLoginAuthModal = showLoginAuth
@@ -37,7 +37,7 @@ final public class LoginViewModel: ObservableObject {
     }
 
     func loginEmailButtonTapped() {
-        loginEmailViewModel = LoginEmailViewModel()
+        loginEmailViewModel = CreateAccountEmailViewModel()
         loginEmailViewModel?.delegateCloseButtonTapped = {
             self.loginEmailViewModel = nil
         }

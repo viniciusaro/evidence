@@ -81,11 +81,16 @@ struct LoginAuthModal: View {
                 .buttonStyle(LeafGoogleLoginButtonStyle())
 
                 Button("Continue with Email") {
-                    viewModel.loginEmailButtonTapped()
+
                 }
                 .buttonStyle(LeafPrimaryButtonStyle())
+
+                Button("Create Account") {
+                    viewModel.loginEmailButtonTapped()
+                }
+                .buttonStyle(LeafSecondaryButtonStyle())
                 .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
-                    LoginEmailView(viewModel: loginEmailViewModel)
+                    CreateAccountEmailView(viewModel: loginEmailViewModel)
                 }
             }
             .padding([.leading, .trailing], 16)
@@ -93,8 +98,8 @@ struct LoginAuthModal: View {
     }
 }
 
-//#Preview {
-//    LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
-//        .previewCustomFonts()
-//}
+#Preview {
+    LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+        .previewCustomFonts()
+}
 

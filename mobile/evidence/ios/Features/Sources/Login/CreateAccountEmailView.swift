@@ -1,5 +1,5 @@
 //
-//  LoginEmailView.swift
+//  CreateAccountEmailView.swift
 //
 //
 //  Created by Cris Messias on 23/01/24.
@@ -8,16 +8,17 @@
 import SwiftUI
 import Leaf
 
-public struct LoginEmailView: View {
+
+public struct CreateAccountEmailView: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
 
     public var body: some View {
         NavigationStack {
             Divider()
             VStack(alignment:.leading, spacing: 24) {
                 EmailInput(viewModel: viewModel)
-                Label()
+                PasswordInput(viewModel: viewModel)
                 NextButton(viewModel: viewModel)
                 Spacer()
             }
@@ -40,7 +41,7 @@ public struct LoginEmailView: View {
 }
 
 #Preview {
-    LoginEmailView(viewModel: LoginEmailViewModel())
+    CreateAccountEmailView(viewModel: CreateAccountEmailViewModel())
         .previewCustomFonts()
 }
 
@@ -48,7 +49,7 @@ struct Label: View {
     @Environment(\.leafTheme) private var theme
 
     var body: some View {
-        Text("We'll send you an email to confirm your address.")
+        Text(" Needs at least 8 characters")
             .frame(maxWidth: .infinity, alignment: .leading)
             .label()
     }
@@ -56,11 +57,11 @@ struct Label: View {
 
 struct NextButton: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
-    
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
+
     var body: some View {
         NavigationStack {
-            Button("Next") {
+            Button("Create Account") {
                 viewModel.buttonNextTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
@@ -73,12 +74,12 @@ struct NextButton: View {
 
 struct EmailInput: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
     @FocusState private var isFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Enter You Email Address")
+            Text("Enter Your Email Address")
                 .body()
 
             HStack {
@@ -115,6 +116,51 @@ struct EmailInput: View {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
+
+        }
+//        if let errorMessage = viewModel.errorMessage() {
+//            LeafErrorMessage(message: errorMessage)
+//        }
+    }
+}
+
+struct PasswordInput: View {
+    @Environment(\.leafTheme) private var theme
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Create Your Password")
+                .body()
+
+            HStack {
+                SecureField("password", text: $viewModel.passwordInput)
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(.emailAddress)
+                    .autocorrectionDisabled(true)
+                    .foregroundStyle(theme.color.text.primary)
+                    .body()
+                    .frame(height: 50)
+                    .onTapGesture {
+                        viewModel.inputEmailTapped()
+                    }
+
+                Button(action: {
+                    viewModel.clearPasswordInputTapped()
+                }) {
+                    if !viewModel.passwordInput.isEmpty {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(theme.color.text.secondary)
+                    }
+                }
+
+            }
+            .padding([.leading, .trailing], 16)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(theme.color.text.secondary, lineWidth: 0.5)
+            }
+            Label()
 
         }
         if let errorMessage = viewModel.errorMessage() {

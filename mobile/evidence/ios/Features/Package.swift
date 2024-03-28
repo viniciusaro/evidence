@@ -80,6 +80,7 @@ let package = Package(
             name: "Login",
             dependencies: [
                 "Leaf",
+                "Profile",
                 "Models",
                 .product (name: "FirebaseAuth", package: "firebase-ios-sdk"),
                 .product(name: "Dependencies", package: "swift-dependencies")
