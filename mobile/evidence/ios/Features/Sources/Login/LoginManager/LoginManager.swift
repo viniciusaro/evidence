@@ -7,18 +7,15 @@
 
 import Foundation
 import FirebaseAuth
-
-struct Login {
-    let uid: String
-    let email: String?
-    let photoURL: String?
-}
+import Models
 
 extension Login {
     init(user: User) {
-        self.uid = user.uid
-        self.email = user.email
-        self.photoURL = user.photoURL?.absoluteString
+        self = Login(
+            uid: user.uid,
+            email: user.email,
+            photoUrl: user.photoURL?.absoluteString
+            )
     }
 }
 
@@ -50,7 +47,7 @@ final public class AuthenticatedLoginManager: LoginManager {
 
     func getAuthenticationUser() throws -> Login {
         let uid = UUID().uuidString
-        return Login(uid: uid, email: "eu@eu.com", photoURL: "photo_url")
+        return Login(uid: uid, email: "eu@eu.com", photoUrl: "photo_url")
     }
 
     func signOut() throws {
