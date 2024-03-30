@@ -1,4 +1,5 @@
 import Combine
+import CasePaths
 import SwiftUI
 
 #Preview {
@@ -46,22 +47,35 @@ let chatsUpdate = [
     ),
 ]
 
-let appReducer = Reducer<AppState, AppAction> { state, action in
+let appReducer = Reducer<AppState, AppAction>.combine(
+    .scope(toLocal: { _ in .appLoad }, toAction: { .rootAction($0) }, rootReducer),
+    .scope(toLocal: { action in
+        if case let .chatList(chatListAction) = action {
+            return chatListAction
+        }
+        return nil
+    }, toAction: { .chatList($0) }, chatListReducer)
+)
+
+let rootReducer = Reducer<AppState, RootAction> { state, action in
     switch action {
     case .appLoad:
-        print("track some analytics")
         return .none
-        
-    case .chatList(.chatListLoad):
+    }
+}
+
+let chatListReducer = Reducer<AppState, ChatListAction> { state, action in
+    switch action {
+    case .chatListLoad:
         state.chats = chatsUpdate
         return .none
-        
-    case let .chatList(.chatDetail(.update(id: id))):
+    
+    case .chatDetail(.update(id: let id)):
         let chat = state.chats.first(where: { $0.id == id })
         state.chatDetail = chat
         return .none
     
-    case let .chatList(.chatDetail(.messageViewLoad(id: messageId))):
+    case .chatDetail(.messageViewLoad(id: let messageId)):
         let chat = state.chatFromMessage(messageId)
         let url = chat.messages
             .map { URL(string: $0.content) }
@@ -81,13 +95,13 @@ let appReducer = Reducer<AppState, AppAction> { state, action in
                     .filter { $0 != nil }
                     .map { $0! }
                     .map { Preview(image: $0.image, title: $0.title) }
-                    .map { .chatList(.chatDetail(.messagePreviewLoaded(id: message!.id, $0))) }
+                    .map { .chatDetail(.messagePreviewLoaded(id: message!.id, $0)) }
                     .eraseToAnyPublisher()
             )
         }
         return .none
-        
-    case let .chatList(.chatDetail(.messagePreviewLoaded(id: messageId, preview))):
+    
+    case let .chatDetail(.messagePreviewLoaded(id: messageId, preview)):
         if let chatIndex = state.chats.firstIndex(where: {
             $0.messages.first(where: { $0.id == messageId }) != nil
         }) {
@@ -111,7 +125,7 @@ struct ContentView: View {
         NavigationStack {
             ChatListView(store: store)
             .onViewDidLoad {
-                store.send(.appLoad)
+                store.send(.rootAction(.appLoad))
             }
         }
     }
@@ -219,8 +233,12 @@ struct WithViewStore<State, Action>: View {
 }
 
 enum AppAction {
-    case appLoad
+    case rootAction(RootAction)
     case chatList(ChatListAction)
+}
+
+enum RootAction {
+    case appLoad
 }
 
 enum ChatListAction {
@@ -355,10 +373,34 @@ extension Reducer {
     static func combine(_ reducers: Reducer...) -> Reducer {
         return combine(reducers)
     }
+    
+    static func scope<LocalAction>(
+        toLocal: @escaping (Action) -> LocalAction?,
+        toAction: @escaping (LocalAction) -> Action,
+        _ localReducer: Reducer<State, LocalAction>
+    ) -> Reducer {
+        Reducer { state, action in
+            guard let localAction = toLocal(action) else {
+                return .none
+            }
+            let effect = localReducer.run(&state, localAction)
+            return effect.map(toAction)
+        }
+    }
 }
 
 struct Effect<Action> {
     let run: (@escaping (Action) -> Void) -> any EffectCancellable
+}
+
+extension Effect {
+    func map<OtherAction>(_ transform: @escaping (Action) -> OtherAction) -> Effect<OtherAction> {
+        return Effect<OtherAction> { send in
+            return self.run { action in
+                send(transform(action))
+            }
+        }
+    }
 }
 
 protocol EffectCancellable: Identifiable {

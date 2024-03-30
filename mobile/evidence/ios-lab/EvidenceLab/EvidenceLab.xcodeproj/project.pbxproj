@@ -15,6 +15,7 @@
 		6369AD7E2BB36C850067E2EC /* EvidenceLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */; };
 		6369AD802BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */; };
 		6375E6D82BB47EC2002E47F3 /* PreviewClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */; };
+		63D487552BB8CACB00540155 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 63D487542BB8CACB00540155 /* CasePaths */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63D487552BB8CACB00540155 /* CasePaths in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +148,9 @@
 			dependencies = (
 			);
 			name = EvidenceLab;
+			packageProductDependencies = (
+				63D487542BB8CACB00540155 /* CasePaths */,
+			);
 			productName = EvidenceLab;
 			productReference = 6369AD5F2BB36C840067E2EC /* EvidenceLab.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +223,9 @@
 				Base,
 			);
 			mainGroup = 6369AD562BB36C840067E2EC;
+			packageReferences = (
+				63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */,
+			);
 			productRefGroup = 6369AD602BB36C840067E2EC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -592,6 +600,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-case-paths";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		63D487542BB8CACB00540155 /* CasePaths */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */;
+			productName = CasePaths;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6369AD572BB36C840067E2EC /* Project object */;
 }
