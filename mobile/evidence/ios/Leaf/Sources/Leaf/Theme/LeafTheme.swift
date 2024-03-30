@@ -23,9 +23,9 @@ extension LeafTheme {
     }
 
     public struct ButtonColors {
-        public let buttonPrimary: SwiftUI.Color
-        public let buttonSecondary: SwiftUI.Color
-        public let buttonGoogle: SwiftUI.Color
+        public let primary: SwiftUI.Color
+        public let secondary: SwiftUI.Color
+        public let authGoogle: SwiftUI.Color
     }
 
     public struct WarningColors {

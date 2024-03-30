@@ -20,10 +20,10 @@ public let defaultLeafTheme = LeafTheme(
             link: Color(red: 18/255, green: 100/255, blue: 163/255)
         ),
         button: LeafTheme.ButtonColors(
-            buttonPrimary: Color(red: 0/255, green: 122/255, blue: 90/255),
-            buttonSecondary: Color(red: 255/255, green: 255/255, blue: 255/255),
-            buttonGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
-        ), 
+            primary: Color(red: 0/255, green: 122/255, blue: 90/255),
+            secondary: Color(red: 255/255, green: 255/255, blue: 255/255),
+            authGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
+        ),
         warning: LeafTheme.WarningColors(
             success: Color(red: 18/255, green: 100/255, blue: 163/255),
             alert: Color(red: 236/255, green: 178/255, blue: 46/255),
@@ -56,9 +56,9 @@ public let darkLeafTheme = LeafTheme(
             link: Color(red: 18/255, green: 100/255, blue: 163/255)
         ),
         button: LeafTheme.ButtonColors(
-            buttonPrimary: Color(red: 0/255, green: 122/255, blue: 90/255),
-            buttonSecondary: Color(red: 255/255, green: 255/255, blue: 255/255),
-            buttonGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
+            primary: Color(red: 0/255, green: 122/255, blue: 90/255),
+            secondary: Color(red: 255/255, green: 255/255, blue: 255/255),
+            authGoogle: Color(red: 72/255, green: 132/255, blue: 244/255)
         ),
         warning: LeafTheme.WarningColors(
             success: Color(red: 18/255, green: 100/255, blue: 163/255),
