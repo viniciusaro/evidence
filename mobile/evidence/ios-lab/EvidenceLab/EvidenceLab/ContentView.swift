@@ -52,16 +52,16 @@ let appReducer = Reducer<AppState, AppAction> { state, action in
         print("track some analytics")
         return .none
         
-    case .chatListLoad:
+    case .chatList(.chatListLoad):
         state.chats = chatsUpdate
         return .none
         
-    case let .chatDetail(id: id):
+    case let .chatList(.chatDetail(.update(id: id))):
         let chat = state.chats.first(where: { $0.id == id })
         state.chatDetail = chat
         return .none
     
-    case let .messageViewLoad(id: messageId):
+    case let .chatList(.chatDetail(.messageViewLoad(id: messageId))):
         let chat = state.chatFromMessage(messageId)
         let url = chat.messages
             .map { URL(string: $0.content) }
@@ -81,13 +81,13 @@ let appReducer = Reducer<AppState, AppAction> { state, action in
                     .filter { $0 != nil }
                     .map { $0! }
                     .map { Preview(image: $0.image, title: $0.title) }
-                    .map { AppAction.messagePreviewLoaded(id: message!.id, $0) }
+                    .map { .chatList(.chatDetail(.messagePreviewLoaded(id: message!.id, $0))) }
                     .eraseToAnyPublisher()
             )
         }
         return .none
         
-    case let .messagePreviewLoaded(id: messageId, preview):
+    case let .chatList(.chatDetail(.messagePreviewLoaded(id: messageId, preview))):
         if let chatIndex = state.chats.firstIndex(where: {
             $0.messages.first(where: { $0.id == messageId }) != nil
         }) {
@@ -129,7 +129,7 @@ struct ChatListView: View {
             List {
                 ForEach(viewStore.chats) { chat in
                     Button(action: {
-                        viewStore.send(.chatDetail(id: chat.id))
+                        viewStore.send(.chatList(.chatDetail(.update(id: chat.id))))
                     }, label: {
                         VStack(alignment: .leading) {
                             Text(chat.name)
@@ -143,12 +143,12 @@ struct ChatListView: View {
             .navigationDestination(
                 item: Binding(
                     get: { viewStore.chatDetail },
-                    set: { chat in viewStore.send(.chatDetail(id: chat?.id))}
+                    set: { chat in viewStore.send(.chatList(.chatDetail(.update(id: chat?.id))))}
                 )) { chat in
                     ChatView(id: chat.id, store: store)
                 }
             .onViewDidLoad {
-                store.send(.chatListLoad)
+                store.send(.chatList(.chatListLoad))
             }
         }
     }
@@ -195,7 +195,7 @@ struct MessageView: View {
                 }
             }
             .onViewDidLoad {
-                viewStore.send(.messageViewLoad(id: id))
+                viewStore.send(.chatList(.chatDetail(.messageViewLoad(id: id))))
             }
         }
     }
@@ -220,8 +220,16 @@ struct WithViewStore<State, Action>: View {
 
 enum AppAction {
     case appLoad
+    case chatList(ChatListAction)
+}
+
+enum ChatListAction {
     case chatListLoad
-    case chatDetail(id: ChatID?)
+    case chatDetail(ChatAction)
+}
+
+enum ChatAction {
+    case update(id: ChatID?)
     case messageViewLoad(id: MessageID)
     case messagePreviewLoaded(id: MessageID, Preview)
 }
