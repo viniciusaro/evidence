@@ -38,9 +38,9 @@ struct ContentView: View {
             loginViewModel.getAuthenticationUser()
         }
         .fullScreenCover(isPresented: $loginViewModel.isUserNotAuthenticated, content: {
-           LoginView(viewModel: loginViewModel)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(theme.color.backgrond.aubergine)
+            LoginView(viewModel: loginViewModel)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(theme.color.backgrond.aubergine)
         })
     }
 }
