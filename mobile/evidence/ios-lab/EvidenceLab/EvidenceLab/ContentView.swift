@@ -68,18 +68,26 @@ let rootReducer = Reducer<AppState, RootAction> { state, action in
     }
 }
 
-let chatListReducer = Reducer<AppState, ChatListAction> { state, action in
-    switch action {
-    case .chatListLoad:
-        state.chats = chatsUpdate
+let chatListReducer = Reducer<AppState, ChatListAction>.combine(
+    Reducer { state, action in
+        if case .chatListLoad = action {
+            state.chats = chatsUpdate
+        }
         return .none
-    
-    case .chatDetail(.update(id: let id)):
+    },
+    .scope(\.chatDetail) {
+        chatReducer
+    }
+)
+
+let chatReducer = Reducer<AppState, ChatAction> { state, action in
+    switch action {
+    case .update(id: let id):
         let chat = state.chats.first(where: { $0.id == id })
         state.chatDetail = chat
         return .none
     
-    case .chatDetail(.messageViewLoad(id: let messageId)):
+    case .messageViewLoad(id: let messageId):
         let chat = state.chatFromMessage(messageId)
         let url = chat.messages
             .map { URL(string: $0.content) }
@@ -99,13 +107,13 @@ let chatListReducer = Reducer<AppState, ChatListAction> { state, action in
                     .filter { $0 != nil }
                     .map { $0! }
                     .map { Preview(image: $0.image, title: $0.title) }
-                    .map { .chatDetail(.messagePreviewLoaded(id: message!.id, $0)) }
+                    .map { .messagePreviewLoaded(id: message!.id, $0) }
                     .eraseToAnyPublisher()
             )
         }
         return .none
     
-    case let .chatDetail(.messagePreviewLoaded(id: messageId, preview)):
+    case let .messagePreviewLoaded(id: messageId, preview):
         if let chatIndex = state.chats.firstIndex(where: {
             $0.messages.first(where: { $0.id == messageId }) != nil
         }) {
