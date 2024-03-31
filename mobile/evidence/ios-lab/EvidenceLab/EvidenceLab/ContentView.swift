@@ -48,13 +48,17 @@ let chatsUpdate = [
 ]
 
 let appReducer = Reducer<AppState, AppAction>.combine(
-    .scope(toLocal: { _ in .appLoad }, toAction: { .rootAction($0) }, rootReducer),
-    .scope(toLocal: { action in
-        if case let .chatList(chatListAction) = action {
-            return chatListAction
+    .scope(\.rootAction) {
+        Reducer { state, action in
+            switch action {
+            case .appLoad:
+                return .none
+            }
         }
-        return nil
-    }, toAction: { .chatList($0) }, chatListReducer)
+    },
+    .scope(\.chatList) {
+        chatListReducer
+    }
 )
 
 let rootReducer = Reducer<AppState, RootAction> { state, action in
@@ -232,20 +236,24 @@ struct WithViewStore<State, Action>: View {
     }
 }
 
+@CasePathable
 enum AppAction {
     case rootAction(RootAction)
     case chatList(ChatListAction)
 }
 
+@CasePathable
 enum RootAction {
     case appLoad
 }
 
+@CasePathable
 enum ChatListAction {
     case chatListLoad
     case chatDetail(ChatAction)
 }
 
+@CasePathable
 enum ChatAction {
     case update(id: ChatID?)
     case messageViewLoad(id: MessageID)
@@ -385,6 +393,20 @@ extension Reducer {
             }
             let effect = localReducer.run(&state, localAction)
             return effect.map(toAction)
+        }
+    }
+    
+    static func scope<LocalAction>(
+        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
+        _ localReducer: @escaping () -> Reducer<State, LocalAction>
+    ) -> Reducer {
+        Reducer { state, action in
+            let casePath = AnyCasePath(caseKeyPath)
+            guard let localAction = casePath.extract(from: action) else {
+                return .none
+            }
+            let effect = localReducer().run(&state, localAction)
+            return effect.map(casePath.embed)
         }
     }
 }
