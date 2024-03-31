@@ -54,7 +54,7 @@ let appReducer = Reducer<AppState, AppAction>.combine(
         }
         return .none
     },
-    .scope(\.chatList) {
+    .scope(\.chatList, \.self) {
         chatListReducer
     }
 )
@@ -75,27 +75,25 @@ let chatListReducer = Reducer<AppState, ChatListAction>.combine(
             return .none
         }
     },
-    .scope(\.chatDetail) {
+    .ifLet(\.chatDetail, \.chatDetail) {
         chatReducer
     }
 )
 
-let chatReducer = Reducer<AppState, ChatAction> { state, action in
+let chatReducer = Reducer<Chat, ChatAction> { state, action in
     switch action {
     case .messageViewLoad(id: let messageId):
-        let chat = state.chatFromMessage(messageId)
-        let url = chat.messages
+        let url = state.messages
             .map { URL(string: $0.content) }
             .filter { $0?.host() != nil }
             .map { $0! }
             .first
         
-        let message = chat.messages
+        let message = state.messages
             .filter { URL(string: $0.content)?.host() != nil }
             .first
         
         if let url = url, message?.preview == nil {
-            print("running publisher for url: \(url)")
             return .publisher(
                 URLPreviewClient.live
                     .get(url)
@@ -107,17 +105,11 @@ let chatReducer = Reducer<AppState, ChatAction> { state, action in
                     .eraseToAnyPublisher()
             )
         }
-        print("skipping non url message")
         return .none
     
     case let .messagePreviewLoaded(id: messageId, preview):
-        if let chatIndex = state.chats.firstIndex(where: {
-            $0.messages.first(where: { $0.id == messageId }) != nil
-        }) {
-            let chat = state.chats[chatIndex]
-            if let messageIndex = chat.messages.firstIndex(where: { $0.id == messageId }) {
-                state.chats[chatIndex].messages[messageIndex].preview = preview
-            }
+        if let messageIndex = state.messages.firstIndex(where: { $0.id == messageId }) {
+            state.messages[messageIndex].preview = preview
         }
         return .none
     }
@@ -398,16 +390,38 @@ extension Reducer {
         }
     }
     
-    static func scope<LocalAction>(
+    static func scope<LocalAction, LocalState>(
         _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
-        _ localReducer: @escaping () -> Reducer<State, LocalAction>
+        _ keyPath: WritableKeyPath<State, LocalState>,
+        _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
     ) -> Reducer {
         Reducer { state, action in
             let casePath = AnyCasePath(caseKeyPath)
             guard let localAction = casePath.extract(from: action) else {
                 return .none
             }
-            let effect = localReducer().run(&state, localAction)
+            var localState = state[keyPath: keyPath]
+            let effect = localReducer().run(&localState, localAction)
+            state[keyPath: keyPath] = localState
+            return effect.map(casePath.embed)
+        }
+    }
+    
+    static func ifLet<LocalAction, LocalState>(
+        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
+        _ keyPath: WritableKeyPath<State, LocalState?>,
+        _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
+    ) -> Reducer {
+        Reducer { state, action in
+            let casePath = AnyCasePath(caseKeyPath)
+            guard let localAction = casePath.extract(from: action) else {
+                return .none
+            }
+            guard var localState = state[keyPath: keyPath] else {
+                return .none
+            }
+            let effect = localReducer().run(&localState, localAction)
+            state[keyPath: keyPath] = localState
             return effect.map(casePath.embed)
         }
     }
