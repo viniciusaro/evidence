@@ -48,25 +48,16 @@ let chatsUpdate = [
 ]
 
 let appReducer = Reducer<AppState, AppAction>.combine(
-    .scope(\.rootAction) {
-        Reducer { state, action in
-            switch action {
-            case .appLoad:
-                return .none
-            }
+    Reducer { state, action in
+        if case .appLoad = action {
+            print("app load")
         }
+        return .none
     },
     .scope(\.chatList) {
         chatListReducer
     }
 )
-
-let rootReducer = Reducer<AppState, RootAction> { state, action in
-    switch action {
-    case .appLoad:
-        return .none
-    }
-}
 
 let chatListReducer = Reducer<AppState, ChatListAction>.combine(
     Reducer { state, action in
@@ -137,7 +128,7 @@ struct ContentView: View {
         NavigationStack {
             ChatListView(store: store)
             .onViewDidLoad {
-                store.send(.rootAction(.appLoad))
+                store.send(.appLoad)
             }
         }
     }
@@ -246,13 +237,8 @@ struct WithViewStore<State, Action>: View {
 
 @CasePathable
 enum AppAction {
-    case rootAction(RootAction)
-    case chatList(ChatListAction)
-}
-
-@CasePathable
-enum RootAction {
     case appLoad
+    case chatList(ChatListAction)
 }
 
 @CasePathable
