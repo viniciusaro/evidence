@@ -61,10 +61,19 @@ let appReducer = Reducer<AppState, AppAction>.combine(
 
 let chatListReducer = Reducer<AppState, ChatListAction>.combine(
     Reducer { state, action in
-        if case .chatListLoad = action {
+        switch action {
+        case .chatListLoad:
             state.chats = chatsUpdate
+            return .none
+        case .chatDetailDestination(id: let id):
+            let chat = state.chats.first(where: { $0.id == id })
+            state.chatDetail = chat
+            return .none
+        case .chatDetail(.messagePreviewLoaded):
+            return .none
+        case .chatDetail(_):
+            return .none
         }
-        return .none
     },
     .scope(\.chatDetail) {
         chatReducer
@@ -73,11 +82,6 @@ let chatListReducer = Reducer<AppState, ChatListAction>.combine(
 
 let chatReducer = Reducer<AppState, ChatAction> { state, action in
     switch action {
-    case .update(id: let id):
-        let chat = state.chats.first(where: { $0.id == id })
-        state.chatDetail = chat
-        return .none
-    
     case .messageViewLoad(id: let messageId):
         let chat = state.chatFromMessage(messageId)
         let url = chat.messages
@@ -91,6 +95,7 @@ let chatReducer = Reducer<AppState, ChatAction> { state, action in
             .first
         
         if let url = url, message?.preview == nil {
+            print("running publisher for url: \(url)")
             return .publisher(
                 URLPreviewClient.live
                     .get(url)
@@ -102,6 +107,7 @@ let chatReducer = Reducer<AppState, ChatAction> { state, action in
                     .eraseToAnyPublisher()
             )
         }
+        print("skipping non url message")
         return .none
     
     case let .messagePreviewLoaded(id: messageId, preview):
@@ -146,7 +152,7 @@ struct ChatListView: View {
             List {
                 ForEach(viewStore.chats) { chat in
                     Button(action: {
-                        viewStore.send(.chatList(.chatDetail(.update(id: chat.id))))
+                        viewStore.send(.chatList(.chatDetailDestination(id: chat.id)))
                     }, label: {
                         VStack(alignment: .leading) {
                             Text(chat.name)
@@ -160,7 +166,7 @@ struct ChatListView: View {
             .navigationDestination(
                 item: Binding(
                     get: { viewStore.chatDetail },
-                    set: { chat in viewStore.send(.chatList(.chatDetail(.update(id: chat?.id))))}
+                    set: { chat in viewStore.send(.chatList(.chatDetailDestination(id: chat?.id))) }
                 )) { chat in
                     ChatView(id: chat.id, store: store)
                 }
@@ -244,12 +250,12 @@ enum AppAction {
 @CasePathable
 enum ChatListAction {
     case chatListLoad
+    case chatDetailDestination(id: ChatID?)
     case chatDetail(ChatAction)
 }
 
 @CasePathable
 enum ChatAction {
-    case update(id: ChatID?)
     case messageViewLoad(id: MessageID)
     case messagePreviewLoaded(id: MessageID, Preview)
 }
@@ -341,17 +347,19 @@ struct Reducer<State, Action> {
 }
 
 extension Reducer {
-    func debug(before: Bool = true, after: Bool = true) -> Reducer<State, Action> {
+    func debug(actionOnly: Bool = false, before: Bool = true, after: Bool = true) -> Reducer<State, Action> {
         Reducer { state, action in
             var messages = [String]()
+            
+            messages.append("------------------")
             messages.append("receiving \(action)")
-            if before {
+            if before && !actionOnly {
                 var before = String()
                 dump(state, to: &before)
                 messages.append("before: \(before)")
             }
             let effect = self.run(&state, action)
-            if after {
+            if after  && !actionOnly {
                 messages.append("------")
                 var after = String()
                 dump(state, to: &after)
