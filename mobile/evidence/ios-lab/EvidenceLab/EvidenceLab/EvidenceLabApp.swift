@@ -6,16 +6,16 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct EvidenceLabApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(
-                store: Store(
-                    initialState: AppState(),
-                    reducer: appReducer
-                )
+            ChatListView(
+                store: Store(initialState: ChatListFeature.State(chats: [])) {
+                    ChatListFeature()
+                }
             )
         }
     }

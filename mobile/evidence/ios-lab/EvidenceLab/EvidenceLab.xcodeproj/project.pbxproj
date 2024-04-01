@@ -15,7 +15,11 @@
 		6369AD7E2BB36C850067E2EC /* EvidenceLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */; };
 		6369AD802BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */; };
 		6375E6D82BB47EC2002E47F3 /* PreviewClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */; };
-		63D487552BB8CACB00540155 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 63D487542BB8CACB00540155 /* CasePaths */; };
+		63797AC52BBAD2B800188427 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 63797AC42BBAD2B800188427 /* CasePaths */; };
+		63797AC72BBAD2B800188427 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 63797AC62BBAD2B800188427 /* ComposableArchitecture */; };
+		63797AC92BBAD33E00188427 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797AC82BBAD33E00188427 /* Models.swift */; };
+		63797ACB2BBAD57600188427 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797ACA2BBAD57600188427 /* Helpers.swift */; };
+		63C547122BBACEFC0098689D /* ComposableArchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C547112BBACEFC0098689D /* ComposableArchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,9 @@
 		6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITests.swift; sourceTree = "<group>"; };
 		6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewClient.swift; sourceTree = "<group>"; };
+		63797AC82BBAD33E00188427 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		63797ACA2BBAD57600188427 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		63C547112BBACEFC0098689D /* ComposableArchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63D487552BB8CACB00540155 /* CasePaths in Frameworks */,
+				63797AC72BBAD2B800188427 /* ComposableArchitecture in Frameworks */,
+				63797AC52BBAD2B800188427 /* CasePaths in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +90,7 @@
 				6369AD722BB36C850067E2EC /* EvidenceLabTests */,
 				6369AD7C2BB36C850067E2EC /* EvidenceLabUITests */,
 				6369AD602BB36C840067E2EC /* Products */,
+				63797AC32BBAD2B800188427 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,9 +109,12 @@
 			children = (
 				6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */,
 				6369AD642BB36C840067E2EC /* ContentView.swift */,
+				63C547112BBACEFC0098689D /* ComposableArchView.swift */,
 				6369AD662BB36C850067E2EC /* Assets.xcassets */,
 				6369AD682BB36C850067E2EC /* Preview Content */,
 				6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */,
+				63797AC82BBAD33E00188427 /* Models.swift */,
+				63797ACA2BBAD57600188427 /* Helpers.swift */,
 			);
 			path = EvidenceLab;
 			sourceTree = "<group>";
@@ -132,6 +144,13 @@
 			path = EvidenceLabUITests;
 			sourceTree = "<group>";
 		};
+		63797AC32BBAD2B800188427 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -149,7 +168,8 @@
 			);
 			name = EvidenceLab;
 			packageProductDependencies = (
-				63D487542BB8CACB00540155 /* CasePaths */,
+				63797AC42BBAD2B800188427 /* CasePaths */,
+				63797AC62BBAD2B800188427 /* ComposableArchitecture */,
 			);
 			productName = EvidenceLab;
 			productReference = 6369AD5F2BB36C840067E2EC /* EvidenceLab.app */;
@@ -225,6 +245,7 @@
 			mainGroup = 6369AD562BB36C840067E2EC;
 			packageReferences = (
 				63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */,
+				63C547132BBAD0C60098689D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 6369AD602BB36C840067E2EC /* Products */;
 			projectDirPath = "";
@@ -269,8 +290,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6369AD652BB36C840067E2EC /* ContentView.swift in Sources */,
+				63797ACB2BBAD57600188427 /* Helpers.swift in Sources */,
+				63C547122BBACEFC0098689D /* ComposableArchView.swift in Sources */,
 				6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */,
 				6375E6D82BB47EC2002E47F3 /* PreviewClient.swift in Sources */,
+				63797AC92BBAD33E00188427 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +626,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		63C547132BBAD0C60098689D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.2;
+			};
+		};
 		63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-case-paths";
@@ -613,10 +645,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		63D487542BB8CACB00540155 /* CasePaths */ = {
+		63797AC42BBAD2B800188427 /* CasePaths */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */;
 			productName = CasePaths;
+		};
+		63797AC62BBAD2B800188427 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63C547132BBAD0C60098689D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
