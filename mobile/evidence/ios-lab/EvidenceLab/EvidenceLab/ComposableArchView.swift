@@ -3,7 +3,7 @@ import SwiftUI
 
 #Preview {
     ChatListView(
-        store: Store(initialState: ChatListFeature.State(chats: [])) {
+        store: Store(initialState: ChatListFeature.State()) {
             ChatListFeature()
         }
     )
@@ -13,13 +13,13 @@ import SwiftUI
 struct ChatListFeature {
     @ObservableState
     struct State: Equatable {
-        var chats: [Chat]
+        var chats: [ChatDetailFeature.State] = []
         @Presents var chatDetail: ChatDetailFeature.State?
     }
     
     enum Action {
         case chatListLoad
-        case chatListItemTapped(Chat)
+        case chatListItemTapped(ChatDetailFeature.State)
         case chatDetail(PresentationAction<ChatDetailFeature.Action>)
     }
         
@@ -27,11 +27,11 @@ struct ChatListFeature {
         Reduce { state, action in
             switch action {
             case .chatListLoad:
-                state.chats = chatsUpdate
+                state.chats = chatsUpdate.map { ChatDetailFeature.State(chat:$0) }
                 return .none
             
-            case let .chatListItemTapped(chat):
-                state.chatDetail = ChatDetailFeature.State(chat: chat)
+            case let .chatListItemTapped(chatDetailState):
+                state.chatDetail = chatDetailState
                 return .none
                 
             case let .chatDetail(action):
@@ -82,13 +82,17 @@ struct ChatListView: View {
 @Reducer
 struct ChatDetailFeature {
     @ObservableState
-    struct State: Equatable {
+    struct State: Equatable, Identifiable {
+        let id: ChatID
         var name: String
         var messages: IdentifiedArrayOf<MessageFeature.State>
         
         init(chat: Chat) {
+            self.id = chat.id
             self.name = chat.name
-            self.messages = IdentifiedArray(uniqueElements: chat.messages.map { MessageFeature.State(message: $0) })
+            self.messages = IdentifiedArray(
+                uniqueElements: chat.messages.map { MessageFeature.State(message: $0) }
+            )
         }
     }
     enum Action {
@@ -96,10 +100,9 @@ struct ChatDetailFeature {
     }
     
     var body: some ReducerOf<Self> {
-        EmptyReducer()
-        .forEach(\.messages, action: \.messages) {
+        EmptyReducer().forEach(\.messages, action: \.messages) {
             MessageFeature()
-        }._printChanges()
+        }
     }
 }
 
@@ -108,13 +111,12 @@ struct ChatDetailView: View {
     
     var body: some View {
         List {
-            ForEach(store.scope(state: \.messages, action: \.messages)) { store in
-                MessageView(store: store)
+            ForEach(store.scope(state: \.messages, action: \.messages)) {
+                MessageView(store: $0)
             }
         }
         .listStyle(.plain)
         .navigationTitle(store.name)
-
     }
 }
 
@@ -122,9 +124,15 @@ struct ChatDetailView: View {
 struct MessageFeature {
     @ObservableState
     struct State: Equatable, Identifiable {
-        var id: UUID { message.id }
-        var message: Message
+        var id: MessageID
+        var content: String
         var preview: Preview?
+        
+        init(message: Message) {
+            self.id = message.id
+            self.content = message.content
+            self.preview = nil
+        }
     }
     enum Action {
         case messageViewLoad
@@ -136,7 +144,7 @@ struct MessageFeature {
             switch action {
             case .messageViewLoad:
                 guard 
-                    let url = URL(string: state.message.content),
+                    let url = URL(string: state.content),
                     url.host() != nil, 
                     state.preview == nil else {
                     return .none
@@ -166,8 +174,8 @@ struct MessageView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(store.message.content)
-            if let preview = store.message.preview {
+            Text(store.content)
+            if let preview = store.preview {
                 AsyncImage(url: preview.image) { phase in
                     if let image = phase.image {
                         image.resizable()
