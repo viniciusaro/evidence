@@ -54,7 +54,7 @@ let appReducer = Reducer<AppState, AppAction>.combine(
         }
         return .none
     },
-    .scope(\.chatList, \.self) {
+    .scope(\.self, \.chatList) {
         chatListReducer
     }
 )
@@ -118,10 +118,6 @@ let chatReducer = Reducer<Chat, ChatAction> { state, action in
 struct ContentView: View {
     let store: Store<AppState, AppAction>
     
-    init(store: Store<AppState, AppAction>) {
-        self.store = store
-    }
-    
     var body: some View {
         NavigationStack {
             ChatListView(store: store)
@@ -134,10 +130,6 @@ struct ContentView: View {
 
 struct ChatListView: View {
     let store: Store<AppState, AppAction>
-    
-    init(store: Store<AppState, AppAction>) {
-        self.store = store
-    }
     
     var body: some View {
         WithViewStore(store: store) { viewStore in
@@ -329,6 +321,21 @@ class Store<State, Action> {
         effectCancellables.append(effect.run(send))
     }
     
+    func scope<LocalState, LocalAction>(
+        state keyPath: WritableKeyPath<State, LocalState>,
+        action toAction: CaseKeyPath<Action, LocalAction>
+    ) -> Store<LocalState, LocalAction> {
+        Store<LocalState, LocalAction>(
+            initialState: state[keyPath: keyPath],
+            reducer: Reducer { localState, localAction in
+                let action = toAction(localAction)
+                self.send(action)
+                localState = self.state[keyPath: keyPath]
+                return .none
+            }
+        )
+    }
+    
     deinit {
         effectCancellables.forEach { $0.cancel() }
     }
@@ -390,9 +397,9 @@ extension Reducer {
         }
     }
     
-    static func scope<LocalAction, LocalState>(
-        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
+    static func scope<LocalState, LocalAction>(
         _ keyPath: WritableKeyPath<State, LocalState>,
+        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
         _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
     ) -> Reducer {
         Reducer { state, action in
@@ -407,9 +414,9 @@ extension Reducer {
         }
     }
     
-    static func ifLet<LocalAction, LocalState>(
-        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
+    static func ifLet<LocalState, LocalAction>(
         _ keyPath: WritableKeyPath<State, LocalState?>,
+        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
         _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
     ) -> Reducer {
         Reducer { state, action in
