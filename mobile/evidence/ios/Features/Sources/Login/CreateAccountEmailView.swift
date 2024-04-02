@@ -19,7 +19,7 @@ public struct CreateAccountEmailView: View {
             VStack(alignment:.leading, spacing: 24) {
                 EmailInput(viewModel: viewModel)
                 PasswordInput(viewModel: viewModel)
-                NextButton(viewModel: viewModel)
+                CreateAccountButton(viewModel: viewModel)
                 Spacer()
             }
             .padding(.top, 24)
@@ -55,19 +55,19 @@ struct Label: View {
     }
 }
 
-struct NextButton: View {
+struct CreateAccountButton: View {
     @Environment(\.leafTheme) private var theme
     @ObservedObject var viewModel: CreateAccountEmailViewModel
 
     var body: some View {
         NavigationStack {
             Button("Create Account") {
-                viewModel.buttonNextTapped()
+                viewModel.createAccountButtonTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
-            .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in
-                LoginCheckEmailView(viewModel: loginCheckViewModel)
-            }
+//            .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in
+//                LoginCheckEmailView(viewModel: loginCheckViewModel)
+//            }
         }
     }
 }

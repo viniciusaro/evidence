@@ -27,9 +27,9 @@ public struct LoginView: View {
     }
 }
 
-//#Preview {
-//    LoginViewModel(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
-//}
+#Preview {
+    LoginView(viewModel: LoginViewModel())
+}
 
 struct Title: View {
     var body: some View {
@@ -89,7 +89,7 @@ struct LoginAuthModal: View {
                     viewModel.loginEmailButtonTapped()
                 }
                 .buttonStyle(LeafSecondaryButtonStyle())
-                .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
+                .sheet(item: $viewModel.createAccountEmail) { loginEmailViewModel in
                     CreateAccountEmailView(viewModel: loginEmailViewModel)
                 }
             }

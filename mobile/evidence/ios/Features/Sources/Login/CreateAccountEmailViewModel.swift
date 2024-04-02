@@ -17,8 +17,8 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     @Published private(set) var isValidPassword: Bool
     @Published var isCreateAccountButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
-    @Published var loginCheckViewModel: LoginCheckEmailViewModel?
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
+    var delegateUserAuthenticated: () -> Void = { fatalError() }
 
 
     public init(
@@ -27,8 +27,7 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         isValidEmail: Bool = false,
         isValidPassword: Bool = false,
         isCreateAccountButtonPressed: Bool = false,
-        isInputEmailFocused: Bool = false,
-        loginCheckViewModel: LoginCheckEmailViewModel? = nil
+        isInputEmailFocused: Bool = false
     ) {
         self.emailInput = emailInput
         self.passwordInput = passwordInput
@@ -36,7 +35,6 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         self.isValidPassword = isValidPassword
         self.isCreateAccountButtonPressed = isCreateAccountButtonPressed
         self.isEmailInputFocused = isInputEmailFocused
-        self.loginCheckViewModel = loginCheckViewModel
     }
 
      private func signIn() {
@@ -69,14 +67,14 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         isCreateAccountButtonPressed = false
     }
 
-    func buttonNextTapped() {
+    func createAccountButtonTapped() {
         isValidEmail = isValidEmail(emailInput)
         isValidPassword = isValidPassword(passwordInput)
 
         isCreateAccountButtonPressed = true
         if isValidEmail && isValidPassword {
             signIn()
-            loginCheckViewModel = LoginCheckEmailViewModel(emailInput: emailInput)
+            delegateUserAuthenticated()
         }
     }
 
