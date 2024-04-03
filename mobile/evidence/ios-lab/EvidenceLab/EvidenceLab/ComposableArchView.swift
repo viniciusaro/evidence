@@ -2,32 +2,32 @@ import ComposableArchitecture
 import SwiftUI
 
 #Preview {
-    ChatListView(
-        store: Store(initialState: ChatListFeature.State()) {
-            ChatListFeature()
+    ChatListViewArch(
+        store: Store(initialState: ChatListFeatureArch.State()) {
+            ChatListFeatureArch()
         }
     )
 }
 
 @Reducer
-struct ChatListFeature {
+struct ChatListFeatureArch {
     @ObservableState
     struct State: Equatable {
-        var chats: [ChatDetailFeature.State] = []
-        @Presents var chatDetail: ChatDetailFeature.State?
+        var chats: [ChatDetailFeatureArch.State] = []
+        @Presents var chatDetail: ChatDetailFeatureArch.State?
     }
     
     enum Action {
         case chatListLoad
-        case chatListItemTapped(ChatDetailFeature.State)
-        case chatDetail(PresentationAction<ChatDetailFeature.Action>)
+        case chatListItemTapped(ChatDetailFeatureArch.State)
+        case chatDetail(PresentationAction<ChatDetailFeatureArch.Action>)
     }
         
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .chatListLoad:
-                state.chats = chatsUpdate.map { ChatDetailFeature.State(chat:$0) }
+                state.chats = chatsUpdate.map { ChatDetailFeatureArch.State(chat:$0) }
                 return .none
             
             case let .chatListItemTapped(chatDetailState):
@@ -45,83 +45,40 @@ struct ChatListFeature {
             }
         }
         .ifLet(\.$chatDetail, action: \.chatDetail) {
-            ChatDetailFeature()
-        }
-    }
-}
-
-struct ChatListView: View {
-    @Bindable var store: StoreOf<ChatListFeature>
-    
-    var body: some View {
-        NavigationStack {
-            List {
-                ForEach(store.chats) { chat in
-                    Button(action: {
-                        store.send(.chatListItemTapped(chat))
-                    }, label: {
-                        VStack(alignment: .leading) {
-                            Text(chat.name)
-                            Text(chat.messages.first?.content ?? "").font(.caption)
-                        }
-                    })
-                }
-            }
-            .listStyle(.plain)
-            .navigationTitle("Conversas")
-            .navigationDestination(item: $store.scope(state: \.chatDetail, action: \.chatDetail)) {
-                ChatDetailView(store: $0)
-            }
-            .onViewDidLoad {
-                store.send(.chatListLoad)
-            }
+            ChatDetailFeatureArch()
         }
     }
 }
 
 @Reducer
-struct ChatDetailFeature {
+struct ChatDetailFeatureArch {
     @ObservableState
     struct State: Equatable, Identifiable {
         let id: ChatID
         var name: String
-        var messages: IdentifiedArrayOf<MessageFeature.State>
+        var messages: IdentifiedArrayOf<MessageFeatureArch.State>
         
         init(chat: Chat) {
             self.id = chat.id
             self.name = chat.name
             self.messages = IdentifiedArray(
-                uniqueElements: chat.messages.map { MessageFeature.State(message: $0) }
+                uniqueElements: chat.messages.map { MessageFeatureArch.State(message: $0) }
             )
         }
     }
     enum Action {
-        case messages(IdentifiedActionOf<MessageFeature>)
+        case messages(IdentifiedActionOf<MessageFeatureArch>)
     }
     
     var body: some ReducerOf<Self> {
         EmptyReducer().forEach(\.messages, action: \.messages) {
-            MessageFeature()
+            MessageFeatureArch()
         }
-    }
-}
-
-struct ChatDetailView: View {
-    let store: StoreOf<ChatDetailFeature>
-    
-    var body: some View {
-        List {
-            ForEach(store.scope(state: \.messages, action: \.messages)) {
-                MessageView(store: $0)
-            }
-        }
-        .listStyle(.plain)
-        .navigationTitle(store.name)
     }
 }
 
 @Reducer
-struct MessageFeature {
+struct MessageFeatureArch {
     @ObservableState
     struct State: Equatable, Identifiable {
         var id: MessageID
@@ -134,6 +91,7 @@ struct MessageFeature {
             self.preview = nil
         }
     }
+    
     enum Action {
         case messageViewLoad
         case messagePreviewLoaded(Preview)
@@ -169,8 +127,51 @@ struct MessageFeature {
     }
 }
 
-struct MessageView: View {
-    let store: StoreOf<MessageFeature>
+struct ChatListViewArch: View {
+    @Bindable var store: StoreOf<ChatListFeatureArch>
+    
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(store.chats) { chat in
+                    Button(action: {
+                        store.send(.chatListItemTapped(chat))
+                    }, label: {
+                        VStack(alignment: .leading) {
+                            Text(chat.name)
+                            Text(chat.messages.first?.content ?? "").font(.caption)
+                        }
+                    })
+                }
+            }
+            .listStyle(.plain)
+            .navigationTitle("Conversas")
+            .navigationDestination(item: $store.scope(state: \.chatDetail, action: \.chatDetail)) {
+                ChatDetailViewArch(store: $0)
+            }
+            .onViewDidLoad {
+                store.send(.chatListLoad)
+            }
+        }
+    }
+}
+
+struct ChatDetailViewArch: View {
+    let store: StoreOf<ChatDetailFeatureArch>
+    
+    var body: some View {
+        List {
+            ForEach(store.scope(state: \.messages, action: \.messages)) {
+                MessageViewArch(store: $0)
+            }
+        }
+        .listStyle(.plain)
+        .navigationTitle(store.name)
+    }
+}
+
+struct MessageViewArch: View {
+    let store: StoreOf<MessageFeatureArch>
     
     var body: some View {
         VStack(alignment: .leading) {

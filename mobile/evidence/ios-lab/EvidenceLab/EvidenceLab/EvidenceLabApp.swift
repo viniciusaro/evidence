@@ -12,11 +12,11 @@ import ComposableArchitecture
 struct EvidenceLabApp: App {
     var body: some Scene {
         WindowGroup {
-            ChatListView(
-                store: Store(initialState: ChatListFeature.State(chats: [])) {
-                    ChatListFeature()
-                }
-            )
+//            ChatListView(
+//                store: Store(initialState: ChatListFeature.State(chats: [])) {
+//                    ChatListFeature()
+//                }
+//            )
         }
     }
 }
