@@ -3,11 +3,65 @@ import CasePaths
 import SwiftUI
 
 #Preview {
-    ChatListView(
+    RootView(
         store: Store(
-            initialState: ChatListFeature.State(),
-            reducer: ChatListFeature.reducer
+            initialState: RootFeature.State(),
+            reducer: RootFeature.reducer
         )
+    )
+}
+
+struct RootFeature: Feature {
+    struct State: Equatable {
+        var home: HomeFeature.State = .init()
+    }
+    
+    @CasePathable
+    enum Action {
+        case home(HomeFeature.Action)
+    }
+    
+    fileprivate static let reducer = ReducerOf<Self>.combine(
+        .scope(\.home, \.home) {
+            HomeFeature.reducer
+        }
+    )
+}
+
+struct HomeFeature: Feature {
+    struct State: Equatable {
+        var chatList: ChatListFeature.State = .init()
+        var profile: ProfileFeature.State = .init()
+    }
+    
+    @CasePathable
+    enum Action {
+        case chatList(ChatListFeature.Action)
+        case profile(ProfileFeature.Action)
+    }
+    
+    fileprivate static let reducer = ReducerOf<Self>.combine(
+        .scope(\.chatList, \.chatList) {
+            ChatListFeature.reducer
+        },
+        .scope(\.profile, \.profile) {
+            ProfileFeature.reducer
+        }
+    )
+}
+
+struct ProfileFeature: Feature {
+    struct State: Equatable {
+        
+    }
+    
+    @CasePathable
+    enum Action {
+        
+    }
+    
+    fileprivate static let reducer = ReducerOf<Self>.combine(
+        .empty()
     )
 }
 
@@ -124,6 +178,46 @@ struct MessageFeature: Feature {
             }
         }
     )
+}
+
+struct RootView: View {
+    fileprivate let store: StoreOf<RootFeature>
+    
+    var body: some View {
+        let _ = RootView._printChanges()
+        WithViewStore(store: store) { viewStore in
+            HomeView(store: store.scope(state: \.home, action: \.home))
+        }
+    }
+}
+
+struct HomeView: View {
+    fileprivate let store: StoreOf<HomeFeature>
+    
+    var body: some View {
+        WithViewStore(store: store) { viewStore in
+            TabView {
+                ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
+                    .tabItem {
+                        Label("Conversas", systemImage: "bubble.right")
+                    }
+                ProfileView(store: store.scope(state: \.profile, action: \.profile))
+                    .tabItem {
+                        Label("Perfil", systemImage: "brain.filled.head.profile")
+                    }
+            }
+        }
+    }
+}
+
+struct ProfileView: View {
+    fileprivate let store: StoreOf<ProfileFeature>
+    
+    var body: some View {
+        WithViewStore(store: store) { viewStore in
+            Text("PROFILE")
+        }
+    }
 }
 
 struct ChatListView: View {
@@ -359,6 +453,12 @@ extension Reducer {
     
     static func combine(_ reducers: Reducer...) -> Reducer {
         return combine(reducers)
+    }
+    
+    static func empty() -> Reducer {
+        Reducer { state, action in
+            return .none
+        }
     }
     
     static func scope<LocalAction>(
