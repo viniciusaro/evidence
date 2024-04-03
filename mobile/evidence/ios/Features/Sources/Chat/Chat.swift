@@ -21,7 +21,7 @@ public struct ChatViewState: Equatable {
 }
 
 @MainActor
-public class ChatViewModel: ObservableObject {
+public class ChatViewModel: ObservableObject, ViewModel {
     @Published var state: ChatViewState
     @Dependency(\.suspendingClock) private var clock
 

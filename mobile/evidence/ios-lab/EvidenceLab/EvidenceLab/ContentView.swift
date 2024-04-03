@@ -245,6 +245,8 @@ fileprivate class ViewStore<State, Action>: ObservableObject {
     }
 }
 
+fileprivate typealias StoreOf<F: Feature> = Store<F.State, F.Action>
+
 fileprivate class Store<State, Action> {
     @Published fileprivate var state: State
     private let reducer: Reducer<State, Action>

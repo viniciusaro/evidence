@@ -6,13 +6,13 @@ typealias ChatID = UUID
 struct Chat: Identifiable, Equatable, Hashable {
     let id = ChatID()
     let name: String
-    var messages: [Message]
+    let messages: [Message]
 }
 
 struct Message: Identifiable, Equatable, Hashable {
     let id = MessageID()
     let content: String
-    var preview: Preview? = nil
+    let preview: Preview? = nil
 }
 
 struct Preview: Equatable, Hashable {

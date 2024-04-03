@@ -5,10 +5,11 @@ import Models
 import SwiftUI
 import Leaf
 
-public struct MessageViewState: Equatable {
+public struct MessageViewState: Equatable, Identifiable {
     public var loading: Bool
     public var message: Message
     public var preview: Preview?
+    public var id: UUID { self.message.id }
     
     public struct Preview: Equatable {
         let image: URL
@@ -26,7 +27,7 @@ public struct MessageViewState: Equatable {
     }
 }
 
-public class MessageViewModel: Equatable, ObservableObject, Identifiable {
+public class MessageViewModel: ViewModel, ObservableObject, Identifiable {
     @Published private(set) var state: MessageViewState
     @Dependency(\.urlPreviewClient) private var urlPreviewClient
     
@@ -63,10 +64,6 @@ public class MessageViewModel: Equatable, ObservableObject, Identifiable {
                 guard let (image, title) = $0 else { return }
                 self?.state.preview = .init(image: image, title: title)
             }
-    }
-    
-    public static func == (lhs: MessageViewModel, rhs: MessageViewModel) -> Bool {
-        lhs.state == rhs.state
     }
 }
 
