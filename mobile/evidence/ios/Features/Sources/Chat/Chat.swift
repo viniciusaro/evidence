@@ -20,10 +20,10 @@ public struct ChatViewState: Equatable {
     }
 }
 
-@MainActor
-public class ChatViewModel: ObservableObject, ViewModel {
-    @Published var state: ChatViewState
-    @Dependency(\.suspendingClock) private var clock
+@Observable
+public class ChatViewModel: ViewModel {
+    var state: ChatViewState
+    private let clock = SuspendingClock()
 
     private var highlightTask: Task<(), Never>?
     
@@ -31,6 +31,7 @@ public class ChatViewModel: ObservableObject, ViewModel {
         self.state = state
     }
     
+    @MainActor 
     public func onViewAppear() {
         self.highlightMessageIfNeeded();
     }
@@ -39,6 +40,7 @@ public class ChatViewModel: ObservableObject, ViewModel {
         return messageModel.id == self.state.highlightedMessageId
     }
     
+    @MainActor
     private func highlightMessageIfNeeded() {
         self.highlightTask = Task { [weak self] in
             guard
@@ -64,7 +66,7 @@ public class ChatViewModel: ObservableObject, ViewModel {
 }
 
 public struct ChatView: View {
-    @ObservedObject var model: ChatViewModel
+    @Bindable var model: ChatViewModel
     @Environment(\.leafTheme) var theme
     
     public init(model: ChatViewModel) {

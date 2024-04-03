@@ -27,9 +27,10 @@ public struct MessageViewState: Equatable, Identifiable {
     }
 }
 
-public class MessageViewModel: ViewModel, ObservableObject, Identifiable {
-    @Published private(set) var state: MessageViewState
-    @Dependency(\.urlPreviewClient) private var urlPreviewClient
+@Observable
+public class MessageViewModel: ViewModel, Identifiable {
+    private(set) var state: MessageViewState
+    private let urlPreviewClient = URLPreviewClient.live
     
     public var id: UUID { self.state.message.id }
     private var previewCancellable: AnyCancellable?
@@ -68,7 +69,7 @@ public class MessageViewModel: ViewModel, ObservableObject, Identifiable {
 }
 
 struct MessageView: View {
-    @ObservedObject var model: MessageViewModel
+    let model: MessageViewModel
     @Environment(\.leafTheme) private var theme
     
     var body: some View {
