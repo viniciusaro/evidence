@@ -3,27 +3,131 @@ import CasePaths
 import SwiftUI
 
 #Preview {
+    buildRootView()
+}
+
+func buildRootView() -> any View {
     RootView(
         store: Store(
             initialState: RootFeature.State(),
-            reducer: RootFeature.reducer
+            reducer: RootFeature.reducer.debug()
         )
     )
 }
 
+struct AuthClient {
+    let getAuthenticatedUser: () -> AnyPublisher<User?, Never>
+    let authenticate: (String, String) -> AnyPublisher<User, Never>
+}
+
+extension AuthClient {
+    static let authenticated = AuthClient(
+        getAuthenticatedUser: { Just(.vini).eraseToAnyPublisher() },
+        authenticate: { email, password in fatalError() }
+    )
+    
+    static let unauthenticated = AuthClient(
+        getAuthenticatedUser: { Just(nil).eraseToAnyPublisher() },
+        authenticate: { email, password in Just(.vini).eraseToAnyPublisher() }
+    )
+    
+    static let switchAccount = intermitent(.vini, .cris)
+    
+    static func intermitent(_ user1: User?, _ user2: User?) -> AuthClient {
+        AuthClient(
+            getAuthenticatedUser: {
+                var user: User? = user1
+                return Publishers.Concatenate(
+                    prefix: Just(user1),
+                    suffix: Timer.publish(every: 5, on: .main, in: .default)
+                        .autoconnect()
+                        .map { _ in user == user1 ? user2 : user1 }
+                    )
+                    .handleEvents(receiveOutput: { user = $0 })
+                    .eraseToAnyPublisher()
+                    
+            },
+            authenticate: { email, password in Just(.vini).eraseToAnyPublisher() }
+        )
+    }
+}
+
 struct RootFeature: Feature {
     struct State: Equatable {
+        var currentUser: User? {
+            get { home.profile.currentUser }
+            set { home.profile.currentUser = newValue }
+        }
         var home: HomeFeature.State = .init()
+        var login: LoginFeature.State?
     }
     
     @CasePathable
     enum Action {
+        case rootLoad
+        case currentUserUpdate(User?)
+        case unauthenticatedUserModalDismissed
         case home(HomeFeature.Action)
+        case login(LoginFeature.Action)
     }
     
+    private static let authClient = AuthClient.authenticated
+    
     fileprivate static let reducer = ReducerOf<Self>.combine(
+        Reducer { state, action in
+            switch action {
+            case .rootLoad:
+                return .publisher(
+                    authClient.getAuthenticatedUser()
+                        .map { .currentUserUpdate($0) }
+                        .eraseToAnyPublisher()
+                )
+                
+            case let .currentUserUpdate(user):
+                state.currentUser = user
+                state.login = user == nil ? LoginFeature.State() : nil
+                return .none
+                
+            case .unauthenticatedUserModalDismissed:
+                return .none
+                
+            case .home:
+                return .none
+            
+            case let .login(.userAuthenticated(user)):
+                return .sync(.currentUserUpdate(user))
+            
+            case .login:
+                return .none
+            }
+        },
         .scope(\.home, \.home) {
             HomeFeature.reducer
+        },
+        .ifLet(state: \.login, action: \.login) {
+            LoginFeature.reducer
+        }
+    )
+}
+
+struct LoginFeature: Feature {
+    struct State: Equatable, Identifiable {
+        let id = UUID()
+    }
+    enum Action {
+        case submitButtonTapped(String, String)
+        case userAuthenticated(User)
+    }
+    fileprivate static let reducer = ReducerOf<Self>.combine(
+        Reducer { state, action in
+            switch action {
+            case .submitButtonTapped(_, _):
+                return .publisher(
+                    Just(.userAuthenticated(.vini)).eraseToAnyPublisher()
+                )
+            case .userAuthenticated(_):
+                return .none
+            }
         }
     )
 }
@@ -52,7 +156,7 @@ struct HomeFeature: Feature {
 
 struct ProfileFeature: Feature {
     struct State: Equatable {
-        
+        var currentUser: User?
     }
     
     @CasePathable
@@ -184,9 +288,33 @@ struct RootView: View {
     fileprivate let store: StoreOf<RootFeature>
     
     var body: some View {
-        let _ = RootView._printChanges()
         WithViewStore(store: store) { viewStore in
-            HomeView(store: store.scope(state: \.home, action: \.home))
+            HomeView(
+                store: store.scope(state: \.home, action: \.home)
+            )
+            .onViewDidLoad {
+                viewStore.send(.rootLoad)
+            }
+            .sheet(item: Binding(
+                get: { viewStore.login },
+                set: { _ in viewStore.send(.unauthenticatedUserModalDismissed) }
+            )) { loginState in
+                LoginView(store: store.scope(state: { _ in loginState }, action: \.login))
+            }
+        }
+    }
+}
+
+struct LoginView: View {
+    fileprivate let store: StoreOf<LoginFeature>
+    
+    var body: some View {
+        WithViewStore(store: store) { viewStore in
+            Button(action: {
+                viewStore.send(.submitButtonTapped("user", "password"))
+            }, label: {
+                Text("Entrar")
+            })
         }
     }
 }
@@ -215,7 +343,11 @@ struct ProfileView: View {
     
     var body: some View {
         WithViewStore(store: store) { viewStore in
-            Text("PROFILE")
+            if let currentUser = viewStore.currentUser {
+                Text("PROFILE OF \(currentUser.name)")
+            } else {
+                Text("NO ONE'S PROFILE")
+            }
         }
     }
 }
@@ -585,6 +717,10 @@ extension AnyCancellable: EffectCancellable {}
 extension Effect {
     static var none: Effect {
         Effect { _ in UUID() }
+    }
+    
+    static func sync(_ action: Action) -> Effect {
+        publisher(Just(action).eraseToAnyPublisher())
     }
     
     static func fireAndForget(_ computation: @escaping () -> Void) -> Effect {
