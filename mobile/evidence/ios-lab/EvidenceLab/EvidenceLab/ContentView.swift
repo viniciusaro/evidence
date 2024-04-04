@@ -2,6 +2,8 @@ import Combine
 import CasePaths
 import SwiftUI
 
+let authClient = AuthClient.unauthenticated(onAuthenticate: .cris)
+
 #Preview {
     buildRootView()
 }
@@ -10,68 +12,25 @@ func buildRootView() -> any View {
     RootView(
         store: Store(
             initialState: RootFeature.State(),
-            reducer: RootFeature.reducer.debug()
+            reducer: RootFeature.reducer.debug(actionOnly: true)
         )
     )
-}
-
-struct AuthClient {
-    let getAuthenticatedUser: () -> AnyPublisher<User?, Never>
-    let authenticate: (String, String) -> AnyPublisher<User, Never>
-}
-
-extension AuthClient {
-    static let authenticated = AuthClient(
-        getAuthenticatedUser: { Just(.vini).eraseToAnyPublisher() },
-        authenticate: { email, password in fatalError() }
-    )
-    
-    static let unauthenticated = AuthClient(
-        getAuthenticatedUser: { Just(nil).eraseToAnyPublisher() },
-        authenticate: { email, password in Just(.vini).eraseToAnyPublisher() }
-    )
-    
-    static let switchAccount = intermitent(.vini, .cris)
-    
-    static func intermitent(_ user1: User?, _ user2: User?) -> AuthClient {
-        AuthClient(
-            getAuthenticatedUser: {
-                var user: User? = user1
-                return Publishers.Concatenate(
-                    prefix: Just(user1),
-                    suffix: Timer.publish(every: 5, on: .main, in: .default)
-                        .autoconnect()
-                        .map { _ in user == user1 ? user2 : user1 }
-                    )
-                    .handleEvents(receiveOutput: { user = $0 })
-                    .eraseToAnyPublisher()
-                    
-            },
-            authenticate: { email, password in Just(.vini).eraseToAnyPublisher() }
-        )
-    }
 }
 
 struct RootFeature: Feature {
     struct State: Equatable {
-        var currentUser: User? {
-            get { home.profile.currentUser }
-            set { home.profile.currentUser = newValue }
-        }
         var home: HomeFeature.State = .init()
-        var login: LoginFeature.State?
+        var login: LoginFeature.State? = nil
     }
     
     @CasePathable
     enum Action {
         case rootLoad
         case currentUserUpdate(User?)
-        case unauthenticatedUserModalDismissed
         case home(HomeFeature.Action)
         case login(LoginFeature.Action)
+        case unauthenticatedUserModalDismissed
     }
-    
-    private static let authClient = AuthClient.authenticated
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
@@ -80,11 +39,11 @@ struct RootFeature: Feature {
                 return .publisher(
                     authClient.getAuthenticatedUser()
                         .map { .currentUserUpdate($0) }
+                        .receive(on: DispatchQueue.main)
                         .eraseToAnyPublisher()
                 )
                 
             case let .currentUserUpdate(user):
-                state.currentUser = user
                 state.login = user == nil ? LoginFeature.State() : nil
                 return .none
                 
@@ -93,9 +52,6 @@ struct RootFeature: Feature {
                 
             case .home:
                 return .none
-            
-            case let .login(.userAuthenticated(user)):
-                return .sync(.currentUserUpdate(user))
             
             case .login:
                 return .none
@@ -118,12 +74,15 @@ struct LoginFeature: Feature {
         case submitButtonTapped(String, String)
         case userAuthenticated(User)
     }
+    
     fileprivate static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case .submitButtonTapped(_, _):
+            case let .submitButtonTapped(username, password):
                 return .publisher(
-                    Just(.userAuthenticated(.vini)).eraseToAnyPublisher()
+                    authClient.authenticate(username, password)
+                        .map { .userAuthenticated($0) }
+                        .eraseToAnyPublisher()
                 )
             case .userAuthenticated(_):
                 return .none
@@ -161,11 +120,25 @@ struct ProfileFeature: Feature {
     
     @CasePathable
     enum Action {
-        
+        case profileLoad
+        case currentUserUpdate(User?)
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
-        .empty()
+        Reducer { state, action in
+            switch action {
+            case .profileLoad:
+                return .publisher(
+                    authClient.getAuthenticatedUser()
+                        .map { .currentUserUpdate($0) }
+                        .eraseToAnyPublisher()
+                )
+            
+            case let .currentUserUpdate(user):
+                state.currentUser = user
+                return .none
+            }
+        }
     )
 }
 
@@ -343,10 +316,15 @@ struct ProfileView: View {
     
     var body: some View {
         WithViewStore(store: store) { viewStore in
-            if let currentUser = viewStore.currentUser {
-                Text("PROFILE OF \(currentUser.name)")
-            } else {
-                Text("NO ONE'S PROFILE")
+            VStack {
+                if let currentUser = viewStore.currentUser {
+                    Text("PROFILE OF \(currentUser.name)")
+                } else {
+                    Text("NO ONE'S PROFILE")
+                }
+            }
+            .onViewDidLoad {
+                viewStore.send(.profileLoad)
             }
         }
     }
@@ -553,7 +531,6 @@ extension Reducer {
     func debug(actionOnly: Bool = false, before: Bool = true, after: Bool = true) -> Reducer<State, Action> {
         Reducer { state, action in
             var messages = [String]()
-            
             messages.append("------------------")
             messages.append("receiving \(action)")
             if before && !actionOnly {
