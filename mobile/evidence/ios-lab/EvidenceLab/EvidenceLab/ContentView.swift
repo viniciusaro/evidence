@@ -8,6 +8,15 @@ let authClient = AuthClient.authenticated()
     buildRootView()
 }
 
+#Preview {
+    ChatDetailView(
+        store: Store(
+            initialState: ChatDetailFeature.State(chat: chatsUpdate[0]),
+            reducer: ChatDetailFeature.reducer.debug(actionOnly: true)
+        )
+    )
+}
+
 func buildRootView() -> any View {
     RootView(
         store: Store(
@@ -50,9 +59,23 @@ struct RootFeature: Feature {
             case .unauthenticatedUserModalDismissed:
                 return .none
                 
-            case .home:
+            case .home(.chatDetail(.send)):
+                guard let chatDetail = state.home.chatDetail else {
+                    return .none
+                }
+                
+                let newMessage = Message(content: chatDetail.inputText)
+                let newMessageState = MessageFeature.State(message: newMessage)
+                let chatIndex = state.home.chatIndex(id: chatDetail.id)
+                
+                state.home.chatDetail?.messages.append(newMessageState)
+                state.home.chatList.chats[chatIndex].messages.append(newMessageState)
+                state.home.chatDetail?.inputText = ""
                 return .none
             
+            case .home:
+                return .none
+                
             case .login:
                 return .none
             }
@@ -107,6 +130,10 @@ struct HomeFeature: Feature {
             var title: String {
                 return rawValue.capitalized
             }
+        }
+        
+        func chatIndex(id: ChatID) -> Int {
+            chatList.chats.firstIndex(where: { $0.id == id })!
         }
     }
     
@@ -188,6 +215,10 @@ struct ProfileFeature: Feature {
 struct ChatListFeature: Feature {
     struct State: Equatable {
         var chats: [ChatDetailFeature.State] = []
+        
+        init(chats: [Chat] = []) {
+            self.chats = chats.map { ChatDetailFeature.State(chat:$0) }
+        }
     }
     
     @CasePathable
@@ -215,20 +246,35 @@ struct ChatDetailFeature: Feature {
         let id: ChatID
         var name: String
         var messages: [MessageFeature.State]
+        var inputText: String
         
-        init(chat: Chat) {
+        init(chat: Chat, inputText: String = "") {
             self.id = chat.id
             self.name = chat.name
             self.messages = chat.messages.map { MessageFeature.State(message: $0) }
+            self.inputText = inputText
         }
     }
     
     @CasePathable
     enum Action {
         case message(MessageFeature.Action, MessageFeature.State.ID)
+        case updateInputText(String)
+        case send
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
+        Reducer { state, action in
+            switch action {
+            case .message:
+                return .none
+            case let .updateInputText(update):
+                state.inputText = update
+                return .none
+            case .send:
+                return .none
+            }
+        },
         .forEach(state: \.messages, action: \.message) {
             MessageFeature.reducer
         }
@@ -397,7 +443,7 @@ struct ChatListView: View {
                     }, label: {
                         VStack(alignment: .leading) {
                             Text(chat.name)
-                            Text(chat.messages.first?.content ?? "").font(.caption)
+                            Text(chat.messages.last?.content ?? "").font(.caption)
                         }
                     })
                 }
@@ -415,12 +461,43 @@ struct ChatDetailView: View {
     
     var body: some View {
         WithViewStore(store: store) { viewStore in
-            List {
-                ForEach(viewStore.messages) { message in
-                    MessageView(store: store.scope(state: { _ in message }, action: \.message))
+            VStack {
+                List {
+                    ForEach(viewStore.messages) { message in
+                        MessageView(store: store.scope(state: { _ in message }, action: \.message))
+                    }
                 }
+                .listStyle(.plain)
+                HStack(spacing: 12) {
+                    Button(action: {
+                        
+                    }, label: {
+                        Label("", systemImage: "plus")
+                            .labelStyle(.iconOnly)
+                            .font(.title)
+                            .foregroundStyle(.primary)
+                    })
+                    TextField("", text: Binding(
+                        get: { viewStore.inputText },
+                        set: { viewStore.send(.updateInputText($0)) }
+                    ))
+                    .frame(height: 36)
+                    .padding([.leading, .trailing], 8)
+                    .background(RoundedRectangle(cornerRadius: 18)
+                        .fill(Color(red: 43/255, green: 43/255, blue: 43/255))
+                    )
+                    Button(action: {
+                        viewStore.send(.send)
+                    }, label: {
+                        Label("", systemImage: "arrow.forward.circle.fill")
+                            .labelStyle(.iconOnly)
+                            .font(.largeTitle)
+                            .foregroundStyle(.white, .primary)
+                    })
+                }
+                .padding(10)
+                .background(Color(red: 20/255, green: 20/255, blue: 20/255))
             }
-            .listStyle(.plain)
             .navigationTitle(viewStore.name)
         }
     }
