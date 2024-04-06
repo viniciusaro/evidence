@@ -2,7 +2,7 @@ import Combine
 import CasePaths
 import SwiftUI
 
-let authClient = AuthClient.unauthenticated(onAuthenticate: .cris)
+let authClient = AuthClient.authenticated()
 
 #Preview {
     buildRootView()
@@ -57,7 +57,7 @@ struct RootFeature: Feature {
                 return .none
             }
         },
-        .scope(\.home, \.home) {
+        .scope(state: \.home, action: \.home) {
             HomeFeature.reducer
         },
         .ifLet(state: \.login, action: \.login) {
@@ -70,6 +70,8 @@ struct LoginFeature: Feature {
     struct State: Equatable, Identifiable {
         let id = UUID()
     }
+    
+    @CasePathable
     enum Action {
         case submitButtonTapped(String, String)
         case userAuthenticated(User)
@@ -84,7 +86,7 @@ struct LoginFeature: Feature {
                         .map { .userAuthenticated($0) }
                         .eraseToAnyPublisher()
                 )
-            case .userAuthenticated(_):
+            case .userAuthenticated:
                 return .none
             }
         }
@@ -104,10 +106,10 @@ struct HomeFeature: Feature {
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
-        .scope(\.chatList, \.chatList) {
+        .scope(state: \.chatList, action: \.chatList) {
             ChatListFeature.reducer
         },
-        .scope(\.profile, \.profile) {
+        .scope(state: \.profile, action: \.profile) {
             ProfileFeature.reducer
         }
     )
@@ -200,9 +202,6 @@ struct ChatDetailFeature: Feature {
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
-        Reducer { state, action in
-            return .none
-        },
         .forEach(state: \.messages, action: \.message) {
             MessageFeature.reducer
         }
@@ -221,6 +220,7 @@ struct MessageFeature: Feature {
             self.preview = nil
         }
     }
+    
     @CasePathable
     enum Action {
         case messageViewLoad
@@ -356,7 +356,9 @@ struct ChatListView: View {
                         set: { viewStore.send(.chatDetailNavigation($0))}
                     )
                 ) { chatDetail in
-                    ChatDetailView(store: store.scope(state: { _ in chatDetail }, action: \.chatDetail))
+                    ChatDetailView(
+                        store: store.scope(state: { _ in chatDetail }, action: \.chatDetail)
+                    )
                 }
                 .onViewDidLoad {
                     viewStore.send(.chatListLoad)
@@ -585,8 +587,8 @@ extension Reducer {
     }
     
     static func scope<LocalState, LocalAction>(
-        _ keyPath: WritableKeyPath<State, LocalState>,
-        _ caseKeyPath: CaseKeyPath<Action, LocalAction>,
+        state keyPath: WritableKeyPath<State, LocalState>,
+        action caseKeyPath: CaseKeyPath<Action, LocalAction>,
         _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
     ) -> Reducer {
         Reducer { state, action in
@@ -646,11 +648,6 @@ extension Reducer {
             }
         }
     }
-}
-
-struct IdentifiedAction<Action, ID: Hashable>: Identifiable {
-    let id: ID
-    let action: Action
 }
 
 fileprivate struct Effect<Action> {
