@@ -112,29 +112,34 @@ struct HomeFeature: Feature {
     
     @CasePathable
     enum Action {
+        case onTabSelectionChanged(State.Tab)
         case chatList(ChatListFeature.Action)
         case chatDetail(ChatDetailFeature.Action)
         case chatDetailNavigation(ChatDetailFeature.State?)
         case profile(ProfileFeature.Action)
-        case onTabSelectionChanged(State.Tab)
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .chatList(.chatListItemTapped(chatDetailState)):
-                state.chatDetail = chatDetailState
-                return .none
-            case .chatList:
-                return .none
-            case .chatDetail:
-                return .none
-            case let .chatDetailNavigation(chatDetailState):
-                state.chatDetail = chatDetailState
-                return .none
             case let .onTabSelectionChanged(selection):
                 state.selectedTab = selection
                 return .none
+            
+            case let .chatList(.chatListItemTapped(chatDetailState)):
+                state.chatDetail = chatDetailState
+                return .none
+            
+            case .chatList:
+                return .none
+            
+            case .chatDetail:
+                return .none
+            
+            case let .chatDetailNavigation(chatDetailState):
+                state.chatDetail = chatDetailState
+                return .none
+            
             case .profile:
                 return .none
             }
