@@ -96,18 +96,54 @@ struct LoginFeature: Feature {
 struct HomeFeature: Feature {
     struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
+        var chatDetail: ChatDetailFeature.State? = nil
         var profile: ProfileFeature.State = .init()
+        var selectedTab: Tab = .chatList
+        
+        enum Tab: String {
+            case chatList = "Conversas"
+            case profile = "Perfil"
+            
+            var title: String {
+                return rawValue.capitalized
+            }
+        }
     }
     
     @CasePathable
     enum Action {
         case chatList(ChatListFeature.Action)
+        case chatDetail(ChatDetailFeature.Action)
+        case chatDetailNavigation(ChatDetailFeature.State?)
         case profile(ProfileFeature.Action)
+        case onTabSelectionChanged(State.Tab)
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
+        Reducer { state, action in
+            switch action {
+            case let .chatList(.chatListItemTapped(chatDetailState)):
+                state.chatDetail = chatDetailState
+                return .none
+            case .chatList:
+                return .none
+            case .chatDetail:
+                return .none
+            case let .chatDetailNavigation(chatDetailState):
+                state.chatDetail = chatDetailState
+                return .none
+            case let .onTabSelectionChanged(selection):
+                state.selectedTab = selection
+                return .none
+            case .profile:
+                return .none
+            }
+        },
         .scope(state: \.chatList, action: \.chatList) {
             ChatListFeature.reducer
+        },
+        .ifLet(state: \.chatDetail, action: \.chatDetail) {
+            ChatDetailFeature.reducer
         },
         .scope(state: \.profile, action: \.profile) {
             ProfileFeature.reducer
@@ -147,15 +183,12 @@ struct ProfileFeature: Feature {
 struct ChatListFeature: Feature {
     struct State: Equatable {
         var chats: [ChatDetailFeature.State] = []
-        var chatDetail: ChatDetailFeature.State? = nil
     }
     
     @CasePathable
     enum Action {
         case chatListLoad
         case chatListItemTapped(ChatDetailFeature.State)
-        case chatDetailNavigation(ChatDetailFeature.State?)
-        case chatDetail(ChatDetailFeature.Action)
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
@@ -165,20 +198,9 @@ struct ChatListFeature: Feature {
                 state.chats = chatsUpdate.map { ChatDetailFeature.State(chat:$0) }
                 return .none
                 
-            case let .chatListItemTapped(chatDetailState):
-                state.chatDetail = chatDetailState
-                return .none
-                
-            case let .chatDetailNavigation(chatDetailState):
-                state.chatDetail = chatDetailState
-                return .none
-                
-            case .chatDetail:
+            case .chatListItemTapped:
                 return .none
             }
-        },
-        .ifLet(state: \.chatDetail, action: \.chatDetail) {
-            ChatDetailFeature.reducer
         }
     )
 }
@@ -297,15 +319,43 @@ struct HomeView: View {
     
     var body: some View {
         WithViewStore(store: store) { viewStore in
-            TabView {
-                ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
-                    .tabItem {
-                        Label("Conversas", systemImage: "bubble.right")
-                    }
-                ProfileView(store: store.scope(state: \.profile, action: \.profile))
-                    .tabItem {
-                        Label("Perfil", systemImage: "brain.filled.head.profile")
-                    }
+            NavigationStack {
+                TabView(
+                    selection: Binding(
+                        get: { viewStore.selectedTab },
+                        set: { viewStore.send(.onTabSelectionChanged($0)) }
+                    )
+                ) {
+                    ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
+                        .tabItem {
+                            Label(
+                                HomeFeature.State.Tab.chatList.title,
+                                systemImage: "bubble.right"
+                            )
+                        }
+                        .tag(HomeFeature.State.Tab.chatList)
+                        
+                    ProfileView(store: store.scope(state: \.profile, action: \.profile))
+                        .tabItem {
+                            Label(
+                                HomeFeature.State.Tab.profile.title,
+                                systemImage: "brain.filled.head.profile"
+                            )
+                        }
+                        .tag(HomeFeature.State.Tab.profile)
+                }
+                .navigationDestination(
+                    item: Binding(
+                        get: { viewStore.chatDetail },
+                        set: { viewStore.send(.chatDetailNavigation($0))}
+                    )
+                ) { chatDetail in
+                    ChatDetailView(
+                        store: store.scope(state: { _ in chatDetail }, action: \.chatDetail)
+                    )
+                }
+                .navigationTitle(viewStore.selectedTab.title)
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
@@ -335,34 +385,21 @@ struct ChatListView: View {
     
     var body: some View {
         WithViewStore(store: store) { viewStore in
-            NavigationStack {
-                List {
-                    ForEach(viewStore.chats) { chat in
-                        Button(action: {
-                            viewStore.send(.chatListItemTapped(chat))
-                        }, label: {
-                            VStack(alignment: .leading) {
-                                Text(chat.name)
-                                Text(chat.messages.first?.content ?? "").font(.caption)
-                            }
-                        })
-                    }
+            List {
+                ForEach(viewStore.chats) { chat in
+                    Button(action: {
+                        viewStore.send(.chatListItemTapped(chat))
+                    }, label: {
+                        VStack(alignment: .leading) {
+                            Text(chat.name)
+                            Text(chat.messages.first?.content ?? "").font(.caption)
+                        }
+                    })
                 }
-                .listStyle(.plain)
-                .navigationTitle("Conversas")
-                .navigationDestination(
-                    item: Binding(
-                        get: { viewStore.chatDetail },
-                        set: { viewStore.send(.chatDetailNavigation($0))}
-                    )
-                ) { chatDetail in
-                    ChatDetailView(
-                        store: store.scope(state: { _ in chatDetail }, action: \.chatDetail)
-                    )
-                }
-                .onViewDidLoad {
-                    viewStore.send(.chatListLoad)
-                }
+            }
+            .listStyle(.plain)
+            .onViewDidLoad {
+                viewStore.send(.chatListLoad)
             }
         }
     }
