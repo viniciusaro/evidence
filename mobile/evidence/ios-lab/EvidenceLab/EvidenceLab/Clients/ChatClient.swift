@@ -4,7 +4,7 @@ import Foundation
 struct ChatClient {
     let getAll: () -> AnyPublisher<[Chat], Never>
     let new: (String) -> AnyPublisher<Chat, Never>
-    let send: (String, ChatID) -> AnyPublisher<Void, Never>
+    let send: (Message, ChatID) -> AnyPublisher<Void, Never>
 }
 
 extension ChatClient {
@@ -23,15 +23,16 @@ extension ChatClient {
                 let chat = Chat(name: name, messages: [])
                 return chatDocumentClient.create(chat)
             },
-            send: { content, chatId in
+            send: { message, chatId in
                 return chatDocumentClient.get(chatId).flatMap { chat in
                     let updated = Chat(
                         id: chat.id,
                         name: chat.name,
-                        messages: chat.messages + [Message(content: content)]
+                        messages: chat.messages + [message]
                     )
                     return chatDocumentClient.update(updated)
                 }
+                .delay(for: .seconds(1), scheduler: DispatchQueue.main)
                 .eraseToAnyPublisher()
             }
         )

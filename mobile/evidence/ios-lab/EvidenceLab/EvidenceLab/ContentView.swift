@@ -66,16 +66,33 @@ struct RootFeature: Feature {
                 }
                 
                 let newMessage = Message(content: chatDetail.inputText)
-                let newMessageState = MessageFeature.State(message: newMessage)
+                let newMessageState = MessageFeature.State(message: newMessage, isSent: false)
                 let chatIndex = state.home.chatIndex(id: chatDetail.id)
                 
                 state.home.chatDetail?.messages.append(newMessageState)
                 state.home.chatList.chats[chatIndex].messages.append(newMessageState)
                 state.home.chatDetail?.inputText = ""
                 return .publisher(
-                    chatClient.send(newMessage.content, chatDetail.id)
+                    chatClient.send(newMessage, chatDetail.id)
                         .map { .home(.chatDetail(.sent(newMessage.id))) }
                 )
+                
+            case let .home(.chatDetail(.sent(messageId))):
+                guard let chatDetail = state.home.chatDetail else {
+                    return .none
+                }
+                
+                if let index = chatDetail.messages.firstIndex(where: { $0.id == messageId }) {
+                    state.home.chatDetail?.messages[index].isSent = true
+                }
+                
+                let chatIndex = state.home.chatIndex(id: chatDetail.id)
+                
+                if let index = state.home.chatList.chats[chatIndex].messages.firstIndex(where: { $0.id == messageId }) {
+                    state.home.chatList.chats[chatIndex].messages[index].isSent = true
+                }
+                
+                return .none
             
             case let .home(.newChatCreated(chat)):
                 state.home.chatList.chats.insert(ChatDetailFeature.State(chat: chat), at: 0)
@@ -313,11 +330,13 @@ struct MessageFeature: Feature {
         let id: MessageID
         var content: String
         var preview: Preview?
+        var isSent: Bool
         
-        init(message: Message) {
+        init(message: Message, isSent: Bool = true) {
             self.id = message.id
             self.content = message.content
             self.preview = nil
+            self.isSent = isSent
         }
     }
     
@@ -559,6 +578,7 @@ struct MessageView: View {
                     }
                 }
             }
+            .background(viewStore.isSent ? Color.green : Color.red)
             .onViewDidLoad {
                 viewStore.send(.messageViewLoad)
             }
