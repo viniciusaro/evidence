@@ -3,7 +3,7 @@ import CasePaths
 import SwiftUI
 
 let authClient = AuthClient.authenticated()
-let chatClient = ChatClient.filesystem
+let chatClient = ChatClient.mock
 let chatDocumentClient = AnyDocumentClient<Chat>.file("chats")
 
 #Preview {
@@ -564,7 +564,16 @@ struct MessageView: View {
     var body: some View {
         WithViewStore(store: store) { viewStore in
             VStack(alignment: .leading) {
-                Text(viewStore.content)
+                HStack {
+                    Text(viewStore.content)
+                    Spacer()
+                    if viewStore.isSent {
+                        Label("", systemImage: "checkmark")
+                            .labelStyle(.iconOnly)
+                            .font(.caption)
+                            .foregroundStyle(Color.gray)
+                    }
+                }
                 if let preview = viewStore.preview {
                     AsyncImage(url: preview.image) { phase in
                         if let image = phase.image {
@@ -578,7 +587,6 @@ struct MessageView: View {
                     }
                 }
             }
-            .background(viewStore.isSent ? Color.green : Color.red)
             .onViewDidLoad {
                 viewStore.send(.messageViewLoad)
             }

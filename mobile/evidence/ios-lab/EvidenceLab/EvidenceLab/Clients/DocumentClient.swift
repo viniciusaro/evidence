@@ -93,7 +93,6 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
     
     func get(_ id: D.ID) -> AnyPublisher<D, Never> {
         let url = URL.documentsDirectory.appending(path: "chats/\(id).json")
-        print("trying to get data at: \(url)")
         do {
             let data = try Data(contentsOf: url)
             let document = try JSONDecoder().decode(D.self, from: data)
@@ -106,12 +105,9 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
     func getAll() -> AnyPublisher<[D], Never> {
         let filemanager = FileManager.default
         let directory = URL.documentsDirectory.appending(path: root)
-        print("get all from dir: \(directory)")
         
         do {
-            print("trying to get files... \(directory.path(percentEncoded: true))")
             let files = try filemanager.contentsOfDirectory(atPath: directory.path(percentEncoded: true))
-            print("found files: \(files)")
             var documents = [D]()
             for file in files {
                 let url = directory.appending(path: file)
@@ -121,7 +117,6 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
             }
             return Just(documents).eraseToAnyPublisher()
         } catch {
-            print("error trying to fetch files: \(error)")
             return Just([]).eraseToAnyPublisher()
         }
     }
@@ -130,7 +125,6 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
         let filemanager = FileManager.default
         let directory = URL.documentsDirectory.appending(path: root)
         let url = directory.appending(path: "\(document.id).json")
-        print("New file will be written at: \(url)")
         
         do {
             try filemanager.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -138,23 +132,18 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
             try data.write(to: url)
             return Just(document).eraseToAnyPublisher()
         } catch {
-            print("error trying to write file: \(error)")
             return Just(document).eraseToAnyPublisher()
         }
     }
     
     func update(_ document: D) -> AnyPublisher<Void, Never> {
         let url = URL.documentsDirectory.appending(path: "\(root)/\(document.id).json")
-        print("trying to send data to: \(url)")
         do {
-            let data = try Data(contentsOf: url)
             let updatedData = try JSONEncoder().encode(document)
             try updatedData.write(to: url)
         } catch {
-            print("error sending data: \(error)")
             return Just(()).eraseToAnyPublisher()
         }
-        print("success!")
         return Just(()).eraseToAnyPublisher()
     }
 }
