@@ -22,6 +22,7 @@
 		63797ACB2BBAD57600188427 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797ACA2BBAD57600188427 /* Helpers.swift */; };
 		63C547122BBACEFC0098689D /* ComposableArchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C547112BBACEFC0098689D /* ComposableArchView.swift */; };
 		63D770862BC1F79F00B81E83 /* ChatClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D770852BC1F79F00B81E83 /* ChatClient.swift */; };
+		63D770892BC2EAD900B81E83 /* DocumentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D770882BC2EAD900B81E83 /* DocumentClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		63797ACA2BBAD57600188427 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		63C547112BBACEFC0098689D /* ComposableArchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchView.swift; sourceTree = "<group>"; };
 		63D770852BC1F79F00B81E83 /* ChatClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatClient.swift; sourceTree = "<group>"; };
+		63D770882BC2EAD900B81E83 /* DocumentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 				6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */,
 				6361D20B2BBE49C100F7866D /* AuthClient.swift */,
 				63D770852BC1F79F00B81E83 /* ChatClient.swift */,
+				63D770882BC2EAD900B81E83 /* DocumentClient.swift */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6361D20C2BBE49C100F7866D /* AuthClient.swift in Sources */,
+				63D770892BC2EAD900B81E83 /* DocumentClient.swift in Sources */,
 				6369AD652BB36C840067E2EC /* ContentView.swift in Sources */,
 				63797ACB2BBAD57600188427 /* Helpers.swift in Sources */,
 				63C547122BBACEFC0098689D /* ComposableArchView.swift in Sources */,

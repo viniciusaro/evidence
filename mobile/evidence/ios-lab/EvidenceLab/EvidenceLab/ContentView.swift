@@ -4,6 +4,7 @@ import SwiftUI
 
 let authClient = AuthClient.authenticated()
 let chatClient = ChatClient.filesystem
+let chatDocumentClient = AnyDocumentClient<Chat>.file("chats")
 
 #Preview {
     buildRootView()
@@ -72,7 +73,7 @@ struct RootFeature: Feature {
                 state.home.chatList.chats[chatIndex].messages.append(newMessageState)
                 state.home.chatDetail?.inputText = ""
                 return .publisher(
-                    chatClient.send(newMessage.content, chatDetail.name)
+                    chatClient.send(newMessage.content, chatDetail.id)
                         .map { .home(.chatDetail(.sent(newMessage.id))) }
                 )
             
