@@ -3,21 +3,12 @@ import CasePaths
 import SwiftUI
 
 let authClient = AuthClient.authenticated()
-let chatClient = ChatClient.mock
+let chatClient = ChatClient.filesystem
 let chatDocumentClient = AnyDocumentClient<Chat>.file("chats")
 
 #Preview {
     buildRootView()
 }
-
-//#Preview {
-//    ChatDetailView(
-//        store: Store(
-//            initialState: ChatDetailFeature.State(chat: chatsUpdate[0]),
-//            reducer: ChatDetailFeature.reducer.debug(actionOnly: true)
-//        )
-//    )
-//}
 
 func buildRootView() -> any View {
     RootView(
@@ -67,11 +58,10 @@ struct RootFeature: Feature {
                 
                 let newMessage = Message(content: chatDetail.inputText)
                 let newMessageState = MessageFeature.State(message: newMessage, isSent: false)
-                let chatIndex = state.home.chatIndex(id: chatDetail.id)
                 
                 state.home.chatDetail?.messages.append(newMessageState)
-                state.home.chatList.chats[chatIndex].messages.append(newMessageState)
                 state.home.chatDetail?.inputText = ""
+                
                 return .publisher(
                     chatClient.send(newMessage, chatDetail.id)
                         .map { .home(.chatDetail(.sent(newMessage.id))) }
@@ -86,16 +76,18 @@ struct RootFeature: Feature {
                     state.home.chatDetail?.messages[index].isSent = true
                 }
                 
-                let chatIndex = state.home.chatIndex(id: chatDetail.id)
-                
-                if let index = state.home.chatList.chats[chatIndex].messages.firstIndex(where: { $0.id == messageId }) {
-                    state.home.chatList.chats[chatIndex].messages[index].isSent = true
-                }
-                
                 return .none
             
             case let .home(.newChatCreated(chat)):
                 state.home.chatList.chats.insert(ChatDetailFeature.State(chat: chat), at: 0)
+                return .none
+                
+            case .home(.chatDetailNavigation(_)):
+                guard let chatDetail = state.home.chatDetail else {
+                    return .none
+                }
+                let chatIndex = state.home.chatIndex(id: chatDetail.id)
+                state.home.chatList.chats[chatIndex] = chatDetail
                 return .none
                 
             case .home:
