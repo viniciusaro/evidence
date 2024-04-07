@@ -6,6 +6,11 @@ struct AuthClient {
     let authenticate: (String, String) -> AnyPublisher<User, Never>
 }
 
+extension User {
+    static let vini = User(name: "Vini")
+    static let cris = User(name: "Cris")
+}
+
 extension AuthClient {
     static func authenticated(_ user: User = .vini) -> AuthClient {
         AuthClient(

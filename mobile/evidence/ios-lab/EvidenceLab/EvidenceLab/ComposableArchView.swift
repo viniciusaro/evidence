@@ -19,6 +19,7 @@ struct ChatListFeatureArch {
     
     enum Action {
         case chatListLoad
+        case chatListLoaded([Chat])
         case chatListItemTapped(ChatDetailFeatureArch.State)
         case chatDetail(PresentationAction<ChatDetailFeatureArch.Action>)
     }
@@ -27,7 +28,13 @@ struct ChatListFeatureArch {
         Reduce { state, action in
             switch action {
             case .chatListLoad:
-                state.chats = chatsUpdate.map { ChatDetailFeatureArch.State(chat:$0) }
+                return .publisher {
+                    ChatClient.mock.getAll()
+                        .map { .chatListLoaded($0) }
+                }
+                
+            case let .chatListLoaded(chats):
+                state.chats = chats.map { ChatDetailFeatureArch.State(chat:$0) }
                 return .none
             
             case let .chatListItemTapped(chatDetailState):

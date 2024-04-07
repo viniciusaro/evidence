@@ -3,19 +3,20 @@ import CasePaths
 import SwiftUI
 
 let authClient = AuthClient.authenticated()
+let chatClient = ChatClient.mock
 
 #Preview {
     buildRootView()
 }
 
-#Preview {
-    ChatDetailView(
-        store: Store(
-            initialState: ChatDetailFeature.State(chat: chatsUpdate[0]),
-            reducer: ChatDetailFeature.reducer.debug(actionOnly: true)
-        )
-    )
-}
+//#Preview {
+//    ChatDetailView(
+//        store: Store(
+//            initialState: ChatDetailFeature.State(chat: chatsUpdate[0]),
+//            reducer: ChatDetailFeature.reducer.debug(actionOnly: true)
+//        )
+//    )
+//}
 
 func buildRootView() -> any View {
     RootView(
@@ -49,7 +50,6 @@ struct RootFeature: Feature {
                     authClient.getAuthenticatedUser()
                         .map { .currentUserUpdate($0) }
                         .receive(on: DispatchQueue.main)
-                        .eraseToAnyPublisher()
                 )
                 
             case let .currentUserUpdate(user):
@@ -107,7 +107,6 @@ struct LoginFeature: Feature {
                 return .publisher(
                     authClient.authenticate(username, password)
                         .map { .userAuthenticated($0) }
-                        .eraseToAnyPublisher()
                 )
             case .userAuthenticated:
                 return .none
@@ -201,7 +200,6 @@ struct ProfileFeature: Feature {
                 return .publisher(
                     authClient.getAuthenticatedUser()
                         .map { .currentUserUpdate($0) }
-                        .eraseToAnyPublisher()
                 )
             
             case let .currentUserUpdate(user):
@@ -224,6 +222,7 @@ struct ChatListFeature: Feature {
     @CasePathable
     enum Action {
         case chatListLoad
+        case chatListLoaded([Chat])
         case chatListItemTapped(ChatDetailFeature.State)
     }
     
@@ -231,7 +230,13 @@ struct ChatListFeature: Feature {
         Reducer { state, action in
             switch action {
             case .chatListLoad:
-                state.chats = chatsUpdate.map { ChatDetailFeature.State(chat:$0) }
+                return .publisher(
+                    chatClient.getAll()
+                        .map { .chatListLoaded($0) }
+                )
+                
+            case let .chatListLoaded(chats):
+                state.chats = chats.map { ChatDetailFeature.State(chat:$0) }
                 return .none
                 
             case .chatListItemTapped:
@@ -319,7 +324,6 @@ struct MessageFeature: Feature {
                         .map { $0! }
                         .map { Preview(image: $0.image, title: $0.title) }
                         .map { .messagePreviewLoaded($0) }
-                        .eraseToAnyPublisher()
                     )
                 
             case let .messagePreviewLoaded(preview):
@@ -813,7 +817,7 @@ extension Effect {
     }
     
     static func sync(_ action: Action) -> Effect {
-        publisher(Just(action).eraseToAnyPublisher())
+        publisher(Just(action))
     }
     
     static func fireAndForget(_ computation: @escaping () -> Void) -> Effect {
@@ -823,7 +827,7 @@ extension Effect {
         }
     }
     
-    static func publisher(_ publisher: AnyPublisher<Action, Never>) -> Effect {
+    static func publisher(_ publisher: any Publisher<Action, Never>) -> Effect {
         Effect { send in
             publisher.sink(receiveValue: send)
         }
