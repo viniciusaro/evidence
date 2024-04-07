@@ -3,7 +3,7 @@ import CasePaths
 import SwiftUI
 
 let authClient = AuthClient.authenticated()
-let chatClient = ChatClient.mock
+let chatClient = ChatClient.filesystem
 
 #Preview {
     buildRootView()
@@ -22,7 +22,7 @@ func buildRootView() -> any View {
     RootView(
         store: Store(
             initialState: RootFeature.State(),
-            reducer: RootFeature.reducer.debug(actionOnly: true)
+            reducer: RootFeature.reducer
         )
     )
 }
@@ -71,8 +71,15 @@ struct RootFeature: Feature {
                 state.home.chatDetail?.messages.append(newMessageState)
                 state.home.chatList.chats[chatIndex].messages.append(newMessageState)
                 state.home.chatDetail?.inputText = ""
-                return .none
+                return .publisher(
+                    chatClient.send(newMessage.content, chatDetail.name)
+                        .map { .home(.chatDetail(.sent(newMessage.id))) }
+                )
             
+            case let .home(.newChatCreated(chat)):
+                state.home.chatList.chats.insert(ChatDetailFeature.State(chat: chat), at: 0)
+                return .none
+                
             case .home:
                 return .none
                 
@@ -142,6 +149,8 @@ struct HomeFeature: Feature {
         case chatList(ChatListFeature.Action)
         case chatDetail(ChatDetailFeature.Action)
         case chatDetailNavigation(ChatDetailFeature.State?)
+        case newChatItemTapped
+        case newChatCreated(Chat)
         case profile(ProfileFeature.Action)
     }
     
@@ -166,6 +175,15 @@ struct HomeFeature: Feature {
                 state.chatDetail = chatDetailState
                 return .none
             
+            case .newChatItemTapped:
+                return .publisher(
+                    chatClient.new("Lili")
+                        .map { .newChatCreated($0) }
+                )
+            
+            case let .newChatCreated(chat):
+                return .none
+                
             case .profile:
                 return .none
             }
@@ -266,6 +284,7 @@ struct ChatDetailFeature: Feature {
         case message(MessageFeature.Action, MessageFeature.State.ID)
         case updateInputText(String)
         case send
+        case sent(MessageID)
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
@@ -277,6 +296,8 @@ struct ChatDetailFeature: Feature {
                 state.inputText = update
                 return .none
             case .send:
+                return .none
+            case .sent:
                 return .none
             }
         },
@@ -411,6 +432,16 @@ struct HomeView: View {
                 }
                 .navigationTitle(viewStore.selectedTab.title)
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    Button(action: {
+                        viewStore.send(.newChatItemTapped)
+                    }, label: {
+                        Label("", systemImage: "plus")
+                            .labelStyle(.iconOnly)
+                            .font(.title)
+                            .foregroundStyle(.primary)
+                    })
+                }
             }
         }
     }
