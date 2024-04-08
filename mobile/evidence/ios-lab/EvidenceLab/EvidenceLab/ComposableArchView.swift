@@ -10,6 +10,66 @@ import SwiftUI
 }
 
 @Reducer
+struct RootFeatureArch {
+    @ObservableState
+    struct State: Equatable {
+        var home: HomeFeatureArch.State
+        var profile: ProfileFeatureArch.State
+        var count: Int = 0
+    }
+    
+    @CasePathable
+    enum Action {
+        case home(HomeFeatureArch.Action)
+        case profile(ProfileFeatureArch.Action)
+    }
+    
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            return .none
+        }
+    }
+}
+
+@Reducer
+struct HomeFeatureArch {
+    @ObservableState
+    struct State: Equatable {
+        var count: Int
+    }
+    
+    @CasePathable
+    enum Action {
+        case load
+    }
+    
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            return .none
+        }
+    }
+}
+
+@Reducer
+struct ProfileFeatureArch {
+    @ObservableState
+    struct State: Equatable {
+        var count: Int
+    }
+    
+    @CasePathable
+    enum Action {
+        case load
+    }
+    
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            return .none
+        }
+    }
+}
+
+@Reducer
 struct ChatListFeatureArch {
     @ObservableState
     struct State: Equatable {
@@ -131,6 +191,35 @@ struct MessageFeatureArch {
                 return .none
             }
         }
+    }
+}
+
+struct RootViewArch: View {
+    let store: StoreOf<RootFeatureArch>
+    
+    var body: some View {
+        NavigationStack {
+            TabView {
+                HomeViewArch(store: store.scope(state: \.home, action: \.home))
+                ProfileViewArch(store: store.scope(state: \.profile, action: \.profile))
+            }
+        }
+    }
+}
+
+struct HomeViewArch: View {
+    let store: StoreOf<HomeFeatureArch>
+    
+    var body: some View {
+        Text("Home: \(store.count)")
+    }
+}
+
+struct ProfileViewArch: View {
+    let store: StoreOf<ProfileFeatureArch>
+    
+    var body: some View {
+        Text("Profile \(store.count)")
     }
 }
 

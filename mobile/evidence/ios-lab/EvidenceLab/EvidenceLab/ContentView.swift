@@ -51,31 +51,14 @@ struct RootFeature: Feature {
             case .unauthenticatedUserModalDismissed:
                 return .none
                 
-            case .home(.chatDetail(.send)):
-                guard let chatDetail = state.home.chatDetail else {
+            case let .home(.chatDetail(.sent(chatId, messageId))):
+                guard let chat = state.home.chatDetail else {
                     return .none
                 }
                 
-                let newMessage = Message(content: chatDetail.inputText)
-                let newMessageState = MessageFeature.State(message: newMessage, isSent: false)
-                
-                state.home.chatDetail?.messages.append(newMessageState)
-                state.home.chatDetail?.inputText = ""
-                
-                return .publisher(
-                    chatClient.send(newMessage, chatDetail.id)
-                        .map { .home(.chatDetail(.sent(newMessage.id))) }
-                )
-                
-            case let .home(.chatDetail(.sent(messageId))):
-                guard let chatDetail = state.home.chatDetail else {
-                    return .none
-                }
-                
-                if let index = chatDetail.messages.firstIndex(where: { $0.id == messageId }) {
+                if let index = chat.messages.firstIndex(where: { $0.id == messageId }) {
                     state.home.chatDetail?.messages[index].isSent = true
                 }
-                
                 return .none
             
             case let .home(.newChatCreated(chat)):
@@ -294,7 +277,7 @@ struct ChatDetailFeature: Feature {
         case message(MessageFeature.Action, MessageFeature.State.ID)
         case updateInputText(String)
         case send
-        case sent(MessageID)
+        case sent(ChatID, MessageID)
     }
     
     fileprivate static let reducer = ReducerOf<Self>.combine(
@@ -302,11 +285,23 @@ struct ChatDetailFeature: Feature {
             switch action {
             case .message:
                 return .none
+            
             case let .updateInputText(update):
                 state.inputText = update
                 return .none
+                
             case .send:
-                return .none
+                let newMessage = Message(content: state.inputText)
+                let newMessageState = MessageFeature.State(message: newMessage, isSent: false)
+                let chatId = state.id
+                
+                state.messages.append(newMessageState)
+                state.inputText = ""
+                
+                return .publisher(
+                    chatClient.send(newMessage, state.id)
+                        .map { .sent(chatId, newMessage.id) }
+                )
             case .sent:
                 return .none
             }
