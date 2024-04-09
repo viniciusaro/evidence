@@ -92,7 +92,8 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
     }
     
     func get(_ id: D.ID) -> AnyPublisher<D, Never> {
-        let url = URL.documentsDirectory.appending(path: "chats/\(id).json")
+        let url = URL.documentsDirectory.appending(path: "\(root)/\(id).json")
+        
         do {
             let data = try Data(contentsOf: url)
             let document = try JSONDecoder().decode(D.self, from: data)
@@ -107,7 +108,10 @@ struct FileDocumentClient<D>: DocumentClient where D: Identifiable, D: Codable {
         let directory = URL.documentsDirectory.appending(path: root)
         
         do {
-            let files = try filemanager.contentsOfDirectory(atPath: directory.path(percentEncoded: true))
+            let files = try filemanager
+                .contentsOfDirectory(atPath: directory.path(percentEncoded: true))
+                .filter { !$0.starts(with: ".") }
+            
             var documents = [D]()
             for file in files {
                 let url = directory.appending(path: file)

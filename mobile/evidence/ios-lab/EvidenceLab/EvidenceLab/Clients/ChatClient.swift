@@ -32,7 +32,6 @@ extension ChatClient {
                     )
                     return chatDocumentClient.update(updated)
                 }
-                .delay(for: .seconds(5), scheduler: DispatchQueue.main)
                 .eraseToAnyPublisher()
             }
         )

@@ -290,3 +290,79 @@ struct MessageViewArch: View {
         }
     }
 }
+
+@propertyWrapper
+class Shared<Value> {
+    var wrappedValue: Value
+    
+    init(wrappedValue: Value) {
+        self.wrappedValue = wrappedValue
+    }
+    
+    var projectedValue: Shared {
+        self
+    }
+}
+
+@propertyWrapper
+class SharedArray<Value> {
+    var wrappedValue: [Shared<Value>]
+    
+    init(wrappedValue: [Shared<Value>]) {
+        self.wrappedValue = wrappedValue
+    }
+    
+    init(_ array: [Value]) {
+        self.wrappedValue = array.map { Shared(wrappedValue: $0) }
+    }
+    
+    subscript(_ index: Int) -> Value {
+        wrappedValue[index].wrappedValue
+    }
+}
+
+extension SharedArray: Collection {
+    subscript(position: Int) -> Shared<Value> {
+        _read {
+            yield wrappedValue[position]
+        }
+    }
+    
+    typealias Element = Shared<Value>
+    
+    func index(after i: Int) -> Int {
+        wrappedValue.index(after: i)
+    }
+    
+    var startIndex: Int {
+        wrappedValue.startIndex
+    }
+    
+    var endIndex: Int {
+        wrappedValue.endIndex
+    }
+}
+
+extension Shared: Equatable where Value: Equatable {
+    static func == (lhs: Shared<Value>, rhs: Shared<Value>) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
+    }
+}
+
+extension Shared: Hashable where Value: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+}
+
+extension SharedArray: Equatable where Value: Equatable {
+    static func == (lhs: SharedArray<Value>, rhs: SharedArray<Value>) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
+    }
+}
+
+extension SharedArray: Hashable where Value: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+}

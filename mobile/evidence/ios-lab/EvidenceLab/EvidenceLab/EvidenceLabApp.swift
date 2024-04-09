@@ -4,7 +4,12 @@ import SwiftUI
 struct EvidenceLabApp: App {
     var body: some Scene {
         WindowGroup {
-            AnyView(buildRootView())
+            RootView(
+                store: Store(
+                    initialState: RootFeature.State(),
+                    reducer: RootFeature.reducer
+                )
+            )
         }
     }
 }
