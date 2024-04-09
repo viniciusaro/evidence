@@ -52,12 +52,12 @@ struct RootFeature: Feature {
                 return .none
                 
             case let .home(.chatDetail(.sent(chatId, messageId))):
-                guard let chat = state.home.chatDetail else {
+                guard let chat = state.home.chatList.detail else {
                     return .none
                 }
                 
                 if let index = chat.messages.firstIndex(where: { $0.id == messageId }) {
-                    state.home.chatDetail?.messages[index].isSent = true
+                    state.home.chatList.detail?.messages[index].isSent = true
                 }
                 return .none
             
@@ -65,8 +65,8 @@ struct RootFeature: Feature {
                 state.home.chatList.chats.insert(ChatDetailFeature.State(chat: chat), at: 0)
                 return .none
                 
-            case .home(.chatDetailNavigation(_)):
-                guard let chatDetail = state.home.chatDetail else {
+            case .home(.chatList(.chatListNavigation(_))):
+                guard let chatDetail = state.home.chatList.detail else {
                     return .none
                 }
                 let chatIndex = state.home.chatIndex(id: chatDetail.id)
@@ -118,7 +118,6 @@ struct LoginFeature: Feature {
 struct HomeFeature: Feature {
     struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
-        var chatDetail: ChatDetailFeature.State? = nil
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
@@ -141,7 +140,6 @@ struct HomeFeature: Feature {
         case onTabSelectionChanged(State.Tab)
         case chatList(ChatListFeature.Action)
         case chatDetail(ChatDetailFeature.Action)
-        case chatDetailNavigation(ChatDetailFeature.State?)
         case newChatItemTapped
         case newChatCreated(Chat)
         case profile(ProfileFeature.Action)
@@ -154,18 +152,10 @@ struct HomeFeature: Feature {
                 state.selectedTab = selection
                 return .none
             
-            case let .chatList(.chatListItemTapped(chatDetailState)):
-                state.chatDetail = chatDetailState
-                return .none
-            
             case .chatList:
                 return .none
             
             case .chatDetail:
-                return .none
-            
-            case let .chatDetailNavigation(chatDetailState):
-                state.chatDetail = chatDetailState
                 return .none
             
             case .newChatItemTapped:
@@ -184,7 +174,7 @@ struct HomeFeature: Feature {
         .scope(state: \.chatList, action: \.chatList) {
             ChatListFeature.reducer
         },
-        .ifLet(state: \.chatDetail, action: \.chatDetail) {
+        .ifLet(state: \.chatList.detail, action: \.chatDetail) {
             ChatDetailFeature.reducer
         },
         .scope(state: \.profile, action: \.profile) {
@@ -224,6 +214,7 @@ struct ProfileFeature: Feature {
 struct ChatListFeature: Feature {
     struct State: Equatable {
         var chats: [ChatDetailFeature.State] = []
+        var detail: ChatDetailFeature.State? = nil
         
         init(chats: [Chat] = []) {
             self.chats = chats.map { ChatDetailFeature.State(chat:$0) }
@@ -234,6 +225,7 @@ struct ChatListFeature: Feature {
     enum Action {
         case chatListLoad
         case chatListLoaded([Chat])
+        case chatListNavigation(ChatDetailFeature.State?)
         case chatListItemTapped(ChatDetailFeature.State)
     }
     
@@ -250,7 +242,12 @@ struct ChatListFeature: Feature {
                 state.chats = chats.map { ChatDetailFeature.State(chat:$0) }
                 return .none
                 
-            case .chatListItemTapped:
+            case let .chatListItemTapped(chat):
+                state.detail = chat
+                return .none
+                
+            case let .chatListNavigation(chat):
+                state.detail = chat
                 return .none
             }
         }
@@ -429,8 +426,8 @@ struct HomeView: View {
                 }
                 .navigationDestination(
                     item: Binding(
-                        get: { viewStore.chatDetail },
-                        set: { viewStore.send(.chatDetailNavigation($0))}
+                        get: { viewStore.chatList.detail },
+                        set: { viewStore.send(.chatList(.chatListNavigation($0)))}
                     )
                 ) { chatDetail in
                     ChatDetailView(
