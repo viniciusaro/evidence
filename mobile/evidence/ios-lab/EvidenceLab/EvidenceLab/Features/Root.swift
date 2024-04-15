@@ -24,55 +24,63 @@ let dataClient = DataClient.live
 @Reducer
 struct RootFeature {
     @ObservableState
-    struct State: Equatable {
-        var home: HomeFeature.State = .init()
-        @Presents var login: LoginFeature.State? = nil
+    enum State {
+        case home(HomeFeature.State)
+        case login(LoginFeature.State)
+        
+        init() {
+            if let user = authClient.getAuthenticatedUser() {
+                self = .home(HomeFeature.State(user: user))
+            } else {
+                self = .login(LoginFeature.State())
+            }
+        }
     }
     
     @CasePathable
     enum Action {
         case home(HomeFeature.Action)
-        case login(PresentationAction<LoginFeature.Action>)
-        case viewDidLoad
+        case login(LoginFeature.Action)
     }
     
     var body: some ReducerOf<Self> {
-        EmptyReducer().ifLet(\.$login, action: \.login) {
+        EmptyReducer()
+        .ifLet(\.login, action: \.login) {
             LoginFeature()
+        }
+        .ifLet(\.home, action: \.home) {
+            HomeFeature()
         }
         Reduce { state, action in
             switch action {
             case .home:
                 return .none
-                
-            case .login(.presented(.onUserAuthenticated)):
-                state.login = nil
+
+            case let .login(.onUserAuthenticated(user)):
+                state = .home(HomeFeature.State(user: user))
                 return .none
-                
+
             case .login:
                 return .none
-                
-            case .viewDidLoad:
-                let user = authClient.getAuthenticatedUser()
-                state.login = user == nil ? LoginFeature.State() : nil
-                return .none
             }
-        }
-        Scope(state: \.home, action: \.home) {
-            HomeFeature()
         }
         Reduce { state, action in
             switch action {
             case .home(.chatList(.detail(.presented(.send)))):
-                guard let lastIndex = state.home.chatList.detail?.messages.count else {
+                guard case var .home(homeState) = state else {
                     return .none
                 }
                 
-                state.home.chatList.detail?.messages[lastIndex - 1].message.isSent = true
-                state.home.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
+                guard let lastIndex = homeState.chatList.detail?.messages.count else {
+                    return .none
+                }
                 
-                var chats = state.home.chatList.chats
-                let detailState = state.home.chatList.detail
+                homeState.chatList.detail?.messages[lastIndex - 1].message.isSent = true
+                homeState.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
+                state = .home(homeState)
+                
+                var chats = homeState.chatList.chats
+                let detailState = homeState.chatList.detail
                 
                 if let detailState = detailState {
                     chats[id: detailState.chat.id] = detailState.chat
@@ -93,14 +101,14 @@ struct RootView: View {
     @Bindable var store: StoreOf<RootFeature>
     
     var body: some View {
-        HomeView(
-            store: store.scope(state: \.home, action: \.home)
-        )
-        .onViewDidLoad {
-            store.send(.viewDidLoad)
-        }
-        .sheet(item: $store.scope(state: \.login, action: \.login)) { store in
-            LoginView(store: store)
+        VStack {
+            if let homeStore = store.scope(state: \.home, action: \.home) {
+                HomeView(store: homeStore)
+            } else if let loginStore = store.scope(state: \.login, action: \.login) {
+                LoginView(store: loginStore)
+            } else {
+                fatalError("Invalid Root State")
+            }
         }
     }
 }

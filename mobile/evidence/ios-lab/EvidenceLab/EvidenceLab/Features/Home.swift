@@ -7,7 +7,7 @@ import SwiftUI
     
     return HomeView(
         store: Store(
-            initialState: HomeFeature.State(),
+            initialState: HomeFeature.State(user: .vini),
             reducer: { HomeFeature() }
         )
     )
@@ -22,6 +22,16 @@ struct HomeFeature {
         var selectedTab: Tab = .chatList
         var showAlert: Bool = false
         var alertText: String = ""
+        var user: User
+        
+        init(user: User) {
+            self.chatList = .init()
+            self.profile = .init()
+            self.selectedTab = .chatList
+            self.showAlert = false
+            self.alertText = ""
+            self.user = user
+        }
         
         @CasePathable
         enum Tab: String {

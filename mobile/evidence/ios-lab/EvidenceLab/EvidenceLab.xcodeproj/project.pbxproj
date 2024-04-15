@@ -15,7 +15,6 @@
 		6357BD302BCDA9B300640706 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */; };
 		6361D20C2BBE49C100F7866D /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361D20B2BBE49C100F7866D /* AuthClient.swift */; };
 		6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */; };
-		6369AD652BB36C840067E2EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD642BB36C840067E2EC /* ContentView.swift */; };
 		6369AD672BB36C850067E2EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD662BB36C850067E2EC /* Assets.xcassets */; };
 		6369AD6A2BB36C850067E2EC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD692BB36C850067E2EC /* Preview Assets.xcassets */; };
 		6369AD742BB36C850067E2EC /* EvidenceLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD732BB36C850067E2EC /* EvidenceLabTests.swift */; };
@@ -63,7 +62,6 @@
 		6361D20B2BBE49C100F7866D /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
 		6369AD5F2BB36C840067E2EC /* EvidenceLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvidenceLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabApp.swift; sourceTree = "<group>"; };
-		6369AD642BB36C840067E2EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6369AD662BB36C850067E2EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6369AD692BB36C850067E2EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6369AD6F2BB36C850067E2EC /* EvidenceLabTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceLabTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,7 +139,6 @@
 		6369AD612BB36C840067E2EC /* EvidenceLab */ = {
 			isa = PBXGroup;
 			children = (
-				6369AD642BB36C840067E2EC /* ContentView.swift */,
 				6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */,
 				6369AD662BB36C850067E2EC /* Assets.xcassets */,
 				6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */,
@@ -386,7 +383,6 @@
 				63458C332BC8A51B002BACB0 /* Shared.swift in Sources */,
 				637239812BC56CC700F8E66E /* Effect.swift in Sources */,
 				6361D20C2BBE49C100F7866D /* AuthClient.swift in Sources */,
-				6369AD652BB36C840067E2EC /* ContentView.swift in Sources */,
 				6372398A2BC56E7700F8E66E /* ChatDetail.swift in Sources */,
 				6372398C2BC56EA900F8E66E /* ChatList.swift in Sources */,
 				6372398E2BC56EC900F8E66E /* Home.swift in Sources */,
