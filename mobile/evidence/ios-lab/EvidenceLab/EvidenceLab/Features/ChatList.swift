@@ -1,5 +1,6 @@
 import CasePaths
 import Foundation
+import IdentifiedCollections
 import SwiftUI
 
 #Preview {
@@ -13,14 +14,15 @@ import SwiftUI
 
 struct ChatListFeature: Feature {
     struct State: Equatable {
-        var chats: [Chat] = []
+        var chats: IdentifiedArrayOf<Chat> = []
         var detail: ChatDetailFeature.State? = nil
         
         init(detail: ChatDetailFeature.State? = nil) {
             self.detail = detail
             do {
                 let data = try dataClient.load(.chats)
-                self.chats = try JSONDecoder().decode([Chat].self, from: data)
+                let decoder = JSONDecoder()
+                self.chats = try decoder.decode(IdentifiedArrayOf<Chat>.self, from: data)
             } catch {
                 self.chats = []
             }

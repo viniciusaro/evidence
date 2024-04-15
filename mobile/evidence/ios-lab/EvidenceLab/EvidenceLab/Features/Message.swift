@@ -12,7 +12,8 @@ import SwiftUI
 }
 
 struct MessageFeature: Feature {
-    struct State: Equatable, Hashable {
+    struct State: Identifiable, Equatable, Hashable {
+        var id: MessageID { message.id }
         var message: Message
         
         init(message: Message) {

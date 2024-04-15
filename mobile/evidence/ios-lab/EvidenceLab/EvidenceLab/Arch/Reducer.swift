@@ -1,4 +1,5 @@
 import CasePaths
+import IdentifiedCollections
 
 typealias ReducerOf<F: Feature> = Reducer<F.State, F.Action>
 
@@ -136,6 +137,34 @@ extension Reducer {
                 }
                 return $0
             }
+            return effect.map { effectLocalAction in
+                casePath.embed((effectLocalAction, localAction.1))
+            }
+        }
+    }
+    
+    static func forEach<LocalState, LocalAction, ID: Hashable>(
+        state keyPath: WritableKeyPath<State, IdentifiedArrayOf<LocalState>>,
+        action caseKeyPath: CaseKeyPath<Action, (LocalAction, ID)>,
+        id: @escaping (LocalState) -> ID,
+        _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
+    ) -> Reducer {
+        Reducer { state, action in
+            let casePath = AnyCasePath(caseKeyPath)
+            guard let localAction = casePath.extract(from: action) else {
+                return .none
+            }
+            guard var localState = state[keyPath: keyPath].first(where: { id($0) == localAction.1 }) else {
+                return .none
+            }
+            
+            let effect = localReducer().run(&localState, localAction.0)
+            state[keyPath: keyPath] = IdentifiedArray(uniqueElements: state[keyPath: keyPath].map {
+                if id($0) == id(localState) {
+                    return localState
+                }
+                return $0
+            })
             return effect.map { effectLocalAction in
                 casePath.embed((effectLocalAction, localAction.1))
             }

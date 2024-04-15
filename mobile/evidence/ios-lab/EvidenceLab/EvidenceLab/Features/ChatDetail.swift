@@ -1,5 +1,6 @@
 import CasePaths
 import Foundation
+import IdentifiedCollections
 import SwiftUI
 
 #Preview {
@@ -15,12 +16,14 @@ struct ChatDetailFeature: Feature {
     struct State: Equatable, Hashable {
         var chat: Chat
         var inputText: String
-        var messages: [MessageFeature.State]
+        var messages: IdentifiedArrayOf<MessageFeature.State>
         
         init(chat: Chat, inputText: String = "") {
             self.chat = chat
             self.inputText = inputText
-            self.messages = chat.messages.map { MessageFeature.State(message: $0) }
+            self.messages = IdentifiedArray(
+                uniqueElements: chat.messages.map { MessageFeature.State(message: $0) }
+            )
         }
     }
     
@@ -46,11 +49,10 @@ struct ChatDetailFeature: Feature {
                 let newMessage = Message(content: state.inputText)
                 let newMessageState = MessageFeature.State(message: newMessage)
                 let chatId = state.chat.id
-                
                 state.messages.append(newMessageState)
                 state.inputText = ""
-
                 return .none
+                
             case .sent:
                 return .none
             }

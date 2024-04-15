@@ -16,29 +16,21 @@ struct HomeFeature: Feature {
                 return rawValue.capitalized
             }
         }
-        
-        func chatIndex(id: ChatID) -> Int {
-            chatList.chats.firstIndex(where: { $0.id == id })!
-        }
     }
     
     @CasePathable
     enum Action {
-        case onTabSelectionChanged(State.Tab)
         case chatList(ChatListFeature.Action)
         case chatDetail(ChatDetailFeature.Action)
         case newChatItemTapped
         case newChatCreated(Chat)
+        case onTabSelectionChanged(State.Tab)
         case profile(ProfileFeature.Action)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .onTabSelectionChanged(selection):
-                state.selectedTab = selection
-                return .none
-            
             case .chatList:
                 return .none
             
@@ -50,6 +42,10 @@ struct HomeFeature: Feature {
                 return .none
             
             case let .newChatCreated(chat):
+                return .none
+                
+            case let .onTabSelectionChanged(selection):
+                state.selectedTab = selection
                 return .none
                 
             case .profile:
