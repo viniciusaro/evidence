@@ -59,8 +59,8 @@ struct LoginEmailButton: View {
 
     var body: some View {
         NavigationStack {
-            Button("Create Account") {
-                viewModel.createAccountButtonTapped()
+            Button("Login") {
+                viewModel.loginEmailButtonTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
         }

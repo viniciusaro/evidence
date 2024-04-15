@@ -37,7 +37,7 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         self.isEmailInputFocused = isInputEmailFocused
     }
 
-     private func signIn() {
+     private func signUp() {
         Task {
             do {
                 let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
@@ -73,7 +73,7 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
 
         isCreateAccountButtonPressed = true
         if isValidEmail && isValidPassword {
-            signIn()
+            signUp()
             delegateUserAuthenticated()
         }
     }

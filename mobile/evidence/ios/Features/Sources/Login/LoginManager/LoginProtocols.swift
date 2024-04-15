@@ -11,4 +11,5 @@ protocol LoginManager {
     func creatUser(email: String, password: String) async throws -> Login
     func getAuthenticationUser() throws -> Login
     func signOut() throws
+    func signIn(email: String, password: String) async throws -> Login
 }

@@ -13,19 +13,22 @@ final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
     @Published public var isUserNotAuthenticated: Bool
     @Published var createAccountEmail: CreateAccountEmailViewModel?
+    @Published var loginEmailViewModel: LoginEmailViewModel?
     public let loginSettingViewModel:  LoginSettingViewModel
     @Dependency(\.loginManager) private var loginManager
 
     public init(
         showLoginAuth: Bool = false,
         isUserNotAuthenticated: Bool = true,
-        loginEmailViewModel: CreateAccountEmailViewModel? = nil,
-        loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel()
+        createAccountEmail: CreateAccountEmailViewModel? = nil,
+        loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel(),
+        loginEmailViewModel: LoginEmailViewModel = LoginEmailViewModel()
     ) {
         self.showLoginAuthModal = showLoginAuth
         self.isUserNotAuthenticated = isUserNotAuthenticated
-        self.createAccountEmail = loginEmailViewModel
+        self.createAccountEmail = createAccountEmail
         self.loginSettingViewModel = loginSettingViewModel
+        self.loginEmailViewModel = loginEmailViewModel
 
         loginSettingViewModel.delegateIsUserAuthenticated = {
             self.isUserNotAuthenticated = true
@@ -36,7 +39,17 @@ final public class LoginViewModel: ObservableObject {
         showLoginAuthModal = true
     }
 
-    func loginEmailButtonTapped() {
+    func continueWithEmailButtonTapped() {
+        loginEmailViewModel = LoginEmailViewModel()
+        loginEmailViewModel?.delegateCloseButtonTapped = {
+            self.loginEmailViewModel = nil
+        }
+        loginEmailViewModel?.delegateUserAuthenticated = {
+            self.isUserNotAuthenticated = false
+        }
+    }
+
+    func createAccountButtonTapped() {
         createAccountEmail = CreateAccountEmailViewModel()
         createAccountEmail?.delegateCloseButtonTapped = {
             self.createAccountEmail = nil

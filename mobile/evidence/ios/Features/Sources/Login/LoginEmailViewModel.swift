@@ -15,7 +15,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published var passwordInput: String
     @Published private(set) var isValidEmail: Bool
     @Published private(set) var isValidPassword: Bool
-    @Published var isCreateAccountButtonPressed: Bool
+    @Published var isLoginEmailButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
     var delegateUserAuthenticated: () -> Void = { fatalError() }
@@ -26,25 +26,24 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         passwordInput: String = "",
         isValidEmail: Bool = false,
         isValidPassword: Bool = false,
-        isCreateAccountButtonPressed: Bool = false,
+        isLoginEmailButtonPressed: Bool = false,
         isInputEmailFocused: Bool = false
     ) {
         self.emailInput = emailInput
         self.passwordInput = passwordInput
         self.isValidEmail = isValidEmail
         self.isValidPassword = isValidPassword
-        self.isCreateAccountButtonPressed = isCreateAccountButtonPressed
+        self.isLoginEmailButtonPressed = isLoginEmailButtonPressed
         self.isEmailInputFocused = isInputEmailFocused
     }
-
-    private func signIn() {
+    
+    @MainActor func signIn() {
         Task {
             do {
-                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
-                print("User created!")
-                print(returnUserData)
+                _ = try await loginManager.signIn(email: emailInput, password: passwordInput)
+                delegateUserAuthenticated()
             } catch {
-                print("Error: \(error)")
+                print(error)
             }
         }
     }
@@ -55,33 +54,32 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     func clearEmailInputTapped() {
         emailInput = ""
-        isCreateAccountButtonPressed = false
+        isLoginEmailButtonPressed = false
     }
 
     func clearPasswordInputTapped() {
         passwordInput = ""
-        isCreateAccountButtonPressed = false
+        isLoginEmailButtonPressed = false
     }
 
     func inputEmailTapped() {
-        isCreateAccountButtonPressed = false
+        isLoginEmailButtonPressed = false
     }
 
-    func createAccountButtonTapped() {
+    @MainActor func loginEmailButtonTapped() {
         isValidEmail = isValidEmail(emailInput)
         isValidPassword = isValidPassword(passwordInput)
 
-        isCreateAccountButtonPressed = true
+        isLoginEmailButtonPressed = true
         if isValidEmail && isValidPassword {
             signIn()
-            delegateUserAuthenticated()
         }
     }
 
     func errorMessage() -> String? {
-        if isCreateAccountButtonPressed && (emailInput.isEmpty || passwordInput.isEmpty){
+        if isLoginEmailButtonPressed && (emailInput.isEmpty || passwordInput.isEmpty){
             return "Email or password not provided."
-        } else if isCreateAccountButtonPressed == true && (isValidEmail == false || isValidPassword == false) {
+        } else if isLoginEmailButtonPressed == true && (isValidEmail == false || isValidPassword == false) {
             return "Email or password not valid."
         }
         return nil

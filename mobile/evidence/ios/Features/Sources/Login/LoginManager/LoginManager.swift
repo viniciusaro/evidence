@@ -45,10 +45,16 @@ final public class FirebaseLoginManager: LoginManager {
             print("Logout error: \(error.localizedDescription)")
         }
     }
+
+    func signIn(email: String, password: String) async throws -> Login {
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
+        return Login(user: authDataResult.user)
+    }
 }
 
 final public class AuthenticatedLoginManager: LoginManager {
     var authenticatedUser: Login?
+
     func creatUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
@@ -69,7 +75,10 @@ final public class AuthenticatedLoginManager: LoginManager {
             throw NSError(domain: "signOut", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
         }
         authenticatedUser = nil
+    }
 
+    func signIn(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 }
 
@@ -84,6 +93,10 @@ final public class FailureAuthenticationLoginManager: LoginManager {
     }
 
     func signOut() throws {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
+    func signIn(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 }
