@@ -57,7 +57,11 @@ struct RootFeature: Feature {
             LoginFeature.reducer
         },
         Reducer { state, action in
-            return .fireAndForget { [chats = state.home.chatList.chats] in
+            var chats = state.home.chatList.chats
+            if let detail = state.home.chatList.detail {
+                chats[id: detail.chat.id] = detail.chat
+            }
+            return .fireAndForget {
                 let data = try JSONEncoder().encode(chats)
                 try dataClient.save(data, .chats)
             }

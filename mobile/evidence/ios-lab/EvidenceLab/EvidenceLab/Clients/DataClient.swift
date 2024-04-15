@@ -10,6 +10,13 @@ extension DataClient {
         load: { url in try Data(contentsOf: url) },
         save: { data, url in try data.write(to: url) }
     )
+    
+    static func mock(_ chats: [Chat]) -> DataClient {
+        DataClient(
+            load: { _ in try JSONEncoder().encode(chats) },
+            save: { _, _ in }
+        )
+    }
 }
 
 extension URL {
