@@ -10,7 +10,7 @@ struct AuthClient {
 extension User {
     static let vini = User(name: "Vini")
     static let cris = User(name: "Cris")
-    static let lili = User(name: "Lili")
+    static let lili = User(name: "Lili ❤️‍🔥")
 }
 
 extension AuthClient {
@@ -21,7 +21,7 @@ extension AuthClient {
         )
     }
     
-    static func unauthenticated(onAuthenticate user: User = .vini) -> AuthClient {
+    static func unauthenticated(_ user: User = .vini) -> AuthClient {
         let subject = CurrentValueSubject<User?, Never>(nil)
         return AuthClient(
             getAuthenticatedUser: { subject.value },

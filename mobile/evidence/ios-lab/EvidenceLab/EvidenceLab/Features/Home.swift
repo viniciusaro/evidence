@@ -18,19 +18,20 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
-        var profile: ProfileFeature.State = .init()
+        var profile: ProfileFeature.State
         var selectedTab: Tab = .chatList
         var showAlert: Bool = false
         var alertText: String = ""
-        var user: User
+        @ObservationStateIgnored @Shared var user: User
         
         init(user: User) {
+            let shared = Shared(wrappedValue: user)
             self.chatList = .init()
-            self.profile = .init()
+            self.profile = .init(user: shared)
             self.selectedTab = .chatList
             self.showAlert = false
             self.alertText = ""
-            self.user = user
+            self._user = shared
         }
         
         @CasePathable

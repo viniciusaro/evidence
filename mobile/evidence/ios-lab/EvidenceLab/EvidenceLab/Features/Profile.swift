@@ -6,25 +6,19 @@ import SwiftUI
 struct ProfileFeature {
     @ObservableState
     struct State: Equatable {
-        var currentUser: User?
+        @ObservationStateIgnored @Shared var user: User
+        
+        init(user: Shared<User>) {
+            self._user = user
+        }
     }
     
     @CasePathable
     enum Action {
-        case viewDidAppear
     }
     
     var body: some ReducerOf<Self> {
-        Reduce { state, action in
-            switch action {
-            case .viewDidAppear:
-                guard let user = authClient.getAuthenticatedUser() else {
-                    return .none
-                }
-                state.currentUser = user
-                return .none
-            }
-        }
+        EmptyReducer()
     }
 }
 
@@ -33,14 +27,7 @@ struct ProfileView: View {
     
     var body: some View {
         VStack {
-            if let currentUser = store.currentUser {
-                Text("PROFILE OF \(currentUser.name)")
-            } else {
-                Text("NO ONE'S PROFILE")
-            }
-        }
-        .onAppear {
-            store.send(.viewDidAppear)
+            Text("PROFILE OF \(store.user.name)")
         }
     }
 }
