@@ -9,7 +9,7 @@ struct ChatClient {
 
 extension ChatClient {
     static let mock = ChatClient(
-        getAll: { Just(Chat.mock).eraseToAnyPublisher() },
+        getAll: { Just(Chat.mockList).eraseToAnyPublisher() },
         new: { name in Just(Chat(name: name, messages: [])).eraseToAnyPublisher() },
         send: { message, chat in Just(()).eraseToAnyPublisher() }
     )
@@ -36,44 +36,4 @@ extension ChatClient {
             }
         )
     }
-}
-
-extension Chat {
-    static let mock = [
-        Chat(
-            name: "Lili ❤️‍🔥",
-            messages: [
-                Message(content: "Oi amor"),
-                Message(content:
-                            "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5"
-                       ),
-            ]
-        ),
-        Chat(
-            name: "Grupo da Família",
-            messages: [
-                Message(content: "Bom dia!")
-            ]
-        ),
-        Chat(
-            name: "Nossas Receitas",
-            messages: [
-                Message(content: "Bom dia!")
-            ]
-        ),
-        Chat(
-            name: "Infinito particular",
-            messages: [
-                Message(content: "Bom dia!")
-            ]
-        ),
-        Chat(
-            name: "Snow dos brothers 2024",
-            messages: [
-                Message(content: "Bom dia!")
-            ]
-        ),
-    ]
-    
-    static let error = Chat(name: "error", messages: [])
 }

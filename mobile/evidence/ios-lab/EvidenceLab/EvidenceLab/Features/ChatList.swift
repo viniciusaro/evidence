@@ -2,39 +2,42 @@ import CasePaths
 import Foundation
 import SwiftUI
 
+#Preview {
+    ChatListView(
+        store: Store(
+            initialState: ChatListFeature.State(),
+            reducer: ChatListFeature.reducer
+        )
+    )
+}
+
 struct ChatListFeature: Feature {
     struct State: Equatable {
-        var chats: [ChatDetailFeature.State] = []
+        var chats: [Chat] = []
         var detail: ChatDetailFeature.State? = nil
         
-        init(chats: [Chat] = []) {
-            self.chats = chats.map { ChatDetailFeature.State(chat:$0) }
+        init(detail: ChatDetailFeature.State? = nil) {
+            self.detail = detail
+            do {
+                let data = try dataClient.load(.chats)
+                self.chats = try JSONDecoder().decode([Chat].self, from: data)
+            } catch {
+                self.chats = []
+            }
         }
     }
     
     @CasePathable
     enum Action {
-        case chatListLoad
-        case chatListLoaded([Chat])
         case chatListNavigation(ChatDetailFeature.State?)
-        case chatListItemTapped(ChatDetailFeature.State)
+        case chatListItemTapped(Chat)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case .chatListLoad:
-                return .publisher(
-                    chatClient.getAll()
-                        .map { .chatListLoaded($0) }
-                )
-                
-            case let .chatListLoaded(chats):
-                state.chats = chats.map { ChatDetailFeature.State(chat:$0) }
-                return .none
-                
             case let .chatListItemTapped(chat):
-                state.detail = chat
+                state.detail = ChatDetailFeature.State(chat: chat)
                 return .none
                 
             case let .chatListNavigation(chat):
@@ -63,9 +66,6 @@ struct ChatListView: View {
                 }
             }
             .listStyle(.plain)
-            .onViewDidLoad {
-                viewStore.send(.chatListLoad)
-            }
         }
     }
 }

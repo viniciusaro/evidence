@@ -7,7 +7,7 @@ typealias UserID = UUID
 struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
     let name: String
-    let messages: [Message]
+    var messages: [Message]
 }
 
 extension Chat {
@@ -20,8 +20,9 @@ extension Chat {
 
 struct Message: Identifiable, Equatable, Hashable, Codable {
     let id: MessageID
-    let content: String
-    let preview: Preview?
+    var content: String
+    var preview: Preview?
+    var isSent: Bool
 }
 
 extension Message {
@@ -29,6 +30,7 @@ extension Message {
         self.id = MessageID()
         self.content = content
         self.preview = nil
+        self.isSent = false
     }
 }
 
@@ -47,4 +49,55 @@ extension User {
         self.id = UserID()
         self.name = name
     }
+}
+
+extension Chat {
+    static let lili = Chat(
+        name: "Lili ❤️‍🔥",
+        messages: [
+            Message(content: "Oi amor"),
+            Message(content:
+                        "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5"
+                   ),
+        ]
+    )
+    
+    static let family = Chat(
+        name: "Grupo da Família",
+        messages: [
+            Message(content: "Bom dia!")
+        ]
+    )
+    
+    static let recepies = Chat(
+        name: "Nossas Receitas",
+        messages: [
+            Message(content: "Bom dia!")
+        ]
+    )
+    
+    static let mockList = [
+        Chat.lili,
+        Chat.family,
+        Chat.recepies,
+    ]
+    
+    static let error = Chat(name: "error", messages: [])
+}
+
+
+extension Message {
+    static let hi = Message(
+        id: UUID(),
+        content: "Olá",
+        preview: nil,
+        isSent: false
+    )
+    
+    static let pointfree = Message(
+        id: UUID(),
+        content: "https://www.pointfree.co/episodes/ep274-shared-state-user-defaults-part-2",
+        preview: nil,
+        isSent: false
+    )
 }

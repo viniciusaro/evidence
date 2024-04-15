@@ -2,6 +2,20 @@ import Combine
 import CasePaths
 import SwiftUI
 
+let authClient = AuthClient.authenticated()
+let chatClient = ChatClient.filesystem
+let chatDocumentClient = AnyDocumentClient<Chat>.file("chats")
+let dataClient = DataClient.live
+
+#Preview {
+    RootView(
+        store: Store(
+            initialState: RootFeature.State(),
+            reducer: RootFeature.reducer
+        )
+    )
+}
+
 struct RootFeature: Feature {
     struct State: Equatable {
         var home: HomeFeature.State = .init()
@@ -39,21 +53,21 @@ struct RootFeature: Feature {
                     return .none
                 }
                 
-                if let index = chat.messages.firstIndex(where: { $0.id == messageId }) {
-                    state.home.chatList.detail?.messages[index].isSent = true
+                if let index = chat.messages.firstIndex(where: { $0.message.id == messageId }) {
+                    state.home.chatList.detail?.messages[index].message.isSent = true
                 }
                 return .none
             
             case let .home(.newChatCreated(chat)):
-                state.home.chatList.chats.insert(ChatDetailFeature.State(chat: chat), at: 0)
+                state.home.chatList.chats.insert(chat, at: 0)
                 return .none
                 
             case .home(.chatList(.chatListNavigation(_))):
                 guard let chatDetail = state.home.chatList.detail else {
                     return .none
                 }
-                let chatIndex = state.home.chatIndex(id: chatDetail.id)
-                state.home.chatList.chats[chatIndex] = chatDetail
+                let chatIndex = state.home.chatIndex(id: chatDetail.chat.id)
+                state.home.chatList.chats[chatIndex] = chatDetail.chat
                 return .none
                 
             case .home:
@@ -68,6 +82,12 @@ struct RootFeature: Feature {
         },
         .ifLet(state: \.login, action: \.login) {
             LoginFeature.reducer
+        },
+        Reducer { state, action in
+            .fireAndForget { [chats = state.home.chatList.chats] in
+                let data = try JSONEncoder().encode(chats)
+                try dataClient.save(data, .chats)
+            }
         }
     )
 }

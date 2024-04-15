@@ -2,24 +2,31 @@ import CasePaths
 import Foundation
 import SwiftUI
 
+#Preview {
+    ChatDetailView(
+        store: Store(
+            initialState: ChatDetailFeature.State(chat: .lili),
+            reducer: ChatDetailFeature.reducer
+        )
+    )
+}
+
 struct ChatDetailFeature: Feature {
-    struct State: Equatable, Identifiable, Hashable {
-        let id: ChatID
-        var name: String
-        var messages: [MessageFeature.State]
+    struct State: Equatable, Hashable {
+        var chat: Chat
         var inputText: String
+        var messages: [MessageFeature.State]
         
         init(chat: Chat, inputText: String = "") {
-            self.id = chat.id
-            self.name = chat.name
-            self.messages = chat.messages.map { MessageFeature.State(message: $0) }
+            self.chat = chat
             self.inputText = inputText
+            self.messages = chat.messages.map { MessageFeature.State(message: $0) }
         }
     }
     
     @CasePathable
     enum Action {
-        case message(MessageFeature.Action, MessageFeature.State.ID)
+        case message(MessageFeature.Action, MessageID)
         case updateInputText(String)
         case send
         case sent(ChatID, MessageID)
@@ -37,24 +44,24 @@ struct ChatDetailFeature: Feature {
                 
             case .send:
                 let newMessage = Message(content: state.inputText)
-                let newMessageState = MessageFeature.State(message: newMessage, isSent: false)
-                let chatId = state.id
+                let newMessageState = MessageFeature.State(message: newMessage)
+                let chatId = state.chat.id
                 
                 state.messages.append(newMessageState)
                 state.inputText = ""
-                
-                return .publisher(
-                    chatClient.send(newMessage, state.id)
-                        .map { .sent(chatId, newMessage.id) }
-                )
+
+                return .none
             case .sent:
                 return .none
             }
         },
-        .forEach(state: \.messages, action: \.message) {
+        .forEach(state: \.messages, action: \.message, id: \.message.id) {
             MessageFeature.reducer
         }
     )
+    .onChange(state: \.messages) { state, updatedMessageStates in
+        state.chat.messages = updatedMessageStates.map { $0.message }
+    }
 }
 
 struct ChatDetailView: View {
@@ -64,8 +71,12 @@ struct ChatDetailView: View {
         WithViewStore(store: store) { viewStore in
             VStack {
                 List {
-                    ForEach(viewStore.messages) { message in
-                        MessageView(store: store.scope(state: { _ in message }, action: \.message))
+                    ForEach(viewStore.messages, id: \.message.id) { message in
+                        MessageView(store: store.scope(
+                            state: { _ in message },
+                            action: \.message,
+                            id: \.message.id
+                        ))
                     }
                 }
                 .listStyle(.plain)
@@ -99,7 +110,7 @@ struct ChatDetailView: View {
                 .padding(10)
                 .background(Color(red: 20/255, green: 20/255, blue: 20/255))
             }
-            .navigationTitle(viewStore.name)
+            .navigationTitle(viewStore.chat.name)
         }
     }
 }

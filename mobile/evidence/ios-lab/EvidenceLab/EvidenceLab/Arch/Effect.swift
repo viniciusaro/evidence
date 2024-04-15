@@ -48,9 +48,9 @@ extension Effect {
         publisher(Just(action))
     }
     
-    static func fireAndForget(_ computation: @escaping () -> Void) -> Effect {
+    static func fireAndForget(_ computation: @escaping () throws -> Void) -> Effect {
         Effect { _ in
-            computation()
+            try? computation()
             return UUID()
         }
     }

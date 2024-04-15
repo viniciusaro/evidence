@@ -30,6 +30,21 @@ extension Reducer {
         }
     }
     
+    func onChange<ScopedState: Equatable>(
+        state scopedState: @escaping (State) -> ScopedState,
+        update: @escaping (inout State, ScopedState) -> Void
+    ) -> Reducer {
+        Reducer { state, action in
+            let beforeScopedState = scopedState(state)
+            let effect = self.run(&state, action)
+            let afterScopedState = scopedState(state)
+            if beforeScopedState != afterScopedState {
+                update(&state, afterScopedState)
+            }
+            return effect
+        }
+    }
+    
     static func combine(_ reducers: [Reducer]) -> Reducer {
         Reducer { state, action in
             let effects = reducers.reduce([]) { effects, reducer in
@@ -99,9 +114,10 @@ extension Reducer {
         }
     }
     
-    static func forEach<LocalState: Identifiable, LocalAction>(
+    static func forEach<LocalState, LocalAction, ID: Hashable>(
         state keyPath: WritableKeyPath<State, [LocalState]>,
-        action caseKeyPath: CaseKeyPath<Action, (LocalAction, LocalState.ID)>,
+        action caseKeyPath: CaseKeyPath<Action, (LocalAction, ID)>,
+        id: @escaping (LocalState) -> ID,
         _ localReducer: @escaping () -> Reducer<LocalState, LocalAction>
     ) -> Reducer {
         Reducer { state, action in
@@ -109,13 +125,13 @@ extension Reducer {
             guard let localAction = casePath.extract(from: action) else {
                 return .none
             }
-            guard var localState = state[keyPath: keyPath].first(where: { $0.id == localAction.1 }) else {
+            guard var localState = state[keyPath: keyPath].first(where: { id($0) == localAction.1 }) else {
                 return .none
             }
             
             let effect = localReducer().run(&localState, localAction.0)
             state[keyPath: keyPath] = state[keyPath: keyPath].map {
-                if $0.id == localState.id {
+                if id($0) == id(localState) {
                     return localState
                 }
                 return $0

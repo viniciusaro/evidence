@@ -48,14 +48,15 @@ class Store<State, Action> {
         )
     }
     
-    func scope<LocalState: Identifiable, LocalAction>(
+    func scope<LocalState, LocalAction, ID: Hashable>(
         state toLocalState: @escaping (State) -> LocalState,
-        action toAction: CaseKeyPath<Action, (LocalAction, LocalState.ID)>
+        action toAction: CaseKeyPath<Action, (LocalAction, ID)>,
+        id: @escaping (LocalState) -> ID
     ) -> Store<LocalState, LocalAction> {
         Store<LocalState, LocalAction>(
             initialState: toLocalState(state),
             reducer: Reducer { localState, localAction in
-                let action = AnyCasePath(toAction).embed((localAction, localState.id))
+                let action = AnyCasePath(toAction).embed((localAction, id(localState)))
                 self.send(action)
                 localState = toLocalState(self.state)
                 return .none
