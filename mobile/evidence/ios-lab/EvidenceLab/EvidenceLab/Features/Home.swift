@@ -57,7 +57,7 @@ struct HomeFeature {
                 return .none
                 
             case .onNewChatAlertConfirm:
-                let chat = Chat(name: state.alertText, messages: [])
+                let chat = Chat(name: state.alertText, participants: [.vini], messages: [])
                 state.chatList.chats.insert(chat, at: 0)
                 state.chatList.detail = ChatDetailFeature.State(chat: chat)
                 state.showAlert = false

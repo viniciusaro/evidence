@@ -3,34 +3,39 @@ import Foundation
 typealias MessageID = UUID
 typealias ChatID = UUID
 typealias UserID = String
+typealias AuthorID = String
 
 struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
-    let name: String
     var messages: [Message]
+    let name: String
+    var participants: [User]
 }
 
 extension Chat {
-    init(name: String, messages: [Message]) {
+    init(name: String, participants: [User], messages: [Message]) {
         self.id = ChatID()
         self.name = name
         self.messages = messages
+        self.participants = participants
     }
 }
 
 struct Message: Identifiable, Equatable, Hashable, Codable {
     let id: MessageID
+    let sender: User
     var content: String
     var preview: Preview?
     var isSent: Bool
 }
 
 extension Message {
-    init(content: String) {
+    init(content: String, sender: User) {
         self.id = MessageID()
         self.content = content
         self.preview = nil
         self.isSent = false
+        self.sender = sender
     }
 }
 
@@ -54,41 +59,44 @@ extension User {
 extension Chat {
     static let lili = Chat(
         name: "Lili ❤️‍🔥",
+        participants: [.vini, .lili],
         messages: [
-            Message(content: "Oi amor"),
-            Message(content:
-                "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5"
+            Message(content: "Oi amor", sender: .lili),
+            Message(
+                content:"https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5",
+                sender: .vini
             ),
         ]
     )
     
-    static let family = Chat(
-        name: "Grupo da Família",
+    static let evidence = Chat(
+        name: "Evidence",
+        participants: [.vini, .lili],
         messages: [
-            Message(content: "Bom dia!")
+            Message(content: "Bom dia!", sender: .cris)
         ]
     )
     
     static let recepies = Chat(
         name: "Nossas Receitas",
+        participants: [.vini, .lili],
         messages: [
-            Message(content: "Bom dia!")
+            Message(content: "Bom dia!", sender: .vini)
         ]
     )
     
     static let mockList = [
         Chat.lili,
-        Chat.family,
+        Chat.evidence,
         Chat.recepies,
     ]
-    
-    static let error = Chat(name: "error", messages: [])
 }
 
 
 extension Message {
     static let hi = Message(
         id: UUID(),
+        sender: .vini,
         content: "Olá",
         preview: nil,
         isSent: false
@@ -96,6 +104,7 @@ extension Message {
     
     static let pointfree = Message(
         id: UUID(),
+        sender: .cris,
         content: "https://www.pointfree.co/episodes/ep274-shared-state-user-defaults-part-2",
         preview: nil,
         isSent: false

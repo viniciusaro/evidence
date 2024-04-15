@@ -10,6 +10,7 @@ struct AuthClient {
 extension User {
     static let vini = User(name: "Vini")
     static let cris = User(name: "Cris")
+    static let lili = User(name: "Lili")
 }
 
 extension AuthClient {

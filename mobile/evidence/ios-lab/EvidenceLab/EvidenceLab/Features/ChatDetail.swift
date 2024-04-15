@@ -47,7 +47,7 @@ struct ChatDetailFeature {
                 return .none
                 
             case .send:
-                let newMessage = Message(content: state.inputText)
+                let newMessage = Message(content: state.inputText, sender: .vini)
                 let newMessageState = MessageFeature.State(message: newMessage)
                 state.messages.append(newMessageState)
                 state.inputText = ""
