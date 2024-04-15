@@ -11,6 +11,8 @@
 		63458C332BC8A51B002BACB0 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63458C322BC8A51B002BACB0 /* Shared.swift */; };
 		6357BD272BCCB89C00640706 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6357BD262BCCB89C00640706 /* IdentifiedCollections */; };
 		6357BD292BCD8FC800640706 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 6357BD282BCD8FC800640706 /* ComposableArchitecture */; };
+		6357BD2C2BCDA8AF00640706 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6357BD2B2BCDA8AF00640706 /* FirebaseAuth */; };
+		6357BD302BCDA9B300640706 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */; };
 		6361D20C2BBE49C100F7866D /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361D20B2BBE49C100F7866D /* AuthClient.swift */; };
 		6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */; };
 		6369AD652BB36C840067E2EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD642BB36C840067E2EC /* ContentView.swift */; };
@@ -57,6 +59,7 @@
 /* Begin PBXFileReference section */
 		630618B82BCC91A8003A43F1 /* DataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClient.swift; sourceTree = "<group>"; };
 		63458C322BC8A51B002BACB0 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6361D20B2BBE49C100F7866D /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
 		6369AD5F2BB36C840067E2EC /* EvidenceLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvidenceLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabApp.swift; sourceTree = "<group>"; };
@@ -93,6 +96,7 @@
 				63797AC52BBAD2B800188427 /* CasePaths in Frameworks */,
 				6357BD272BCCB89C00640706 /* IdentifiedCollections in Frameworks */,
 				6357BD292BCD8FC800640706 /* ComposableArchitecture in Frameworks */,
+				6357BD2C2BCDA8AF00640706 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +144,7 @@
 				6369AD642BB36C840067E2EC /* ContentView.swift */,
 				6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */,
 				6369AD662BB36C850067E2EC /* Assets.xcassets */,
+				6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */,
 				637239792BC56C5000F8E66E /* Arch */,
 				63D770872BC1F9E200B81E83 /* Clients */,
 				637239862BC56E0A00F8E66E /* Data */,
@@ -255,6 +260,7 @@
 				63797AC42BBAD2B800188427 /* CasePaths */,
 				6357BD262BCCB89C00640706 /* IdentifiedCollections */,
 				6357BD282BCD8FC800640706 /* ComposableArchitecture */,
+				6357BD2B2BCDA8AF00640706 /* FirebaseAuth */,
 			);
 			productName = EvidenceLab;
 			productReference = 6369AD5F2BB36C840067E2EC /* EvidenceLab.app */;
@@ -332,6 +338,7 @@
 				63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */,
 				63C547132BBAD0C60098689D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				6357BD252BCCB89C00640706 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
+				6357BD2A2BCDA7C400640706 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 6369AD602BB36C840067E2EC /* Products */;
 			projectDirPath = "";
@@ -351,6 +358,7 @@
 			files = (
 				6369AD6A2BB36C850067E2EC /* Preview Assets.xcassets in Resources */,
 				6369AD672BB36C850067E2EC /* Assets.xcassets in Resources */,
+				6357BD302BCDA9B300640706 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,7 +566,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EvidenceLab/Preview Content\"";
-				DEVELOPMENT_TEAM = G3TQDRB2GQ;
+				DEVELOPMENT_TEAM = 8QDXM8638S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -571,7 +579,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = evidence.EvidenceLab;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.evidence.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -587,7 +595,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EvidenceLab/Preview Content\"";
-				DEVELOPMENT_TEAM = G3TQDRB2GQ;
+				DEVELOPMENT_TEAM = 8QDXM8638S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -600,7 +608,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = evidence.EvidenceLab;
+				PRODUCT_BUNDLE_IDENTIFIER = br.com.evidence.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -734,6 +742,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		6357BD2A2BCDA7C400640706 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.24.0;
+			};
+		};
 		63C547132BBAD0C60098689D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
@@ -762,6 +778,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63C547132BBAD0C60098689D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		6357BD2B2BCDA8AF00640706 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6357BD2A2BCDA7C400640706 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 		63797AC42BBAD2B800188427 /* CasePaths */ = {
 			isa = XCSwiftPackageProductDependency;
