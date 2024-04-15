@@ -31,17 +31,22 @@ struct ChatListFeature: Feature {
     
     @CasePathable
     enum Action {
-        case listItemTapped(Chat)
+        case onListItemTapped(Chat)
+        case onListItemDelete(IndexSet)
         case navigation(ChatDetailFeature.State?)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .listItemTapped(chat):
+            case let .onListItemTapped(chat):
                 state.detail = ChatDetailFeature.State(chat: chat)
                 return .none
                 
+            case let .onListItemDelete(indexSet):
+                state.chats.remove(atOffsets: indexSet)
+                return .none
+            
             case let .navigation(chat):
                 defer {
                     state.detail = chat
@@ -64,13 +69,16 @@ struct ChatListView: View {
             List {
                 ForEach(viewStore.chats) { chat in
                     Button(action: {
-                        viewStore.send(.listItemTapped(chat))
+                        viewStore.send(.onListItemTapped(chat))
                     }, label: {
                         VStack(alignment: .leading) {
                             Text(chat.name)
                             Text(chat.messages.last?.content ?? "").font(.caption)
                         }
                     })
+                }
+                .onDelete { indexSet in
+                    viewStore.send(.onListItemDelete(indexSet))
                 }
             }
             .listStyle(.plain)

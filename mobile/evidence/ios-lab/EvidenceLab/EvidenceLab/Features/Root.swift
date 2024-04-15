@@ -2,7 +2,7 @@ import Combine
 import CasePaths
 import SwiftUI
 
-let authClient = AuthClient.unauthenticated()
+let authClient = AuthClient.authenticated()
 let dataClient = DataClient.live
 
 #Preview {
@@ -57,7 +57,7 @@ struct RootFeature: Feature {
             LoginFeature.reducer
         },
         Reducer { state, action in
-            .fireAndForget { [chats = state.home.chatList.chats] in
+            return .fireAndForget { [chats = state.home.chatList.chats] in
                 let data = try JSONEncoder().encode(chats)
                 try dataClient.save(data, .chats)
             }

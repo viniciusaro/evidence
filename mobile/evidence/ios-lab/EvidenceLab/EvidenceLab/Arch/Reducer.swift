@@ -7,23 +7,28 @@ struct Reducer<State, Action> {
     let run: (_ state: inout State, _ action: Action) -> Effect<Action>
 }
 
-extension Reducer {
+extension Reducer where State: Equatable {
     func debug(actionOnly: Bool = false, before: Bool = true, after: Bool = true) -> Reducer<State, Action> {
         Reducer { state, action in
             var messages = [String]()
             messages.append("------------------")
             messages.append("receiving \(action)")
+            let beforeState = state
             if before && !actionOnly {
                 var before = String()
                 dump(state, to: &before)
                 messages.append("before: \(before)")
             }
             let effect = self.run(&state, action)
-            if after  && !actionOnly {
+            if after && !actionOnly {
                 messages.append("------")
                 var after = String()
-                dump(state, to: &after)
-                messages.append("after: \(after)")
+                if state == beforeState {
+                    messages.append("after: no changes")
+                } else {
+                    dump(state, to: &after)
+                    messages.append("after: \(after)")
+                }
             }
             return .merge(effect, .fireAndForget {
                 messages.forEach { print($0)
