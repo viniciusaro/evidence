@@ -31,19 +31,25 @@ struct ChatListFeature: Feature {
     
     @CasePathable
     enum Action {
-        case chatListNavigation(ChatDetailFeature.State?)
-        case chatListItemTapped(Chat)
+        case listItemTapped(Chat)
+        case navigation(ChatDetailFeature.State?)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .chatListItemTapped(chat):
+            case let .listItemTapped(chat):
                 state.detail = ChatDetailFeature.State(chat: chat)
                 return .none
                 
-            case let .chatListNavigation(chat):
-                state.detail = chat
+            case let .navigation(chat):
+                defer {
+                    state.detail = chat
+                }
+                guard let chatDetail = state.detail else {
+                    return .none
+                }
+                state.chats[id: chatDetail.chat.id] = chatDetail.chat
                 return .none
             }
         }
@@ -58,7 +64,7 @@ struct ChatListView: View {
             List {
                 ForEach(viewStore.chats) { chat in
                     Button(action: {
-                        viewStore.send(.chatListItemTapped(chat))
+                        viewStore.send(.listItemTapped(chat))
                     }, label: {
                         VStack(alignment: .leading) {
                             Text(chat.name)

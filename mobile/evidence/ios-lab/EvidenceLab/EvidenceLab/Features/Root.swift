@@ -22,49 +22,34 @@ struct RootFeature: Feature {
     
     @CasePathable
     enum Action {
-        case rootLoad
         case currentUserUpdate(User?)
         case home(HomeFeature.Action)
         case login(LoginFeature.Action)
+        case viewDidLoad
         case unauthenticatedUserModalDismissed
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case .rootLoad:
-                return .publisher(
-                    authClient.getAuthenticatedUser()
-                        .map { .currentUserUpdate($0) }
-                        .receive(on: DispatchQueue.main)
-                )
-                
             case let .currentUserUpdate(user):
                 state.login = user == nil ? LoginFeature.State() : nil
-                return .none
-                
-            case .unauthenticatedUserModalDismissed:
-                return .none
-                
-            case let .home(.chatDetail(.sent(chatId, messageId))):
-                state.home.chatList.detail?.messages[id: messageId]?.message.isSent = true
-                return .none
-            
-            case let .home(.newChatCreated(chat)):
-                state.home.chatList.chats.insert(chat, at: 0)
-                return .none
-                
-            case .home(.chatList(.chatListNavigation(_))):
-                guard let chatDetail = state.home.chatList.detail else {
-                    return .none
-                }
-                state.home.chatList.chats[id: chatDetail.chat.id] = chatDetail.chat
                 return .none
                 
             case .home:
                 return .none
                 
             case .login:
+                return .none
+    
+            case .viewDidLoad:
+                return .publisher(
+                    authClient.getAuthenticatedUser()
+                        .map { .currentUserUpdate($0) }
+                        .receive(on: DispatchQueue.main)
+                )
+
+            case .unauthenticatedUserModalDismissed:
                 return .none
             }
         },
@@ -92,7 +77,7 @@ struct RootView: View {
                 store: store.scope(state: \.home, action: \.home)
             )
             .onViewDidLoad {
-                viewStore.send(.rootLoad)
+                viewStore.send(.viewDidLoad)
             }
             .sheet(item: Binding(
                 get: { viewStore.login },

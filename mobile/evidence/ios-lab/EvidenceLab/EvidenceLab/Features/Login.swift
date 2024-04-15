@@ -9,19 +9,20 @@ struct LoginFeature: Feature {
     
     @CasePathable
     enum Action {
-        case submitButtonTapped(String, String)
-        case userAuthenticated(User)
+        case onSubmitButtonTapped(String, String)
+        case onUserAuthenticated(User)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .submitButtonTapped(username, password):
+            case let .onSubmitButtonTapped(username, password):
                 return .publisher(
                     authClient.authenticate(username, password)
-                        .map { .userAuthenticated($0) }
+                        .map { .onUserAuthenticated($0) }
                 )
-            case .userAuthenticated:
+                
+            case .onUserAuthenticated:
                 return .none
             }
         }
@@ -34,7 +35,7 @@ struct LoginView: View {
     var body: some View {
         WithViewStore(store: store) { viewStore in
             Button(action: {
-                viewStore.send(.submitButtonTapped("user", "password"))
+                viewStore.send(.onSubmitButtonTapped("user", "password"))
             }, label: {
                 Text("Entrar")
             })

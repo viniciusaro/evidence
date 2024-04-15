@@ -23,14 +23,14 @@ struct MessageFeature: Feature {
     
     @CasePathable
     enum Action {
-        case messageViewLoad
-        case messagePreviewLoaded(Preview)
+        case viewDidLoad
+        case previewDidLoad(Preview)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case .messageViewLoad:
+            case .viewDidLoad:
                 guard
                     let url = URL(string: state.message.content),
                     url.host() != nil,
@@ -45,10 +45,10 @@ struct MessageFeature: Feature {
                         .filter { $0 != nil }
                         .map { $0! }
                         .map { Preview(image: $0.image, title: $0.title) }
-                        .map { .messagePreviewLoaded($0) }
+                        .map { .previewDidLoad($0) }
                     )
                 
-            case let .messagePreviewLoaded(preview):
+            case let .previewDidLoad(preview):
                 state.message.preview = preview
                 return .none
             }
@@ -85,7 +85,7 @@ struct MessageView: View {
                 }
             }
             .onViewDidLoad {
-                viewStore.send(.messageViewLoad)
+                viewStore.send(.viewDidLoad)
             }
         }
     }

@@ -20,10 +20,9 @@ struct HomeFeature: Feature {
     
     @CasePathable
     enum Action {
-        case chatList(ChatListFeature.Action)
         case chatDetail(ChatDetailFeature.Action)
-        case newChatItemTapped
-        case newChatCreated(Chat)
+        case chatList(ChatListFeature.Action)
+        case onNewChatButtonTapped
         case onTabSelectionChanged(State.Tab)
         case profile(ProfileFeature.Action)
     }
@@ -31,17 +30,14 @@ struct HomeFeature: Feature {
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
+            case .chatDetail:
+                return .none
+                
             case .chatList:
                 return .none
             
-            case .chatDetail:
-                return .none
-            
-            case .newChatItemTapped:
+            case .onNewChatButtonTapped:
                 state.chatList.chats.insert(Chat(name: "Chat", messages: []), at: 0)
-                return .none
-            
-            case let .newChatCreated(chat):
                 return .none
                 
             case let .onTabSelectionChanged(selection):
@@ -97,7 +93,7 @@ struct HomeView: View {
                 .navigationDestination(
                     item: Binding(
                         get: { viewStore.chatList.detail },
-                        set: { viewStore.send(.chatList(.chatListNavigation($0)))}
+                        set: { viewStore.send(.chatList(.navigation($0)))}
                     )
                 ) { chatDetail in
                     ChatDetailView(
@@ -108,7 +104,7 @@ struct HomeView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     Button(action: {
-                        viewStore.send(.newChatItemTapped)
+                        viewStore.send(.onNewChatButtonTapped)
                     }, label: {
                         Label("", systemImage: "plus")
                             .labelStyle(.iconOnly)

@@ -29,21 +29,20 @@ struct ChatDetailFeature: Feature {
     
     @CasePathable
     enum Action {
+        case inputTextUpdated(String)
         case message(MessageFeature.Action, MessageID)
-        case updateInputText(String)
         case send
-        case sent(ChatID, MessageID)
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case .message:
-                return .none
-            
-            case let .updateInputText(update):
+            case let .inputTextUpdated(update):
                 state.inputText = update
                 return .none
+
+            case .message:
+                return .none            
                 
             case .send:
                 let newMessage = Message(content: state.inputText)
@@ -51,9 +50,6 @@ struct ChatDetailFeature: Feature {
                 let chatId = state.chat.id
                 state.messages.append(newMessageState)
                 state.inputText = ""
-                return .none
-                
-            case .sent:
                 return .none
             }
         },
@@ -93,7 +89,7 @@ struct ChatDetailView: View {
                     })
                     TextField("", text: Binding(
                         get: { viewStore.inputText },
-                        set: { viewStore.send(.updateInputText($0)) }
+                        set: { viewStore.send(.inputTextUpdated($0)) }
                     ))
                     .frame(height: 36)
                     .padding([.leading, .trailing], 8)
