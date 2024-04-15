@@ -17,7 +17,7 @@ struct ChatListFeature {
     @ObservableState
     struct State: Equatable {
         var chats: IdentifiedArrayOf<Chat> = []
-        var detail: ChatDetailFeature.State? = nil
+        @Presents var detail: ChatDetailFeature.State? = nil
         
         init(detail: ChatDetailFeature.State? = nil) {
             self.detail = detail
@@ -33,14 +33,27 @@ struct ChatListFeature {
     
     @CasePathable
     enum Action {
+        case detail(PresentationAction<ChatDetailFeature.Action>)
         case onListItemTapped(Chat)
         case onListItemDelete(IndexSet)
-        case navigation(ChatDetailFeature.State?)
     }
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .detail(.dismiss):
+                defer {
+                    state.detail = nil
+                }
+                guard let chatDetail = state.detail else {
+                    return .none
+                }
+                state.chats[id: chatDetail.chat.id] = chatDetail.chat
+                return .none
+                
+            case .detail:
+                return .none
+                
             case let .onListItemTapped(chat):
                 state.detail = ChatDetailFeature.State(chat: chat)
                 return .none
@@ -48,17 +61,10 @@ struct ChatListFeature {
             case let .onListItemDelete(indexSet):
                 state.chats.remove(atOffsets: indexSet)
                 return .none
-                
-            case let .navigation(chat):
-                defer {
-                    state.detail = chat
-                }
-                guard let chatDetail = state.detail else {
-                    return .none
-                }
-                state.chats[id: chatDetail.chat.id] = chatDetail.chat
-                return .none
             }
+        }
+        .ifLet(\.$detail, action: \.detail) {
+            ChatDetailFeature()
         }
     }
 }

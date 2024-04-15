@@ -60,24 +60,10 @@ struct RootFeature {
         }
         Reduce { state, action in
             var chats = state.home.chatList.chats
-            let detail = state.home.chatList.detail
+            let detailState = state.home.chatList.detail
             
-            if let detail = detail {
-                chats[id: detail.chat.id] = detail.chat
-            }
-            
-            for chat in chats {
-                chats[id: chat.id]?.messages = chat.messages.map {
-                    var copy = $0
-                    copy.isSent = true
-                    return copy
-                }
-            }
-            
-            state.home.chatList.chats = chats
-            
-            if let detail = detail, let chat = chats[id: detail.chat.id] {
-                state.home.chatList.detail?.chat = chat
+            if let detailState = detailState {
+                chats[id: detailState.chat.id] = detailState.chat
             }
             
             return .run { [chats = chats] _ in

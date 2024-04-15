@@ -33,7 +33,6 @@ struct HomeFeature {
     }
     @CasePathable
     enum Action {
-        case chatDetail(ChatDetailFeature.Action)
         case chatList(ChatListFeature.Action)
         case onNewChatAlertCancel
         case onNewChatAlertConfirm
@@ -47,9 +46,6 @@ struct HomeFeature {
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .chatDetail:
-                return .none
-                
             case .chatList:
                 return .none
                 
@@ -89,9 +85,6 @@ struct HomeFeature {
         Scope(state: \.chatList, action: \.chatList) {
             ChatListFeature()
         }
-        .ifLet(\.chatList.detail, action: \.chatDetail) {
-            ChatDetailFeature()
-        }
         Scope(state: \.profile, action: \.profile) {
             ProfileFeature()
         }
@@ -99,7 +92,7 @@ struct HomeFeature {
 }
 
 struct HomeView: View {
-    let store: StoreOf<HomeFeature>
+    @Bindable var store: StoreOf<HomeFeature>
     
     var body: some View {
         NavigationStack {
@@ -147,15 +140,11 @@ struct HomeView: View {
             } message: {
                Text("Escreva o nome do novo chat")
             }
-            .navigationDestination(
-                item: Binding(
-                    get: { store.chatList.detail },
-                    set: { store.send(.chatList(.navigation($0)))}
-                )
-            ) { chatDetail in
-                ChatDetailView(
-                    store: store.scope(state: \.chatList.detail!, action: \.chatDetail)
-                )
+            .navigationDestination(item: $store.scope(
+                state: \.chatList.detail,
+                action: \.chatList.detail
+            )) { store in
+                ChatDetailView(store: store)
             }
             .navigationTitle(store.selectedTab.title)
             .navigationBarTitleDisplayMode(.inline)
