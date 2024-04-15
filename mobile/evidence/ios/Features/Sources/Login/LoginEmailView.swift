@@ -33,7 +33,7 @@ public struct LoginEmailView: View {
                 }
             }
             .padding([.leading,.trailing], 16)
-            .navigationTitle("Sign In with Email")
+            .navigationTitle("Continue with Email")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -59,7 +59,7 @@ struct LoginEmailButton: View {
 
     var body: some View {
         NavigationStack {
-            Button("Login") {
+            Button("Continue") {
                 viewModel.loginEmailButtonTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
@@ -122,7 +122,7 @@ struct LoginEmailPasswordInput: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Create Your Password")
+            Text("Enter Your Password")
                 .body()
 
             HStack {

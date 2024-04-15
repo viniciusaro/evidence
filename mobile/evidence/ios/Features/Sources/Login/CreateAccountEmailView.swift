@@ -34,7 +34,7 @@ public struct CreateAccountEmailView: View {
                 }
             }
             .padding([.leading,.trailing], 16)
-            .navigationTitle("Sign In with Email")
+            .navigationTitle("Create account with Email")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -65,9 +65,6 @@ struct CreateAccountButton: View {
                 viewModel.createAccountButtonTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
-//            .navigationDestination(item: $viewModel.loginCheckViewModel) { loginCheckViewModel in
-//                LoginCheckEmailView(viewModel: loginCheckViewModel)
-//            }
         }
     }
 }
@@ -81,7 +78,6 @@ struct EmailInput: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Enter Your Email Address")
                 .body()
-
             HStack {
                 TextField("nome@email. com", text: $viewModel.emailInput)
                     .focused($isFocused)
@@ -100,7 +96,6 @@ struct EmailInput: View {
                         }
                         self.isFocused = viewModel.isEmailInputFocused
                     }
-
                 Button(action: {
                     viewModel.clearEmailInputTapped()
                 }) {
@@ -109,18 +104,13 @@ struct EmailInput: View {
                             .foregroundStyle(theme.color.text.secondary)
                     }
                 }
-
             }
             .padding([.leading, .trailing], 16)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
-
         }
-//        if let errorMessage = viewModel.errorMessage() {
-//            LeafErrorMessage(message: errorMessage)
-//        }
     }
 }
 
@@ -132,7 +122,6 @@ struct PasswordInput: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Create Your Password")
                 .body()
-
             HStack {
                 SecureField("password", text: $viewModel.passwordInput)
                     .textInputAutocapitalization(.never)
@@ -153,7 +142,6 @@ struct PasswordInput: View {
                             .foregroundStyle(theme.color.text.secondary)
                     }
                 }
-
             }
             .padding([.leading, .trailing], 16)
             .overlay {
@@ -161,7 +149,6 @@ struct PasswordInput: View {
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
             Label()
-
         }
         if let errorMessage = viewModel.errorMessage() {
             LeafErrorMessage(message: errorMessage)

@@ -63,7 +63,7 @@ struct GettingStartedButton: View {
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
         .sheet(isPresented: $viewModel.showLoginAuthModal) {
             LoginAuthModal(viewModel: viewModel)
-                .presentationDetents([.height(220)])
+                .presentationDetents([.height(274)])
         }
     }
 }
@@ -96,6 +96,7 @@ struct LoginAuthModal: View {
                 }
             }
             .padding([.leading, .trailing], 16)
+            .padding([.top, .bottom], 24)
         }
     }
 }
