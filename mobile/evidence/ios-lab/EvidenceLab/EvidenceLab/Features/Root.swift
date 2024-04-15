@@ -3,10 +3,10 @@ import ComposableArchitecture
 import SwiftUI
 
 #if DEBUG
-var authClient = AuthClient.authenticated()
+var authClient = AuthClient.live
 var dataClient = DataClient.live
 #else
-let authClient = AuthClient.unauthenticated()
+let authClient = AuthClient.live
 let dataClient = DataClient.live
 #endif
 

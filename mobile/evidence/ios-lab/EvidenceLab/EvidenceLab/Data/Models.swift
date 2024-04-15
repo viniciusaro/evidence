@@ -2,7 +2,7 @@ import Foundation
 
 typealias MessageID = UUID
 typealias ChatID = UUID
-typealias UserID = UUID
+typealias UserID = String
 
 struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
