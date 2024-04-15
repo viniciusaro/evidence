@@ -9,22 +9,18 @@ struct ProfileFeature: Feature {
     
     @CasePathable
     enum Action {
-        case viewDidLoad
-        case currentUserUpdate(User?)
+        case viewDidAppear
     }
     
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .currentUserUpdate(user):
+            case .viewDidAppear:
+                guard let user = authClient.getAuthenticatedUser() else {
+                    return .none
+                }
                 state.currentUser = user
                 return .none
-                
-            case .viewDidLoad:
-                return .publisher(
-                    authClient.getAuthenticatedUser()
-                        .map { .currentUserUpdate($0) }
-                )
             }
         }
     )
@@ -42,8 +38,8 @@ struct ProfileView: View {
                     Text("NO ONE'S PROFILE")
                 }
             }
-            .onViewDidLoad {
-                viewStore.send(.viewDidLoad)
+            .onAppear {
+                viewStore.send(.viewDidAppear)
             }
         }
     }

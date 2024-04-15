@@ -2,7 +2,7 @@ import Combine
 import CasePaths
 import SwiftUI
 
-let authClient = AuthClient.authenticated()
+let authClient = AuthClient.unauthenticated()
 let dataClient = DataClient.live
 
 #Preview {
@@ -22,7 +22,6 @@ struct RootFeature: Feature {
     
     @CasePathable
     enum Action {
-        case currentUserUpdate(User?)
         case home(HomeFeature.Action)
         case login(LoginFeature.Action)
         case viewDidLoad
@@ -32,22 +31,20 @@ struct RootFeature: Feature {
     static let reducer = ReducerOf<Self>.combine(
         Reducer { state, action in
             switch action {
-            case let .currentUserUpdate(user):
-                state.login = user == nil ? LoginFeature.State() : nil
+            case .home:
                 return .none
                 
-            case .home:
+            case .login(.onUserAuthenticated):
+                state.login = nil
                 return .none
                 
             case .login:
                 return .none
     
             case .viewDidLoad:
-                return .publisher(
-                    authClient.getAuthenticatedUser()
-                        .map { .currentUserUpdate($0) }
-                        .receive(on: DispatchQueue.main)
-                )
+                let user = authClient.getAuthenticatedUser()
+                state.login = user == nil ? LoginFeature.State() : nil
+                return .none
 
             case .unauthenticatedUserModalDismissed:
                 return .none

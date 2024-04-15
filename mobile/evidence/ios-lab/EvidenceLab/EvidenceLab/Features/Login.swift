@@ -19,6 +19,7 @@ struct LoginFeature: Feature {
             case let .onSubmitButtonTapped(username, password):
                 return .publisher(
                     authClient.authenticate(username, password)
+                        .first()
                         .map { .onUserAuthenticated($0) }
                 )
                 
