@@ -46,10 +46,8 @@ struct HomeFeature: Feature {
                 return .none
             
             case .newChatItemTapped:
-                return .publisher(
-                    chatClient.new("Lili")
-                        .map { .newChatCreated($0) }
-                )
+                state.chatList.chats.insert(Chat(name: "Chat", messages: []), at: 0)
+                return .none
             
             case let .newChatCreated(chat):
                 return .none
