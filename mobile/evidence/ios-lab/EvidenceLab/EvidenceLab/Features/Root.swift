@@ -58,9 +58,26 @@ struct RootFeature: Feature {
         },
         Reducer { state, action in
             var chats = state.home.chatList.chats
-            if let detail = state.home.chatList.detail {
+            let detail = state.home.chatList.detail
+            
+            if let detail = detail {
                 chats[id: detail.chat.id] = detail.chat
             }
+            
+            for chat in chats {
+                chats[id: chat.id]?.messages = chat.messages.map {
+                    var copy = $0
+                    copy.isSent = true
+                    return copy
+                }
+            }
+            
+            state.home.chatList.chats = chats
+            
+            if let detail = detail, let chat = chats[id: detail.chat.id] {
+                state.home.chatList.detail?.chat = chat
+            }
+            
             return .fireAndForget {
                 let data = try JSONEncoder().encode(chats)
                 try dataClient.save(data, .chats)

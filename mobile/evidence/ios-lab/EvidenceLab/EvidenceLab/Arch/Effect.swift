@@ -48,6 +48,13 @@ extension Effect {
         publisher(Just(action))
     }
     
+    static func run(_ computation: @escaping ((Action) -> Void) throws -> Void) -> Effect {
+        Effect { send in
+            try? computation(send)
+            return UUID()
+        }
+    }
+    
     static func fireAndForget(_ computation: @escaping () throws -> Void) -> Effect {
         Effect { _ in
             try? computation()
