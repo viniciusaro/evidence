@@ -80,7 +80,9 @@ struct ChatListView: View {
                 }, label: {
                     VStack(alignment: .leading) {
                         Text(chat.name)
-                        Text(chat.messages.last?.content ?? "").font(.caption)
+                        if let content = chat.messages.last?.content {
+                            Text(content).font(.caption)
+                        }
                     }
                 })
             }

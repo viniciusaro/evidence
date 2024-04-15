@@ -2,7 +2,7 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-let authClient = AuthClient.authenticated()
+let authClient = AuthClient.unauthenticated()
 let dataClient = DataClient.live
 
 //#Preview {
@@ -19,24 +19,26 @@ struct RootFeature {
     @ObservableState
     struct State: Equatable {
         var home: HomeFeature.State = .init()
-        var login: LoginFeature.State? = nil
+        @Presents var login: LoginFeature.State? = nil
     }
     
     @CasePathable
     enum Action {
         case home(HomeFeature.Action)
-        case login(LoginFeature.Action)
+        case login(PresentationAction<LoginFeature.Action>)
         case viewDidLoad
-        case unauthenticatedUserModalDismissed
     }
     
     var body: some ReducerOf<Self> {
+        EmptyReducer().ifLet(\.$login, action: \.login) {
+            LoginFeature()
+        }
         Reduce { state, action in
             switch action {
             case .home:
                 return .none
                 
-            case .login(.onUserAuthenticated):
+            case .login(.presented(.onUserAuthenticated)):
                 state.login = nil
                 return .none
                 
@@ -47,35 +49,41 @@ struct RootFeature {
                 let user = authClient.getAuthenticatedUser()
                 state.login = user == nil ? LoginFeature.State() : nil
                 return .none
-                
-            case .unauthenticatedUserModalDismissed:
-                return .none
             }
         }
         Scope(state: \.home, action: \.home) {
-                HomeFeature()
-        }
-        .ifLet(\.login, action: \.login) {
-            LoginFeature()
+            HomeFeature()
         }
         Reduce { state, action in
-            var chats = state.home.chatList.chats
-            let detailState = state.home.chatList.detail
-            
-            if let detailState = detailState {
-                chats[id: detailState.chat.id] = detailState.chat
-            }
-            
-            return .run { [chats = chats] _ in
-                let data = try JSONEncoder().encode(chats)
-                try dataClient.save(data, .chats)
+            switch action {
+            case .home(.chatList(.detail(.presented(.send)))):
+                guard let lastIndex = state.home.chatList.detail?.messages.count else {
+                    return .none
+                }
+                
+                state.home.chatList.detail?.messages[lastIndex - 1].message.isSent = true
+                state.home.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
+                
+                var chats = state.home.chatList.chats
+                let detailState = state.home.chatList.detail
+                
+                if let detailState = detailState {
+                    chats[id: detailState.chat.id] = detailState.chat
+                }
+                
+                return .run { [chats = chats] _ in
+                    let data = try JSONEncoder().encode(chats)
+                    try dataClient.save(data, .chats)
+                }
+            default:
+                return .none
             }
         }
     }
 }
 
 struct RootView: View {
-    let store: StoreOf<RootFeature>
+    @Bindable var store: StoreOf<RootFeature>
     
     var body: some View {
         HomeView(
@@ -84,11 +92,8 @@ struct RootView: View {
         .onViewDidLoad {
             store.send(.viewDidLoad)
         }
-        .sheet(item: Binding(
-            get: { store.login },
-            set: { _ in store.send(.unauthenticatedUserModalDismissed) }
-        )) { loginState in
-            LoginView(store: store.scope(state: \.login!, action: \.login))
+        .sheet(item: $store.scope(state: \.login, action: \.login)) { store in
+            LoginView(store: store)
         }
     }
 }
