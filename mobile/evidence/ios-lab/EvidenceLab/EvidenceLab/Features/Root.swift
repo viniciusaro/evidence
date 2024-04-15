@@ -2,17 +2,24 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
+#if DEBUG
+var authClient = AuthClient.authenticated()
+var dataClient = DataClient.live
+#else
 let authClient = AuthClient.unauthenticated()
 let dataClient = DataClient.live
+#endif
 
-//#Preview {
-//    RootView(
-//        store: Store(
-//            initialState: RootFeature.State(),
-//            reducer: RootFeature.reducer
-//        )
-//    )
-//}
+#Preview {
+    dataClient = DataClient.mock(Chat.mockList)
+    
+    return RootView(
+        store: Store(
+            initialState: RootFeature.State(),
+            reducer: { RootFeature() }
+        )
+    )
+}
 
 @Reducer
 struct RootFeature {

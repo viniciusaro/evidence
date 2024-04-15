@@ -2,14 +2,16 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-//#Preview {
-//    HomeView(
-//        store: Store(
-//            initialState: HomeFeature.State(),
-//            reducer: HomeFeature.reducer
-//        )
-//    )
-//}
+#Preview {
+    dataClient = DataClient.mock(Chat.mockList)
+    
+    return HomeView(
+        store: Store(
+            initialState: HomeFeature.State(),
+            reducer: { HomeFeature() }
+        )
+    )
+}
 
 @Reducer
 struct HomeFeature {

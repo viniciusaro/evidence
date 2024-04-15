@@ -3,14 +3,16 @@ import Foundation
 import IdentifiedCollections
 import SwiftUI
 
-//#Preview {
-//    ChatDetailView(
-//        store: Store(
-//            initialState: ChatDetailFeature.State(chat: .lili),
-//            reducer: ChatDetailFeature.reducer
-//        )
-//    )
-//}
+#Preview {
+    dataClient = DataClient.mock(Chat.mockList)
+    
+    return ChatDetailView(
+        store: Store(
+            initialState: ChatDetailFeature.State(chat: .lili),
+            reducer: { ChatDetailFeature() }
+        )
+    )
+}
 
 @Reducer
 struct ChatDetailFeature {

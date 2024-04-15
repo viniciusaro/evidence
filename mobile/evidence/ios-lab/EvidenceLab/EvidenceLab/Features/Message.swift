@@ -2,14 +2,16 @@ import ComposableArchitecture
 import Foundation
 import SwiftUI
 
-//#Preview {
-//    MessageView(
-//        store: Store(
-//            initialState: MessageFeature.State(message: .pointfree),
-//            reducer: MessageFeature.reducer
-//        )
-//    )
-//}
+#Preview {
+    dataClient = DataClient.mock(Chat.mockList)
+    
+    return MessageView(
+        store: Store(
+            initialState: MessageFeature.State(message: .pointfree),
+            reducer: { MessageFeature() }
+        )
+    )
+}
 
 @Reducer
 struct MessageFeature {
