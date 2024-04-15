@@ -1,8 +1,10 @@
 import Combine
-import CasePaths
+import ComposableArchitecture
 import SwiftUI
 
-struct ProfileFeature: Feature {
+@Reducer
+struct ProfileFeature {
+    @ObservableState
     struct State: Equatable {
         var currentUser: User?
     }
@@ -12,8 +14,8 @@ struct ProfileFeature: Feature {
         case viewDidAppear
     }
     
-    static let reducer = ReducerOf<Self>.combine(
-        Reducer { state, action in
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
             switch action {
             case .viewDidAppear:
                 guard let user = authClient.getAuthenticatedUser() else {
@@ -23,24 +25,22 @@ struct ProfileFeature: Feature {
                 return .none
             }
         }
-    )
+    }
 }
 
 struct ProfileView: View {
     let store: StoreOf<ProfileFeature>
     
     var body: some View {
-        WithViewStore(store: store) { viewStore in
-            VStack {
-                if let currentUser = viewStore.currentUser {
-                    Text("PROFILE OF \(currentUser.name)")
-                } else {
-                    Text("NO ONE'S PROFILE")
-                }
+        VStack {
+            if let currentUser = store.currentUser {
+                Text("PROFILE OF \(currentUser.name)")
+            } else {
+                Text("NO ONE'S PROFILE")
             }
-            .onAppear {
-                viewStore.send(.viewDidAppear)
-            }
+        }
+        .onAppear {
+            store.send(.viewDidAppear)
         }
     }
 }

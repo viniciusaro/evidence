@@ -1,17 +1,19 @@
 import Combine
-import CasePaths
+import ComposableArchitecture
 import SwiftUI
 
-#Preview {
-    HomeView(
-        store: Store(
-            initialState: HomeFeature.State(),
-            reducer: HomeFeature.reducer
-        )
-    )
-}
+//#Preview {
+//    HomeView(
+//        store: Store(
+//            initialState: HomeFeature.State(),
+//            reducer: HomeFeature.reducer
+//        )
+//    )
+//}
 
-struct HomeFeature: Feature {
+@Reducer
+struct HomeFeature {
+    @ObservableState
     struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
@@ -19,6 +21,7 @@ struct HomeFeature: Feature {
         var showAlert: Bool = false
         var alertText: String = ""
         
+        @CasePathable
         enum Tab: String {
             case chatList = "Conversas"
             case profile = "Perfil"
@@ -28,7 +31,6 @@ struct HomeFeature: Feature {
             }
         }
     }
-    
     @CasePathable
     enum Action {
         case chatDetail(ChatDetailFeature.Action)
@@ -42,15 +44,15 @@ struct HomeFeature: Feature {
         case profile(ProfileFeature.Action)
     }
     
-    static let reducer = ReducerOf<Self>.combine(
-        Reducer { state, action in
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
             switch action {
             case .chatDetail:
                 return .none
                 
             case .chatList:
                 return .none
-            
+                
             case .onNewChatAlertCancel:
                 state.showAlert = false
                 state.alertText = ""
@@ -71,7 +73,7 @@ struct HomeFeature: Feature {
             case .onNewChatButtonTapped:
                 state.showAlert = true
                 return .none
-
+                
             case let .onNewChatShowAlertUpdate(showAlert):
                 state.showAlert = showAlert
                 return .none
@@ -83,91 +85,89 @@ struct HomeFeature: Feature {
             case .profile:
                 return .none
             }
-        },
-        .scope(state: \.chatList, action: \.chatList) {
-            ChatListFeature.reducer
-        },
-        .ifLet(state: \.chatList.detail, action: \.chatDetail) {
-            ChatDetailFeature.reducer
-        },
-        .scope(state: \.profile, action: \.profile) {
-            ProfileFeature.reducer
         }
-    )
+        Scope(state: \.chatList, action: \.chatList) {
+            ChatListFeature()
+        }
+        .ifLet(\.chatList.detail, action: \.chatDetail) {
+            ChatDetailFeature()
+        }
+        Scope(state: \.profile, action: \.profile) {
+            ProfileFeature()
+        }
+    }
 }
 
 struct HomeView: View {
     let store: StoreOf<HomeFeature>
     
     var body: some View {
-        WithViewStore(store: store) { viewStore in
-            NavigationStack {
-                TabView(
-                    selection: Binding(
-                        get: { viewStore.selectedTab },
-                        set: { viewStore.send(.onTabSelectionChanged($0)) }
-                    )
-                ) {
-                    ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
-                        .tabItem {
-                            Label(
-                                HomeFeature.State.Tab.chatList.title,
-                                systemImage: "bubble.right"
-                            )
-                        }
-                        .tag(HomeFeature.State.Tab.chatList)
-                        
-                    ProfileView(store: store.scope(state: \.profile, action: \.profile))
-                        .tabItem {
-                            Label(
-                                HomeFeature.State.Tab.profile.title,
-                                systemImage: "brain.filled.head.profile"
-                            )
-                        }
-                        .tag(HomeFeature.State.Tab.profile)
-                }
-                .alert(
-                    Text("Novo chat"),
-                    isPresented: Binding(
-                        get: { viewStore.showAlert },
-                        set: { viewStore.send(.onNewChatShowAlertUpdate($0)) }
-                    )
-                ) {
-                    Button("Cancelar", role: .cancel) {
-                        viewStore.send(.onNewChatAlertCancel)
+        NavigationStack {
+            TabView(
+                selection: Binding(
+                    get: { store.selectedTab },
+                    set: { store.send(.onTabSelectionChanged($0)) }
+                )
+            ) {
+                ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
+                    .tabItem {
+                        Label(
+                            HomeFeature.State.Tab.chatList.title,
+                            systemImage: "bubble.right"
+                        )
                     }
-                    Button("OK") {
-                        viewStore.send(.onNewChatAlertConfirm)
+                    .tag(HomeFeature.State.Tab.chatList)
+                    
+                ProfileView(store: store.scope(state: \.profile, action: \.profile))
+                    .tabItem {
+                        Label(
+                            HomeFeature.State.Tab.profile.title,
+                            systemImage: "brain.filled.head.profile"
+                        )
                     }
-                    TextField("Nome", text: Binding(
-                        get: { viewStore.alertText },
-                        set: { viewStore.send(.onNewChatAlertTextChanged($0)) }
-                    )).textContentType(.name)
-                } message: {
-                   Text("Escreva o nome do novo chat")
+                    .tag(HomeFeature.State.Tab.profile)
+            }
+            .alert(
+                Text("Novo chat"),
+                isPresented: Binding(
+                    get: { store.showAlert },
+                    set: { store.send(.onNewChatShowAlertUpdate($0)) }
+                )
+            ) {
+                Button("Cancelar", role: .cancel) {
+                    store.send(.onNewChatAlertCancel)
                 }
-                .navigationDestination(
-                    item: Binding(
-                        get: { viewStore.chatList.detail },
-                        set: { viewStore.send(.chatList(.navigation($0)))}
-                    )
-                ) { chatDetail in
-                    ChatDetailView(
-                        store: store.scope(state: { _ in chatDetail }, action: \.chatDetail)
-                    )
+                Button("OK") {
+                    store.send(.onNewChatAlertConfirm)
                 }
-                .navigationTitle(viewStore.selectedTab.title)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    Button(action: {
-                        viewStore.send(.onNewChatButtonTapped)
-                    }, label: {
-                        Label("", systemImage: "plus")
-                            .labelStyle(.iconOnly)
-                            .font(.title)
-                            .foregroundStyle(.primary)
-                    })
-                }
+                TextField("Nome", text: Binding(
+                    get: { store.alertText },
+                    set: { store.send(.onNewChatAlertTextChanged($0)) }
+                )).textContentType(.name)
+            } message: {
+               Text("Escreva o nome do novo chat")
+            }
+            .navigationDestination(
+                item: Binding(
+                    get: { store.chatList.detail },
+                    set: { store.send(.chatList(.navigation($0)))}
+                )
+            ) { chatDetail in
+                ChatDetailView(
+                    store: store.scope(state: \.chatList.detail!, action: \.chatDetail)
+                )
+            }
+            .navigationTitle(store.selectedTab.title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                Button(action: {
+                    store.send(.onNewChatButtonTapped)
+                }, label: {
+                    Label("", systemImage: "plus")
+                        .labelStyle(.iconOnly)
+                        .font(.title)
+                        .foregroundStyle(.primary)
+                })
             }
         }
     }

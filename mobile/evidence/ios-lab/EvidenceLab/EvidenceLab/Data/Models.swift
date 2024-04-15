@@ -57,8 +57,8 @@ extension Chat {
         messages: [
             Message(content: "Oi amor"),
             Message(content:
-                        "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5"
-                   ),
+                "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5"
+            ),
         ]
     )
     

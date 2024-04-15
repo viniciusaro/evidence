@@ -1,13 +1,12 @@
 import Combine
-import CasePaths
+import ComposableArchitecture
 import SwiftUI
 
 #Preview {
     RootView(
-        store: Store(
-            initialState: RootFeature.State(),
-            reducer: RootFeature.reducer
-        )
+        store: Store(initialState: RootFeature.State()) {
+            RootFeature()
+        }
     )
 }
 

@@ -1,18 +1,20 @@
-import CasePaths
+import ComposableArchitecture
 import Foundation
 import IdentifiedCollections
 import SwiftUI
 
-#Preview {
-    ChatListView(
-        store: Store(
-            initialState: ChatListFeature.State(),
-            reducer: ChatListFeature.reducer
-        )
-    )
-}
+//#Preview {
+//    ChatListView(
+//        store: Store(
+//            initialState: ChatListFeature.State(),
+//            reducer: ChatListFeature.reducer
+//        )
+//    )
+//}
 
-struct ChatListFeature: Feature {
+@Reducer
+struct ChatListFeature {
+    @ObservableState
     struct State: Equatable {
         var chats: IdentifiedArrayOf<Chat> = []
         var detail: ChatDetailFeature.State? = nil
@@ -36,8 +38,8 @@ struct ChatListFeature: Feature {
         case navigation(ChatDetailFeature.State?)
     }
     
-    static let reducer = ReducerOf<Self>.combine(
-        Reducer { state, action in
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
             switch action {
             case let .onListItemTapped(chat):
                 state.detail = ChatDetailFeature.State(chat: chat)
@@ -46,7 +48,7 @@ struct ChatListFeature: Feature {
             case let .onListItemDelete(indexSet):
                 state.chats.remove(atOffsets: indexSet)
                 return .none
-            
+                
             case let .navigation(chat):
                 defer {
                     state.detail = chat
@@ -58,30 +60,28 @@ struct ChatListFeature: Feature {
                 return .none
             }
         }
-    )
+    }
 }
 
 struct ChatListView: View {
-    let store: Store<ChatListFeature.State, ChatListFeature.Action>
+    let store: StoreOf<ChatListFeature>
     
     var body: some View {
-        WithViewStore(store: store) { viewStore in
-            List {
-                ForEach(viewStore.chats) { chat in
-                    Button(action: {
-                        viewStore.send(.onListItemTapped(chat))
-                    }, label: {
-                        VStack(alignment: .leading) {
-                            Text(chat.name)
-                            Text(chat.messages.last?.content ?? "").font(.caption)
-                        }
-                    })
-                }
-                .onDelete { indexSet in
-                    viewStore.send(.onListItemDelete(indexSet))
-                }
+        List {
+            ForEach(store.chats) { chat in
+                Button(action: {
+                    store.send(.onListItemTapped(chat))
+                }, label: {
+                    VStack(alignment: .leading) {
+                        Text(chat.name)
+                        Text(chat.messages.last?.content ?? "").font(.caption)
+                    }
+                })
             }
-            .listStyle(.plain)
+            .onDelete { indexSet in
+                store.send(.onListItemDelete(indexSet))
+            }
         }
+        .listStyle(.plain)
     }
 }

@@ -1,8 +1,10 @@
 import Combine
-import CasePaths
+import ComposableArchitecture
 import SwiftUI
 
-struct LoginFeature: Feature {
+@Reducer
+struct LoginFeature {
+    @ObservableState
     struct State: Equatable, Identifiable {
         let id = UUID()
     }
@@ -13,34 +15,32 @@ struct LoginFeature: Feature {
         case onUserAuthenticated(User)
     }
     
-    static let reducer = ReducerOf<Self>.combine(
-        Reducer { state, action in
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
             switch action {
             case let .onSubmitButtonTapped(username, password):
-                return .publisher(
+                return .publisher {
                     authClient.authenticate(username, password)
                         .first()
                         .map { .onUserAuthenticated($0) }
-                )
+                }
                 
             case .onUserAuthenticated:
                 return .none
             }
         }
-    )
+    }
 }
 
 struct LoginView: View {
     let store: StoreOf<LoginFeature>
     
     var body: some View {
-        WithViewStore(store: store) { viewStore in
-            Button(action: {
-                viewStore.send(.onSubmitButtonTapped("user", "password"))
-            }, label: {
-                Text("Entrar")
-            })
-        }
+        Button(action: {
+            store.send(.onSubmitButtonTapped("user", "password"))
+        }, label: {
+            Text("Entrar")
+        })
     }
 }
 

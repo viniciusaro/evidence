@@ -1,17 +1,19 @@
-import CasePaths
+import ComposableArchitecture
 import Foundation
 import SwiftUI
 
-#Preview {
-    MessageView(
-        store: Store(
-            initialState: MessageFeature.State(message: .pointfree),
-            reducer: MessageFeature.reducer
-        )
-    )
-}
+//#Preview {
+//    MessageView(
+//        store: Store(
+//            initialState: MessageFeature.State(message: .pointfree),
+//            reducer: MessageFeature.reducer
+//        )
+//    )
+//}
 
-struct MessageFeature: Feature {
+@Reducer
+struct MessageFeature {
+    @ObservableState
     struct State: Identifiable, Equatable, Hashable {
         var id: MessageID { message.id }
         var message: Message
@@ -21,14 +23,13 @@ struct MessageFeature: Feature {
         }
     }
     
-    @CasePathable
     enum Action {
         case viewDidLoad
         case previewDidLoad(Preview)
     }
     
-    static let reducer = ReducerOf<Self>.combine(
-        Reducer { state, action in
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
             switch action {
             case .viewDidLoad:
                 guard
@@ -38,7 +39,7 @@ struct MessageFeature: Feature {
                     return .none
                 }
                 
-                return .publisher(
+                return .publisher {
                     URLPreviewClient.live
                         .get(url)
                         .receive(on: DispatchQueue.main)
@@ -46,47 +47,45 @@ struct MessageFeature: Feature {
                         .map { $0! }
                         .map { Preview(image: $0.image, title: $0.title) }
                         .map { .previewDidLoad($0) }
-                    )
+                }
                 
             case let .previewDidLoad(preview):
                 state.message.preview = preview
                 return .none
             }
         }
-    )
+    }
 }
 
 struct MessageView: View {
-    let store: Store<MessageFeature.State, MessageFeature.Action>
+    let store: StoreOf<MessageFeature>
     
     var body: some View {
-        WithViewStore(store: store) { viewStore in
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(viewStore.message.content)
-                    Spacer()
-                    if viewStore.message.isSent {
-                        Label("", systemImage: "checkmark")
-                            .labelStyle(.iconOnly)
-                            .font(.caption)
-                            .foregroundStyle(Color.gray)
-                    }
+        VStack(alignment: .leading) {
+            HStack {
+                Text(store.message.content)
+                Spacer()
+                if store.message.isSent {
+                    Label("", systemImage: "checkmark")
+                        .labelStyle(.iconOnly)
+                        .font(.caption)
+                        .foregroundStyle(Color.gray)
                 }
-                if let preview = viewStore.message.preview {
-                    AsyncImage(url: preview.image) { phase in
-                        if let image = phase.image {
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .clipped()
-                        } else {
-                            VStack {}
-                        }
+            }
+            if let preview = store.message.preview {
+                AsyncImage(url: preview.image) { phase in
+                    if let image = phase.image {
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .clipped()
+                    } else {
+                        VStack {}
                     }
                 }
             }
-            .onViewDidLoad {
-                viewStore.send(.viewDidLoad)
-            }
+        }
+        .onViewDidLoad {
+            store.send(.viewDidLoad)
         }
     }
 }

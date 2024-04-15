@@ -1,5 +1,5 @@
-protocol Feature {
-    associatedtype State
-    associatedtype Action
-}
-
+//protocol Feature {
+//    associatedtype State
+//    associatedtype Action
+//}
+//
