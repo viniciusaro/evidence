@@ -35,7 +35,7 @@ struct ChatListFeature {
     @CasePathable
     enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
-        case onChatUpdate(Chat)
+        case onChatUpdateReceived(Chat)
         case onChatUpdateSent
         case onListItemTapped(Chat)
         case onListItemDelete(IndexSet)
@@ -64,7 +64,7 @@ struct ChatListFeature {
             case .onChatUpdateSent:
                 return .none
                 
-            case let .onChatUpdate(chatUpdate):
+            case let .onChatUpdateReceived(chatUpdate):
                 if let localChat = state.chats[id: chatUpdate.id] {
                     state.chats[id: localChat.id]?.messages.append(contentsOf: chatUpdate.messages)
                 } else {
@@ -95,7 +95,8 @@ struct ChatListFeature {
             case .onViewDidLoad:
                 return .publisher {
                     stockClient.consume()
-                        .map { .onChatUpdate($0) }
+                        .map { .onChatUpdateReceived($0) }
+                        .receive(on: DispatchQueue.main)
                 }
             }
         }
