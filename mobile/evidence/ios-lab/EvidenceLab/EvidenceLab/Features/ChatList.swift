@@ -43,6 +43,9 @@ struct ChatListFeature {
     }
     
     var body: some ReducerOf<Self> {
+        EmptyReducer().ifLet(\.$detail, action: \.detail) {
+            ChatDetailFeature()
+        }
         Reduce { state, action in
             switch action {
             case .detail(.dismiss):
@@ -54,16 +57,6 @@ struct ChatListFeature {
                 }
                 state.chats[id: chatDetail.chat.id] = chatDetail.chat
                 return .none
-                
-            case .detail(.presented(.send)):
-                let chat = state.detail!.chat
-                let message = chat.messages.last!
-                
-                return .publisher {
-                    stockClient.send(message, chat)
-                        .map { .onChatUpdateSent }
-                        .receive(on: DispatchQueue.main)
-                }
 
             case .detail:
                 return .none
@@ -105,11 +98,33 @@ struct ChatListFeature {
                         .map { .onChatUpdate($0) }
                 }
             }
-            
         }
-        ._printChanges()
-        .ifLet(\.$detail, action: \.detail) {
-            ChatDetailFeature()
+        Reduce { state, action in
+            guard case .detail(.presented(.send)) = action else {
+                return .none
+            }
+            
+            let chat = state.detail!.chat
+            let message = chat.messages.last!
+            
+            return .publisher {
+                stockClient.send(message, chat)
+                    .map { .onChatUpdateSent }
+                    .receive(on: DispatchQueue.main)
+            }
+        }
+        Reduce { state, action in
+            var chats = state.chats
+            let detailState = state.detail
+            
+            if let detailState = detailState {
+                chats[id: detailState.chat.id] = detailState.chat
+            }
+            
+            return .run { [chats = chats] _ in
+                let data = try JSONEncoder().encode(chats)
+                try dataClient.save(data, .chats)
+            }
         }
     }
 }

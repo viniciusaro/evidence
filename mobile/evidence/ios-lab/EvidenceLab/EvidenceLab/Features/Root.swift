@@ -68,29 +68,6 @@ struct RootFeature {
                 return .none
             }
         }
-        Reduce { state, action in
-            guard case var .home(homeState) = state else {
-                return .none
-            }
-//            
-//            if let lastIndex = homeState.chatList.detail?.messages.count {
-//                homeState.chatList.detail?.messages[lastIndex - 1].message.isSent = true
-//                homeState.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
-//            }
-            
-            state = .home(homeState)
-            var chats = homeState.chatList.chats
-            let detailState = homeState.chatList.detail
-            
-            if let detailState = detailState {
-                chats[id: detailState.chat.id] = detailState.chat
-            }
-            
-            return .run { [chats = chats] _ in
-                let data = try JSONEncoder().encode(chats)
-                try dataClient.save(data, .chats)
-            }
-        }
     }
 }
 
