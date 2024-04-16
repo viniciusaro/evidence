@@ -3,7 +3,7 @@ import ComposableArchitecture
 import SwiftUI
 
 #if DEBUG
-var authClient = AuthClient.live
+var authClient = AuthClient.authenticated()
 var dataClient = DataClient.live
 #else
 let authClient = AuthClient.live
@@ -29,8 +29,8 @@ struct RootFeature {
         case login(LoginFeature.State)
         
         init() {
-            if let user = authClient.getAuthenticatedUser() {
-                self = .home(HomeFeature.State(user: user))
+            if let _ = authClient.getAuthenticatedUser() {
+                self = .home(HomeFeature.State())
             } else {
                 self = .login(LoginFeature.State())
             }
@@ -56,8 +56,8 @@ struct RootFeature {
             case .home:
                 return .none
 
-            case let .login(.onUserAuthenticated(user)):
-                state = .home(HomeFeature.State(user: user))
+            case .login(.onUserAuthenticated):
+                state = .home(HomeFeature.State())
                 return .none
 
             case .login:

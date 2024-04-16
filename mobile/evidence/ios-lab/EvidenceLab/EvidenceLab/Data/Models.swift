@@ -50,11 +50,23 @@ struct User: Equatable, Hashable, Identifiable, Codable {
 }
 
 extension User {
-    init(name: String) {
-        self.id = UserID()
+    init(name: String, id: UserID = UserID()) {
+        self.id = id
         self.name = name
     }
+    
+    init() {
+        self.id = UserID()
+        self.name = "empty"
+    }
 }
+
+extension User {
+    static let vini = User(name: "Vini", id: UserID("vini"))
+    static let cris = User(name: "Cris", id: UserID("cris"))
+    static let lili = User(name: "Lili ❤️‍🔥", id: UserID("lili"))
+}
+
 
 extension Chat {
     static let lili = Chat(
@@ -63,7 +75,7 @@ extension Chat {
         messages: [
             Message(content: "Oi amor", sender: .lili),
             Message(
-                content:"https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5",
+                content: "https://medium.com/@nqtuan86/clean-mac-storage-for-xcodes-users-5fbb32239aa5",
                 sender: .vini
             ),
         ]
@@ -71,7 +83,7 @@ extension Chat {
     
     static let evidence = Chat(
         name: "Evidence",
-        participants: [.vini, .lili],
+        participants: [.vini, .cris],
         messages: [
             Message(content: "Bom dia!", sender: .cris)
         ]

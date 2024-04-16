@@ -6,10 +6,9 @@ import SwiftUI
 struct ProfileFeature {
     @ObservableState
     struct State: Equatable {
-        @ObservationStateIgnored @Shared var user: User
-        
-        init(user: Shared<User>) {
-            self._user = user
+        var user: User
+        init() {
+            self.user = authClient.getAuthenticatedUser() ?? User()
         }
     }
     

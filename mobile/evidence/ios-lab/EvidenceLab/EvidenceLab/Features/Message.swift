@@ -6,7 +6,7 @@ import SwiftUI
     
     return MessageView(
         store: Store(
-            initialState: MessageFeature.State(message: .pointfree),
+            initialState: MessageFeature.State(message: .hi),
             reducer: { MessageFeature() }
         )
     )
@@ -18,9 +18,23 @@ struct MessageFeature {
     struct State: Identifiable, Equatable, Hashable {
         var id: MessageID { message.id }
         var message: Message
+        var user: User
         
         init(message: Message) {
             self.message = message
+            self.user = authClient.getAuthenticatedUser() ?? User()
+        }
+        
+        var alignment: HorizontalAlignment {
+            message.sender.id == user.id ? .trailing : .leading
+        }
+        
+        var textAlignment: TextAlignment {
+            return message.sender.id == user.id ? .trailing : .leading
+        }
+        
+        var frameAlignment: Alignment {
+            return message.sender.id == user.id ? .trailing : .leading
         }
     }
     
@@ -62,16 +76,21 @@ struct MessageView: View {
     let store: StoreOf<MessageFeature>
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: store.alignment) {
             HStack {
-                Text(store.message.content)
-                Spacer()
-                if store.message.isSent {
-                    Label("", systemImage: "checkmark")
-                        .labelStyle(.iconOnly)
-                        .font(.caption)
-                        .foregroundStyle(Color.gray)
+                VStack(alignment: store.alignment) {
+                    Text(store.message.content)
+                        .frame(maxWidth: .infinity, alignment: store.frameAlignment)
+                    Text(store.message.sender.name).font(.caption2)
+                        .frame(maxWidth: .infinity, alignment: store.frameAlignment)
+                    if store.message.isSent {
+                        Label("", systemImage: "checkmark")
+                            .labelStyle(.iconOnly)
+                            .font(.caption2)
+                            .foregroundStyle(Color.gray)
+                    }
                 }
+                .multilineTextAlignment(store.textAlignment)
             }
             if let preview = store.message.preview {
                 AsyncImage(url: preview.image) { phase in

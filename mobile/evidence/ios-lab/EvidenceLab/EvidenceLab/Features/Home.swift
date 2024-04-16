@@ -7,7 +7,7 @@ import SwiftUI
     
     return HomeView(
         store: Store(
-            initialState: HomeFeature.State(user: .vini),
+            initialState: HomeFeature.State(),
             reducer: { HomeFeature() }
         )
     )
@@ -18,21 +18,10 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
-        var profile: ProfileFeature.State
+        var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         var showAlert: Bool = false
         var alertText: String = ""
-        @ObservationStateIgnored @Shared var user: User
-        
-        init(user: User) {
-            let shared = Shared(wrappedValue: user)
-            self.chatList = .init()
-            self.profile = .init(user: shared)
-            self.selectedTab = .chatList
-            self.showAlert = false
-            self.alertText = ""
-            self._user = shared
-        }
         
         @CasePathable
         enum Tab: String {
