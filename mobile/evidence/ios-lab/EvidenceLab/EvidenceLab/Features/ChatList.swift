@@ -36,6 +36,7 @@ struct ChatListFeature {
     enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
         case onChatUpdate(Chat)
+        case onChatUpdateSent
         case onListItemTapped(Chat)
         case onListItemDelete(IndexSet)
         case onViewDidLoad
@@ -54,7 +55,20 @@ struct ChatListFeature {
                 state.chats[id: chatDetail.chat.id] = chatDetail.chat
                 return .none
                 
+            case .detail(.presented(.send)):
+                let chat = state.detail!.chat
+                let message = chat.messages.last!
+                
+                return .publisher {
+                    stockClient.send(message, chat)
+                        .map { .onChatUpdateSent }
+                        .receive(on: DispatchQueue.main)
+                }
+
             case .detail:
+                return .none
+                
+            case .onChatUpdateSent:
                 return .none
                 
             case let .onChatUpdate(chatUpdate):

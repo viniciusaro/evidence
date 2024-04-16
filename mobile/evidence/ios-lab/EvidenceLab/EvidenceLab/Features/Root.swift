@@ -3,7 +3,7 @@ import ComposableArchitecture
 import SwiftUI
 
 #if DEBUG
-var authClient = AuthClient.authenticated(.vini)
+var authClient = AuthClient.authenticated(.cris)
 var dataClient = DataClient.live
 var stockClient = StockClient.live
 var installationClient = InstallationClient.mock("1")
@@ -72,11 +72,11 @@ struct RootFeature {
             guard case var .home(homeState) = state else {
                 return .none
             }
-            
-            if let lastIndex = homeState.chatList.detail?.messages.count {
-                homeState.chatList.detail?.messages[lastIndex - 1].message.isSent = true
+//            
+//            if let lastIndex = homeState.chatList.detail?.messages.count {
+//                homeState.chatList.detail?.messages[lastIndex - 1].message.isSent = true
 //                homeState.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
-            }
+//            }
             
             state = .home(homeState)
             var chats = homeState.chatList.chats

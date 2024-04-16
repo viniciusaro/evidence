@@ -23,6 +23,7 @@ struct HomeFeature {
         var selectedTab: Tab = .chatList
         var showAlert: Bool = false
         var alertText: String = ""
+        var user: User
         
         @CasePathable
         enum Tab: String {
@@ -32,6 +33,21 @@ struct HomeFeature {
             var title: String {
                 return rawValue.capitalized
             }
+        }
+        
+        init(
+            chatList: ChatListFeature.State = .init(),
+            profile: ProfileFeature.State = .init(),
+            selectedTab: Tab = .chatList,
+            showAlert: Bool = false,
+            alertText: String = ""
+        ) {
+            self.chatList = chatList
+            self.profile = profile
+            self.selectedTab = selectedTab
+            self.showAlert = showAlert
+            self.alertText = alertText
+            self.user = authClient.getAuthenticatedUser() ?? User()
         }
     }
     @CasePathable
@@ -61,7 +77,7 @@ struct HomeFeature {
                 let chat = Chat(
                     id: ChatID(UUID().uuidString),
                     name: state.alertText,
-                    participants: [.vini],
+                    participants: [.vini, .cris, .lili],
                     messages: []
                 )
                 state.chatList.chats.insert(chat, at: 0)
