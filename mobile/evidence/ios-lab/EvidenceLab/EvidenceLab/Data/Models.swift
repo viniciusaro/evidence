@@ -1,23 +1,33 @@
 import Foundation
 
-typealias MessageID = UUID
-typealias ChatID = UUID
+typealias MessageID = String
+typealias ChatID = String
 typealias UserID = String
 typealias AuthorID = String
 
 struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
-    var messages: [Message]
     let name: String
     var participants: [User]
+    var messages: [Message]
 }
 
 extension Chat {
-    init(name: String, participants: [User], messages: [Message]) {
-        self.id = ChatID()
-        self.name = name
-        self.messages = messages
-        self.participants = participants
+    static func random(using chats: [Chat]) -> Chat {
+        let newChat = Chat(
+            id: ChatID(UUID().uuidString),
+            name: randomString(length: 10),
+            participants: [randomUser()],
+            messages: []
+        )
+        let chat = chats.randomElement() ?? newChat
+        
+        return Chat(
+            id: chat.id,
+            name: chat.name,
+            participants: [randomUser()],
+            messages: [Message.random()]
+        )
     }
 }
 
@@ -31,11 +41,20 @@ struct Message: Identifiable, Equatable, Hashable, Codable {
 
 extension Message {
     init(content: String, sender: User) {
-        self.id = MessageID()
+        self.id = MessageID(UUID().uuidString)
         self.content = content
         self.preview = nil
         self.isSent = false
         self.sender = sender
+    }
+    
+    static func random() -> Message {
+        Message(
+            id: MessageID(UUID().uuidString),
+            sender: randomUser(),
+            content: randomString(length: 30),
+            isSent: true
+        )
     }
 }
 
@@ -56,20 +75,21 @@ extension User {
     }
     
     init() {
-        self.id = UserID()
+        self.id = UserID(UUID().uuidString)
         self.name = "empty"
     }
 }
 
 extension User {
-    static let vini = User(name: "Vini", id: UserID("vini"))
-    static let cris = User(name: "Cris", id: UserID("cris"))
-    static let lili = User(name: "Lili ❤️‍🔥", id: UserID("lili"))
+    static let vini = User(name: "Vini", id: UserID("1A1BF872-73A0-4E12-9DD3-090961017CEE"))
+    static let cris = User(name: "Cris", id: UserID("5101FEA4-744D-4D99-B71D-B3E53B2EFEA8"))
+    static let lili = User(name: "Lili ❤️‍🔥", id: UserID("0A8F38BA-9484-4889-A74D-46444F3FE52B"))
 }
 
 
 extension Chat {
     static let lili = Chat(
+        id: "5CA52B4E-4BD9-4776-9D4C-1A0E9C76B062",
         name: "Lili ❤️‍🔥",
         participants: [.vini, .lili],
         messages: [
@@ -82,6 +102,7 @@ extension Chat {
     )
     
     static let evidence = Chat(
+        id: "EBEE82D9-F00A-4372-A14D-34E68BFB17E5",
         name: "Evidence",
         participants: [.vini, .cris],
         messages: [
@@ -90,6 +111,7 @@ extension Chat {
     )
     
     static let recepies = Chat(
+        id: "34CD9181-C419-41E7-ACED-6A9391105DC7",
         name: "Nossas Receitas",
         participants: [.vini, .lili],
         messages: [
@@ -107,7 +129,7 @@ extension Chat {
 
 extension Message {
     static let hi = Message(
-        id: UUID(),
+        id: MessageID(UUID().uuidString),
         sender: .vini,
         content: "Olá",
         preview: nil,
@@ -115,10 +137,20 @@ extension Message {
     )
     
     static let pointfree = Message(
-        id: UUID(),
+        id: MessageID(UUID().uuidString),
         sender: .cris,
         content: "https://www.pointfree.co/episodes/ep274-shared-state-user-defaults-part-2",
         preview: nil,
         isSent: false
     )
+}
+
+func randomString(length: Int) -> String {
+    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return String((0..<length).map{ _ in letters.randomElement()! })
+}
+
+func randomUser() -> User {
+    let users = [User.vini, User.cris, User.lili]
+    return users.randomElement() ?? .vini
 }

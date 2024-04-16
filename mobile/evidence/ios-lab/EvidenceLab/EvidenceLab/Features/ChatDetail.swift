@@ -19,6 +19,7 @@ struct ChatDetailFeature {
         var chat: Chat
         var inputText: String
         var messages: IdentifiedArrayOf<MessageFeature.State>
+        var user: User
         
         init(chat: Chat, inputText: String = "") {
             self.chat = chat
@@ -26,6 +27,7 @@ struct ChatDetailFeature {
             self.messages = IdentifiedArray(
                 uniqueElements: chat.messages.map { MessageFeature.State(message: $0) }
             )
+            self.user = authClient.getAuthenticatedUser() ?? User()
         }
     }
     
@@ -47,7 +49,7 @@ struct ChatDetailFeature {
                 return .none
                 
             case .send:
-                let newMessage = Message(content: state.inputText, sender: .vini)
+                let newMessage = Message(content: state.inputText, sender: state.user)
                 let newMessageState = MessageFeature.State(message: newMessage)
                 state.messages.append(newMessageState)
                 state.inputText = ""

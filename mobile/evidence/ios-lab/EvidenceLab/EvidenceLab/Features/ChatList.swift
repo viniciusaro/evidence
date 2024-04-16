@@ -3,6 +3,7 @@ import SwiftUI
 
 #Preview {
     dataClient = DataClient.mock(Chat.mockList)
+    stockClient = StockClient.mock(Chat.mockList)
     
     return ChatListView(
         store: Store(
@@ -34,8 +35,10 @@ struct ChatListFeature {
     @CasePathable
     enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
+        case onChatUpdate(Chat)
         case onListItemTapped(Chat)
         case onListItemDelete(IndexSet)
+        case onViewDidLoad
     }
     
     var body: some ReducerOf<Self> {
@@ -54,6 +57,21 @@ struct ChatListFeature {
             case .detail:
                 return .none
                 
+            case let .onChatUpdate(chatUpdate):
+                if let localChat = state.chats[id: chatUpdate.id] {
+                    state.chats[id: localChat.id]?.messages.append(contentsOf: chatUpdate.messages)
+                } else {
+                    state.chats.insert(chatUpdate, at: 0)
+                }
+                if let detail = state.detail, detail.chat.id == chatUpdate.id {
+                    state.detail?.chat.messages.append(contentsOf: chatUpdate.messages)
+                    state.detail?.messages.append(contentsOf: chatUpdate.messages.map {
+                        MessageFeature.State(message: $0)
+                    }   )
+                }
+                
+                return .none
+                
             case let .onListItemTapped(chat):
                 state.detail = ChatDetailFeature.State(chat: chat)
                 return .none
@@ -61,8 +79,16 @@ struct ChatListFeature {
             case let .onListItemDelete(indexSet):
                 state.chats.remove(atOffsets: indexSet)
                 return .none
+            
+            case .onViewDidLoad:
+                return .publisher {
+                    stockClient.consume()
+                        .map { .onChatUpdate($0) }
+                }
             }
+            
         }
+        ._printChanges()
         .ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
         }
@@ -91,5 +117,8 @@ struct ChatListView: View {
             }
         }
         .listStyle(.plain)
+        .onViewDidLoad {
+            store.send(.onViewDidLoad)
+        }
     }
 }
