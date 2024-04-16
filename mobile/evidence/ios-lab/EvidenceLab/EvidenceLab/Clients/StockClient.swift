@@ -14,10 +14,10 @@ extension StockClient {
         send: { _, _ in Empty().eraseToAnyPublisher() }
     )
     
-    static func mock(_ using: [Chat]) -> StockClient {
+    static func mock(_ using: [Chat], interval: Double = 5) -> StockClient {
         StockClient(
             consume: {
-                Timer.publish(every: 5, on: .main, in: .default)
+                Timer.publish(every: interval, on: .main, in: .default)
                     .autoconnect()
                     .map { _ in Chat.random(using: using) }
                     .eraseToAnyPublisher()

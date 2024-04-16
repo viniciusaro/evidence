@@ -4,6 +4,8 @@ import OrderedCollections
 
 #Preview {
     dataClient = DataClient.mock(Chat.mockList)
+    stockClient = StockClient.mock(Chat.mockList, interval: 1)
+    authClient = AuthClient.authenticated()
     
     return ChatDetailView(
         store: Store(
@@ -21,6 +23,11 @@ struct ChatDetailFeature {
         var inputText: String
         var messages: IdentifiedArrayOf<MessageFeature.State>
         var user: User
+        
+        var title: String {
+            let participants = chat.participants.reduce("", { $0 + String($1.name.first!) })
+            return "\(chat.name) \(participants)"
+        }
         
         init(chat: Chat, inputText: String = "") {
             self.chat = chat
@@ -79,7 +86,6 @@ struct ChatDetailView: View {
                     MessageView(store: store)
                 }
             }
-            .listStyle(.plain)
             HStack(spacing: 12) {
                 Button(action: {
                     
@@ -110,7 +116,8 @@ struct ChatDetailView: View {
             .padding(10)
             .background(Color(red: 20/255, green: 20/255, blue: 20/255))
         }
-        .navigationTitle(store.chat.name)
+        .listStyle(.plain)
+        .navigationTitle(store.title)
     }
 }
 

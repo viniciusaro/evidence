@@ -4,7 +4,8 @@ import SwiftUI
 
 #Preview {
     dataClient = DataClient.mock(Chat.mockList)
-    stockClient = StockClient.mock(Chat.mockList)
+    stockClient = StockClient.mock(Chat.mockList, interval: 20)
+    authClient = AuthClient.authenticated()
     
     return HomeView(
         store: Store(
@@ -65,6 +66,16 @@ struct HomeFeature {
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case let .chatList(.newChatSetup(.presented(.onUserSelected(user)))):
+                guard var chat = state.chatList.newChatSetup?.chat else {
+                    return .none
+                }
+                chat.participants = [user, state.user]
+                state.chatList.newChatSetup = nil
+                state.chatList.chats.insert(chat, at: 0)
+                state.chatList.detail = ChatDetailFeature.State(chat: chat)
+                return .none
+                
             case .chatList:
                 return .none
                 
@@ -77,11 +88,10 @@ struct HomeFeature {
                 let chat = Chat(
                     id: ChatID(UUID().uuidString),
                     name: state.alertText,
-                    participants: [.vini, .cris, .lili],
+                    participants: [],
                     messages: []
                 )
-                state.chatList.chats.insert(chat, at: 0)
-                state.chatList.detail = ChatDetailFeature.State(chat: chat)
+                state.chatList.newChatSetup = NewChatSetupFeature.State(chat: chat)
                 state.showAlert = false
                 state.alertText = ""
                 return .none
@@ -169,6 +179,12 @@ struct HomeView: View {
                 action: \.chatList.detail
             )) { store in
                 ChatDetailView(store: store)
+            }
+            .navigationDestination(item: $store.scope(
+                state: \.chatList.newChatSetup,
+                action: \.chatList.newChatSetup
+            )) { store in
+                NewChatSetupView(store: store)
             }
             .navigationTitle(store.selectedTab.title)
             .navigationBarTitleDisplayMode(.inline)

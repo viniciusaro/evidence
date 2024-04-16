@@ -19,6 +19,7 @@ struct ChatListFeature {
     struct State: Equatable {
         var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
+        @Presents var newChatSetup: NewChatSetupFeature.State? = nil
         
         init(detail: ChatDetailFeature.State? = nil) {
             self.detail = detail
@@ -35,6 +36,7 @@ struct ChatListFeature {
     @CasePathable
     enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
+        case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
         case onChatUpdateReceived(Chat)
         case onChatUpdateSent
         case onListItemTapped(Chat)
@@ -46,19 +48,20 @@ struct ChatListFeature {
         EmptyReducer().ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
         }
+        .onChange(of: \.detail) { oldValue, newValue in
+            Reduce { state, action in
+                if let oldValue = oldValue, newValue == nil {
+                    state.chats[id: oldValue.chat.id] = oldValue.chat
+                }
+                return .none
+            }
+        }
         Reduce { state, action in
             switch action {
-            case .detail(.dismiss):
-                defer {
-                    state.detail = nil
-                }
-                guard let chatDetail = state.detail else {
-                    return .none
-                }
-                state.chats[id: chatDetail.chat.id] = chatDetail.chat
-                return .none
-
             case .detail:
+                return .none
+                
+            case .newChatSetup:
                 return .none
                 
             case .onChatUpdateSent:
@@ -126,6 +129,9 @@ struct ChatListFeature {
                 let data = try JSONEncoder().encode(chats)
                 try dataClient.save(data, .chats)
             }
+        }
+        .ifLet(\.$newChatSetup, action: \.newChatSetup) {
+            NewChatSetupFeature()
         }
     }
 }

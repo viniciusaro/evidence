@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		630618B92BCC91A8003A43F1 /* DataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630618B82BCC91A8003A43F1 /* DataClient.swift */; };
 		63458C332BC8A51B002BACB0 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63458C322BC8A51B002BACB0 /* Shared.swift */; };
+		6348B1372BCF170900E49A76 /* NewChatSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348B1362BCF170900E49A76 /* NewChatSetup.swift */; };
 		6357BD272BCCB89C00640706 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6357BD262BCCB89C00640706 /* IdentifiedCollections */; };
 		6357BD292BCD8FC800640706 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 6357BD282BCD8FC800640706 /* ComposableArchitecture */; };
 		6357BD2C2BCDA8AF00640706 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6357BD2B2BCDA8AF00640706 /* FirebaseAuth */; };
@@ -62,6 +63,7 @@
 /* Begin PBXFileReference section */
 		630618B82BCC91A8003A43F1 /* DataClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClient.swift; sourceTree = "<group>"; };
 		63458C322BC8A51B002BACB0 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		6348B1362BCF170900E49A76 /* NewChatSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatSetup.swift; sourceTree = "<group>"; };
 		6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6361D20B2BBE49C100F7866D /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
 		6369AD5F2BB36C840067E2EC /* EvidenceLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvidenceLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +210,7 @@
 				637239872BC56E2100F8E66E /* Message.swift */,
 				6372398F2BC56EE700F8E66E /* Profile.swift */,
 				637239932BC56F2500F8E66E /* Root.swift */,
+				6348B1362BCF170900E49A76 /* NewChatSetup.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */,
 				6375E6D82BB47EC2002E47F3 /* PreviewClient.swift in Sources */,
 				637239922BC56F0500F8E66E /* Login.swift in Sources */,
+				6348B1372BCF170900E49A76 /* NewChatSetup.swift in Sources */,
 				630618B92BCC91A8003A43F1 /* DataClient.swift in Sources */,
 				637239832BC56CEF00F8E66E /* Store+SwiftUI.swift in Sources */,
 				6372397D2BC56C6B00F8E66E /* Reducer.swift in Sources */,
