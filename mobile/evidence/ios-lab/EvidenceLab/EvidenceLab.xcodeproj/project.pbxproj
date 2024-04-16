@@ -37,6 +37,9 @@
 		63797AC92BBAD33E00188427 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797AC82BBAD33E00188427 /* Models.swift */; };
 		63797ACB2BBAD57600188427 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797ACA2BBAD57600188427 /* Helpers.swift */; };
 		63B79C8F2BCEB3F4002B16AE /* StockClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B79C8E2BCEB3F4002B16AE /* StockClient.swift */; };
+		63B79C912BCEC5AC002B16AE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 63B79C902BCEC5AC002B16AE /* FirebaseFirestore */; };
+		63B79C932BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 63B79C922BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community */; };
+		63B79C952BCEC5F9002B16AE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 63B79C942BCEC5F9002B16AE /* FirebaseFirestoreSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +99,9 @@
 				63797AC52BBAD2B800188427 /* CasePaths in Frameworks */,
 				6357BD272BCCB89C00640706 /* IdentifiedCollections in Frameworks */,
 				6357BD292BCD8FC800640706 /* ComposableArchitecture in Frameworks */,
+				63B79C952BCEC5F9002B16AE /* FirebaseFirestoreSwift in Frameworks */,
+				63B79C932BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community in Frameworks */,
+				63B79C912BCEC5AC002B16AE /* FirebaseFirestore in Frameworks */,
 				6357BD2C2BCDA8AF00640706 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,6 +267,9 @@
 				6357BD262BCCB89C00640706 /* IdentifiedCollections */,
 				6357BD282BCD8FC800640706 /* ComposableArchitecture */,
 				6357BD2B2BCDA8AF00640706 /* FirebaseAuth */,
+				63B79C902BCEC5AC002B16AE /* FirebaseFirestore */,
+				63B79C922BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community */,
+				63B79C942BCEC5F9002B16AE /* FirebaseFirestoreSwift */,
 			);
 			productName = EvidenceLab;
 			productReference = 6369AD5F2BB36C840067E2EC /* EvidenceLab.app */;
@@ -788,6 +797,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63F50B362BB8CA4400CEA1F1 /* XCRemoteSwiftPackageReference "swift-case-paths" */;
 			productName = CasePaths;
+		};
+		63B79C902BCEC5AC002B16AE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6357BD2A2BCDA7C400640706 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		63B79C922BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6357BD2A2BCDA7C400640706 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		63B79C942BCEC5F9002B16AE /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6357BD2A2BCDA7C400640706 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -5,11 +5,11 @@ import SwiftUI
 #if DEBUG
 var authClient = AuthClient.authenticated(.vini)
 var dataClient = DataClient.live
-var stockClient = StockClient.empty
+var stockClient = StockClient.live
 #else
 let authClient = AuthClient.live
 let dataClient = DataClient.live
-let stockClient = StockClient.empty
+let stockClient = StockClient.live
 #endif
 
 #Preview {
