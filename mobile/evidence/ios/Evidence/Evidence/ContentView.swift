@@ -7,25 +7,41 @@ import Login
 
 struct ContentView: View {
     @Environment(\.leafTheme) private var theme
+    @ObservedObject var loginViewModel = LoginViewModel()
 
     var body: some View {
-        LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
-//        NavigationStack {
-//            TabView() {
-//                HomeView()
-//                    .tabItem {
-//                        Image(systemName: "house.fill")
-//                        Text("Home")
-//                    }
-//
-//                YouView()
-//                    .tabItem {
-//                        Image(systemName: "face.dashed")
-//                        Text("You")
-//                    }
-//            }
-//            .tint(theme.color.text.primary)
-//        }
+        ZStack {
+            NavigationStack {
+                TabView() {
+                    HomeView()
+                        .tabItem {
+                            Image(systemName: "house.fill")
+                            Text("Home")
+                        }
+
+                    YouView()
+                        .tabItem {
+                            Image(systemName: "face.dashed")
+                            Text("You")
+                        }
+
+                    LoginSettingView(viewModel: loginViewModel.loginSettingViewModel)
+                        .tabItem {
+                            Image(systemName: "gearshape.circle.fill")
+                            Text("Setting")
+                        }
+                }
+                .tint(theme.color.text.primary)
+            }
+        }
+        .onAppear {
+            loginViewModel.getAuthenticationUser()
+        }
+        .fullScreenCover(isPresented: $loginViewModel.isUserNotAuthenticated, content: {
+            LoginView(viewModel: loginViewModel)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(theme.color.backgrond.aubergine)
+        })
     }
 }
 

@@ -18,29 +18,17 @@ public struct LoginView: View {
     }
 
     public var body: some View {
-        ZStack {
-            NavigationStack {
-                LoginSetting(viewModel: viewModel.loginSettingViewModel, isUserNotAuthenticated: $viewModel.isUserNotAuthenticated)
-            }
+        VStack {
+            Title()
+            LeafImageLogin()
+            Spacer()
+            GettingStartedButton(viewModel: viewModel)
         }
-        .onAppear {
-            viewModel.getAuthenticationUser()
-        }
-        .fullScreenCover(isPresented: $viewModel.isUserNotAuthenticated, content: {
-            VStack {
-                Title()
-                LeafImageLogin()
-                Spacer()
-                GettingStartedButton(viewModel: viewModel)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(theme.color.backgrond.aubergine)
-        })
     }
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+    LoginView(viewModel: LoginViewModel())
 }
 
 struct Title: View {
@@ -109,4 +97,5 @@ struct LoginAuthModal: View {
     LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
         .previewCustomFonts()
 }
+
 

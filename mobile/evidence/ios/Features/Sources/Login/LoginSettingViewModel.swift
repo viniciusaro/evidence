@@ -10,20 +10,18 @@ import Dependencies
 
 public class LoginSettingViewModel: ObservableObject {
     @Dependency(\.loginManager) private var loginManager
+    var delegateIsUserAuthenticated: () -> Void = { fatalError("delegateIsUserAuthenticated isn't working!") }
 
     public init() {}
-
-    private func signOut() throws {
-        try loginManager.signOut()
-    }
 
     func signOutButtonTapped() {
         Task {
             do {
-                try signOut()
+                try loginManager.signOut()
             } catch {
-                print("SignOut", error)
+                print("SignOut button with error", error)
             }
         }
+        delegateIsUserAuthenticated()
     }
 }

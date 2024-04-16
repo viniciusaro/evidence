@@ -76,8 +76,6 @@ struct EmailInput: View {
     @ObservedObject var viewModel: LoginEmailViewModel
     @FocusState private var isFocused: Bool
 
-    
-
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Enter You Email Address")
