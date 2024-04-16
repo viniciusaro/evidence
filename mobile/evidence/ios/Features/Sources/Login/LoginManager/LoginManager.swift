@@ -1,9 +1,7 @@
 //
 //  File.swift
 //
-//
-//  Created by Cris Messias on 01/02/24.
-//
+//  LoginManager.swift
 
 import Foundation
 import FirebaseAuth
@@ -53,6 +51,7 @@ final public class FirebaseLoginManager: LoginManager {
 }
 
 final public class AuthenticatedLoginManager: LoginManager {
+    
     var authenticatedUser: Login?
 
     func creatUser(email: String, password: String) async throws -> Login {
@@ -69,14 +68,11 @@ final public class AuthenticatedLoginManager: LoginManager {
         }
         return user
     }
-
+    
     func signOut() throws {
-        guard authenticatedUser != nil else {
-            throw NSError(domain: "signOut", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
-        }
-        authenticatedUser = nil
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
-
+    
     func signIn(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }

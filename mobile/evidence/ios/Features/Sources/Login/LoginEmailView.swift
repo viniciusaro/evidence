@@ -63,6 +63,7 @@ struct LoginEmailButton: View {
                 viewModel.loginEmailButtonTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
+
         }
     }
 }
@@ -145,7 +146,6 @@ struct LoginEmailPasswordInput: View {
                             .foregroundStyle(theme.color.text.secondary)
                     }
                 }
-
             }
             .padding([.leading, .trailing], 16)
             .overlay {

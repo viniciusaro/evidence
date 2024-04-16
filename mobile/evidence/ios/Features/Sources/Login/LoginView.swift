@@ -105,4 +105,3 @@ struct LoginAuthModal: View {
     LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
         .previewCustomFonts()
 }
-

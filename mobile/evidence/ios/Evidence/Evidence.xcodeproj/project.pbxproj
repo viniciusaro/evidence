@@ -262,6 +262,7 @@
 				6395EDC52AC39198000EB04A /* Preview Assets.xcassets in Resources */,
 				8A35BAED2BCD07440070CD4C /* GoogleService-Info.plist in Resources */,
 				6395EDC22AC39198000EB04A /* Assets.xcassets in Resources */,
+				8A35BAF12BCD0A0F0070CD4C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

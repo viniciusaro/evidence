@@ -20,7 +20,6 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
-
     public init(
         emailInput: String = "",
         passwordInput: String = "",
@@ -89,7 +88,6 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", options: [.caseInsensitive])
         return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
     }
-
 
     func isValidPassword(_ password: String) -> Bool {
         let passwordRegex = #"^.{8,}$"#
