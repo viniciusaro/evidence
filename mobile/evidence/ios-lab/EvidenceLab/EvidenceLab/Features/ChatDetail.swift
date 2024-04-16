@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
+import OrderedCollections
 
 #Preview {
     dataClient = DataClient.mock(Chat.mockList)
@@ -61,7 +62,7 @@ struct ChatDetailFeature {
         }
         .onChange(of: \.messages) { oldValue, newValue in
             Reduce { state, action in
-                state.chat.messages = newValue.map { $0.message }
+                state.chat.messages = OrderedSet(newValue.map { $0.message })
                 return .none
             }
         }

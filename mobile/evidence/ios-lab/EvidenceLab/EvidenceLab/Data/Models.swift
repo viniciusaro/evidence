@@ -1,4 +1,5 @@
 import Foundation
+import OrderedCollections
 
 typealias MessageID = String
 typealias ChatID = String
@@ -9,7 +10,7 @@ struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
     let name: String
     var participants: [User]
-    var messages: [Message]
+    var messages: OrderedSet<Message>
 }
 
 extension Chat {
@@ -37,6 +38,14 @@ struct Message: Identifiable, Equatable, Hashable, Codable {
     var content: String
     var preview: Preview?
     var isSent: Bool
+    
+    static func == (lhs: Message, rhs: Message) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 extension Message {

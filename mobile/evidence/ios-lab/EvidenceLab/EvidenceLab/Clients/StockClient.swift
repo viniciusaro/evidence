@@ -22,11 +22,15 @@ extension StockClient {
     
     static let live = StockClient {
         let subject = PassthroughSubject<Chat, Never>()
+        
+        let userId = authClient.getAuthenticatedUser()!.id
+        let installationId = installationClient.getCurrentInstallationId()
+
         let listenerId = Firestore.firestore()
             .collection("users")
-            .document("teste")
-            .collection("installations")
-            .document("1")
+            .document(userId)
+            .collection("installation")
+            .document(installationId)
             .collection("stock")
             .addSnapshotListener { snapshot, error in
                 if let snapshot = snapshot {

@@ -6,10 +6,12 @@ import SwiftUI
 var authClient = AuthClient.authenticated(.vini)
 var dataClient = DataClient.live
 var stockClient = StockClient.live
+var installationClient = InstallationClient.mock("1")
 #else
 let authClient = AuthClient.live
 let dataClient = DataClient.live
 let stockClient = StockClient.live
+let installationClient = InstallationClient.mock("1")
 #endif
 
 #Preview {
@@ -73,7 +75,7 @@ struct RootFeature {
             
             if let lastIndex = homeState.chatList.detail?.messages.count {
                 homeState.chatList.detail?.messages[lastIndex - 1].message.isSent = true
-                homeState.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
+//                homeState.chatList.detail?.chat.messages[lastIndex - 1].isSent = true
             }
             
             state = .home(homeState)

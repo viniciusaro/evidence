@@ -64,10 +64,15 @@ struct ChatListFeature {
                     state.chats.insert(chatUpdate, at: 0)
                 }
                 if let detail = state.detail, detail.chat.id == chatUpdate.id {
-                    state.detail?.chat.messages.append(contentsOf: chatUpdate.messages)
-                    state.detail?.messages.append(contentsOf: chatUpdate.messages.map {
-                        MessageFeature.State(message: $0)
-                    }   )
+                    let actual = detail.chat.messages
+                    let update = chatUpdate.messages
+                    let existing = actual.intersection(update)
+                    let new = update.subtracting(existing)
+                    
+                    new.forEach {
+                        state.detail?.chat.messages.append($0)
+                        state.detail?.messages.append(MessageFeature.State(message: $0))
+                    }
                 }
                 
                 return .none
