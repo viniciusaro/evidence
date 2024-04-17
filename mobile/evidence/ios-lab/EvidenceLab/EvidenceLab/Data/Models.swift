@@ -8,7 +8,7 @@ typealias AuthorID = String
 
 struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
-    let name: String
+    var name: String
     var participants: [User]
     var messages: OrderedSet<Message>
 }

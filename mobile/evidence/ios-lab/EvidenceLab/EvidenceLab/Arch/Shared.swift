@@ -1,6 +1,5 @@
 import Foundation
 
-@propertyWrapper
 struct Shared<Value> {
     var wrappedValue: Value {
         get { self.storage.wrappedValue }
@@ -10,22 +9,7 @@ struct Shared<Value> {
     private let storage: Storage
     
     init(wrappedValue: Value) {
-        if let shared = sharedValues[String(describing: type(of: wrappedValue))] as? Storage {
-            self.storage = shared
-        } else {
-            self.storage = Storage(wrappedValue)
-            sharedValues[String(describing: type(of: wrappedValue))] = self.storage
-        }
-    }
-    
-    init(force: Value) {
-        if let shared = sharedValues[String(describing: type(of: force))] as? Storage {
-            self.storage = shared
-            self.storage.wrappedValue = force
-        } else {
-            self.storage = Storage(force)
-            sharedValues[String(describing: type(of: wrappedValue))] = self.storage
-        }
+        self.storage = Storage(wrappedValue)
     }
     
     class Storage {
@@ -36,8 +20,6 @@ struct Shared<Value> {
         }
     }
 }
-
-private var sharedValues: [String: AnyObject] = [:]
 
 extension Shared: Equatable where Value: Equatable {
     static func == (lhs: Shared<Value>, rhs: Shared<Value>) -> Bool {
