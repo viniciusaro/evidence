@@ -16,7 +16,7 @@ import SwiftUI
 @Reducer
 struct ChatListFeature {
     @ObservableState
-    struct State: Equatable {
+    struct State: Equatable, Codable {
         var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil

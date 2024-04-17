@@ -13,7 +13,7 @@ import SwiftUI
 @Reducer
 struct NewChatSetupFeature {
     @ObservableState
-    struct State: Equatable {
+    struct State: Equatable, Codable {
         var chat: Chat
         var users: [User]
         var alertIsPresented: Bool

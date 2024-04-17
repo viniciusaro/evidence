@@ -18,13 +18,13 @@ import SwiftUI
 @Reducer
 struct HomeFeature {
     @ObservableState
-    struct State: Equatable {
+    struct State: Equatable, Codable {
         var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
         @CasePathable
-        enum Tab: String {
+        enum Tab: String, Codable {
             case chatList = "Conversas"
             case profile = "Perfil"
             

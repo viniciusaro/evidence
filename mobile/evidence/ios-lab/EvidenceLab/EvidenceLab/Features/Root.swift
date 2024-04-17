@@ -34,7 +34,13 @@ struct RootFeature {
         
         init() {
             if let _ = authClient.getAuthenticatedUser() {
-                self = .home(HomeFeature.State())
+                do {
+                    let data = try dataClient.load(.state)
+                    let homeState = try JSONDecoder().decode(HomeFeature.State.self, from: data)
+                    self = .home(homeState)
+                } catch {
+                    self = .home(HomeFeature.State())
+                }
             } else {
                 self = .login(LoginFeature.State())
             }
@@ -58,7 +64,12 @@ struct RootFeature {
         Reduce { state, action in
             switch action {
             case .home:
-                return .none
+                guard case let .home(homeState) = state else {
+                    return .none
+                }
+                return .run { [state = homeState] _ in
+                    try JSONEncoder().encode(state).write(to: .state)
+                }
 
             case .login(.onUserAuthenticated):
                 state = .home(HomeFeature.State())

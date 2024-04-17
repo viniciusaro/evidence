@@ -18,7 +18,7 @@ import OrderedCollections
 @Reducer
 struct ChatDetailFeature {
     @ObservableState
-    struct State: Equatable, Hashable {
+    struct State: Equatable, Hashable, Codable {
         var chat: Chat
         var inputText: String
         var messages: IdentifiedArrayOf<MessageFeature.State>

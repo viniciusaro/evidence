@@ -15,7 +15,7 @@ import SwiftUI
 @Reducer
 struct MessageFeature {
     @ObservableState
-    struct State: Identifiable, Equatable, Hashable {
+    struct State: Identifiable, Equatable, Hashable, Codable {
         var id: MessageID { message.id }
         var message: Message
         var user: User

@@ -21,4 +21,5 @@ extension DataClient {
 
 extension URL {
     static let chats = Self.documentsDirectory.appending(path: "chats.json")
+    static let state = Self.documentsDirectory.appending(path: "state.json")
 }
