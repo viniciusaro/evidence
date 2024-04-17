@@ -4,7 +4,13 @@ import FirebaseAuth
 
 struct AuthClient {
     let getAuthenticatedUser: () -> User?
-    let authenticate: (String, String) -> AnyPublisher<User, Never>
+    let authenticate: (String, String) -> AnyPublisher<User, Error>
+    
+    enum Error: Swift.Error {
+        case invalidCredentials
+        case credentialAlreadyInUse
+        case unknown(Swift.Error)
+    }
 }
 
 extension AuthClient {
@@ -21,7 +27,9 @@ extension AuthClient {
             getAuthenticatedUser: { subject.value },
             authenticate: { email, password in
                 subject.send(user)
-                return Just(user).eraseToAnyPublisher()
+                return Just(user)
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
             }
         )
     }
@@ -34,13 +42,33 @@ extension AuthClient {
             return nil
         },
         authenticate: { email, password in
-            let subject = PassthroughSubject<User, Never>()
-            Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                if let result = result {
+            let subject = PassthroughSubject<User, Error>()
+            
+            let token = Task {
+                do {
+                    let result = try await Auth.auth().createUser(withEmail: email, password: password)
                     subject.send(User(from: result.user))
+                } catch {
+                    if AuthErrorCode(_nsError: error as NSError).code == .emailAlreadyInUse {
+                        do {
+                            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+                            subject.send(User(from: result.user))
+                        }
+                        catch {
+                            switch AuthErrorCode(_nsError: error as NSError).code {
+                            case .invalidCredential:
+                                subject.send(completion: .failure(.invalidCredentials))
+                            default:
+                                subject.send(completion: .failure(.unknown(error)))
+                            }
+                        }
+                    }
                 }
             }
-            return subject.eraseToAnyPublisher()
+            
+            return subject
+                .handleEvents(receiveCancel: { token.cancel() })
+                .eraseToAnyPublisher()
         }
     )
 }

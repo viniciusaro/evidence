@@ -24,6 +24,7 @@ struct LoginFeature {
     enum Action {
         case onSubmitButtonTapped
         case onUserAuthenticated(User)
+        case onUserAuthenticationError(AuthClient.Error)
         case onEmailInputChanged(String)
         case onPasswordInputChanged(String)
     }
@@ -46,9 +47,15 @@ struct LoginFeature {
                     authClient.authenticate(username, password)
                         .first()
                         .map { .onUserAuthenticated($0) }
+                        .catch { Just(.onUserAuthenticationError($0)) }
+                        .receive(on: DispatchQueue.main)
                 }
                 
             case .onUserAuthenticated:
+                return .none
+                
+            case let .onUserAuthenticationError(error):
+                print("error: \(error)")
                 return .none
             }
         }

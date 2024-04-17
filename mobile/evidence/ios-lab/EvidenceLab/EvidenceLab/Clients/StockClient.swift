@@ -50,7 +50,9 @@ extension StockClient {
                     }
                 }
             
-            return subject.eraseToAnyPublisher()
+            return subject
+                .handleEvents(receiveCancel: { listenerId.remove() })
+                .eraseToAnyPublisher()
         },
         send: { message, chat in
             do {
