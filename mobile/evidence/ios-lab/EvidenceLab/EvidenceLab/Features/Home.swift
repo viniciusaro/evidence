@@ -3,9 +3,9 @@ import ComposableArchitecture
 import SwiftUI
 
 #Preview {
+    authClient = AuthClient.authenticated()
     dataClient = DataClient.mock(Chat.mockList)
     stockClient = StockClient.mock(Chat.mockList, interval: 20)
-    authClient = AuthClient.authenticated()
     
     return HomeView(
         store: Store(

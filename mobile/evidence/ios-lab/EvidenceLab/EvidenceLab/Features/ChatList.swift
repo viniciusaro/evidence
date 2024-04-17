@@ -48,43 +48,20 @@ struct ChatListFeature {
         EmptyReducer().ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
         }
-        .onChange(of: \.detail) { oldValue, newValue in
-            Reduce { state, action in
-                if let oldValue = oldValue, newValue == nil {
-                    state.chats[id: oldValue.chat.id] = oldValue.chat
-                }
-                return .none
-            }
+        .ifLet(\.$newChatSetup, action: \.newChatSetup) {
+            NewChatSetupFeature()
         }
         Reduce { state, action in
             switch action {
-            case .detail:
-                return .none
-                
-            case .newChatSetup:
-                return .none
-                
-            case .onChatUpdateSent:
+            case .detail, .newChatSetup, .onChatUpdateSent:
                 return .none
                 
             case let .onChatUpdateReceived(chatUpdate):
-                if let localChat = state.chats[id: chatUpdate.id] {
-                    state.chats[id: localChat.id]?.messages.append(contentsOf: chatUpdate.messages)
+                if let chat = state.chats[id: chatUpdate.id] {
+                    state.chats[id: chat.id]?.messages.append(contentsOf: chatUpdate.messages)
                 } else {
                     state.chats.insert(chatUpdate, at: 0)
                 }
-                if let detail = state.detail, detail.chat.id == chatUpdate.id {
-                    let actual = detail.chat.messages
-                    let update = chatUpdate.messages
-                    let existing = actual.intersection(update)
-                    let new = update.subtracting(existing)
-                    
-                    new.forEach {
-                        state.detail?.chat.messages.append($0)
-                        state.detail?.messages.append(MessageFeature.State(message: $0))
-                    }
-                }
-                
                 return .none
                 
             case let .onListItemTapped(chat):
@@ -103,6 +80,26 @@ struct ChatListFeature {
                 }
             }
         }
+        .onChange(of: \.chats) { _, chats in
+            Reduce { state, action in
+                guard let detail = state.detail else {
+                    return .none
+                }
+                guard let chat = chats[id: detail.chat.id], chat != detail.chat else {
+                    return .none
+                }
+                let actual = detail.chat.messages
+                let update = chat.messages
+                let existing = actual.intersection(update)
+                let new = update.subtracting(existing)
+                
+                new.forEach {
+                    state.detail?.chat.messages.append($0)
+                    state.detail?.messages.append(MessageFeature.State(message: $0))
+                }
+                return .none
+            }
+        }
         Reduce { state, action in
             guard case .detail(.presented(.send)) = action else {
                 return .none
@@ -110,6 +107,7 @@ struct ChatListFeature {
             
             let chat = state.detail!.chat
             let message = chat.messages.last!
+            state.chats[id: chat.id] = chat
             
             return .publisher {
                 stockClient.send(message, chat)
@@ -118,20 +116,10 @@ struct ChatListFeature {
             }
         }
         Reduce { state, action in
-            var chats = state.chats
-            let detailState = state.detail
-            
-            if let detailState = detailState {
-                chats[id: detailState.chat.id] = detailState.chat
-            }
-            
-            return .run { [chats = chats] _ in
+            return .run { [chats = state.chats] _ in
                 let data = try JSONEncoder().encode(chats)
                 try dataClient.save(data, .chats)
             }
-        }
-        .ifLet(\.$newChatSetup, action: \.newChatSetup) {
-            NewChatSetupFeature()
         }
     }
 }

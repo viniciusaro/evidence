@@ -3,7 +3,7 @@ import ComposableArchitecture
 import SwiftUI
 
 #if DEBUG
-var authClient = AuthClient.authenticated(.cris)
+var authClient = AuthClient.authenticated(.vini)
 var dataClient = DataClient.live
 var stockClient = StockClient.live
 var installationClient = InstallationClient.mock("1")
