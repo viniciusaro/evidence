@@ -24,12 +24,7 @@ struct NewChatSetupFeature {
         }
         
         init() {
-            self.chat = Chat(
-                id: ChatID(UUID().uuidString),
-                name: "",
-                participants: [],
-                messages: []
-            )
+            self.chat = .empty()
             self.users = [.vini, .lili, .cris]
             self.alertIsPresented = true
             self.currentUser = authClient.getAuthenticatedUser() ?? User()

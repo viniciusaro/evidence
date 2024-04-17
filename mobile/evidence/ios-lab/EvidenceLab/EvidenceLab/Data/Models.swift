@@ -30,6 +30,15 @@ extension Chat {
             messages: [Message.random()]
         )
     }
+    
+    static func empty() -> Chat {
+        Chat(
+            id: ChatID(UUID().uuidString),
+            name: "",
+            participants: [],
+            messages: []
+        )
+    }
 }
 
 struct Message: Identifiable, Equatable, Hashable, Codable {
