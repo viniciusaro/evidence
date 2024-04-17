@@ -86,18 +86,10 @@ struct ChatListFeature {
                 guard let detail = state.detail else {
                     return .none
                 }
-                guard let chat = chats[id: detail.chat.id], chat != detail.chat else {
+                guard let chat = chats[id: detail.chat.id] else {
                     return .none
                 }
-                let actual = detail.chat.messages
-                let update = chat.messages
-                let existing = actual.intersection(update)
-                let new = update.subtracting(existing)
-                
-                new.forEach {
-                    state.detail?.chat.messages.append($0)
-                    state.detail?.messages.append(MessageFeature.State(message: $0))
-                }
+                state.detail?.chat = chat
                 return .none
             }
         }
@@ -105,15 +97,15 @@ struct ChatListFeature {
             guard case .detail(.presented(.send)) = action else {
                 return .none
             }
+            guard let chat = state.detail?.chat else {
+                return .none
+            }
             
-            let chat = state.detail!.chat
             state.chats[id: chat.id] = chat
             moveChatUp(&state, chat)
             
-            let message = chat.messages.last!
-            
             return .publisher {
-                stockClient.send(message, chat)
+                stockClient.send(chat.messages.last!, chat)
                     .map { .onChatUpdateSent }
                     .receive(on: DispatchQueue.main)
             }

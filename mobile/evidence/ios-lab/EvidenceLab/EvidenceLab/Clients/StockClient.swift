@@ -57,8 +57,10 @@ extension StockClient {
         send: { message, chat in
             do {
                 let subject = PassthroughSubject<Void, Never>()
+                let userId = authClient.getAuthenticatedUser()!.id
+                let participants = chat.participants.filter { $0.id != userId }
                 
-                for participant in chat.participants {
+                for participant in participants {
                     let userId = participant.id
                     let installationId = installationClient.getCurrentInstallationId()
                     

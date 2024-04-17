@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import SwiftUI
 import OrderedCollections
+import SwiftUI
 
 #Preview {
     dataClient = DataClient.mock(Chat.mockList)
@@ -19,23 +19,36 @@ import OrderedCollections
 struct ChatDetailFeature {
     @ObservableState
     struct State: Equatable, Hashable, Codable {
-        var chat: Chat
-        var inputText: String
-        var messages: IdentifiedArrayOf<MessageFeature.State>
+        var chat: Chat {
+            didSet {
+                syncMessageStates()
+            }
+        }
         var user: User
+        var inputText: String
+        fileprivate var messages: IdentifiedArrayOf<MessageFeature.State>
         
         var title: String {
             let participants = chat.participants.reduce("", { $0 + String($1.name.first!) })
             return "\(chat.name) \(participants)"
         }
         
+        mutating func syncMessageStates() {
+            let updatedMessages = chat.messages
+            let currentMessages = OrderedSet(messages.elements.map { $0.message })
+            let existing = updatedMessages.intersection(currentMessages)
+            let new = updatedMessages.subtracting(existing)
+            
+            new.forEach {
+                messages.append(MessageFeature.State(message: $0))
+            }
+        }
+        
         init(chat: Chat, inputText: String = "") {
             self.chat = chat
-            self.inputText = inputText
-            self.messages = IdentifiedArray(
-                uniqueElements: chat.messages.map { MessageFeature.State(message: $0) }
-            )
             self.user = authClient.getAuthenticatedUser() ?? User()
+            self.inputText = inputText
+            self.messages = chat.messages.map { MessageFeature.State(message: $0) }.identified
         }
     }
     
@@ -58,20 +71,13 @@ struct ChatDetailFeature {
                 
             case .send:
                 let newMessage = Message(content: state.inputText, sender: state.user)
-                let newMessageState = MessageFeature.State(message: newMessage)
-                state.messages.append(newMessageState)
+                state.chat.messages.append(newMessage)
                 state.inputText = ""
                 return .none
             }
         }
         .forEach(\.messages, action: \.message) {
             MessageFeature()
-        }
-        .onChange(of: \.messages) { oldValue, newValue in
-            Reduce { state, action in
-                state.chat.messages = OrderedSet(newValue.map { $0.message })
-                return .none
-            }
         }
     }
 }
@@ -121,5 +127,8 @@ struct ChatDetailView: View {
     }
 }
 
-
-
+extension Array where Element: Identifiable {
+    var identified: IdentifiedArrayOf<Self.Element> {
+        IdentifiedArray(uniqueElements: self)
+    }
+}
