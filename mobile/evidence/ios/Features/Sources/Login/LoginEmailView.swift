@@ -1,6 +1,6 @@
 //
 //  LoginEmailView.swift
-//  
+//
 //
 //  Created by Cris Messias on 02/04/24.
 //
@@ -18,7 +18,10 @@ public struct LoginEmailView: View {
             VStack(alignment:.leading, spacing: 24) {
                 LoginEmailInput(viewModel: viewModel)
                 LoginEmailPasswordInput(viewModel: viewModel)
-                LoginEmailButton(viewModel: viewModel)
+                VStack(alignment:.leading, spacing: 8) {
+                    LoginEmailButton(viewModel: viewModel)
+                    LoginResetPassordButton(viewModel: viewModel)
+                }
                 Spacer()
             }
             .padding(.top, 24)
@@ -157,6 +160,21 @@ struct LoginEmailPasswordInput: View {
         }
         if let errorMessage = viewModel.errorMessage() {
             LeafErrorMessage(message: errorMessage)
+        }
+    }
+}
+
+struct LoginResetPassordButton: View {
+    @Environment(\.leafTheme) private var theme
+    @ObservedObject var viewModel: LoginEmailViewModel
+
+    var body: some View {
+        Button("Reset password") {
+            viewModel.resetPassworButtonTapped()
+        }
+        .buttonStyle(LeaflinkButtonStyle())
+        .sheet(item: $viewModel.loginResetPassword) { loginResetPassword in
+            LoginResetPasswordView(viewModel: loginResetPassword)
         }
     }
 }

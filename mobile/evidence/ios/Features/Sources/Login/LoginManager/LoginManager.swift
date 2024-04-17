@@ -21,6 +21,7 @@ extension Login {
 }
 
 final public class FirebaseLoginManager: LoginManager {
+    
     func creatUser(email: String, password: String) async throws -> Login {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return Login(user: authDataResult.user)
@@ -35,6 +36,11 @@ final public class FirebaseLoginManager: LoginManager {
         return Login(user: user)
     }
 
+    func signIn(email: String, password: String) async throws -> Login {
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
+        return Login(user: authDataResult.user)
+    }
+
     func signOut() throws {
         do {
             try Auth.auth().signOut()
@@ -44,9 +50,8 @@ final public class FirebaseLoginManager: LoginManager {
         }
     }
 
-    func signIn(email: String, password: String) async throws -> Login {
-        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        return Login(user: authDataResult.user)
+    func resetPassword(email: String) async throws {
+        try await Auth.auth().sendPasswordReset(withEmail: email)
     }
 }
 
@@ -68,13 +73,17 @@ final public class AuthenticatedLoginManager: LoginManager {
         }
         return user
     }
-    
+
+    func signIn(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
     func signOut() throws {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
-    
-    func signIn(email: String, password: String) async throws -> Login {
-        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+
+    func resetPassword(email: String) {
+
     }
 }
 
@@ -88,11 +97,16 @@ final public class FailureAuthenticationLoginManager: LoginManager {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 
+
+    func signIn(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
     func signOut() throws {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 
-    func signIn(email: String, password: String) async throws -> Login {
-        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    func resetPassword(email: String) {
+
     }
 }
