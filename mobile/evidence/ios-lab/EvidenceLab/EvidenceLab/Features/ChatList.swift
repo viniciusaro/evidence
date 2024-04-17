@@ -59,12 +59,7 @@ struct ChatListFeature {
             case let .onChatUpdateReceived(chatUpdate):
                 if let chat = state.chats[id: chatUpdate.id] {
                     state.chats[id: chat.id]?.messages.append(contentsOf: chatUpdate.messages)
-                    if let index = state.chats.index(id: chat.id) {
-                        state.chats.move(
-                            fromOffsets: IndexSet(arrayLiteral: index),
-                            toOffset: 0
-                        )
-                    }
+                    moveChatUp(&state, chat)
                 } else {
                     state.chats.insert(chatUpdate, at: 0)
                 }
@@ -112,15 +107,10 @@ struct ChatListFeature {
             }
             
             let chat = state.detail!.chat
-            let message = chat.messages.last!
             state.chats[id: chat.id] = chat
+            moveChatUp(&state, chat)
             
-            if let index = state.chats.index(id: chat.id) {
-                state.chats.move(
-                    fromOffsets: IndexSet(arrayLiteral: index),
-                    toOffset: 0
-                )
-            }
+            let message = chat.messages.last!
             
             return .publisher {
                 stockClient.send(message, chat)
@@ -130,11 +120,20 @@ struct ChatListFeature {
         }
         .onChange(of: \.chats) { _, chats in
             Reduce { state, action in
-                .run { [chats = state.chats] _ in
+                .run { [chats = chats] _ in
                     let data = try JSONEncoder().encode(chats)
                     try dataClient.save(data, .chats)
                 }
             }
+        }
+    }
+    
+    private func moveChatUp(_ state: inout State, _ chat: Chat) {
+        if let index = state.chats.index(id: chat.id) {
+            state.chats.move(
+                fromOffsets: IndexSet(arrayLiteral: index),
+                toOffset: 0
+            )
         }
     }
 }
