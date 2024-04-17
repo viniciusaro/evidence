@@ -47,6 +47,17 @@ extension StockClient {
                             return chats
                         }
                         chats?.forEach(subject.send)
+                        
+                        snapshot.documents.forEach { documentSnapshot in
+                            Firestore.firestore()
+                                .collection("users")
+                                .document(userId)
+                                .collection("installation")
+                                .document(installationId)
+                                .collection("stock")
+                                .document(documentSnapshot.documentID)
+                                .delete()
+                        }
                     }
                 }
             
