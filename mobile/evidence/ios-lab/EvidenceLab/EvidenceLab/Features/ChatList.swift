@@ -59,6 +59,12 @@ struct ChatListFeature {
             case let .onChatUpdateReceived(chatUpdate):
                 if let chat = state.chats[id: chatUpdate.id] {
                     state.chats[id: chat.id]?.messages.append(contentsOf: chatUpdate.messages)
+                    if let index = state.chats.index(id: chat.id) {
+                        state.chats.move(
+                            fromOffsets: IndexSet(arrayLiteral: index),
+                            toOffset: 0
+                        )
+                    }
                 } else {
                     state.chats.insert(chatUpdate, at: 0)
                 }
@@ -109,16 +115,25 @@ struct ChatListFeature {
             let message = chat.messages.last!
             state.chats[id: chat.id] = chat
             
+            if let index = state.chats.index(id: chat.id) {
+                state.chats.move(
+                    fromOffsets: IndexSet(arrayLiteral: index),
+                    toOffset: 0
+                )
+            }
+            
             return .publisher {
                 stockClient.send(message, chat)
                     .map { .onChatUpdateSent }
                     .receive(on: DispatchQueue.main)
             }
         }
-        Reduce { state, action in
-            return .run { [chats = state.chats] _ in
-                let data = try JSONEncoder().encode(chats)
-                try dataClient.save(data, .chats)
+        .onChange(of: \.chats) { _, chats in
+            Reduce { state, action in
+                .run { [chats = state.chats] _ in
+                    let data = try JSONEncoder().encode(chats)
+                    try dataClient.save(data, .chats)
+                }
             }
         }
     }
@@ -145,6 +160,7 @@ struct ChatListView: View {
                 store.send(.onListItemDelete(indexSet))
             }
         }
+        .animation(.bouncy, value: store.chats)
         .listStyle(.plain)
         .onViewDidLoad {
             store.send(.onViewDidLoad)
