@@ -18,7 +18,7 @@
 		6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */; };
 		6369AD672BB36C850067E2EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD662BB36C850067E2EC /* Assets.xcassets */; };
 		6369AD6A2BB36C850067E2EC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD692BB36C850067E2EC /* Preview Assets.xcassets */; };
-		6369AD742BB36C850067E2EC /* EvidenceLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD732BB36C850067E2EC /* EvidenceLabTests.swift */; };
+		6369AD742BB36C850067E2EC /* BASICS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD732BB36C850067E2EC /* BASICS.swift */; };
 		6369AD7E2BB36C850067E2EC /* EvidenceLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */; };
 		6369AD802BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */; };
 		6372397B2BC56C6000F8E66E /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372397A2BC56C6000F8E66E /* Store.swift */; };
@@ -71,7 +71,7 @@
 		6369AD662BB36C850067E2EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6369AD692BB36C850067E2EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6369AD6F2BB36C850067E2EC /* EvidenceLabTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceLabTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6369AD732BB36C850067E2EC /* EvidenceLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabTests.swift; sourceTree = "<group>"; };
+		6369AD732BB36C850067E2EC /* BASICS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BASICS.swift; sourceTree = "<group>"; };
 		6369AD792BB36C850067E2EC /* EvidenceLabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceLabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITests.swift; sourceTree = "<group>"; };
 		6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 		6369AD722BB36C850067E2EC /* EvidenceLabTests */ = {
 			isa = PBXGroup;
 			children = (
-				6369AD732BB36C850067E2EC /* EvidenceLabTests.swift */,
+				6369AD732BB36C850067E2EC /* BASICS.swift */,
 			);
 			path = EvidenceLabTests;
 			sourceTree = "<group>";
@@ -423,7 +423,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6369AD742BB36C850067E2EC /* EvidenceLabTests.swift in Sources */,
+				6369AD742BB36C850067E2EC /* BASICS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
