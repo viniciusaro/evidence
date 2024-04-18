@@ -15,29 +15,35 @@ public struct LoginEmailView: View {
     public var body: some View {
         NavigationStack {
             Divider()
-            VStack(alignment:.leading, spacing: 24) {
-                LoginEmailInput(viewModel: viewModel)
-                LoginEmailPasswordInput(viewModel: viewModel)
-                VStack(alignment:.leading, spacing: 8) {
-                    LoginEmailButton(viewModel: viewModel)
-                    LoginResetPassordButton(viewModel: viewModel)
+            ZStack() {
+                VStack(alignment:.leading, spacing: 24) {
+                    LoginEmailInput(viewModel: viewModel)
+                    LoginEmailPasswordInput(viewModel: viewModel)
+                    VStack(alignment:.leading, spacing: 8) {
+                        LoginEmailButton(viewModel: viewModel)
+                        LoginResetPassordButton(viewModel: viewModel)
+                    }
+                    Spacer()
                 }
-                Spacer()
-            }
-            .padding(.top, 24)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        viewModel.closeButtonTapped()
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundStyle(theme.color.text.primary)
+                .padding(.top, 24)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            viewModel.closeButtonTapped()
+                        }) {
+                            Image(systemName: "xmark")
+                                .foregroundStyle(theme.color.text.primary)
+                        }
                     }
                 }
+                .padding([.leading,.trailing], 16)
+                .navigationTitle("Continue with Email")
+                .navigationBarTitleDisplayMode(.inline)
+
+                LeafPopup(state: .confirmation)
+                    .frame(width: 230 , height: 200)
+                    .offset(x: 0, y: viewModel.offSetY)
             }
-            .padding([.leading,.trailing], 16)
-            .navigationTitle("Continue with Email")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
@@ -169,12 +175,12 @@ struct LoginResetPassordButton: View {
     @ObservedObject var viewModel: LoginEmailViewModel
 
     var body: some View {
-        Button("Reset password") {
-            viewModel.resetPassworButtonTapped()
-        }
-        .buttonStyle(LeaflinkButtonStyle())
-        .sheet(item: $viewModel.loginResetPassword) { loginResetPassword in
-            LoginResetPasswordView(viewModel: loginResetPassword)
-        }
+            Button("Reset password") {
+                viewModel.resetPassworButtonTapped()
+            }
+            .buttonStyle(LeaflinkButtonStyle())
+            .sheet(item: $viewModel.loginResetPassword) { loginResetPassword in
+                LoginResetPasswordView(viewModel: loginResetPassword)
+            }
     }
 }

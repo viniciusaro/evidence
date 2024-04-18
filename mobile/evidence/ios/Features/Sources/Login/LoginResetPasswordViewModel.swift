@@ -42,16 +42,6 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
         isResetPasswordButtonPressed = false
     }
 
-    func resetPasswordButtonTapped() {
-        isValidEmail = isValidEmail(emailInput)
-
-        isResetPasswordButtonPressed = true
-        if isValidEmail {
-            resetPassword()
-            closeButtonTapped()
-        }
-    }
-
     func resetPassword() {
         Task {
             do {
@@ -59,6 +49,16 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
             } catch {
                 print("Reset Password failed!", error)
             }
+        }
+    }
+
+    func resetPasswordButtonTapped() {
+        isValidEmail = isValidEmail(emailInput)
+        isResetPasswordButtonPressed = true
+        
+        if isValidEmail {
+            resetPassword()
+            closeButtonTapped()
         }
     }
 

@@ -56,7 +56,7 @@ final public class FirebaseLoginManager: LoginManager {
 }
 
 final public class AuthenticatedLoginManager: LoginManager {
-    
+    var resetPasswordCalled = false
     var authenticatedUser: Login?
 
     func creatUser(email: String, password: String) async throws -> Login {
@@ -83,7 +83,8 @@ final public class AuthenticatedLoginManager: LoginManager {
     }
 
     func resetPassword(email: String) {
-
+        print("Simulated password reset for email: \(email)")
+        resetPasswordCalled = true
     }
 }
 

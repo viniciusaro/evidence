@@ -18,6 +18,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published var isLoginEmailButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
     @Published var loginResetPassword: LoginResetPasswordViewModel?
+    @Published private(set) var offSetY: CGFloat
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
@@ -27,7 +28,8 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isValidEmail: Bool = false,
         isValidPassword: Bool = false,
         isLoginEmailButtonPressed: Bool = false,
-        isEmailInputFocused: Bool = false
+        isEmailInputFocused: Bool = false,
+        offSetY: CGFloat = 1000
     ) {
         self.emailInput = emailInput
         self.passwordInput = passwordInput
@@ -35,6 +37,14 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         self.isValidPassword = isValidPassword
         self.isLoginEmailButtonPressed = isLoginEmailButtonPressed
         self.isEmailInputFocused = isEmailInputFocused
+        self.offSetY = offSetY
+    }
+
+    func confirmationPopupAppears() {
+        offSetY = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.offSetY = 1000
+        }
     }
 
     func closeButtonTapped() {
@@ -80,8 +90,8 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         loginResetPassword = LoginResetPasswordViewModel()
         loginResetPassword?.delegateCloseButtonTapped = {
             self.loginResetPassword = nil
+            self.confirmationPopupAppears()
         }
-
     }
 
     func errorMessage() -> String? {
