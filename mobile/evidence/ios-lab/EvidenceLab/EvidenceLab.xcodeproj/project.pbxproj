@@ -37,6 +37,7 @@
 		63797AC52BBAD2B800188427 /* CasePaths in Frameworks */ = {isa = PBXBuildFile; productRef = 63797AC42BBAD2B800188427 /* CasePaths */; };
 		63797AC92BBAD33E00188427 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797AC82BBAD33E00188427 /* Models.swift */; };
 		63797ACB2BBAD57600188427 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63797ACA2BBAD57600188427 /* Helpers.swift */; };
+		63A43E792BD1DCCD00B670AA /* RootSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A43E782BD1DCCD00B670AA /* RootSwift.swift */; };
 		63B79C8F2BCEB3F4002B16AE /* StockClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B79C8E2BCEB3F4002B16AE /* StockClient.swift */; };
 		63B79C912BCEC5AC002B16AE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 63B79C902BCEC5AC002B16AE /* FirebaseFirestore */; };
 		63B79C932BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 63B79C922BCEC5F9002B16AE /* FirebaseFirestoreCombine-Community */; };
@@ -90,6 +91,7 @@
 		6375E6D72BB47EC2002E47F3 /* PreviewClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewClient.swift; sourceTree = "<group>"; };
 		63797AC82BBAD33E00188427 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		63797ACA2BBAD57600188427 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		63A43E782BD1DCCD00B670AA /* RootSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSwift.swift; sourceTree = "<group>"; };
 		63B79C8E2BCEB3F4002B16AE /* StockClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -157,6 +159,7 @@
 				637239862BC56E0A00F8E66E /* Data */,
 				637239842BC56DE700F8E66E /* Features */,
 				637239852BC56DFF00F8E66E /* Helpers */,
+				63A43E772BD1DCB300B670AA /* SwiftUI */,
 				6369AD682BB36C850067E2EC /* Preview Content */,
 			);
 			path = EvidenceLab;
@@ -236,6 +239,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		63A43E772BD1DCB300B670AA /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				63A43E782BD1DCCD00B670AA /* RootSwift.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		63D770872BC1F9E200B81E83 /* Clients */ = {
@@ -412,6 +423,7 @@
 				6348B1372BCF170900E49A76 /* NewChatSetup.swift in Sources */,
 				630618B92BCC91A8003A43F1 /* DataClient.swift in Sources */,
 				637239832BC56CEF00F8E66E /* Store+SwiftUI.swift in Sources */,
+				63A43E792BD1DCCD00B670AA /* RootSwift.swift in Sources */,
 				6372397D2BC56C6B00F8E66E /* Reducer.swift in Sources */,
 				63797AC92BBAD33E00188427 /* Models.swift in Sources */,
 				637239882BC56E2100F8E66E /* Message.swift in Sources */,
