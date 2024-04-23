@@ -151,7 +151,6 @@
 		6369AD612BB36C840067E2EC /* EvidenceLab */ = {
 			isa = PBXGroup;
 			children = (
-				63EDAC9C2BD74C3200FDD4B9 /* Preview Content */,
 				6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */,
 				6369AD662BB36C850067E2EC /* Assets.xcassets */,
 				6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */,
@@ -161,6 +160,7 @@
 				637239842BC56DE700F8E66E /* Features */,
 				637239852BC56DFF00F8E66E /* Helpers */,
 				63A43E772BD1DCB300B670AA /* SwiftUI */,
+				6369AD682BB36C850067E2EC /* Preview Content */,
 			);
 			path = EvidenceLab;
 			sourceTree = "<group>";
@@ -210,7 +210,6 @@
 				6372398B2BC56EA900F8E66E /* ChatList.swift */,
 				6372398D2BC56EC900F8E66E /* Home.swift */,
 				637239912BC56F0500F8E66E /* Login.swift */,
-				6369AD682BB36C850067E2EC /* Preview Content */,
 				637239872BC56E2100F8E66E /* Message.swift */,
 				6372398F2BC56EE700F8E66E /* Profile.swift */,
 				637239932BC56F2500F8E66E /* Root.swift */,
@@ -259,13 +258,6 @@
 				63B79C8E2BCEB3F4002B16AE /* StockClient.swift */,
 			);
 			path = Clients;
-			sourceTree = "<group>";
-		};
-		63EDAC9C2BD74C3200FDD4B9 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
