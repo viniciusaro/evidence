@@ -17,7 +17,7 @@ import SwiftUI
 struct ChatListFeature {
     @ObservableState
     struct State: Equatable, Codable {
-        var chats: IdentifiedArrayOf<ChatDetailFeature.State> = []
+        var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
         
@@ -26,8 +26,7 @@ struct ChatListFeature {
             do {
                 let data = try dataClient.load(.chats)
                 let decoder = JSONDecoder()
-                let chats = try decoder.decode(IdentifiedArrayOf<Chat>.self, from: data)
-                self.chats = chats.map { .init(chat: $0) }.identified
+                self.chats = try decoder.decode(IdentifiedArrayOf<Chat>.self, from: data)
             } catch {
                 self.chats = []
             }
@@ -40,7 +39,7 @@ struct ChatListFeature {
         case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
         case onChatUpdateReceived(Chat)
         case onChatUpdateSent
-        case onListItemTapped(ChatDetailFeature.State)
+        case onListItemTapped(Chat)
         case onListItemDelete(IndexSet)
         case onViewDidLoad
     }
@@ -58,18 +57,16 @@ struct ChatListFeature {
                 return .none
                 
             case let .onChatUpdateReceived(chatUpdate):
-                let chatState = ChatDetailFeature.State(chat: chatUpdate)
-                
                 if let chat = state.chats[id: chatUpdate.id] {
-                    state.chats[id: chat.id]?.messages.append(contentsOf: chatState.messages)
-//                    moveChatUp(&state, chat)
+                    state.chats[id: chat.id]?.messages.append(contentsOf: chatUpdate.messages)
+                    moveChatUp(&state, chat)
                 } else {
-                    state.chats.insert(chatState, at: 0)
+                    state.chats.insert(chatUpdate, at: 0)
                 }
                 return .none
                 
-            case let .onListItemTapped(chatState):
-                state.detail = chatState
+            case let .onListItemTapped(chat):
+                state.detail = ChatDetailFeature.State(chat: chat)
                 return .none
                 
             case let .onListItemDelete(indexSet):
@@ -89,10 +86,10 @@ struct ChatListFeature {
                 guard let detail = state.detail else {
                     return .none
                 }
-                guard let chat = chats[id: detail.id] else {
+                guard let chat = chats[id: detail.chat.id] else {
                     return .none
                 }
-                state.detail? = chat
+                state.detail?.chat = chat
                 return .none
             }
         }
@@ -100,13 +97,12 @@ struct ChatListFeature {
             guard case .detail(.presented(.send)) = action else {
                 return .none
             }
-            guard let chatState = state.detail else {
+            guard let chat = state.detail?.chat else {
                 return .none
             }
             
-            state.chats[id: chatState.id] = chatState
-            let chat = chatState.toChat()
-//            moveChatUp(&state, chat)
+            state.chats[id: chat.id] = chat
+            moveChatUp(&state, chat)
             
             return .publisher {
                 stockClient.send(chat.messages.last!, chat)
@@ -115,12 +111,12 @@ struct ChatListFeature {
             }
         }
         .onChange(of: \.chats) { _, chats in
-//            Reduce { state, action in
-//                .run { [chats = chats] _ in
-//                    let data = try JSONEncoder().encode(chats)
-//                    try dataClient.save(data, .chats)
-//                }
-//            }
+            Reduce { state, action in
+                .run { [chats = chats] _ in
+                    let data = try JSONEncoder().encode(chats)
+                    try dataClient.save(data, .chats)
+                }
+            }
         }
     }
     
@@ -145,7 +141,7 @@ struct ChatListView: View {
                 }, label: {
                     VStack(alignment: .leading) {
                         Text(chat.name)
-                        if let content = chat.messages.last?.message.content {
+                        if let content = chat.messages.last?.content {
                             Text(content).font(.caption)
                         }
                     }

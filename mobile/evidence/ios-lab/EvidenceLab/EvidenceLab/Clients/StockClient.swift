@@ -76,8 +76,7 @@ extension StockClient {
                     let installationId = installationClient.getCurrentInstallationId()
                     
                     var chatUpdate = chat
-//                    chatUpdate.messages = OrderedSet([message])
-                    chatUpdate.messages = [message]
+                    chatUpdate.messages = OrderedSet([message])
                     
                     let data = try JSONEncoder().encode(chatUpdate)
                     let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String: Any]

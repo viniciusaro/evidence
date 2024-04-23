@@ -130,9 +130,9 @@ struct ChatDetailViewSwift: View {
     var body: some View {
         VStack {
             List {
-                ForEach($chat.messages) { $message in
-                    MessageViewSwift(message: $message)
-                }
+//                ForEach($chat.messages) { $message in
+//                    MessageViewSwift(message: $message)
+//                }
             }
             HStack(spacing: 12) {
                 Button(action: {

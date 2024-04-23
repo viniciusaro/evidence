@@ -10,38 +10,8 @@ struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
     var name: String
     var participants: [User]
-    var messages: [Message]
+    var messages: OrderedSet<Message>
 }
-
-@Observable
-class ChatClass: Identifiable, Equatable, Hashable, Codable {
-    let id: ChatID
-    var name: String
-    var participants: [User]
-    var messages: [Message]
-    
-    static func == (lhs: ChatClass, rhs: ChatClass) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.name == rhs.name &&
-        lhs.participants == rhs.participants &&
-        lhs.messages == rhs.messages
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-        hasher.combine(participants)
-        hasher.combine(messages)
-    }
-    
-    init(from chat: Chat) {
-        self.id = chat.id
-        self.name = chat.name
-        self.participants = chat.participants
-        self.messages = chat.messages
-    }
-}
-
 
 extension Chat {
     static func random(using chats: [Chat]) -> Chat {
