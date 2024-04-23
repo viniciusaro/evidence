@@ -45,8 +45,9 @@ struct HomeFeature {
         Reduce { state, action in
             switch action {
             case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
+                let chatState = ChatDetailFeature.State(chat: chat)
                 state.chatList.newChatSetup = nil
-                state.chatList.chats.insert(chat, at: 0)
+                state.chatList.chats.insert(chatState, at: 0)
                 state.chatList.detail = ChatDetailFeature.State(chat: chat)
                 return .none
                 
@@ -104,7 +105,7 @@ struct HomeView: View {
                     .tag(HomeFeature.State.Tab.profile)
             }
             .navigationDestination(item: $store.scope(
-                state: \.chatList.detail,
+                state: \.chatList.chats[id: "123"],
                 action: \.chatList.detail
             )) { store in
                 ChatDetailView(store: store)

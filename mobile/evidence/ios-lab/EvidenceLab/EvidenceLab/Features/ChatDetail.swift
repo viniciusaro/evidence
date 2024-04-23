@@ -18,37 +18,36 @@ import SwiftUI
 @Reducer
 struct ChatDetailFeature {
     @ObservableState
-    struct State: Equatable, Hashable, Codable {
-        var chat: Chat {
-            didSet {
-                syncMessageStates()
-            }
-        }
-        var user: User
+    struct State: Equatable, Hashable, Codable, Identifiable {
+        var id: Chat.ID
+        var name: String
+        var participants: [User]
         var inputText: String
-        fileprivate var messages: IdentifiedArrayOf<MessageFeature.State>
+        var messages: IdentifiedArrayOf<MessageFeature.State>
+        var user: User
         
         var title: String {
-            let participants = chat.participants.reduce("", { $0 + String($1.name.first!) })
-            return "\(chat.name) \(participants)"
-        }
-        
-        mutating func syncMessageStates() {
-            let updatedMessages = chat.messages
-            let currentMessages = OrderedSet(messages.elements.map { $0.message })
-            let existing = updatedMessages.intersection(currentMessages)
-            let new = updatedMessages.subtracting(existing)
-            
-            new.forEach {
-                messages.append(MessageFeature.State(message: $0))
-            }
+            let participants = participants.reduce("", { $0 + String($1.name.first!) })
+            return "\(name) \(participants)"
         }
         
         init(chat: Chat, inputText: String = "") {
-            self.chat = chat
-            self.user = authClient.getAuthenticatedUser() ?? User()
+            self.id = chat.id
+            self.name = chat.name
+            self.participants = chat.participants
             self.inputText = inputText
             self.messages = chat.messages.map { MessageFeature.State(message: $0) }.identified
+            self.user = authClient.getAuthenticatedUser() ?? User()
+        }
+        
+        func toChat() -> Chat {
+            Chat(
+                id: id,
+                name: name,
+                participants: participants,
+//                messages: OrderedSet(messages.map { $0.message })
+                messages: messages.map { $0.message }
+            )
         }
     }
     
@@ -71,7 +70,8 @@ struct ChatDetailFeature {
                 
             case .send:
                 let newMessage = Message(content: state.inputText, sender: state.user)
-                state.chat.messages.append(newMessage)
+                let newMessageState = MessageFeature.State(message: newMessage)
+                state.messages.append(newMessageState)
                 state.inputText = ""
                 return .none
             }

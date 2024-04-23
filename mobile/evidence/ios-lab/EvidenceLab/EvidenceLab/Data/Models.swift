@@ -10,7 +10,7 @@ struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
     var name: String
     var participants: [User]
-    var messages: OrderedSet<Message>
+    var messages: [Message]
 }
 
 @Observable
@@ -18,7 +18,7 @@ class ChatClass: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
     var name: String
     var participants: [User]
-    var messages: OrderedSet<Message>
+    var messages: [Message]
     
     static func == (lhs: ChatClass, rhs: ChatClass) -> Bool {
         lhs.id == rhs.id &&
@@ -154,7 +154,8 @@ extension Chat {
         name: "Evidence",
         participants: [.vini, .cris],
         messages: [
-            Message(content: "Bom dia!", sender: .cris)
+            Message(content: "Bom dia!", sender: .cris),
+            Message.pointfree
         ]
     )
     
