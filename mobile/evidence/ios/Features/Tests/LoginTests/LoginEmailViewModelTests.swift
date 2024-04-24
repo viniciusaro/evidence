@@ -11,101 +11,102 @@ import XCTest
 
 final class LoginEmailViewModelTests: XCTestCase {
 
+    func testConfirmationPopupAppears() {
+        let viewModel = LoginEmailViewModel()
+        viewModel.confirmationPopupAppears()
+        let expectation = XCTestExpectation(description: "Confirmation popup should appear")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            XCTAssertEqual(viewModel.offSetY, 1000, "OffsetY should be updated to 1000")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2)
+    }
+
     func testCloseButtonTapped() {
         let viewModel = LoginEmailViewModel()
         var closeButtonCalled = false
         viewModel.delegateCloseButtonTapped = {
             closeButtonCalled = true
         }
+        
         viewModel.closeButtonTapped()
         XCTAssertTrue(closeButtonCalled, "The delegate should be called")
     }
 
     func clearEmailInputTapped() {
         let viewModel = LoginEmailViewModel()
+        viewModel.emailInput = "email@valid.com"
+        viewModel.isLoginEmailButtonPressed = true
+
         viewModel.clearEmailInputTapped()
-<<<<<<< HEAD
-        XCTAssertTrue(viewModel.loginEmailInput.isEmpty, "Should be empty")
-=======
         XCTAssertTrue(viewModel.emailInput.isEmpty, "Should be empty")
->>>>>>> main
-        XCTAssertFalse(viewModel.isNextButtonPressed,  "Should set false")
+        XCTAssertFalse(viewModel.isLoginEmailButtonPressed,  "Should set false")
+    }
+
+    func clearPasswordInputTapped() {
+        let viewModel = LoginEmailViewModel()
+        viewModel.passwordInput = "12345678"
+        viewModel.isLoginEmailButtonPressed = true
+
+        viewModel.clearPasswordInputTapped()
+        XCTAssertTrue(viewModel.passwordInput.isEmpty, "Should be empty")
+        XCTAssertFalse(viewModel.isLoginEmailButtonPressed,  "Should set false")
     }
 
     func inputEmailTapped() {
         let viewModel = LoginEmailViewModel()
+        viewModel.isLoginEmailButtonPressed = true
+        
         viewModel.clearEmailInputTapped()
-        XCTAssertFalse(viewModel.isNextButtonPressed, "Should set false")
+        XCTAssertFalse(viewModel.isLoginEmailButtonPressed, "Should set false")
     }
 
-    func testButtonNextTappedValidEmail() {
+    @MainActor func testResetPassworButtonTappedValid() {
         let viewModel = LoginEmailViewModel()
-<<<<<<< HEAD
-        viewModel.loginEmailInput = "email@valid.com"
-        viewModel.buttonNextTapped()
-        XCTAssertTrue(viewModel.isLoginEmailValidEmail, "Should be a valid email")
-=======
         viewModel.emailInput = "email@valid.com"
-        viewModel.buttonNextTapped()
-        XCTAssertTrue(viewModel.isValidEmail, "Should be a valid email")
->>>>>>> main
-        XCTAssertTrue(viewModel.isNextButtonPressed, "Should set True")
-        XCTAssertNotNil(viewModel.loginCheckViewModel, "Should create an instance of LoginEmailViewModel()" )
-    }
+        viewModel.passwordInput = "12345678"
+        viewModel.isEmailInputFocused = true
 
-
-    func testButtonNextTappedNotValidEmail() {
-        let viewModel = LoginEmailViewModel()
-<<<<<<< HEAD
-        viewModel.loginEmailInput = "invalid-email"
-        viewModel.buttonNextTapped()
-        XCTAssertFalse(viewModel.isLoginEmailValidEmail, "Should not be a valid email")
-=======
-        viewModel.emailInput = "invalid-email"
-        viewModel.buttonNextTapped()
-        XCTAssertFalse(viewModel.isValidEmail, "Should not be a valid email")
->>>>>>> main
-        XCTAssertTrue(viewModel.isNextButtonPressed, "Should set True")
-        XCTAssertNil(viewModel.loginCheckViewModel, "Should not create an instance of LoginEmailViewModel()")
+        viewModel.loginEmailButtonTapped()
+        XCTAssertTrue(viewModel.isValidEmail(viewModel.emailInput), "Shoud set true")
+        XCTAssertTrue(viewModel.isValidPassword(viewModel.passwordInput), "Shoud set true")
     }
 
     func testErrorMessageNoEmailProvided() {
         let viewModel = LoginEmailViewModel()
-        viewModel.isNextButtonPressed = true
-<<<<<<< HEAD
-        viewModel.loginEmailInput = ""
-=======
+        viewModel.isLoginEmailButtonPressed = true
         viewModel.emailInput = ""
->>>>>>> main
+        viewModel.passwordInput = "12345678"
         let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "No email provided.")
+        XCTAssertEqual(result, "Email or password not provided.")
+    }
+
+    func testErrorMessageNoPasswordProvided() {
+        let viewModel = LoginEmailViewModel()
+        viewModel.isLoginEmailButtonPressed = true
+        viewModel.emailInput = "email@valid.com"
+        viewModel.passwordInput = ""
+        let result = viewModel.errorMessage()
+        XCTAssertEqual(result, "Email or password not provided.")
     }
 
     func testErrorMessageInvalidEmail() {
         let viewModel = LoginEmailViewModel()
-        viewModel.isNextButtonPressed = true
-<<<<<<< HEAD
-        viewModel.loginEmailInput = "invalid"
-=======
+        viewModel.isLoginEmailButtonPressed = true
         viewModel.emailInput = "invalid"
->>>>>>> main
         let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "That doesn't look like a valid email address!")
+        XCTAssertEqual(result, "Email or password not provided.")
     }
 
+    @MainActor
     func testErrorMessageValidEmail() {
         let viewModel = LoginEmailViewModel()
-<<<<<<< HEAD
-        viewModel.loginEmailInput = "email@valid.com"
-        viewModel.buttonNextTapped()
-        let result = viewModel.errorMessage()
-        XCTAssertTrue(viewModel.isLoginEmailValidEmail, "Shoud set true")
-=======
         viewModel.emailInput = "email@valid.com"
-        viewModel.buttonNextTapped()
+        viewModel.passwordInput = "12345678"
+        viewModel.loginEmailButtonTapped()
         let result = viewModel.errorMessage()
         XCTAssertTrue(viewModel.isValidEmail, "Shoud set true")
->>>>>>> main
         XCTAssertNil(result, "Should not return any message")
     }
 

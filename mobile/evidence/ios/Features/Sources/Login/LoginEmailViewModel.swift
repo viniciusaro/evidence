@@ -8,7 +8,7 @@
 import Foundation
 import Dependencies
 
-final public class LoginEmailViewModel: ObservableObject, Identifiable {
+public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Published var emailInput: String
@@ -42,7 +42,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     func confirmationPopupAppears() {
         offSetY = 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
             self?.offSetY = 1000
         }
     }
