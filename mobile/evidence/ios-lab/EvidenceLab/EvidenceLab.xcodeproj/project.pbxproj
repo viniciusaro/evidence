@@ -206,14 +206,14 @@
 		637239842BC56DE700F8E66E /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				637239892BC56E7700F8E66E /* ChatDetail.swift */,
-				6372398B2BC56EA900F8E66E /* ChatList.swift */,
 				6372398D2BC56EC900F8E66E /* Home.swift */,
-				637239912BC56F0500F8E66E /* Login.swift */,
+				6372398B2BC56EA900F8E66E /* ChatList.swift */,
+				6348B1362BCF170900E49A76 /* NewChatSetup.swift */,
+				637239892BC56E7700F8E66E /* ChatDetail.swift */,
 				637239872BC56E2100F8E66E /* Message.swift */,
+				637239912BC56F0500F8E66E /* Login.swift */,
 				6372398F2BC56EE700F8E66E /* Profile.swift */,
 				637239932BC56F2500F8E66E /* Root.swift */,
-				6348B1362BCF170900E49A76 /* NewChatSetup.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";

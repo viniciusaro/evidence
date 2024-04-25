@@ -19,7 +19,7 @@ import SwiftUI
 struct HomeFeature {
     @ObservableState
     struct State: Equatable, Codable {
-        var chatList: ChatListFeature.State = .init()
+//        var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
@@ -35,7 +35,7 @@ struct HomeFeature {
     }
     @CasePathable
     enum Action {
-        case chatList(ChatListFeature.Action)
+//        case chatList(ChatListFeature.Action)
         case profile(ProfileFeature.Action)
         case onNewChatButtonTapped
         case onTabSelectionChanged(State.Tab)
@@ -44,18 +44,18 @@ struct HomeFeature {
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
-                state.chatList.newChatSetup = nil
-                state.chatList.chats.insert(chat, at: 0)
-                let shared = state.chatList.$chats[chat]
-                state.chatList.detail = ChatDetailFeature.State(chat: shared)
-                return .none
-                
-            case .chatList:
-                return .none
+//            case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
+//                state.chatList.newChatSetup = nil
+//                state.chatList.chats.insert(chat, at: 0)
+//                let shared = state.chatList.$chats[chat]
+//                state.chatList.detail = ChatDetailFeature.State(chat: shared)
+//                return .none
+//                
+//            case .chatList:
+//                return .none
                 
             case .onNewChatButtonTapped:
-                state.chatList.newChatSetup = NewChatSetupFeature.State()
+//                state.chatList.newChatSetup = NewChatSetupFeature.State()
                 return .none
                 
             case let .onTabSelectionChanged(selection):
@@ -66,9 +66,9 @@ struct HomeFeature {
                 return .none
             }
         }
-        Scope(state: \.chatList, action: \.chatList) {
-            ChatListFeature()
-        }
+//        Scope(state: \.chatList, action: \.chatList) {
+//            ChatListFeature()
+//        }
         Scope(state: \.profile, action: \.profile) {
             ProfileFeature()
         }
@@ -86,14 +86,14 @@ struct HomeView: View {
                     set: { store.send(.onTabSelectionChanged($0)) }
                 )
             ) {
-                ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
-                    .tabItem {
-                        Label(
-                            HomeFeature.State.Tab.chatList.title,
-                            systemImage: "bubble.right"
-                        )
-                    }
-                    .tag(HomeFeature.State.Tab.chatList)
+//                ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
+//                    .tabItem {
+//                        Label(
+//                            HomeFeature.State.Tab.chatList.title,
+//                            systemImage: "bubble.right"
+//                        )
+//                    }
+//                    .tag(HomeFeature.State.Tab.chatList)
                     
                 ProfileView(store: store.scope(state: \.profile, action: \.profile))
                     .tabItem {
@@ -104,22 +104,22 @@ struct HomeView: View {
                     }
                     .tag(HomeFeature.State.Tab.profile)
             }
-            .navigationDestination(item: $store.scope(
-                state: \.chatList.detail,
-                action: \.chatList.detail
-            )) { store in
-                ChatDetailView(store: store)
-            }
-            .sheet(item: $store.scope(
-                state: \.chatList.newChatSetup,
-                action: \.chatList.newChatSetup
-            )) { store in
-                NavigationView {
-                    NewChatSetupView(store: store)
-                        .navigationTitle("Selecione os participantes")
-                        .navigationBarTitleDisplayMode(.inline)
-                }
-            }
+//            .navigationDestination(item: $store.scope(
+//                state: \.chatList.detail,
+//                action: \.chatList.detail
+//            )) { store in
+//                ChatDetailView(store: store)
+//            }
+//            .sheet(item: $store.scope(
+//                state: \.chatList.newChatSetup,
+//                action: \.chatList.newChatSetup
+//            )) { store in
+//                NavigationView {
+//                    NewChatSetupView(store: store)
+//                        .navigationTitle("Selecione os participantes")
+//                        .navigationBarTitleDisplayMode(.inline)
+//                }
+//            }
             .navigationTitle(store.selectedTab.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
