@@ -6,7 +6,7 @@ import SwiftUI
     
     return MessageView(
         store: Store(
-            initialState: MessageFeature.State(message: .hi),
+            initialState: MessageFeature.State(message: Shared(wrappedValue: .hi)),
             reducer: { MessageFeature() }
         )
     )
@@ -16,12 +16,13 @@ import SwiftUI
 struct MessageFeature {
     @ObservableState
     struct State: Identifiable, Equatable, Hashable, Codable {
+        @ObservationStateIgnored
+        @Shared var message: Message
         var id: MessageID { message.id }
-        var message: Message
         var user: User
         
-        init(message: Message) {
-            self.message = message
+        init(message: Shared<Message>) {
+            self._message = message
             self.user = authClient.getAuthenticatedUser() ?? User()
         }
         

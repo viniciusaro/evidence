@@ -1,7 +1,6 @@
 import Combine
 import FirebaseFirestore
 import Foundation
-import OrderedCollections
 
 struct StockClient {
     let consume: () -> AnyPublisher<Chat, Never>
@@ -76,7 +75,7 @@ extension StockClient {
                     let installationId = installationClient.getCurrentInstallationId()
                     
                     var chatUpdate = chat
-                    chatUpdate.messages = OrderedSet([message])
+                    chatUpdate.messages = [message]
                     
                     let data = try JSONEncoder().encode(chatUpdate)
                     let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String: Any]

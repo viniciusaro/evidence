@@ -47,7 +47,8 @@ struct HomeFeature {
             case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
                 state.chatList.newChatSetup = nil
                 state.chatList.chats.insert(chat, at: 0)
-                state.chatList.detail = ChatDetailFeature.State(chat: chat)
+                let shared = state.chatList.$chats[chat]
+                state.chatList.detail = ChatDetailFeature.State(chat: shared)
                 return .none
                 
             case .chatList:

@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import OrderedCollections
 import SwiftUI
 
 #Preview {
@@ -9,7 +8,7 @@ import SwiftUI
     
     return ChatDetailView(
         store: Store(
-            initialState: ChatDetailFeature.State(chat: .lili),
+            initialState: ChatDetailFeature.State(chat: Shared(wrappedValue: .lili)),
             reducer: { ChatDetailFeature() }
         )
     )
@@ -19,11 +18,8 @@ import SwiftUI
 struct ChatDetailFeature {
     @ObservableState
     struct State: Equatable, Hashable, Codable {
-        var chat: Chat {
-            didSet {
-                syncMessageStates()
-            }
-        }
+        @ObservationStateIgnored
+        @Shared var chat: Chat
         var user: User
         var inputText: String
         fileprivate var messages: IdentifiedArrayOf<MessageFeature.State>
@@ -33,22 +29,15 @@ struct ChatDetailFeature {
             return "\(chat.name) \(participants)"
         }
         
-        mutating func syncMessageStates() {
-            let updatedMessages = chat.messages
-            let currentMessages = OrderedSet(messages.elements.map { $0.message })
-            let existing = updatedMessages.intersection(currentMessages)
-            let new = updatedMessages.subtracting(existing)
-            
-            new.forEach {
-                messages.append(MessageFeature.State(message: $0))
-            }
-        }
-        
-        init(chat: Chat, inputText: String = "") {
-            self.chat = chat
+        init(chat: Shared<Chat>, inputText: String = "") {
+            self._chat = chat
             self.user = authClient.getAuthenticatedUser() ?? User()
             self.inputText = inputText
-            self.messages = chat.messages.map { MessageFeature.State(message: $0) }.identified
+            self.messages = IdentifiedArray(
+                uniqueElements: chat.wrappedValue.messages.map {
+                    MessageFeature.State(message: chat.messages[$0])
+                }
+            )
         }
     }
     
@@ -72,6 +61,11 @@ struct ChatDetailFeature {
             case .send:
                 let newMessage = Message(content: state.inputText, sender: state.user)
                 state.chat.messages.append(newMessage)
+                
+                let newSharedMessage = state.$chat.messages[newMessage]
+                let newMessageState = MessageFeature.State(message: newSharedMessage)
+                state.messages.append(newMessageState)
+
                 state.inputText = ""
                 return .none
             }
@@ -126,10 +120,3 @@ struct ChatDetailView: View {
         .navigationTitle(store.title)
     }
 }
-
-extension Array where Element: Identifiable {
-    var identified: IdentifiedArrayOf<Self.Element> {
-        IdentifiedArray(uniqueElements: self)
-    }
-}
-

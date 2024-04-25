@@ -17,7 +17,8 @@ import SwiftUI
 struct ChatListFeature {
     @ObservableState
     struct State: Equatable, Codable {
-        var chats: IdentifiedArrayOf<Chat> = []
+        @ObservationStateIgnored 
+        @Shared var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
         
@@ -66,7 +67,7 @@ struct ChatListFeature {
                 return .none
                 
             case let .onListItemTapped(chat):
-                state.detail = ChatDetailFeature.State(chat: chat)
+                state.detail = ChatDetailFeature.State(chat: state.$chats[chat])
                 return .none
                 
             case let .onListItemDelete(indexSet):
@@ -81,18 +82,6 @@ struct ChatListFeature {
                 }
             }
         }
-        .onChange(of: \.chats) { _, chats in
-            Reduce { state, action in
-                guard let detail = state.detail else {
-                    return .none
-                }
-                guard let chat = chats[id: detail.chat.id] else {
-                    return .none
-                }
-                state.detail?.chat = chat
-                return .none
-            }
-        }
         Reduce { state, action in
             guard case .detail(.presented(.send)) = action else {
                 return .none
@@ -101,7 +90,6 @@ struct ChatListFeature {
                 return .none
             }
             
-            state.chats[id: chat.id] = chat
             moveChatUp(&state, chat)
             
             return .publisher {
@@ -110,9 +98,9 @@ struct ChatListFeature {
                     .receive(on: DispatchQueue.main)
             }
         }
-        .onChange(of: \.chats) { _, chats in
+        .onChange(of: \.chats) { _, __ in
             Reduce { state, action in
-                .run { [chats = chats] _ in
+                .run { [chats = state.chats] _ in
                     let data = try JSONEncoder().encode(chats)
                     try dataClient.save(data, .chats)
                 }
@@ -121,11 +109,13 @@ struct ChatListFeature {
     }
     
     private func moveChatUp(_ state: inout State, _ chat: Chat) {
-        if let index = state.chats.index(id: chat.id) {
-            state.chats.move(
-                fromOffsets: IndexSet(arrayLiteral: index),
-                toOffset: 0
-            )
+        NSLock().withLock {
+            if let index = state.chats.index(id: chat.id) {
+                state.chats.move(
+                    fromOffsets: IndexSet(arrayLiteral: index),
+                    toOffset: 0
+                )
+            }
         }
     }
 }
@@ -145,6 +135,7 @@ struct ChatListView: View {
                             Text(content).font(.caption)
                         }
                     }
+                    EmptyView()
                 })
             }
             .onDelete { indexSet in

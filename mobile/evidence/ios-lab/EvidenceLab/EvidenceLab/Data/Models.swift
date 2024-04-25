@@ -1,5 +1,5 @@
+import ComposableArchitecture
 import Foundation
-import OrderedCollections
 
 typealias MessageID = String
 typealias ChatID = String
@@ -9,8 +9,8 @@ typealias AuthorID = String
 struct Chat: Identifiable, Equatable, Hashable, Codable {
     let id: ChatID
     var name: String
-    var participants: [User]
-    var messages: OrderedSet<Message>
+    var participants: IdentifiedArrayOf<User>
+    var messages: IdentifiedArrayOf<Message>
 }
 
 extension Chat {
