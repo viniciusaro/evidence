@@ -44,18 +44,21 @@ struct HomeFeature {
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-//            case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
-//                state.chatList.newChatSetup = nil
-//                state.chatList.chats.insert(chat, at: 0)
-//                let shared = state.chatList.$chats[chat]
-//                state.chatList.detail = ChatDetailFeature.State(chat: shared)
-//                return .none
-//                
+            case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
+                state.chatList.newChatSetup = nil
+                state.chatList.chats.insert(chat, at: 0)
+                guard let shared = state.chatList.$chats[id: chat.id] else {
+                    return .none
+                }
+                state.chatList.newChatSetup = nil
+                state.chatList.detail = ChatDetailFeature.State(chat: shared)
+                return .none
+
             case .chatList:
                 return .none
                 
             case .onNewChatButtonTapped:
-                state.chatList.chats.append(Chat.random(using: []))
+                state.chatList.newChatSetup = NewChatSetupFeature.State()
                 return .none
                 
             case let .onTabSelectionChanged(selection):
@@ -110,16 +113,16 @@ struct HomeView: View {
             )) { store in
                 ChatDetailView(store: store)
             }
-//            .sheet(item: $store.scope(
-//                state: \.chatList.newChatSetup,
-//                action: \.chatList.newChatSetup
-//            )) { store in
-//                NavigationView {
-//                    NewChatSetupView(store: store)
-//                        .navigationTitle("Selecione os participantes")
-//                        .navigationBarTitleDisplayMode(.inline)
-//                }
-//            }
+            .sheet(item: $store.scope(
+                state: \.chatList.newChatSetup,
+                action: \.chatList.newChatSetup
+            )) { store in
+                NavigationView {
+                    NewChatSetupView(store: store)
+                        .navigationTitle("Selecione os participantes")
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
             .navigationTitle(store.selectedTab.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

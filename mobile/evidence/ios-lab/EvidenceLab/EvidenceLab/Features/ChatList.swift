@@ -8,6 +8,7 @@ struct ChatListFeature {
         @ObservationStateIgnored
         @Shared var chats: IdentifiedArrayOf<Chat>
         @Presents var detail: ChatDetailFeature.State? = nil
+        @Presents var newChatSetup: NewChatSetupFeature.State? = nil
         
         init() {
             do {
@@ -22,6 +23,7 @@ struct ChatListFeature {
     }
     enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
+        case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
         case onListItemDelete(IndexSet)
         case onListItemTapped(Chat)
         case onNewMessageReceived(Chat, Message)
@@ -38,6 +40,9 @@ struct ChatListFeature {
                 return .send(.onChatMoveUpRequested(chat))
                 
             case .detail:
+                return .none
+                
+            case .newChatSetup:
                 return .none
                 
             case let .onListItemDelete(offsets):
@@ -81,6 +86,9 @@ struct ChatListFeature {
         }
         .ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
+        }
+        .ifLet(\.$newChatSetup, action: \.newChatSetup) {
+            NewChatSetupFeature()
         }
     }
 }
