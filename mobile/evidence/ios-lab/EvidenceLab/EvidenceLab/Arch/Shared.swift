@@ -19,7 +19,13 @@ struct Shared<Value> {
         }
         set {
             func open<Root>(_ storage: some StorageProtocol<Root>) {
-                storage.value[keyPath: keyPath as! WritableKeyPath<Root, Value>] = newValue
+                if let keyPath = keyPath as? WritableKeyPath<Root, Value> {
+                    storage.value[keyPath: keyPath] = newValue
+                } else if let keyPath = keyPath as? WritableKeyPath<Root, Value?> {
+                    storage.value[keyPath: keyPath] = newValue
+                } else {
+                    fatalError("invalid keyPath")
+                }
             }
             open(self.storage)
         }
@@ -45,27 +51,22 @@ struct Shared<Value> {
         Shared<Member>(self.storage, keyPath: self.keyPath.appending(path: keyPath)!)
     }
     
+    subscript<Member>(dynamicMember keyPath: WritableKeyPath<Storage.Value, Member?>) -> Shared<Member>? {
+        func open<Root>(_ storage: some StorageProtocol<Root>) -> Member? {
+            storage.value[keyPath: keyPath as AnyKeyPath] as? Member
+        }
+        if open(self.storage) != nil {
+            return Shared<Member>(self.storage, keyPath: self.keyPath.appending(path: keyPath)!)
+        }
+        return nil
+    }
+    
     @Observable
     class Storage: StorageProtocol {
         var value: Value
         
         init(_ value: Value) {
             self.value = value
-        }
-    }
-}
-
-extension Shared where Value: MutableCollection, Value.Index: Hashable {
-    subscript(index: Value.Index) -> Shared<Value.Element> {
-        Shared<Value.Element>(self.storage, keyPath: self.keyPath.appending(path: \Value.[index])!)
-    }
-}
-
-extension Shared where Value: MutableCollection, Value.Index: Hashable, Value.Element: Identifiable {
-    subscript(element: Value.Element) -> Shared<Value.Element> {
-        NSLock().withLock {
-            let index = self.wrappedValue.firstIndex(where: { $0.id == element.id })!
-            return self[index]
         }
     }
 }

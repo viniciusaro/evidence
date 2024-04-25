@@ -4,8 +4,8 @@ import SwiftUI
 
 #if DEBUG
 var authClient = AuthClient.live
-var dataClient = DataClient.mock(Chat.mockList)
-var stockClient = StockClient.mock(Chat.mockList)
+var dataClient = DataClient.live
+var stockClient = StockClient.live
 var installationClient = InstallationClient.mock("1")
 #else
 let authClient = AuthClient.live

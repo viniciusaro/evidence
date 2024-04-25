@@ -138,10 +138,30 @@ extension Chat {
         ]
     )
     
+    static let insurances = Chat(
+        id: "54CD9181-C419-41E7-ACED-6A9391105DC7",
+        name: "Seguros",
+        participants: [.vini, .lili],
+        messages: [
+            Message(content: "Segue a apolice", sender: .lili)
+        ]
+    )
+    
+    static let me = Chat(
+        id: "44CD9181-C419-41E7-ACED-6A9391105DC7",
+        name: "Eu",
+        participants: [.vini],
+        messages: [
+            Message(content: "Bom dia, Eu!", sender: .vini)
+        ]
+    )
+    
     static let mockList = [
         Chat.lili,
         Chat.evidence,
         Chat.recepies,
+        Chat.insurances,
+        Chat.me
     ]
 }
 
