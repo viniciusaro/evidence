@@ -4,22 +4,10 @@ import SwiftUI
 @Reducer
 public struct ChatListFeature {
     @ObservableState
-    public struct State: Equatable, Codable {
-        @ObservationStateIgnored
-        @Shared var chats: IdentifiedArrayOf<Chat>
+    public struct State: Equatable {
+        @Shared(.fileStorage(.chats)) var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
-        
-        init() {
-            do {
-                self.chats = try JSONDecoder().decode(
-                    IdentifiedArrayOf<Chat>.self,
-                    from: dataClient.load(.chats)
-                )
-            } catch {
-                self.chats = []
-            }
-        }
     }
 
     public enum Action {
@@ -59,12 +47,10 @@ public struct ChatListFeature {
                 return .none
                 
             case let .onChatMoveUpRequested(chat):
-                NSLock().withLock {
-                    guard let index = state.chats.firstIndex(where: { $0.id == chat.id }) else {
-                        return
-                    }
-                    state.chats.move(fromOffsets: IndexSet(integer: index), toOffset: 0)
+                guard let index = state.chats.firstIndex(where: { $0.id == chat.id }) else {
+                    return .none
                 }
+                state.chats.move(fromOffsets: IndexSet(integer: index), toOffset: 0)
                 return .none
                 
             case let .onNewMessageReceived(chat, message):
@@ -76,6 +62,15 @@ public struct ChatListFeature {
                     return .none
                 }
                 shared.wrappedValue.messages.append(message)
+                
+                if
+                    let detail = state.detail,
+                    detail.chat.id == chat.id,
+                    let sharedMessage = shared.messages[id: message.id]
+                {
+                    state.detail?.messages.append(MessageFeature.State(message: sharedMessage))
+                }
+                
                 return .send(.onChatMoveUpRequested(existingChat))
                 
             case .onViewDidLoad:

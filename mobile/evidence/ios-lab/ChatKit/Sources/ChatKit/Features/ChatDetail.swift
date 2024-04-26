@@ -4,8 +4,7 @@ import SwiftUI
 @Reducer
 public struct ChatDetailFeature {
     @ObservableState
-    public struct State: Equatable, Codable {
-        @ObservationStateIgnored
+    public struct State: Equatable {
         @Shared var chat: Chat
         var user: User
         var inputText: String = ""
@@ -63,6 +62,14 @@ public struct ChatDetailFeature {
                 }
             }
         }
+        .onChange(of: \.chat.messages, { oldValue, messages in
+            Reduce { state, action in
+                state.messages = IdentifiedArray(uniqueElements: messages.map {
+                    MessageFeature.State(message: state.$chat.messages[id: $0.id]!)
+                })
+                return .none
+            }
+        })
         .forEach(\.messages, action: \.message) {
             MessageFeature()
         }

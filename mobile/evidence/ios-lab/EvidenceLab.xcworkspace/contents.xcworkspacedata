@@ -39,28 +39,28 @@
                   location = "group:Features"
                   name = "Features">
                   <FileRef
+                     location = "group:Home.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ChatList.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ChatDetail.swift">
+                  </FileRef>
+                  <FileRef
                      location = "group:NewChatSetup.swift">
                   </FileRef>
                   <FileRef
                      location = "group:Login.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:ChatList.swift">
-                  </FileRef>
-                  <FileRef
                      location = "group:Message.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:Home.swift">
                   </FileRef>
                   <FileRef
                      location = "group:Root.swift">
                   </FileRef>
                   <FileRef
                      location = "group:Profile.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:ChatDetail.swift">
                   </FileRef>
                </Group>
                <Group

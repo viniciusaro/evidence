@@ -5,7 +5,7 @@ import SwiftUI
 @Reducer
 public struct ProfileFeature {
     @ObservableState
-    public struct State: Equatable, Codable {
+    public struct State: Equatable {
         var user: User
         init() {
             self.user = authClient.getAuthenticatedUser() ?? User()

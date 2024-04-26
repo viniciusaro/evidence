@@ -36,13 +36,13 @@ public struct RootFeature {
         
         public init() {
             if let _ = authClient.getAuthenticatedUser() {
-                do {
-                    let data = try dataClient.load(.state)
-                    let homeState = try JSONDecoder().decode(HomeFeature.State.self, from: data)
-                    self = .home(homeState)
-                } catch {
+//                do {
+//                    let data = try dataClient.load(.state)
+//                    let homeState = try JSONDecoder().decode(HomeFeature.State.self, from: data)
+//                    self = .home(homeState)
+//                } catch {
                     self = .home(HomeFeature.State())
-                }
+//                }
             } else {
                 self = .login(LoginFeature.State())
             }
@@ -70,7 +70,7 @@ public struct RootFeature {
                     return .none
                 }
                 return .run { [state = homeState] _ in
-                    try JSONEncoder().encode(state).write(to: .state)
+//                    try JSONEncoder().encode(state).write(to: .state)
                 }
 
             case .login(.onUserAuthenticated):

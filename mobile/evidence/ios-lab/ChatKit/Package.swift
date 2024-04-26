@@ -15,11 +15,12 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/pointfreeco/swift-composable-architecture",
-            from: "1.9.2"
+            url: "git@github.com:pointfreeco/swift-composable-architecture.git",
+            branch: "shared-state-beta"
+//            from: "1.9.3"
         ),
         .package(
-            url: "https://github.com/firebase/firebase-ios-sdk",
+            url: "git@github.com:firebase/firebase-ios-sdk.git",
             from: "10.24.0"
         )
     ],

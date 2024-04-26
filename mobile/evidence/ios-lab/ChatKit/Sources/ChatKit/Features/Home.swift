@@ -18,7 +18,7 @@ import SwiftUI
 @Reducer
 public struct HomeFeature {
     @ObservableState
-    public struct State: Equatable, Codable {
+    public struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
