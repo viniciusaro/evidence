@@ -38,30 +38,34 @@
                <Group
                   location = "group:Features"
                   name = "Features">
-                  <FileRef
-                     location = "group:Home.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:ChatList.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:ChatDetail.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:NewChatSetup.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:Login.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:Message.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:Root.swift">
-                  </FileRef>
-                  <FileRef
-                     location = "group:Profile.swift">
-                  </FileRef>
+                  <Group
+                     location = "container:"
+                     name = "TCA">
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatDetail.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatList.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Home.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Login.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Message.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/NewChatSetup.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Profile.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Root.swift">
+                     </FileRef>
+                  </Group>
                </Group>
                <Group
                   location = "group:Arch"
