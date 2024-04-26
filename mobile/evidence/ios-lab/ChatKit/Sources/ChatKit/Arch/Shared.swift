@@ -19,13 +19,7 @@ struct Shared<Value> {
         }
         set {
             func open<Root>(_ storage: some StorageProtocol<Root>) {
-                if let keyPath = keyPath as? WritableKeyPath<Root, Value> {
-                    storage.value[keyPath: keyPath] = newValue
-                } else if let keyPath = keyPath as? WritableKeyPath<Root, Value?> {
-                    storage.value[keyPath: keyPath] = newValue
-                } else {
-                    fatalError("invalid keyPath")
-                }
+                storage.value[keyPath: keyPath as! WritableKeyPath<Root, Value>] = newValue
             }
             open(self.storage)
         }

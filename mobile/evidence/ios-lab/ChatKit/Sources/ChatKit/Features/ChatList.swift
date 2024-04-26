@@ -93,6 +93,11 @@ public struct ChatListFeature {
                 }
             }
         }
+        Reduce { state, action in
+            return .run { [chats = state.chats] _ in
+                try JSONEncoder().encode(chats).write(to: .chats)
+            }
+        }
         .ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
         }
