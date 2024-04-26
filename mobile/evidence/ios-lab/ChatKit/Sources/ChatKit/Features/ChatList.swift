@@ -5,9 +5,21 @@ import SwiftUI
 public struct ChatListFeature {
     @ObservableState
     public struct State: Equatable {
-        @Shared(.fileStorage(.chats)) var chats: IdentifiedArrayOf<Chat> = []
+        @ObservationStateIgnored
+        @Shared var chats: IdentifiedArrayOf<Chat>
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
+        
+        init() {
+            do {
+                self.chats = try JSONDecoder().decode(
+                    IdentifiedArrayOf<Chat>.self,
+                    from: dataClient.load(.chats)
+                )
+            } catch {
+                self.chats = []
+            }
+        }
     }
 
     public enum Action {

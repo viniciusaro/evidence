@@ -5,6 +5,7 @@ import SwiftUI
 public struct ChatDetailFeature {
     @ObservableState
     public struct State: Equatable {
+        @ObservationStateIgnored
         @Shared var chat: Chat
         var user: User
         var inputText: String = ""
@@ -55,6 +56,7 @@ public struct ChatDetailFeature {
                 let newMessage = Message(content: state.inputText, sender: state.user)
                 state.chat.messages.append(newMessage)
                 state.inputText = ""
+                
                 return .publisher { [chat = state.chat] in
                     stockClient.send(newMessage, chat)
                         .receive(on: DispatchQueue.main)
