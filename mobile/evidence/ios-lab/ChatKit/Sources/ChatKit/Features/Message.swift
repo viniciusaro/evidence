@@ -2,13 +2,13 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-struct MessageFeature {
+public struct MessageFeature {
     @ObservableState
-    struct State: Equatable, Codable, Identifiable {
+    public struct State: Equatable, Codable, Identifiable {
         @ObservationStateIgnored
         @Shared var message: Message
         var user: User
-        var id: MessageID { message.id }
+        public var id: MessageID { message.id }
         
         init(message: Shared<Message>) {
             self._message = message
@@ -28,13 +28,13 @@ struct MessageFeature {
         }
     }
     
-    enum Action {
+    public enum Action {
         case onViewDidLoad
         case onPreviewDidLoad(Preview)
 
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .onViewDidLoad:

@@ -2,9 +2,9 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-struct ChatListFeature {
+public struct ChatListFeature {
     @ObservableState
-    struct State: Equatable, Codable {
+    public struct State: Equatable, Codable {
         @ObservationStateIgnored
         @Shared var chats: IdentifiedArrayOf<Chat>
         @Presents var detail: ChatDetailFeature.State? = nil
@@ -21,7 +21,8 @@ struct ChatListFeature {
             }
         }
     }
-    enum Action {
+
+    public enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
         case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
         case onListItemDelete(IndexSet)
@@ -30,7 +31,8 @@ struct ChatListFeature {
         case onViewDidLoad
         case onChatMoveUpRequested(Chat)
     }
-    var body: some ReducerOf<Self> {
+    
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .detail(.presented(.send)):

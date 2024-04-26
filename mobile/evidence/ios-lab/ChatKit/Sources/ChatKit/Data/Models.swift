@@ -1,19 +1,19 @@
 import ComposableArchitecture
 import Foundation
 
-typealias MessageID = String
-typealias ChatID = String
-typealias UserID = String
-typealias AuthorID = String
+public typealias MessageID = String
+public typealias ChatID = String
+public typealias UserID = String
+public typealias AuthorID = String
 
-struct Chat: Identifiable, Equatable, Hashable, Codable {
-    let id: ChatID
+public struct Chat: Identifiable, Equatable, Hashable, Codable {
+    public let id: ChatID
     var name: String
     var participants: IdentifiedArrayOf<User>
     var messages: IdentifiedArrayOf<Message>
 }
 
-extension Chat {
+public extension Chat {
     static func random(using chats: [Chat]) -> Chat {
         let newChat = Chat(
             id: ChatID(UUID().uuidString),
@@ -41,23 +41,23 @@ extension Chat {
     }
 }
 
-struct Message: Identifiable, Equatable, Hashable, Codable {
-    let id: MessageID
+public struct Message: Identifiable, Equatable, Hashable, Codable {
+    public let id: MessageID
     let sender: User
     var content: String
     var preview: Preview?
     var isSent: Bool
     
-    static func == (lhs: Message, rhs: Message) -> Bool {
+    public static func == (lhs: Message, rhs: Message) -> Bool {
         lhs.id == rhs.id
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
 
-extension Message {
+public extension Message {
     init(content: String, sender: User) {
         self.id = MessageID(UUID().uuidString)
         self.content = content
@@ -76,17 +76,17 @@ extension Message {
     }
 }
 
-struct Preview: Equatable, Hashable, Codable {
+public struct Preview: Equatable, Hashable, Codable {
     let image: URL
     let title: String
 }
 
-struct User: Equatable, Hashable, Identifiable, Codable {
-    let id: UserID
+public struct User: Equatable, Hashable, Identifiable, Codable {
+    public let id: UserID
     let name: String
 }
 
-extension User {
+public extension User {
     init(name: String, id: UserID = UserID()) {
         self.id = id
         self.name = name
@@ -98,14 +98,14 @@ extension User {
     }
 }
 
-extension User {
+public extension User {
     static let vini = User(name: "Vini", id: UserID("HGlLyOjM7vTsX1DZtACoh808SHG2"))
     static let cris = User(name: "Cris", id: UserID("llX9JYSoaxNH77sCmIH6b0xcq6w2"))
     static let lili = User(name: "Lili ❤️‍🔥", id: UserID("0A8F38BA-9484-4889-A74D-46444F3FE52B"))
 }
 
 
-extension Chat {
+public extension Chat {
     static let lili = Chat(
         id: "5CA52B4E-4BD9-4776-9D4C-1A0E9C76B062",
         name: "Lili ❤️‍🔥",
@@ -166,7 +166,7 @@ extension Chat {
 }
 
 
-extension Message {
+public extension Message {
     static let hi = Message(
         id: MessageID(UUID().uuidString),
         sender: .vini,

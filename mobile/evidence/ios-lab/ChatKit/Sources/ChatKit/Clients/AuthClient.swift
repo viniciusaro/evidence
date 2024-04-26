@@ -2,11 +2,11 @@ import Combine
 import Foundation
 import FirebaseAuth
 
-struct AuthClient {
+public struct AuthClient {
     let getAuthenticatedUser: () -> User?
     let authenticate: (String, String) -> AnyPublisher<User, Error>
     
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case invalidCredentials
         case credentialAlreadyInUse
         case unknown(Swift.Error)

@@ -11,9 +11,9 @@ import SwiftUI
 }
 
 @Reducer
-struct NewChatSetupFeature {
+public struct NewChatSetupFeature {
     @ObservableState
-    struct State: Equatable, Codable {
+    public struct State: Equatable, Codable {
         var chat: Chat
         var users: [User]
         var alertIsPresented: Bool
@@ -30,8 +30,9 @@ struct NewChatSetupFeature {
             self.currentUser = authClient.getAuthenticatedUser() ?? User()
         }
     }
+    
     @CasePathable
-    enum Action {
+    public enum Action {
         case onAlertCancel
         case onAlertConfirm
         case onAlertInputTextChanged(String)
@@ -39,13 +40,13 @@ struct NewChatSetupFeature {
         case delegate(Delegate)
         
         @CasePathable
-        enum Delegate {
+        public enum Delegate {
             case onNewChatSetup(Chat)
         }
     }
     @Dependency(\.dismiss) var dismiss
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .delegate(.onNewChatSetup):

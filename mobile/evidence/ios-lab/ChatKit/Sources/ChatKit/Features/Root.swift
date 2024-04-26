@@ -26,13 +26,15 @@ let installationClient = InstallationClient.mock("1")
 }
 
 @Reducer
-struct RootFeature {
+public struct RootFeature {
+    public init() {}
+    
     @ObservableState
-    enum State {
+    public enum State {
         case home(HomeFeature.State)
         case login(LoginFeature.State)
         
-        init() {
+        public init() {
             if let _ = authClient.getAuthenticatedUser() {
                 do {
                     let data = try dataClient.load(.state)
@@ -48,12 +50,12 @@ struct RootFeature {
     }
     
     @CasePathable
-    enum Action {
+    public enum Action {
         case home(HomeFeature.Action)
         case login(LoginFeature.Action)
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         EmptyReducer()
         .ifLet(\.login, action: \.login) {
             LoginFeature()
@@ -82,10 +84,14 @@ struct RootFeature {
     }
 }
 
-struct RootView: View {
+public struct RootView: View {
     @Bindable var store: StoreOf<RootFeature>
     
-    var body: some View {
+    public init(store: StoreOf<RootFeature>) {
+        self.store = store
+    }
+    
+    public var body: some View {
         VStack {
             if let homeStore = store.scope(state: \.home, action: \.home) {
                 HomeView(store: homeStore)

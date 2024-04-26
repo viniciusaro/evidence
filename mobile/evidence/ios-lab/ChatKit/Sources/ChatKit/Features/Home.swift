@@ -16,15 +16,15 @@ import SwiftUI
 }
 
 @Reducer
-struct HomeFeature {
+public struct HomeFeature {
     @ObservableState
-    struct State: Equatable, Codable {
+    public struct State: Equatable, Codable {
         var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
         @CasePathable
-        enum Tab: String, Codable {
+        public enum Tab: String, Codable {
             case chatList = "Conversas"
             case profile = "Perfil"
             
@@ -34,14 +34,14 @@ struct HomeFeature {
         }
     }
     @CasePathable
-    enum Action {
+    public enum Action {
         case chatList(ChatListFeature.Action)
         case profile(ProfileFeature.Action)
         case onNewChatButtonTapped
         case onTabSelectionChanged(State.Tab)
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):

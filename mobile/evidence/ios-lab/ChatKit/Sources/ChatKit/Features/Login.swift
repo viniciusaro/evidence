@@ -12,16 +12,16 @@ import SwiftUI
 }
 
 @Reducer
-struct LoginFeature {
+public struct LoginFeature {
     @ObservableState
-    struct State: Equatable, Identifiable {
-        let id = UUID()
+    public struct State: Equatable, Identifiable {
+        public let id = UUID()
         var emailInput: String = ""
         var passwordInput: String = ""
     }
     
     @CasePathable
-    enum Action {
+    public enum Action {
         case onSubmitButtonTapped
         case onUserAuthenticated(User)
         case onUserAuthenticationError(AuthClient.Error)
@@ -29,7 +29,7 @@ struct LoginFeature {
         case onPasswordInputChanged(String)
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case let .onEmailInputChanged(email):

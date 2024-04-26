@@ -3,9 +3,9 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-struct ProfileFeature {
+public struct ProfileFeature {
     @ObservableState
-    struct State: Equatable, Codable {
+    public struct State: Equatable, Codable {
         var user: User
         init() {
             self.user = authClient.getAuthenticatedUser() ?? User()
@@ -13,10 +13,10 @@ struct ProfileFeature {
     }
     
     @CasePathable
-    enum Action {
+    public enum Action {
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         EmptyReducer()
     }
 }

@@ -2,9 +2,9 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-struct ChatDetailFeature {
+public struct ChatDetailFeature {
     @ObservableState
-    struct State: Equatable, Codable {
+    public struct State: Equatable, Codable {
         @ObservationStateIgnored
         @Shared var chat: Chat
         var user: User
@@ -32,14 +32,14 @@ struct ChatDetailFeature {
         }
     }
     
-    enum Action {
+    public enum Action {
         case message(IdentifiedActionOf<MessageFeature>)
         case onInputTextUpdated(String)
         case onMessageSentConfirmation(Message)
         case send
     }
     
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .message:

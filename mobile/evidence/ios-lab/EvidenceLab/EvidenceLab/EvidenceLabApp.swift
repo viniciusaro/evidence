@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import ChatKit
 import FirebaseCore
 import SwiftUI
 

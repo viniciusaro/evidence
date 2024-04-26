@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:EvidenceLab/EvidenceLab.xcodeproj">
+   </FileRef>
+   <Group
+      location = "group:EvidenceLab/../ChatKit"
+      name = "ChatKit">
+      <FileRef
+         location = "group:Package.swift">
+      </FileRef>
+      <Group
+         location = "container:"
+         name = "Sources">
+         <Group
+            location = "container:"
+            name = "Chat">
+            <Group
+               location = "group:ChatKit/Sources/ChatKit"
+               name = "ChatKit">
+               <Group
+                  location = "group:Clients"
+                  name = "Clients">
+                  <FileRef
+                     location = "group:StockClient.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:DataClient.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:PreviewClient.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:AuthClient.swift">
+                  </FileRef>
+               </Group>
+               <Group
+                  location = "group:Features"
+                  name = "Features">
+                  <FileRef
+                     location = "group:NewChatSetup.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Login.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ChatList.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Message.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Home.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Root.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Profile.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ChatDetail.swift">
+                  </FileRef>
+               </Group>
+               <Group
+                  location = "group:Arch"
+                  name = "Arch">
+                  <FileRef
+                     location = "group:Reducer.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Feature.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Shared.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Store+SwiftUI.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Effect.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Store.swift">
+                  </FileRef>
+               </Group>
+               <Group
+                  location = "group:Data"
+                  name = "Data">
+                  <FileRef
+                     location = "group:Models.swift">
+                  </FileRef>
+               </Group>
+               <Group
+                  location = "group:Helpers"
+                  name = "Helpers">
+                  <FileRef
+                     location = "group:Helpers.swift">
+                  </FileRef>
+               </Group>
+               <Group
+                  location = "group:SwiftUI"
+                  name = "SwiftUI">
+                  <FileRef
+                     location = "group:RootSwift.swift">
+                  </FileRef>
+               </Group>
+            </Group>
+         </Group>
+      </Group>
+   </Group>
+</Workspace>
