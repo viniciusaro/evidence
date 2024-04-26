@@ -51,15 +51,15 @@ struct Shared<Value> {
         Shared<Member>(self.storage, keyPath: self.keyPath.appending(path: keyPath)!)
     }
     
-    subscript<Member>(dynamicMember keyPath: WritableKeyPath<Storage.Value, Member?>) -> Shared<Member>? {
-        func open<Root>(_ storage: some StorageProtocol<Root>) -> Member? {
-            storage.value[keyPath: keyPath as AnyKeyPath] as? Member
-        }
-        if open(self.storage) != nil {
-            return Shared<Member>(self.storage, keyPath: self.keyPath.appending(path: keyPath)!)
-        }
-        return nil
-    }
+//    subscript<Member>(dynamicMember keyPath: WritableKeyPath<Storage.Value, Member?>) -> Shared<Member>? {
+//        func open<Root>(_ storage: some StorageProtocol<Root>) -> Member? {
+//            storage.value[keyPath: keyPath as AnyKeyPath] as? Member
+//        }
+//        if open(self.storage) != nil {
+//            return Shared<Member>(self.storage, keyPath: self.keyPath.appending(path: keyPath)!)
+//        }
+//        return nil
+//    }
     
     @Observable
     class Storage: StorageProtocol {
@@ -68,6 +68,15 @@ struct Shared<Value> {
         init(_ value: Value) {
             self.value = value
         }
+    }
+}
+
+extension Shared where Value: IdentifiedArrayProtocol, Value.Index: Hashable, Value.Element: Identifiable {
+    subscript(id id: Value.Element.ID) -> Shared<Value.Element>? {
+        guard let keyPath = self.keyPath.appending(path: \Value.[id: id]!) else {
+            return nil
+        }
+        return Shared<Value.Element>(self.storage, keyPath: keyPath)
     }
 }
 
@@ -94,3 +103,10 @@ extension Shared: Encodable where Value: Encodable {
         try wrappedValue.encode(to: encoder)
     }
 }
+
+protocol IdentifiedArrayProtocol: MutableCollection where Element: Identifiable, Element.ID == ID {
+    associatedtype ID: Hashable
+    subscript(id id: ID) -> Element? { get set }
+}
+
+extension IdentifiedArray: IdentifiedArrayProtocol where Element: Identifiable, Element.ID == ID {}
