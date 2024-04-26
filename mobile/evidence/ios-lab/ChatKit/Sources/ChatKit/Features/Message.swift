@@ -31,7 +31,6 @@ public struct MessageFeature {
     public enum Action {
         case onViewDidLoad
         case onPreviewDidLoad(Preview)
-
     }
     
     public var body: some ReducerOf<Self> {
