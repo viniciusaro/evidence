@@ -5,21 +5,9 @@ import SwiftUI
 public struct ChatListFeature {
     @ObservableState
     public struct State: Equatable {
-        @ObservationStateIgnored
-        @Shared var chats: IdentifiedArrayOf<Chat>
+        @Shared(.fileStorage(.chats)) var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
-        
-        init() {
-            do {
-                self.chats = try JSONDecoder().decode(
-                    IdentifiedArrayOf<Chat>.self,
-                    from: dataClient.load(.chats)
-                )
-            } catch {
-                self.chats = []
-            }
-        }
     }
 
     public enum Action {
@@ -91,11 +79,6 @@ public struct ChatListFeature {
                         .receive(on: DispatchQueue.main)
                         .map { .onNewMessageReceived($0, $0.messages.first!) }
                 }
-            }
-        }
-        Reduce { state, action in
-            return .run { [chats = state.chats] _ in
-                try JSONEncoder().encode(chats).write(to: .chats)
             }
         }
         .ifLet(\.$detail, action: \.detail) {

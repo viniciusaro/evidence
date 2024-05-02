@@ -5,7 +5,6 @@ import SwiftUI
 public struct ChatDetailFeature {
     @ObservableState
     public struct State: Equatable {
-        @ObservationStateIgnored
         @Shared var chat: Chat
         var user: User
         var inputText: String = ""

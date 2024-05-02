@@ -5,7 +5,6 @@ import SwiftUI
 public struct MessageFeature {
     @ObservableState
     public struct State: Equatable, Identifiable {
-        @ObservationStateIgnored
         @Shared var message: Message
         var user: User
         public var id: MessageID { message.id }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "00b10b93fcb1a3a2e56914db4edb54fc6cd55560911f8cb495a5b59732f874bf",
+  "originHash" : "0f59de6de30cb380fa8132166a0a48860a55100383f8081899a8ce785453c3be",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
       "state" : {
-        "revision" : "c218c2054299b15ae577e818bbba16084d3eabe6",
-        "version" : "10.18.2"
+        "revision" : "7d2688de038d5484866d835acb47b379722d610e",
+        "version" : "10.19.0"
       }
     },
     {
@@ -31,10 +31,10 @@
     {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/firebase-ios-sdk",
+      "location" : "git@github.com:firebase/firebase-ios-sdk.git",
       "state" : {
-        "revision" : "42eae77a0af79e9c3f41df04a23c76f05cfdda77",
-        "version" : "10.24.0"
+        "revision" : "97940381e57703c07f31a8058d8f39ec53b7c272",
+        "version" : "10.25.0"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
       "state" : {
-        "revision" : "51ba746a9d51a4bd0774b68499b0c73ef6e8570d",
-        "version" : "10.24.0"
+        "revision" : "16244d177c4e989f87b25e9db1012b382cfedc55",
+        "version" : "10.25.0"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "26c898aed8bed13b8a63057ee26500abbbcb8d55",
-        "version" : "7.13.1"
+        "revision" : "8e5d57ed87057cd7b0e4e8f474d9e78f73eb85f7",
+        "version" : "7.13.2"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/gtm-session-fetcher.git",
       "state" : {
-        "revision" : "9534039303015a84837090d20fa21cae6e5eadb6",
-        "version" : "3.3.2"
+        "revision" : "0382ca27f22fb3494cf657d8dc356dc282cd1193",
+        "version" : "3.4.1"
       }
     },
     {
@@ -123,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
       "state" : {
-        "revision" : "e593aba2c6222daad7c4f2732a431eed2c09bb07",
-        "version" : "1.3.0"
+        "revision" : "8d712376c99fc0267aa0e41fea732babe365270a",
+        "version" : "1.3.3"
       }
     },
     {
@@ -148,10 +148,10 @@
     {
       "identity" : "swift-composable-architecture",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-composable-architecture",
+      "location" : "git@github.com:pointfreeco/swift-composable-architecture.git",
       "state" : {
-        "revision" : "899a68ce3c4eca42a42e6bad2c925b82dcab5187",
-        "version" : "1.9.3"
+        "branch" : "shared-state-beta",
+        "revision" : "d87725b7a0854868a91d92384a2edc1309e82a37"
       }
     },
     {
@@ -186,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-identified-collections",
       "state" : {
-        "revision" : "d1e45f3e1eee2c9193f5369fa9d70a6ddad635e8",
-        "version" : "1.0.0"
+        "revision" : "2481e39ea43e14556ca9628259fa6b377427730c",
+        "version" : "1.0.1"
       }
     },
     {
@@ -195,8 +195,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-perception",
       "state" : {
-        "revision" : "83fc3d89676b33f1c3d49e9268e76ef62430339f",
-        "version" : "1.1.3"
+        "revision" : "8e8ca36c02abc7775a3ab81f9468c0df5fe22c2c",
+        "version" : "1.1.7"
       }
     },
     {
@@ -222,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swiftui-navigation",
       "state" : {
-        "revision" : "d9e72f3083c08375794afa216fb2f89c0114f303",
-        "version" : "1.2.1"
+        "revision" : "2ec6c3a15293efff6083966b38439a4004f25565",
+        "version" : "1.3.0"
       }
     },
     {
@@ -231,8 +231,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "b13b1d1a8e787a5ffc71ac19dcaf52183ab27ba2",
-        "version" : "1.1.1"
+        "revision" : "6f30bdba373bbd7fbfe241dddd732651f2fbd1e2",
+        "version" : "1.1.2"
       }
     }
   ],
