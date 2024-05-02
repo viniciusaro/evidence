@@ -14,17 +14,6 @@ let stockClient = StockClient.live
 let installationClient = InstallationClient.mock("1")
 #endif
 
-#Preview {
-    dataClient = DataClient.mock(Chat.mockList)
-    
-    return RootView(
-        store: Store(
-            initialState: RootFeature.State(),
-            reducer: { RootFeature() }
-        )
-    )
-}
-
 @Reducer
 public struct RootFeature {
     public init() {}
@@ -50,8 +39,7 @@ public struct RootFeature {
     }
     
     public var body: some ReducerOf<Self> {
-        EmptyReducer()
-        .ifLet(\.login, action: \.login) {
+        EmptyReducer().ifLet(\.login, action: \.login) {
             LoginFeature()
         }
         .ifLet(\.home, action: \.home) {
@@ -81,14 +69,12 @@ public struct RootView: View {
     }
     
     public var body: some View {
-        VStack {
-            if let homeStore = store.scope(state: \.home, action: \.home) {
-                HomeView(store: homeStore)
-            } else if let loginStore = store.scope(state: \.login, action: \.login) {
-                LoginView(store: loginStore)
-            } else {
-                fatalError("Invalid Root State")
-            }
+        if let homeStore = store.scope(state: \.home, action: \.home) {
+            HomeView(store: homeStore)
+        } else if let loginStore = store.scope(state: \.login, action: \.login) {
+            LoginView(store: loginStore)
+        } else {
+            fatalError("Invalid Root State")
         }
     }
 }
