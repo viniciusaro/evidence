@@ -16,7 +16,7 @@ class HomeModel {
     }
     
     func onNewChatButtonTapped() {
-        
+        chatList.newChatSetup = NewChatSetupModel()
     }
 }
 
@@ -46,22 +46,20 @@ struct HomeViewMVVM: View {
                     }
                     .tag(HomeFeature.State.Tab.profile)
             }
-//            .navigationDestination(item: $store.scope(
-//                state: \.chatList.detail,
-//                action: \.chatList.detail
-//            )) { store in
-//                ChatDetailView(store: store)
-//            }
-//            .sheet(item: $store.scope(
-//                state: \.chatList.newChatSetup,
-//                action: \.chatList.newChatSetup
-//            )) { store in
-//                NavigationView {
-//                    NewChatSetupView(store: store)
-//                        .navigationTitle("Selecione os participantes")
-//                        .navigationBarTitleDisplayMode(.inline)
-//                }
-//            }
+            .navigationDestination(
+                item: $model.chatList.detail
+            ) { model in
+                ChatDetailViewMVVM(model: model)
+            }
+            .sheet(
+                item: $model.chatList.newChatSetup
+            ) { model in
+                NavigationView {
+                    NewChatSetupViewMVVM(model: model)
+                        .navigationTitle("Selecione os participantes")
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+            }
             .navigationTitle(model.selectedTab.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

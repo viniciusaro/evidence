@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 @Observable
@@ -5,6 +6,8 @@ class MessageModel: Identifiable {
     var message: Message
     var user: User
     var id: MessageID { message.id }
+    
+    private var previewCancellable: AnyCancellable? = nil
     
     var alignment: HorizontalAlignment {
         message.sender.id == user.id ? .trailing : .leading
@@ -24,7 +27,25 @@ class MessageModel: Identifiable {
     }
     
     func onViewDidLoad() {
+        guard
+            let url = URL(string: message.content),
+            url.host() != nil,
+            message.preview == nil else {
+            return
+        }
         
+        previewCancellable?.cancel()
+        previewCancellable = URLPreviewClient.live
+            .get(url)
+            .receive(on: DispatchQueue.main)
+            .filter { $0 != nil }
+            .map { $0! }
+            .map { Preview(image: $0.image, title: $0.title) }
+            .sink { [weak self] in self?.onPreviewDidLoad($0) }
+    }
+    
+    private func onPreviewDidLoad(_ preview: Preview) {
+        message.preview = preview
     }
 }
 

@@ -9,7 +9,7 @@ public class RootModel {
         case login(LoginModel)
     }
     
-    init() {
+    public init() {
         if let _ = authClient.getAuthenticatedUser() {
             self.root = .home(HomeModel())
         } else {

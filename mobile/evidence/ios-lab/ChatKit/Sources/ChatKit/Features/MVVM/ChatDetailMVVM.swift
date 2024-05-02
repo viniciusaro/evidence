@@ -1,10 +1,18 @@
+import Combine
 import SwiftUI
 
 @Observable
 class ChatDetailModel {
-    var chat: Chat
+    var chat: Chat {
+        didSet {
+            delegateOnChatUpdate(chat)
+        }
+    }
     var inputText: String
     var messages: [MessageModel]
+    
+    private var sendCancellables: Set<AnyCancellable> = []
+    var delegateOnChatUpdate: (Chat) -> Void = { _ in fatalError() }
     
     init(chat: Chat, inputText: String = "") {
         self.chat = chat
@@ -13,7 +21,21 @@ class ChatDetailModel {
     }
     
     func send() {
+        let user = authClient.getAuthenticatedUser() ?? User()
+        let newMessage = Message(content: inputText, sender: user)
+        let newMessageModel = MessageModel(message: newMessage)
+        chat.messages.append(newMessage)
+        messages.append(newMessageModel)
+        inputText = ""
         
+        stockClient.send(newMessage, chat)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.onMessageSentConfirmation(newMessage) }
+            .store(in: &sendCancellables)
+    }
+    
+    private func onMessageSentConfirmation(_ message: Message) {
+        //
     }
 }
 

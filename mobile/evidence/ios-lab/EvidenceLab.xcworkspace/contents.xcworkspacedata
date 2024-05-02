@@ -66,6 +66,9 @@
                      <FileRef
                         location = "group:MessageMVVM.swift">
                      </FileRef>
+                     <FileRef
+                        location = "group:NewChatSetupMVVM.swift">
+                     </FileRef>
                   </Group>
                   <Group
                      location = "group:SwiftUI"

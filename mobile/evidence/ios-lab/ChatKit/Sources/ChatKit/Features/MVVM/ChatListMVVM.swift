@@ -4,8 +4,32 @@ import SwiftUI
 
 @Observable
 class ChatListModel {
-    var chats: IdentifiedArrayOf<Chat>
-    var detail: ChatDetailModel? = nil
+    var chats: IdentifiedArrayOf<Chat> {
+        didSet {
+            if let data = try? JSONEncoder().encode(self.chats) {
+                try? dataClient.save(data, .chats)
+            }
+        }
+    }
+    
+    var detail: ChatDetailModel? = nil {
+        didSet {
+            detail?.delegateOnChatUpdate = { [weak self] chatUpdate in
+                self?.chats[id: chatUpdate.id] = chatUpdate
+            }
+        }
+    }
+    
+    var newChatSetup: NewChatSetupModel? = nil {
+        didSet {
+            newChatSetup?.delegateOnNewChatSetup = { [weak self] chat in
+                guard let self else { return }
+                self.newChatSetup = nil
+                self.chats.insert(chat, at: 0)
+                self.detail = ChatDetailModel(chat: chat)
+            }
+        }
+    }
     
     private var consumeCancellable: AnyCancellable? = nil
     
@@ -21,11 +45,11 @@ class ChatListModel {
     }
     
     func onListItemTapped(_ chat: Chat) {
-        
+        detail = ChatDetailModel(chat: chat)
     }
     
-    func onListItemDelete(_ indextSet: IndexSet) {
-        
+    func onListItemDelete(_ indexSet: IndexSet) {
+        chats.remove(atOffsets: indexSet)
     }
     
     func onViewDidLoad() {
@@ -40,6 +64,12 @@ class ChatListModel {
             chats.insert(chat, at: 0)
             return
         }
+        
+        if let detail = detail, detail.chat.id == chat.id {
+            detail.chat.messages.append(message)
+            detail.messages.append(MessageModel(message: message))
+        }
+        
         chats[id: chat.id]?.messages.append(message)
     }
 }
