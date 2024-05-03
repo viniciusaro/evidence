@@ -1,6 +1,7 @@
 import SwiftUI
 
-@Observable class HomeModel {
+@Observable 
+class HomeModel {
     var chatList: ChatListModel = .init()
     var profile: ProfileModel = .init()
     var selectedTab: Tab = .chatList

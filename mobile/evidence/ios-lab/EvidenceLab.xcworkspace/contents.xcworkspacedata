@@ -46,7 +46,10 @@
                      location = "group:MVVM"
                      name = "MVVM">
                      <FileRef
-                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/RootMVVM.swift">
+                        location = "group:ChatDetailMVVM.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ChatListMVVM.swift">
                      </FileRef>
                      <FileRef
                         location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/HomeMVVM.swift">
@@ -55,54 +58,44 @@
                         location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/LoginMVVM.swift">
                      </FileRef>
                      <FileRef
-                        location = "group:ChatListMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:ProfileMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:ChatDetailMVVM.swift">
-                     </FileRef>
-                     <FileRef
                         location = "group:MessageMVVM.swift">
                      </FileRef>
                      <FileRef
                         location = "group:NewChatSetupMVVM.swift">
                      </FileRef>
-                  </Group>
-                  <Group
-                     location = "group:SwiftUI"
-                     name = "SwiftUI">
                      <FileRef
-                        location = "group:RootSwift.swift">
+                        location = "group:ProfileMVVM.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/RootMVVM.swift">
                      </FileRef>
                   </Group>
                   <Group
                      location = "group:TCA"
                      name = "TCA">
                      <FileRef
-                        location = "group:NewChatSetup.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:Login.swift">
+                        location = "group:ChatDetail.swift">
                      </FileRef>
                      <FileRef
                         location = "group:ChatList.swift">
                      </FileRef>
                      <FileRef
-                        location = "group:Message.swift">
-                     </FileRef>
-                     <FileRef
                         location = "group:Home.swift">
                      </FileRef>
                      <FileRef
-                        location = "group:Root.swift">
+                        location = "group:Login.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:Message.swift">
+                     </FileRef>
+                     <FileRef
+                        location = "group:NewChatSetup.swift">
                      </FileRef>
                      <FileRef
                         location = "group:Profile.swift">
                      </FileRef>
                      <FileRef
-                        location = "group:ChatDetail.swift">
+                        location = "group:Root.swift">
                      </FileRef>
                   </Group>
                </Group>

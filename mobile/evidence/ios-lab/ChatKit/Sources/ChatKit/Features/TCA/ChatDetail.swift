@@ -1,8 +1,10 @@
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer public struct ChatDetailFeature {
-    @ObservableState public struct State: Equatable {
+@Reducer
+public struct ChatDetailFeature {
+    @ObservableState 
+    public struct State: Equatable {
         @Shared var chat: Chat
         var inputText: String = ""
         var messages: IdentifiedArrayOf<MessageFeature.State>
@@ -39,22 +41,25 @@ import SwiftUI
                 let newMessage = Message(content: state.inputText, sender: user)
                 state.chat.messages.append(newMessage)
                 state.inputText = ""
+
+                let sharedMessage = state.$chat.messages[id: newMessage.id]!
+                let newMessageState = MessageFeature.State(message: sharedMessage)
+                state.messages.append(newMessageState)
                 
-                return .publisher { [chat = state.chat] in
-                    stockClient.send(newMessage, chat)
+                let chatUpdate = ChatUpdate(
+                    chatId: state.chat.id,
+                    name: state.chat.name,
+                    message: newMessage,
+                    participants: state.chat.participants
+                )
+                
+                return .publisher {
+                    stockClient.send(chatUpdate)
                         .receive(on: DispatchQueue.main)
                         .map { .onMessageSentConfirmation(newMessage) }
                 }
             }
         }
-        .onChange(of: \.chat.messages, { oldValue, messages in
-            Reduce { state, action in
-                state.messages = IdentifiedArray(uniqueElements: messages.map {
-                    MessageFeature.State(message: state.$chat.messages[id: $0.id]!)
-                })
-                return .none
-            }
-        })
         .forEach(\.messages, action: \.message) {
             MessageFeature()
         }

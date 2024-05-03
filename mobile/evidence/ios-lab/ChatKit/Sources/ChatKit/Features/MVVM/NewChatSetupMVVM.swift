@@ -1,12 +1,12 @@
 import Dependencies
 import SwiftUI
 
-class NewChatSetupModel: ObservableObject, Identifiable {
-    @Published var chat: Chat
-    @Published var users: [User]
-    @Published var alertIsPresented: Bool
-    @Published var currentUser: User
-    @Dependency(\.dismiss) var dismiss
+@Observable
+class NewChatSetupModel: Identifiable {
+    var chat: Chat
+    var users: [User]
+    var alertIsPresented: Bool
+    var currentUser: User
     
     var id = UUID()
     var delegateOnNewChatSetup: (Chat) -> Void = { _ in fatalError() }
@@ -24,7 +24,10 @@ class NewChatSetupModel: ObservableObject, Identifiable {
     }
     
     func onAlertCancel() {
-        Task { await dismiss() }
+        Task {
+            @Dependency(\.dismiss) var dismiss
+            await dismiss()
+        }
     }
     
     func onAlertConfirm() {
@@ -33,7 +36,7 @@ class NewChatSetupModel: ObservableObject, Identifiable {
 }
 
 struct NewChatSetupViewMVVM: View {
-    @ObservedObject var model: NewChatSetupModel
+    @Bindable var model: NewChatSetupModel
     
     var body: some View {
         List {

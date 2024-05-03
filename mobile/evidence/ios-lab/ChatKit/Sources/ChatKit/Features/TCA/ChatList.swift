@@ -1,28 +1,19 @@
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer public struct ChatListFeature {
-    @ObservableState public struct State: Equatable {
-        @Shared var chats: IdentifiedArrayOf<Chat>
+@Reducer 
+public struct ChatListFeature {
+    @ObservableState 
+    public struct State: Equatable {
+        @Shared(.fileStorage(.chats)) var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
-        
-        init() {
-            do {
-                self._chats = Shared(try JSONDecoder().decode(
-                    IdentifiedArrayOf<Chat>.self,
-                    from: dataClient.load(.chats)
-                ))
-            } catch {
-                self._chats = Shared([])
-            }
-        }
     }
 
     public enum Action {
         case onListItemDelete(IndexSet)
         case onListItemTapped(Chat)
-        case onNewMessageReceived(Chat, Message)
+        case onNewMessageReceived(ChatUpdate)
         case onViewDidLoad
         case onChatMoveUpRequested(Chat)
 
@@ -73,20 +64,19 @@ import SwiftUI
                 state.chats.move(fromOffsets: IndexSet(integer: index), toOffset: 0)
                 return .none
                 
-            case let .onNewMessageReceived(chat, message):
-                guard let existingChat = state.chats[id: chat.id] else {
-                    state.chats.insert(chat, at: 0)
+            case let .onNewMessageReceived(chatUpdate):
+                guard let existingChat = state.chats[id: chatUpdate.chatId] else {
+                    state.chats.insert(chatUpdate.toChat(), at: 0)
                     return .none
                 }
-                guard var shared = state.$chats[id: existingChat.id] else {
-                    return .none
-                }
-                shared.wrappedValue.messages.append(message)
+                
+                var sharedChat = state.$chats[id: existingChat.id]!
+                sharedChat.wrappedValue.messages.append(chatUpdate.message)
                 
                 if
                     let detail = state.detail,
-                    detail.chat.id == chat.id,
-                    let sharedMessage = shared.messages[id: message.id]
+                    detail.chat.id == chatUpdate.chatId,
+                    let sharedMessage = sharedChat.messages[id: chatUpdate.message.id]
                 {
                     state.detail?.messages.append(MessageFeature.State(message: sharedMessage))
                 }
@@ -97,7 +87,7 @@ import SwiftUI
                 return .publisher {
                     stockClient.consume()
                         .receive(on: DispatchQueue.main)
-                        .map { .onNewMessageReceived($0, $0.messages.first!) }
+                        .map { .onNewMessageReceived($0) }
                 }
             }
         }

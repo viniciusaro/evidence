@@ -2,7 +2,8 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-@Observable class ChatDetailModel {
+@Observable 
+class ChatDetailModel {
     var chat: Chat { didSet { delegateOnChatUpdate(chat) } }
     var inputText: String
     var messages: [MessageModel]
@@ -26,7 +27,14 @@ extension ChatDetailModel {
         messages.append(newMessageModel)
         inputText = ""
         
-        stockClient.send(newMessage, chat)
+        let chatUpdate = ChatUpdate(
+            chatId: chat.id,
+            name: chat.name,
+            message: newMessage,
+            participants: chat.participants
+        )
+        
+        stockClient.send(chatUpdate)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.onMessageSentConfirmation(newMessage) }
             .store(in: &cancellables)

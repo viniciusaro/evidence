@@ -3,14 +3,14 @@ import FirebaseFirestore
 import Foundation
 
 struct StockClient {
-    let consume: () -> AnyPublisher<Chat, Never>
-    let send: (Message, Chat) -> AnyPublisher<Void, Never>
+    let consume: () -> AnyPublisher<ChatUpdate, Never>
+    let send: (ChatUpdate) -> AnyPublisher<Void, Never>
 }
 
 extension StockClient {
     static let empty = StockClient(
         consume: { Empty().eraseToAnyPublisher() },
-        send: { _, _ in Empty().eraseToAnyPublisher() }
+        send: { _ in Empty().eraseToAnyPublisher() }
     )
     
     static func mock(_ using: [Chat], interval: Double = 5) -> StockClient {
@@ -18,16 +18,16 @@ extension StockClient {
             consume: {
                 Timer.publish(every: interval, on: .main, in: .default)
                     .autoconnect()
-                    .map { _ in Chat.random(using: using) }
+                    .map { _ in ChatUpdate.random(using: using) }
                     .eraseToAnyPublisher()
             },
-            send: { _, _ in Empty().eraseToAnyPublisher() }
+            send: { _ in Empty().eraseToAnyPublisher() }
         )
     }
     
     static let live = StockClient(
         consume: {
-            let subject = PassthroughSubject<Chat, Never>()
+            let subject = PassthroughSubject<ChatUpdate, Never>()
             
             let userId = authClient.getAuthenticatedUser()!.id
             let installationId = installationClient.getCurrentInstallationId()
@@ -38,11 +38,12 @@ extension StockClient {
                 .collection("installation")
                 .document(installationId)
                 .collection("stock")
+                .order(by: "createdAt")
                 .addSnapshotListener { snapshot, error in
                     if let snapshot = snapshot {
                         let chats = try? snapshot.documents.compactMap { document in
                             let data = try JSONSerialization.data(withJSONObject: document.data(), options: .prettyPrinted)
-                            let chats = try JSONDecoder().decode(Chat.self, from: data)
+                            let chats = try JSONDecoder().decode(ChatUpdate.self, from: data)
                             return chats
                         }
                         chats?.forEach(subject.send)
@@ -64,18 +65,15 @@ extension StockClient {
                 .handleEvents(receiveCancel: { listenerId.remove() })
                 .eraseToAnyPublisher()
         },
-        send: { message, chat in
+        send: { chatUpdate in
             do {
                 let subject = PassthroughSubject<Void, Never>()
                 let userId = authClient.getAuthenticatedUser()!.id
-                let participants = chat.participants.filter { $0.id != userId }
+                let participants = chatUpdate.participants.filter { $0.id != userId }
                 
                 for participant in participants {
                     let userId = participant.id
                     let installationId = installationClient.getCurrentInstallationId()
-                    
-                    var chatUpdate = chat
-                    chatUpdate.messages = [message]
                     
                     let data = try JSONEncoder().encode(chatUpdate)
                     let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String: Any]

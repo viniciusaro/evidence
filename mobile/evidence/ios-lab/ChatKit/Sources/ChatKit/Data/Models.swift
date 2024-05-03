@@ -6,6 +6,14 @@ public typealias ChatID = String
 public typealias UserID = String
 public typealias AuthorID = String
 
+public struct ChatUpdate: Codable {
+    public let chatId: ChatID
+    public let name: String
+    public let message: Message
+    public let participants: IdentifiedArrayOf<User>
+    public let createdAt: Date = .now
+}
+
 public struct Chat: Identifiable, Equatable, Hashable, Codable {
     public let id: ChatID
     var name: String
@@ -38,6 +46,23 @@ public extension Chat {
             participants: [],
             messages: []
         )
+    }
+}
+
+public extension ChatUpdate {
+    static func random(using chats: [Chat]) -> ChatUpdate {
+        let chat = Chat.random(using: chats)
+        
+        return ChatUpdate(
+            chatId: chat.id,
+            name: chat.name,
+            message: chat.messages[0],
+            participants: chat.participants
+        )
+    }
+    
+    func toChat() -> Chat {
+        Chat(id: chatId, name: name, participants: participants, messages: IdentifiedArray(uniqueElements: [message]))
     }
 }
 

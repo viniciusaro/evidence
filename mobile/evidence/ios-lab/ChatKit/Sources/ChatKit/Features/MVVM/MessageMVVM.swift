@@ -1,9 +1,10 @@
 import Combine
 import SwiftUI
 
-class MessageModel: ObservableObject, Identifiable {
-    @Published var message: Message
-    @Published var user: User
+@Observable
+class MessageModel: Identifiable {
+    var message: Message
+    var user: User
     
     var id: MessageID { message.id }
     
@@ -50,7 +51,7 @@ class MessageModel: ObservableObject, Identifiable {
 }
 
 struct MessageViewMVVM: View {
-    @ObservedObject var model: MessageModel
+    let model: MessageModel
     
     var body: some View {
         VStack(alignment: model.alignment) {

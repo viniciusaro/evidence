@@ -1,8 +1,10 @@
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer public struct NewChatSetupFeature {
-    @ObservableState public struct State: Equatable {
+@Reducer 
+public struct NewChatSetupFeature {
+    @ObservableState 
+    public struct State: Equatable {
         var chat: Chat
         var users: [User]
         var alertIsPresented: Bool

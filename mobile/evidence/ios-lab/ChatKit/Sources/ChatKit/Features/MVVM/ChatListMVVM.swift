@@ -2,7 +2,8 @@ import Combine
 import IdentifiedCollections
 import SwiftUI
 
-@Observable class ChatListModel {
+@Observable 
+class ChatListModel {
     var chats: IdentifiedArrayOf<Chat> { didSet { saveChatOnChange() } }
     var detail: ChatDetailModel? = nil { didSet { bindDelegateOnDetailChange() } }
     var newChatSetup: NewChatSetupModel? = nil { didSet { bindDelegateOnNewChatSetupChange() } }
@@ -33,22 +34,21 @@ extension ChatListModel {
     func onViewDidLoad() {
         stockClient.consume()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in self?.onNewMessageReceived($0, $0.messages.first!) }
+            .sink { [weak self] in self?.onNewMessageReceived($0) }
             .store(in: &cancellables)
     }
     
-    private func onNewMessageReceived(_ chat: Chat, _ message: Message) {
-        guard var existingChat = chats[id: chat.id] else {
-            chats.insert(chat, at: 0)
+    private func onNewMessageReceived(_ chatUpdate: ChatUpdate) {
+        guard var existingChat = chats[id: chatUpdate.chatId] else {
+            chats.insert(chatUpdate.toChat(), at: 0)
             return
         }
-        
-        if let detail = detail, detail.chat.id == chat.id {
-            detail.chat.messages.append(message)
-            detail.messages.append(MessageModel(message: message))
+        if let detail = detail, detail.chat.id == chatUpdate.chatId {
+            detail.chat.messages.append(chatUpdate.message)
+            detail.messages.append(MessageModel(message: chatUpdate.message))
         }
         
-        chats[id: chat.id]?.messages.append(message)
+        chats[id: chatUpdate.chatId]?.messages.append(chatUpdate.message)
     }
     
     private func saveChatOnChange() {

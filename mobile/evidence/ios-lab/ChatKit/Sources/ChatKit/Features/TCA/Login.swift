@@ -2,8 +2,10 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer public struct LoginFeature {
-    @ObservableState public struct State: Equatable, Identifiable {
+@Reducer 
+public struct LoginFeature {
+    @ObservableState 
+    public struct State: Equatable, Identifiable {
         public let id = UUID()
         var emailInput: String = ""
         var passwordInput: String = ""

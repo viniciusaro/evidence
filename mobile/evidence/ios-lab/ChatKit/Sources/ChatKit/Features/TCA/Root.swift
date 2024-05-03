@@ -2,8 +2,10 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer public struct RootFeature {
-    @ObservableState public enum State {
+@Reducer 
+public struct RootFeature {
+    @ObservableState 
+    public enum State {
         case home(HomeFeature.State)
         case login(LoginFeature.State)
         
@@ -16,7 +18,6 @@ import SwiftUI
         }
     }
     
-    @CasePathable
     public enum Action {
         case home(HomeFeature.Action)
         case login(LoginFeature.Action)

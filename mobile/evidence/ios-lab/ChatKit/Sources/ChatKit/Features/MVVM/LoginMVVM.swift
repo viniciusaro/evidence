@@ -1,11 +1,12 @@
 import SwiftUI
 
-class LoginModel: ObservableObject {
+@Observable
+class LoginModel {
     
 }
 
 struct LoginViewMVVM: View {
-    @ObservedObject var model: LoginModel
+    let model: LoginModel
     
     var body: some View {
         EmptyView()
