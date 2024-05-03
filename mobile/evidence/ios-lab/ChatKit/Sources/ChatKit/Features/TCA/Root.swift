@@ -2,24 +2,8 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-#if DEBUG
-var authClient = AuthClient.live
-var dataClient = DataClient.live
-var stockClient = StockClient.live
-var installationClient = InstallationClient.mock("1")
-#else
-let authClient = AuthClient.live
-let dataClient = DataClient.live
-let stockClient = StockClient.live
-let installationClient = InstallationClient.mock("1")
-#endif
-
-@Reducer
-public struct RootFeature {
-    public init() {}
-    
-    @ObservableState
-    public enum State {
+@Reducer public struct RootFeature {
+    @ObservableState public enum State {
         case home(HomeFeature.State)
         case login(LoginFeature.State)
         
@@ -59,6 +43,8 @@ public struct RootFeature {
             }
         }
     }
+    
+    public init() {}
 }
 
 public struct RootView: View {

@@ -2,42 +2,24 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-#Preview {
-    LoginView(
-        store: Store(
-            initialState: LoginFeature.State(),
-            reducer: { LoginFeature() }
-        )
-    )
-}
-
-@Reducer
-public struct LoginFeature {
-    @ObservableState
-    public struct State: Equatable, Identifiable {
+@Reducer public struct LoginFeature {
+    @ObservableState public struct State: Equatable, Identifiable {
         public let id = UUID()
         var emailInput: String = ""
         var passwordInput: String = ""
     }
     
-    @CasePathable
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case onSubmitButtonTapped
         case onUserAuthenticated(User)
         case onUserAuthenticationError(AuthClient.Error)
-        case onEmailInputChanged(String)
-        case onPasswordInputChanged(String)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case let .onEmailInputChanged(email):
-                state.emailInput = email
-                return .none
-                
-            case let .onPasswordInputChanged(password):
-                state.passwordInput = password
+            case .binding:
                 return .none
                 
             case .onSubmitButtonTapped:
@@ -59,26 +41,21 @@ public struct LoginFeature {
                 return .none
             }
         }
+        BindingReducer()
     }
 }
 
 struct LoginView: View {
-    let store: StoreOf<LoginFeature>
+    @Bindable var store: StoreOf<LoginFeature>
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Section("Informações de acesso") {
-                TextField("Email", text: Binding(
-                    get: { store.emailInput },
-                    set: { store.send(.onEmailInputChanged($0)) }
-                ))
+                TextField("Email", text: $store.emailInput)
                 .textContentType(.emailAddress)
                 .textInputAutocapitalization(.never)
                 
-                TextField("Senha", text: Binding(
-                    get: { store.passwordInput },
-                    set: { store.send(.onPasswordInputChanged($0)) }
-                ))
+                TextField("Senha", text: $store.passwordInput)
                 .textContentType(.password)
             }
             Section {

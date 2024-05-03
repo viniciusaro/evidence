@@ -1,29 +1,12 @@
-import Combine
 import ComposableArchitecture
 import SwiftUI
 
-#Preview {
-    authClient = AuthClient.authenticated()
-    dataClient = DataClient.mock(Chat.mockList)
-    stockClient = StockClient.mock(Chat.mockList, interval: 20)
-    
-    return HomeView(
-        store: Store(
-            initialState: HomeFeature.State(),
-            reducer: { HomeFeature() }
-        )
-    )
-}
-
-@Reducer
-public struct HomeFeature {
-    @ObservableState
-    public struct State: Equatable {
+@Reducer public struct HomeFeature {
+    @ObservableState public struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
-        @CasePathable
         public enum Tab: String, Codable {
             case chatList = "Conversas"
             case profile = "Perfil"
@@ -34,36 +17,25 @@ public struct HomeFeature {
         }
     }
     
-    @CasePathable
-    public enum Action {
+    public enum Action: BindableAction {
+        case onNewChatButtonTapped
+        
+        case binding(BindingAction<State>)
         case chatList(ChatListFeature.Action)
         case profile(ProfileFeature.Action)
-        case onNewChatButtonTapped
-        case onTabSelectionChanged(State.Tab)
     }
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case let .chatList(.newChatSetup(.presented(.delegate(.onNewChatSetup(chat))))):
-                state.chatList.newChatSetup = nil
-                state.chatList.chats.insert(chat, at: 0)
-                guard let shared = state.chatList.$chats[id: chat.id] else {
-                    return .none
-                }
-                state.chatList.newChatSetup = nil
-                state.chatList.detail = ChatDetailFeature.State(chat: shared)
-                return .none
-
-            case .chatList:
-                return .none
-                
             case .onNewChatButtonTapped:
                 state.chatList.newChatSetup = NewChatSetupFeature.State()
                 return .none
+
+            case .binding:
+                return .none
                 
-            case let .onTabSelectionChanged(selection):
-                state.selectedTab = selection
+            case .chatList:
                 return .none
                 
             case .profile:
@@ -76,6 +48,7 @@ public struct HomeFeature {
         Scope(state: \.profile, action: \.profile) {
             ProfileFeature()
         }
+        BindingReducer()
     }
 }
 
@@ -85,10 +58,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             TabView(
-                selection: Binding(
-                    get: { store.selectedTab },
-                    set: { store.send(.onTabSelectionChanged($0)) }
-                )
+                selection: $store.selectedTab
             ) {
                 ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
                     .tabItem {

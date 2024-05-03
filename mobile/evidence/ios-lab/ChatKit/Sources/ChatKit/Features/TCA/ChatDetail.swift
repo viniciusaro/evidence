@@ -1,39 +1,23 @@
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer
-public struct ChatDetailFeature {
-    @ObservableState
-    public struct State: Equatable {
+@Reducer public struct ChatDetailFeature {
+    @ObservableState public struct State: Equatable {
         @Shared var chat: Chat
-        var user: User
         var inputText: String = ""
         var messages: IdentifiedArrayOf<MessageFeature.State>
         
         init(chat: Shared<Chat>) {
             self._chat = chat
-            self.user = authClient.getAuthenticatedUser() ?? User()
             self.messages = IdentifiedArray(uniqueElements: chat.wrappedValue.messages.map {
                 MessageFeature.State(message: chat.messages[id: $0.id]!)
             })
         }
-        
-        func alignment(_ message: Message) -> HorizontalAlignment {
-            message.sender.id == user.id ? .trailing : .leading
-        }
-        
-        func textAlignment(_ message: Message) -> TextAlignment {
-            return message.sender.id == user.id ? .trailing : .leading
-        }
-        
-        func frameAlignment(_ message: Message) -> Alignment {
-            return message.sender.id == user.id ? .trailing : .leading
-        }
     }
     
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case message(IdentifiedActionOf<MessageFeature>)
-        case onInputTextUpdated(String)
         case onMessageSentConfirmation(Message)
         case send
     }
@@ -41,18 +25,18 @@ public struct ChatDetailFeature {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .binding:
+                return .none
+                
             case .message:
                 return .none
                 
-            case let .onInputTextUpdated(updatedText):
-                state.inputText = updatedText
-                return .none
-            
             case .onMessageSentConfirmation:
                 return .none
                 
             case .send:
-                let newMessage = Message(content: state.inputText, sender: state.user)
+                let user = authClient.getAuthenticatedUser() ?? User()
+                let newMessage = Message(content: state.inputText, sender: user)
                 state.chat.messages.append(newMessage)
                 state.inputText = ""
                 
@@ -74,11 +58,12 @@ public struct ChatDetailFeature {
         .forEach(\.messages, action: \.message) {
             MessageFeature()
         }
+        BindingReducer()
     }
 }
 
 struct ChatDetailView: View {
-    let store: StoreOf<ChatDetailFeature>
+    @Bindable var store: StoreOf<ChatDetailFeature>
     
     var body: some View {
         VStack {
@@ -96,10 +81,7 @@ struct ChatDetailView: View {
                         .font(.title)
                         .foregroundStyle(.primary)
                 })
-                TextField("", text: Binding(
-                    get: { store.inputText },
-                    set: { store.send(.onInputTextUpdated($0)) }
-                ))
+                TextField("", text: $store.inputText)
                 .frame(height: 36)
                 .padding([.leading, .trailing], 8)
                 .background(RoundedRectangle(cornerRadius: 18)

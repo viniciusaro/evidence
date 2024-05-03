@@ -1,8 +1,7 @@
 import SwiftUI
 
-@Observable
-class ProfileModel {
-    var user: User
+class ProfileModel: ObservableObject {
+    @Published var user: User
     
     init() {
         self.user = authClient.getAuthenticatedUser() ?? User()
@@ -10,7 +9,7 @@ class ProfileModel {
 }
 
 struct ProfileViewMVVM: View {
-    let model: ProfileModel
+    @ObservedObject var model: ProfileModel
     
     var body: some View {
         VStack {

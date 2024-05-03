@@ -1,17 +1,15 @@
 import Dependencies
 import SwiftUI
 
-@Observable
-class NewChatSetupModel: Identifiable {
-    var id = UUID()
-    var chat: Chat
-    var users: [User]
-    var alertIsPresented: Bool
-    var currentUser: User
-    var delegateOnNewChatSetup: (Chat) -> Void = { _ in fatalError() }
-    
-    @ObservationIgnored
+class NewChatSetupModel: ObservableObject, Identifiable {
+    @Published var chat: Chat
+    @Published var users: [User]
+    @Published var alertIsPresented: Bool
+    @Published var currentUser: User
     @Dependency(\.dismiss) var dismiss
+    
+    var id = UUID()
+    var delegateOnNewChatSetup: (Chat) -> Void = { _ in fatalError() }
     
     init() {
         self.chat = .empty()
@@ -35,7 +33,7 @@ class NewChatSetupModel: Identifiable {
 }
 
 struct NewChatSetupViewMVVM: View {
-    @Bindable var model: NewChatSetupModel
+    @ObservedObject var model: NewChatSetupModel
     
     var body: some View {
         List {

@@ -2,36 +2,12 @@ import Combine
 import IdentifiedCollections
 import SwiftUI
 
-@Observable
-class ChatListModel {
-    var chats: IdentifiedArrayOf<Chat> {
-        didSet {
-            if let data = try? JSONEncoder().encode(self.chats) {
-                try? dataClient.save(data, .chats)
-            }
-        }
-    }
-    
-    var detail: ChatDetailModel? = nil {
-        didSet {
-            detail?.delegateOnChatUpdate = { [weak self] chatUpdate in
-                self?.chats[id: chatUpdate.id] = chatUpdate
-            }
-        }
-    }
-    
-    var newChatSetup: NewChatSetupModel? = nil {
-        didSet {
-            newChatSetup?.delegateOnNewChatSetup = { [weak self] chat in
-                guard let self else { return }
-                self.newChatSetup = nil
-                self.chats.insert(chat, at: 0)
-                self.detail = ChatDetailModel(chat: chat)
-            }
-        }
-    }
-    
-    private var consumeCancellable: AnyCancellable? = nil
+@Observable class ChatListModel {
+    var chats: IdentifiedArrayOf<Chat> { didSet { saveChatOnChange() } }
+    var detail: ChatDetailModel? = nil { didSet { bindDelegateOnDetailChange() } }
+    var newChatSetup: NewChatSetupModel? = nil { didSet { bindDelegateOnNewChatSetupChange() } }
+
+    private var cancellables: Set<AnyCancellable> = []
     
     init() {
         do {
@@ -43,20 +19,22 @@ class ChatListModel {
             self.chats = []
         }
     }
-    
+}
+
+extension ChatListModel {
+    func onListItemDelete(_ indexSet: IndexSet) {
+        chats.remove(atOffsets: indexSet)
+    }
+
     func onListItemTapped(_ chat: Chat) {
         detail = ChatDetailModel(chat: chat)
     }
     
-    func onListItemDelete(_ indexSet: IndexSet) {
-        chats.remove(atOffsets: indexSet)
-    }
-    
     func onViewDidLoad() {
-        consumeCancellable?.cancel()
-        consumeCancellable = stockClient.consume()
+        stockClient.consume()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.onNewMessageReceived($0, $0.messages.first!) }
+            .store(in: &cancellables)
     }
     
     private func onNewMessageReceived(_ chat: Chat, _ message: Message) {
@@ -71,6 +49,27 @@ class ChatListModel {
         }
         
         chats[id: chat.id]?.messages.append(message)
+    }
+    
+    private func saveChatOnChange() {
+        if let data = try? JSONEncoder().encode(chats) {
+            try? dataClient.save(data, .chats)
+        }
+    }
+    
+    private func bindDelegateOnDetailChange() {
+        detail?.delegateOnChatUpdate = { [weak self] chatUpdate in
+            self?.chats[id: chatUpdate.id] = chatUpdate
+        }
+    }
+    
+    private func bindDelegateOnNewChatSetupChange() {
+        newChatSetup?.delegateOnNewChatSetup = { [weak self] chat in
+            guard let self else { return }
+            self.newChatSetup = nil
+            self.chats.insert(chat, at: 0)
+            self.detail = ChatDetailModel(chat: chat)
+        }
     }
 }
 

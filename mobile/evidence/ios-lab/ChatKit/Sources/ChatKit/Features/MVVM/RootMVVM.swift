@@ -1,10 +1,9 @@
 import SwiftUI
 
-@Observable
-public class RootModel {
-    var root: Model
+public class RootModel: ObservableObject {
+    @Published var root: State
     
-    enum Model {
+    enum State {
         case home(HomeModel)
         case login(LoginModel)
     }
@@ -19,7 +18,7 @@ public class RootModel {
 }
 
 public struct RootViewMVVM: View {
-    let model: RootModel
+    @ObservedObject var model: RootModel
     
     public init(model: RootModel) {
         self.model = model

@@ -1,23 +1,33 @@
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer
-public struct ChatListFeature {
-    @ObservableState
-    public struct State: Equatable {
-        @Shared(.fileStorage(.chats)) var chats: IdentifiedArrayOf<Chat> = []
+@Reducer public struct ChatListFeature {
+    @ObservableState public struct State: Equatable {
+        @Shared var chats: IdentifiedArrayOf<Chat>
         @Presents var detail: ChatDetailFeature.State? = nil
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
+        
+        init() {
+            do {
+                self._chats = Shared(try JSONDecoder().decode(
+                    IdentifiedArrayOf<Chat>.self,
+                    from: dataClient.load(.chats)
+                ))
+            } catch {
+                self._chats = Shared([])
+            }
+        }
     }
 
     public enum Action {
-        case detail(PresentationAction<ChatDetailFeature.Action>)
-        case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
         case onListItemDelete(IndexSet)
         case onListItemTapped(Chat)
         case onNewMessageReceived(Chat, Message)
         case onViewDidLoad
         case onChatMoveUpRequested(Chat)
+
+        case detail(PresentationAction<ChatDetailFeature.Action>)
+        case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
     }
     
     public var body: some ReducerOf<Self> {
@@ -30,6 +40,16 @@ public struct ChatListFeature {
                 return .send(.onChatMoveUpRequested(chat))
                 
             case .detail:
+                return .none
+            
+            case let .newChatSetup(.presented(.delegate(.onNewChatSetup(chat)))):
+                state.newChatSetup = nil
+                state.chats.insert(chat, at: 0)
+                guard let shared = state.$chats[id: chat.id] else {
+                    return .none
+                }
+                state.newChatSetup = nil
+                state.detail = ChatDetailFeature.State(chat: shared)
                 return .none
                 
             case .newChatSetup:

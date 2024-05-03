@@ -1,27 +1,12 @@
 import ComposableArchitecture
 import SwiftUI
 
-#Preview {
-    NewChatSetupView(
-        store: Store(
-            initialState: NewChatSetupFeature.State(),
-            reducer: { NewChatSetupFeature() }
-        )
-    )
-}
-
-@Reducer
-public struct NewChatSetupFeature {
-    @ObservableState
-    public struct State: Equatable {
+@Reducer public struct NewChatSetupFeature {
+    @ObservableState public struct State: Equatable {
         var chat: Chat
         var users: [User]
         var alertIsPresented: Bool
         var currentUser: User
-        
-        var alertInputText: String {
-            chat.name
-        }
         
         init() {
             self.chat = .empty()
@@ -31,15 +16,13 @@ public struct NewChatSetupFeature {
         }
     }
     
-    @CasePathable
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case onAlertCancel
         case onAlertConfirm
-        case onAlertInputTextChanged(String)
         case onUserSelected(User)
         case delegate(Delegate)
         
-        @CasePathable
         public enum Delegate {
             case onNewChatSetup(Chat)
         }
@@ -49,6 +32,9 @@ public struct NewChatSetupFeature {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .binding:
+                return .none
+                
             case .delegate(.onNewChatSetup):
                 return .none
                 
@@ -61,20 +47,17 @@ public struct NewChatSetupFeature {
                 state.alertIsPresented = false
                 return .none
             
-            case let .onAlertInputTextChanged(text):
-                state.chat.name = text
-                return .none
-                
             case let .onUserSelected(user):
                 state.chat.participants = [state.currentUser, user]
                 return .send(.delegate(.onNewChatSetup(state.chat)))
             }
         }
+        BindingReducer()
     }
 }
 
 struct NewChatSetupView: View {
-    let store: StoreOf<NewChatSetupFeature>
+    @Bindable var store: StoreOf<NewChatSetupFeature>
     
     var body: some View {
         List {
@@ -100,10 +83,7 @@ struct NewChatSetupView: View {
             Button("OK") {
                 store.send(.onAlertConfirm)
             }
-            TextField("Nome", text: Binding(
-                get: { store.alertInputText },
-                set: { store.send(.onAlertInputTextChanged($0)) }
-            )).textContentType(.name)
+            TextField("Nome", text: $store.chat.name).textContentType(.name)
         } message: {
            Text("Escreva o nome do novo chat")
         }

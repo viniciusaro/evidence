@@ -1,25 +1,23 @@
 import Combine
+import ComposableArchitecture
 import SwiftUI
 
-@Observable
-class ChatDetailModel {
-    var chat: Chat {
-        didSet {
-            delegateOnChatUpdate(chat)
-        }
-    }
+@Observable class ChatDetailModel {
+    var chat: Chat { didSet { delegateOnChatUpdate(chat) } }
     var inputText: String
     var messages: [MessageModel]
     
-    private var sendCancellables: Set<AnyCancellable> = []
     var delegateOnChatUpdate: (Chat) -> Void = { _ in fatalError() }
+    private var cancellables: Set<AnyCancellable> = []
     
     init(chat: Chat, inputText: String = "") {
         self.chat = chat
         self.inputText = inputText
         self.messages = chat.messages.map { MessageModel(message: $0) }
     }
-    
+}
+
+extension ChatDetailModel {
     func send() {
         let user = authClient.getAuthenticatedUser() ?? User()
         let newMessage = Message(content: inputText, sender: user)
@@ -31,7 +29,7 @@ class ChatDetailModel {
         stockClient.send(newMessage, chat)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.onMessageSentConfirmation(newMessage) }
-            .store(in: &sendCancellables)
+            .store(in: &cancellables)
     }
     
     private func onMessageSentConfirmation(_ message: Message) {
