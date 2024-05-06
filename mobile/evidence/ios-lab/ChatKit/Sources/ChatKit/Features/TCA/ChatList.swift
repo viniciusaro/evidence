@@ -11,14 +11,13 @@ public struct ChatListFeature {
     }
 
     public enum Action {
+        case detail(PresentationAction<ChatDetailFeature.Action>)
+        case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
         case onListItemDelete(IndexSet)
         case onListItemTapped(Chat)
         case onNewMessageReceived(ChatUpdate)
         case onViewDidLoad
         case onChatMoveUpRequested(Chat)
-
-        case detail(PresentationAction<ChatDetailFeature.Action>)
-        case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
     }
     
     public var body: some ReducerOf<Self> {
@@ -69,14 +68,15 @@ public struct ChatListFeature {
                     state.chats.insert(chatUpdate.toChat(), at: 0)
                     return .none
                 }
-                
-                var sharedChat = state.$chats[id: existingChat.id]!
-                sharedChat.wrappedValue.messages.append(chatUpdate.message)
+                guard var shared = state.$chats[id: existingChat.id] else {
+                    return .none
+                }
+                shared.wrappedValue.messages.append(chatUpdate.message)
                 
                 if
                     let detail = state.detail,
                     detail.chat.id == chatUpdate.chatId,
-                    let sharedMessage = sharedChat.messages[id: chatUpdate.message.id]
+                    let sharedMessage = shared.messages[id: chatUpdate.message.id]
                 {
                     state.detail?.messages.append(MessageFeature.State(message: sharedMessage))
                 }

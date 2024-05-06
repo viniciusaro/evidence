@@ -46,11 +46,9 @@ public struct ChatDetailFeature {
                 let newMessageState = MessageFeature.State(message: sharedMessage)
                 state.messages.append(newMessageState)
                 
-                let chatUpdate = ChatUpdate(
-                    chatId: state.chat.id,
-                    name: state.chat.name,
-                    message: newMessage,
-                    participants: state.chat.participants
+                let chatUpdate = ChatUpdate.from(
+                    chat: state.chat,
+                    message: newMessage
                 )
                 
                 return .publisher {

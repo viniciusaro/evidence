@@ -61,6 +61,15 @@ public extension ChatUpdate {
         )
     }
     
+    static func from(chat: Chat, message: Message) -> ChatUpdate {
+        ChatUpdate(
+            chatId: chat.id,
+            name: chat.name,
+            message: message,
+            participants: chat.participants
+        )
+    }
+    
     func toChat() -> Chat {
         Chat(id: chatId, name: name, participants: participants, messages: IdentifiedArray(uniqueElements: [message]))
     }
