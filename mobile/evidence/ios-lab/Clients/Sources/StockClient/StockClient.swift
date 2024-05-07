@@ -18,7 +18,7 @@ public struct StockClient {
 
 extension StockClient: TestDependencyKey {
     public static let testValue = StockClient.empty
-    public static let previewValue = StockClient.empty
+    public static let previewValue = StockClient.mock(Chat.mockList)
 }
 
 extension DependencyValues {

@@ -2,6 +2,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import Models
 import XCTest
 
 /*:

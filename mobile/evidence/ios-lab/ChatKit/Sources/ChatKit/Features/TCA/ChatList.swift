@@ -3,7 +3,7 @@ import Models
 import StockClient
 import SwiftUI
 
-@Reducer 
+@Reducer
 public struct ChatListFeature {
     @Dependency(\.stockClient) var stockClient
     
