@@ -17,19 +17,6 @@
             location = "group:ChatKit/Sources/ChatKit"
             name = "ChatKit">
             <Group
-               location = "group:Clients"
-               name = "Clients">
-               <FileRef
-                  location = "group:ClientsSetup.swift">
-               </FileRef>
-               <FileRef
-                  location = "group:DataClient.swift">
-               </FileRef>
-               <FileRef
-                  location = "group:PreviewClient.swift">
-               </FileRef>
-            </Group>
-            <Group
                location = "group:Features"
                name = "Features">
                <Group
@@ -149,10 +136,24 @@
             </FileRef>
          </Group>
          <Group
+            location = "container:"
+            name = "DataClient">
+            <FileRef
+               location = "group:Clients/Sources/DataClient/DataClient.swift">
+            </FileRef>
+         </Group>
+         <Group
             location = "group:Models"
             name = "Models">
             <FileRef
                location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Clients/Sources/Models/Models.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "container:"
+            name = "PreviewClient">
+            <FileRef
+               location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Clients/Sources/PreviewClient/PreviewClient.swift">
             </FileRef>
          </Group>
          <Group

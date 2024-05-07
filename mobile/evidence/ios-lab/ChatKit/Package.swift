@@ -25,6 +25,8 @@ let package = Package(
             name: "ChatKit",
             dependencies: [
                 .product(name: "AuthClient", package: "Clients"),
+                .product(name: "DataClient", package: "Clients"),
+                .product(name: "PreviewClient", package: "Clients"),
                 .product(name: "StockClient", package: "Clients"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]

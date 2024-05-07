@@ -1,12 +1,20 @@
-import Foundation
 import Combine
+import Dependencies
+import Foundation
 
 public struct URLPreviewClient {
     public var get: (URL) -> AnyPublisher<(image: URL, title: String)?, Never>
 }
 
-public extension URLPreviewClient {
-    static let live = URLPreviewClient { url in
+extension DependencyValues {
+    public var previewClient: URLPreviewClient {
+        get { self[URLPreviewClient.self] }
+        set { self[URLPreviewClient.self] = newValue }
+    }
+}
+
+extension URLPreviewClient: DependencyKey {
+    public static let liveValue = URLPreviewClient { url in
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
         request.allHTTPHeaderFields = [
             "cookie": "ilo0=false",
@@ -26,17 +34,17 @@ public extension URLPreviewClient {
             .replaceError(with: nil)
             .eraseToAnyPublisher()
     }
-}
-
-public extension URLPreviewClient {
-    static let mock = URLPreviewClient { _ in
+    
+    public static let previewValue = URLPreviewClient { _ in
         Just((
             image: URL(string: "https://www.iclarified.com/images/news/91219/437004/437004-1280.avif")!,
             title: "It is not evident, it needs discussion"
         )).eraseToAnyPublisher()
     }
-    
-    static func sync(_ value: (image: URL, title: String)?) -> URLPreviewClient {
+}
+
+public extension URLPreviewClient {
+    public static func sync(_ value: (image: URL, title: String)?) -> URLPreviewClient {
         URLPreviewClient { _ in
             Just(value).eraseToAnyPublisher()
         }

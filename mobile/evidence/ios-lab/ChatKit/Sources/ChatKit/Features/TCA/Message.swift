@@ -1,10 +1,13 @@
+import AuthClient
 import ComposableArchitecture
 import Models
+import PreviewClient
 import SwiftUI
 
 @Reducer
 public struct MessageFeature {
     @Dependency(\.authClient) static var authClient
+    @Dependency(\.previewClient) var previewClient
     
     @ObservableState
     public struct State: Equatable, Identifiable {
@@ -47,8 +50,7 @@ public struct MessageFeature {
                 }
                 
                 return .publisher {
-                    URLPreviewClient.live
-                        .get(url)
+                    previewClient.get(url)
                         .receive(on: DispatchQueue.main)
                         .filter { $0 != nil }
                         .map { $0! }

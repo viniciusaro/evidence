@@ -18,8 +18,16 @@ let package = Package(
             targets: ["AuthClientLive"]
         ),
         .library(
+            name: "DataClient",
+            targets: ["DataClient"]
+        ),
+        .library(
             name: "Models",
             targets: ["Models"]
+        ),
+        .library(
+            name: "PreviewClient",
+            targets: ["PreviewClient"]
         ),
         .library(
             name: "StockClient",
@@ -53,10 +61,17 @@ let package = Package(
             ]
         ),
         .target(
+            name: "DataClient",
+            dependencies: ["Models"]
+        ),
+        .target(
             name: "Models",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
+        ),
+        .target(
+            name: "PreviewClient"
         ),
         .target(
             name: "StockClient",

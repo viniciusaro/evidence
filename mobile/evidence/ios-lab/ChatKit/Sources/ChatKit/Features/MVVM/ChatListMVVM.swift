@@ -1,5 +1,6 @@
 import Combine
 import Dependencies
+import DataClient
 import Models
 import IdentifiedCollections
 import StockClient
@@ -15,6 +16,8 @@ class ChatListModel {
     
     init() {
         do {
+            @Dependency(\.dataClient) var dataClient
+            
             self.chats = try JSONDecoder().decode(
                 IdentifiedArrayOf<Chat>.self,
                 from: dataClient.load(.chats)
@@ -57,6 +60,8 @@ extension ChatListModel {
     }
     
     private func saveChatOnChange() {
+        @Dependency(\.dataClient) var dataClient
+        
         if let data = try? JSONEncoder().encode(chats) {
             try? dataClient.save(data, .chats)
         }

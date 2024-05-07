@@ -1,6 +1,7 @@
 import Combine
 import Dependencies
 import Models
+import PreviewClient
 import SwiftUI
 
 @Observable
@@ -32,6 +33,8 @@ class MessageModel: Identifiable {
     }
     
     func onViewDidLoad() {
+        @Dependency(\.previewClient) var previewClient
+        
         guard
             let url = URL(string: message.content),
             url.host() != nil,
@@ -40,7 +43,7 @@ class MessageModel: Identifiable {
         }
         
         previewCancellable?.cancel()
-        previewCancellable = URLPreviewClient.live
+        previewCancellable = previewClient
             .get(url)
             .receive(on: DispatchQueue.main)
             .filter { $0 != nil }
