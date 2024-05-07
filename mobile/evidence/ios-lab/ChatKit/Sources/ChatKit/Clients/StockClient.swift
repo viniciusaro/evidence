@@ -1,6 +1,7 @@
 import Combine
 import FirebaseFirestore
 import Foundation
+import Models
 
 struct StockClient {
     let consume: () -> AnyPublisher<ChatUpdate, Never>

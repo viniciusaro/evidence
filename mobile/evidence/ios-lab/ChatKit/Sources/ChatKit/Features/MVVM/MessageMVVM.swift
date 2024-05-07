@@ -1,4 +1,5 @@
 import Combine
+import Models
 import SwiftUI
 
 @Observable
@@ -41,11 +42,11 @@ class MessageModel: Identifiable {
             .receive(on: DispatchQueue.main)
             .filter { $0 != nil }
             .map { $0! }
-            .map { Preview(image: $0.image, title: $0.title) }
+            .map { Models.Preview(image: $0.image, title: $0.title) }
             .sink { [weak self] in self?.onPreviewDidLoad($0) }
     }
     
-    private func onPreviewDidLoad(_ preview: Preview) {
+    private func onPreviewDidLoad(_ preview: Models.Preview) {
         message.preview = preview
     }
 }

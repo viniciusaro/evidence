@@ -16,9 +16,9 @@ public struct ChatUpdate: Codable {
 
 public struct Chat: Identifiable, Equatable, Hashable, Codable {
     public let id: ChatID
-    var name: String
-    var participants: IdentifiedArrayOf<User>
-    var messages: IdentifiedArrayOf<Message>
+    public var name: String
+    public var participants: IdentifiedArrayOf<User>
+    public var messages: IdentifiedArrayOf<Message>
 }
 
 public extension Chat {
@@ -50,7 +50,7 @@ public extension Chat {
 }
 
 public extension ChatUpdate {
-    static func random(using chats: [Chat]) -> ChatUpdate {
+    public static func random(using chats: [Chat]) -> ChatUpdate {
         let chat = Chat.random(using: chats)
         
         return ChatUpdate(
@@ -77,10 +77,10 @@ public extension ChatUpdate {
 
 public struct Message: Identifiable, Equatable, Hashable, Codable {
     public let id: MessageID
-    let sender: User
-    var content: String
-    var preview: Preview?
-    var isSent: Bool
+    public let sender: User
+    public var content: String
+    public var preview: Preview?
+    public var isSent: Bool
     
     public static func == (lhs: Message, rhs: Message) -> Bool {
         lhs.id == rhs.id
@@ -92,7 +92,7 @@ public struct Message: Identifiable, Equatable, Hashable, Codable {
 }
 
 public extension Message {
-    init(content: String, sender: User) {
+    public init(content: String, sender: User) {
         self.id = MessageID(UUID().uuidString)
         self.content = content
         self.preview = nil
@@ -111,13 +111,18 @@ public extension Message {
 }
 
 public struct Preview: Equatable, Hashable, Codable {
-    let image: URL
-    let title: String
+    public let image: URL
+    public let title: String
+    
+    public init(image: URL, title: String) {
+        self.image = image
+        self.title = title
+    }
 }
 
 public struct User: Equatable, Hashable, Identifiable, Codable {
     public let id: UserID
-    let name: String
+    public let name: String
 }
 
 public extension User {
@@ -140,7 +145,7 @@ public extension User {
 
 
 public extension Chat {
-    static let lili = Chat(
+    public static let lili = Chat(
         id: "5CA52B4E-4BD9-4776-9D4C-1A0E9C76B062",
         name: "Lili ❤️‍🔥",
         participants: [.vini, .lili],
@@ -153,7 +158,7 @@ public extension Chat {
         ]
     )
     
-    static let evidence = Chat(
+    public static let evidence = Chat(
         id: "EBEE82D9-F00A-4372-A14D-34E68BFB17E5",
         name: "Evidence",
         participants: [.vini, .cris],
@@ -163,7 +168,7 @@ public extension Chat {
         ]
     )
     
-    static let recepies = Chat(
+    public static let recepies = Chat(
         id: "34CD9181-C419-41E7-ACED-6A9391105DC7",
         name: "Nossas Receitas",
         participants: [.vini, .lili],
@@ -172,7 +177,7 @@ public extension Chat {
         ]
     )
     
-    static let insurances = Chat(
+    public static let insurances = Chat(
         id: "54CD9181-C419-41E7-ACED-6A9391105DC7",
         name: "Seguros",
         participants: [.vini, .lili],
@@ -181,7 +186,7 @@ public extension Chat {
         ]
     )
     
-    static let me = Chat(
+    public static let me = Chat(
         id: "44CD9181-C419-41E7-ACED-6A9391105DC7",
         name: "Eu",
         participants: [.vini],
@@ -190,7 +195,7 @@ public extension Chat {
         ]
     )
     
-    static let mockList = [
+    public static let mockList = [
         Chat.lili,
         Chat.evidence,
         Chat.recepies,
@@ -201,7 +206,7 @@ public extension Chat {
 
 
 public extension Message {
-    static let hi = Message(
+    public static let hi = Message(
         id: MessageID(UUID().uuidString),
         sender: .vini,
         content: "Olá",
@@ -209,7 +214,7 @@ public extension Message {
         isSent: false
     )
     
-    static let pointfree = Message(
+    public static let pointfree = Message(
         id: MessageID(UUID().uuidString),
         sender: .cris,
         content: "https://www.pointfree.co/episodes/ep274-shared-state-user-defaults-part-2",

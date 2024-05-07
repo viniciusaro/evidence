@@ -14,128 +14,149 @@
          location = "container:"
          name = "Sources">
          <Group
-            location = "container:"
-            name = "Chat">
+            location = "group:ChatKit/Sources/ChatKit"
+            name = "ChatKit">
             <Group
-               location = "group:ChatKit/Sources/ChatKit"
-               name = "ChatKit">
+               location = "group:Clients"
+               name = "Clients">
+               <FileRef
+                  location = "group:ClientsSetup.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:StockClient.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:DataClient.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:PreviewClient.swift">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:Features"
+               name = "Features">
                <Group
-                  location = "group:Clients"
-                  name = "Clients">
+                  location = "group:MV"
+                  name = "MV">
+               </Group>
+               <Group
+                  location = "group:MVVM"
+                  name = "MVVM">
                   <FileRef
-                     location = "group:StockClient.swift">
+                     location = "group:ChatDetailMVVM.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:DataClient.swift">
+                     location = "group:ChatListMVVM.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:PreviewClient.swift">
+                     location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/HomeMVVM.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:AuthClient.swift">
+                     location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/LoginMVVM.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MessageMVVM.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NewChatSetupMVVM.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ProfileMVVM.swift">
+                  </FileRef>
+                  <FileRef
+                     location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/RootMVVM.swift">
                   </FileRef>
                </Group>
                <Group
-                  location = "group:Features"
-                  name = "Features">
-                  <Group
-                     location = "group:MV"
-                     name = "MV">
-                  </Group>
-                  <Group
-                     location = "group:MVVM"
-                     name = "MVVM">
-                     <FileRef
-                        location = "group:ChatDetailMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:ChatListMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/HomeMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/LoginMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:MessageMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:NewChatSetupMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:ProfileMVVM.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/ChatKit/Sources/ChatKit/Features/MVVM/RootMVVM.swift">
-                     </FileRef>
-                  </Group>
-                  <Group
-                     location = "group:TCA"
-                     name = "TCA">
-                     <FileRef
-                        location = "group:ChatDetail.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:ChatList.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:Home.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:Login.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:Message.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:NewChatSetup.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:Profile.swift">
-                     </FileRef>
-                     <FileRef
-                        location = "group:Root.swift">
-                     </FileRef>
-                  </Group>
-               </Group>
-               <Group
-                  location = "group:Arch"
-                  name = "Arch">
+                  location = "group:TCA"
+                  name = "TCA">
                   <FileRef
-                     location = "group:Reducer.swift">
+                     location = "group:ChatDetail.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:Feature.swift">
+                     location = "group:ChatList.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:Shared.swift">
+                     location = "group:Home.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:Store+SwiftUI.swift">
+                     location = "group:Login.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:Effect.swift">
+                     location = "group:Message.swift">
                   </FileRef>
                   <FileRef
-                     location = "group:Store.swift">
+                     location = "group:NewChatSetup.swift">
                   </FileRef>
-               </Group>
-               <Group
-                  location = "group:Data"
-                  name = "Data">
                   <FileRef
-                     location = "group:Models.swift">
+                     location = "group:Profile.swift">
                   </FileRef>
-               </Group>
-               <Group
-                  location = "group:Helpers"
-                  name = "Helpers">
                   <FileRef
-                     location = "group:Helpers.swift">
+                     location = "group:Root.swift">
                   </FileRef>
                </Group>
             </Group>
+            <Group
+               location = "group:Arch"
+               name = "Arch">
+               <FileRef
+                  location = "group:Reducer.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:Feature.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:Shared.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:Store+SwiftUI.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:Effect.swift">
+               </FileRef>
+               <FileRef
+                  location = "group:Store.swift">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:Helpers"
+               name = "Helpers">
+               <FileRef
+                  location = "group:Helpers.swift">
+               </FileRef>
+            </Group>
+         </Group>
+      </Group>
+   </Group>
+   <Group
+      location = "group:Clients"
+      name = "Clients">
+      <FileRef
+         location = "group:Package.swift">
+      </FileRef>
+      <Group
+         location = "group:Sources"
+         name = "Sources">
+         <Group
+            location = "group:AuthClient"
+            name = "AuthClient">
+            <FileRef
+               location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Clients/Sources/AuthClient/AuthClient.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:AuthClientLive"
+            name = "AuthClientLive">
+            <FileRef
+               location = "group:AuthClient+Live.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Models"
+            name = "Models">
+            <FileRef
+               location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Clients/Sources/Models/Models.swift">
+            </FileRef>
          </Group>
       </Group>
    </Group>

@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Models
 import SwiftUI
 
 @Reducer
@@ -29,7 +30,7 @@ public struct MessageFeature {
     
     public enum Action {
         case onViewDidLoad
-        case onPreviewDidLoad(Preview)
+        case onPreviewDidLoad(Models.Preview)
     }
     
     public var body: some ReducerOf<Self> {

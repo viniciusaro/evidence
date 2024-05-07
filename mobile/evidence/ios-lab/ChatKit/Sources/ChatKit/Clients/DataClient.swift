@@ -1,4 +1,5 @@
 import Foundation
+import Models
 
 struct DataClient {
     let load: (URL) throws -> Data

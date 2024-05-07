@@ -1,5 +1,6 @@
 import Combine
 import ComposableArchitecture
+import Models
 import SwiftUI
 
 @Observable 
@@ -27,12 +28,7 @@ extension ChatDetailModel {
         messages.append(newMessageModel)
         inputText = ""
         
-        let chatUpdate = ChatUpdate(
-            chatId: chat.id,
-            name: chat.name,
-            message: newMessage,
-            participants: chat.participants
-        )
+        let chatUpdate = ChatUpdate.from(chat: chat, message: newMessage)
         
         stockClient.send(chatUpdate)
             .receive(on: DispatchQueue.main)

@@ -1,5 +1,7 @@
+import AuthClient
+
 #if DEBUG
-var authClient = AuthClient.live
+var authClient = AuthClient.authenticated()
 var dataClient = DataClient.live
 var stockClient = StockClient.live
 var installationClient = InstallationClient.mock("1")

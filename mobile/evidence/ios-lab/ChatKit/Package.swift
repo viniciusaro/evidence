@@ -21,14 +21,15 @@ let package = Package(
         .package(
             url: "git@github.com:firebase/firebase-ios-sdk.git",
             from: "10.24.0"
-        )
+        ),
+        .package(path: "../Clients")
     ],
     targets: [
         .target(
             name: "ChatKit",
             dependencies: [
+                .product(name: "AuthClient", package: "Clients"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-                .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
                 .product(name: "FirebaseFirestore", package: "firebase-ios-sdk")
             ]
         )
