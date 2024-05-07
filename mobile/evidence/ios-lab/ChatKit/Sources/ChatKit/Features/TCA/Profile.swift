@@ -5,6 +5,8 @@ import SwiftUI
 
 @Reducer
 public struct ProfileFeature {
+    @Dependency(\.authClient) static var authClient
+    
     @ObservableState
     public struct State: Equatable {
         var user: User

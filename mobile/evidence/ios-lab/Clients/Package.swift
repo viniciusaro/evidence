@@ -21,6 +21,14 @@ let package = Package(
             name: "Models",
             targets: ["Models"]
         ),
+        .library(
+            name: "StockClient",
+            targets: ["StockClient"]
+        ),
+        .library(
+            name: "StockClientLive",
+            targets: ["StockClientLive"]
+        ),
     ],
     dependencies: [
         .package(
@@ -48,6 +56,17 @@ let package = Package(
             name: "Models",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+            ]
+        ),
+        .target(
+            name: "StockClient",
+            dependencies: ["Models"]
+        ),
+        .target(
+            name: "StockClientLive",
+            dependencies: [
+                "StockClient",
+                .product(name: "FirebaseFirestore", package: "firebase-ios-sdk")
             ]
         )
     ]

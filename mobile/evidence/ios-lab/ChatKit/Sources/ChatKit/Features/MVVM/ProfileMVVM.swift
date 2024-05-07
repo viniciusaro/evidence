@@ -1,3 +1,4 @@
+import Dependencies
 import Models
 import SwiftUI
 
@@ -6,6 +7,7 @@ class ProfileModel {
     var user: User
     
     init() {
+        @Dependency(\.authClient) var authClient
         self.user = authClient.getAuthenticatedUser() ?? User()
     }
 }

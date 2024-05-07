@@ -6,7 +6,9 @@ import SwiftUI
 
 @Reducer 
 public struct LoginFeature {
-    @ObservableState 
+    @Dependency(\.authClient) var authClient
+    
+    @ObservableState
     public struct State: Equatable, Identifiable {
         public let id = UUID()
         var emailInput: String = ""

@@ -1,10 +1,15 @@
+import AuthClient
 import ComposableArchitecture
 import Models
+import StockClient
 import SwiftUI
 
 @Reducer
 public struct ChatDetailFeature {
-    @ObservableState 
+    @Dependency(\.authClient) var authClient
+    @Dependency(\.stockClient) var stockClient
+    
+    @ObservableState
     public struct State: Equatable {
         @Shared var chat: Chat
         var inputText: String = ""

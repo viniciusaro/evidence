@@ -1,10 +1,12 @@
+import AuthClient
 import Combine
+import Dependencies
 import Foundation
 import FirebaseAuth
 import Models
 
-extension AuthClient {
-    static var live = AuthClient(
+extension AuthClient: DependencyKey {
+    public static var liveValue = AuthClient(
         getAuthenticatedUser: {
             if let firebaseUser = Auth.auth().currentUser {
                 return User(from: firebaseUser)
@@ -12,17 +14,17 @@ extension AuthClient {
             return nil
         },
         authenticate: { email, password in
-            let subject = PassthroughSubject<User, Error>()
+            let subject = PassthroughSubject<Models.User, Error>()
             
             let token = Task {
                 do {
                     let result = try await Auth.auth().createUser(withEmail: email, password: password)
-                    subject.send(User(from: result.user))
+                    subject.send(Models.User(from: result.user))
                 } catch {
                     if AuthErrorCode(_nsError: error as NSError).code == .emailAlreadyInUse {
                         do {
                             let result = try await Auth.auth().signIn(withEmail: email, password: password)
-                            subject.send(User(from: result.user))
+                            subject.send(Models.User(from: result.user))
                         }
                         catch {
                             switch AuthErrorCode(_nsError: error as NSError).code {
@@ -44,9 +46,11 @@ extension AuthClient {
 
 }
 
-extension User {
+extension Models.User {
     init(from firebaseUser: FirebaseAuth.User) {
-        self.id = firebaseUser.uid
-        self.name = firebaseUser.displayName ?? firebaseUser.email ?? firebaseUser.description
+        self.init(
+            name: firebaseUser.displayName ?? firebaseUser.email ?? firebaseUser.description,
+            id: firebaseUser.uid
+        )
     }
 }

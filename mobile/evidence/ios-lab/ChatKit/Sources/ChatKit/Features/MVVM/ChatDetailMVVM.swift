@@ -1,6 +1,8 @@
 import Combine
 import ComposableArchitecture
+import Dependencies
 import Models
+import StockClient
 import SwiftUI
 
 @Observable 
@@ -21,6 +23,9 @@ class ChatDetailModel {
 
 extension ChatDetailModel {
     func send() {
+        @Dependency(\.authClient) var authClient
+        @Dependency(\.stockClient) var stockClient
+        
         let user = authClient.getAuthenticatedUser() ?? User()
         let newMessage = Message(content: inputText, sender: user)
         let newMessageModel = MessageModel(message: newMessage)

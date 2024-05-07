@@ -1,3 +1,4 @@
+import Dependencies
 import SwiftUI
 
 @Observable
@@ -10,6 +11,7 @@ public class RootModel {
     }
     
     public init() {
+        @Dependency(\.authClient) var authClient
         if let _ = authClient.getAuthenticatedUser() {
             self.root = .home(HomeModel())
         } else {

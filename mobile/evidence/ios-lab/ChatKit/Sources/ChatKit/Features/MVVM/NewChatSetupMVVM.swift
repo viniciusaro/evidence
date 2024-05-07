@@ -13,6 +13,8 @@ class NewChatSetupModel: Identifiable {
     var delegateOnNewChatSetup: (Chat) -> Void = { _ in fatalError() }
     
     init() {
+        @Dependency(\.authClient) var authClient
+        
         self.chat = .empty()
         self.users = [.vini, .lili, .cris]
         self.alertIsPresented = true

@@ -1,10 +1,13 @@
 import ComposableArchitecture
 import Models
+import StockClient
 import SwiftUI
 
 @Reducer 
 public struct ChatListFeature {
-    @ObservableState 
+    @Dependency(\.stockClient) var stockClient
+    
+    @ObservableState
     public struct State: Equatable {
         @Shared(.fileStorage(.chats)) var chats: IdentifiedArrayOf<Chat> = []
         @Presents var detail: ChatDetailFeature.State? = nil

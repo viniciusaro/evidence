@@ -1,6 +1,8 @@
 import Combine
+import Dependencies
 import Models
 import IdentifiedCollections
+import StockClient
 import SwiftUI
 
 @Observable 
@@ -33,6 +35,8 @@ extension ChatListModel {
     }
     
     func onViewDidLoad() {
+        @Dependency(\.stockClient) var stockClient
+        
         stockClient.consume()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in self?.onNewMessageReceived($0) }

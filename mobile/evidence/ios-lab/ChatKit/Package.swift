@@ -18,10 +18,6 @@ let package = Package(
             url: "git@github.com:pointfreeco/swift-composable-architecture.git",
             branch: "shared-state-beta"
         ),
-        .package(
-            url: "git@github.com:firebase/firebase-ios-sdk.git",
-            from: "10.24.0"
-        ),
         .package(path: "../Clients")
     ],
     targets: [
@@ -29,8 +25,8 @@ let package = Package(
             name: "ChatKit",
             dependencies: [
                 .product(name: "AuthClient", package: "Clients"),
-                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-                .product(name: "FirebaseFirestore", package: "firebase-ios-sdk")
+                .product(name: "StockClient", package: "Clients"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
         )
     ]

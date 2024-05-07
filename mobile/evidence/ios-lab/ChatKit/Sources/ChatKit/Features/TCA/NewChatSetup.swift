@@ -4,7 +4,9 @@ import SwiftUI
 
 @Reducer 
 public struct NewChatSetupFeature {
-    @ObservableState 
+    @Dependency(\.authClient) static var authClient
+    
+    @ObservableState
     public struct State: Equatable {
         var chat: Chat
         var users: [User]

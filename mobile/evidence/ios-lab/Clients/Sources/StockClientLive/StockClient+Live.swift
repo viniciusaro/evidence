@@ -1,33 +1,15 @@
+import AuthClient
 import Combine
+import Dependencies
 import FirebaseFirestore
-import Foundation
 import Models
+import StockClient
 
-struct StockClient {
-    let consume: () -> AnyPublisher<ChatUpdate, Never>
-    let send: (ChatUpdate) -> AnyPublisher<Void, Never>
-}
-
-extension StockClient {
-    static let empty = StockClient(
-        consume: { Empty().eraseToAnyPublisher() },
-        send: { _ in Empty().eraseToAnyPublisher() }
-    )
-    
-    static func mock(_ using: [Chat], interval: Double = 5) -> StockClient {
-        StockClient(
-            consume: {
-                Timer.publish(every: interval, on: .main, in: .default)
-                    .autoconnect()
-                    .map { _ in ChatUpdate.random(using: using) }
-                    .eraseToAnyPublisher()
-            },
-            send: { _ in Empty().eraseToAnyPublisher() }
-        )
-    }
-    
-    static let live = StockClient(
+extension StockClient: DependencyKey {
+    public static let liveValue = StockClient(
         consume: {
+            @Dependency(\.authClient) var authClient
+            @Dependency(\.installationClient) var installationClient
             let subject = PassthroughSubject<ChatUpdate, Never>()
             
             let userId = authClient.getAuthenticatedUser()!.id
@@ -68,7 +50,10 @@ extension StockClient {
         },
         send: { chatUpdate in
             do {
+                @Dependency(\.authClient) var authClient
+                @Dependency(\.installationClient) var installationClient
                 let subject = PassthroughSubject<Void, Never>()
+                
                 let userId = authClient.getAuthenticatedUser()!.id
                 let participants = chatUpdate.participants.filter { $0.id != userId }
                 
@@ -96,14 +81,4 @@ extension StockClient {
             }
         }
     )
-}
-
-struct InstallationClient {
-    let getCurrentInstallationId: () -> String
-}
-
-extension InstallationClient {
-    static func mock(_ id: String = "1") -> InstallationClient {
-        InstallationClient(getCurrentInstallationId: { id })
-    }
 }

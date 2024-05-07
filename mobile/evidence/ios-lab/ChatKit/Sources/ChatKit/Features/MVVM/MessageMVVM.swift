@@ -1,4 +1,5 @@
 import Combine
+import Dependencies
 import Models
 import SwiftUI
 
@@ -24,6 +25,8 @@ class MessageModel: Identifiable {
     }
     
     init(message: Message) {
+        @Dependency(\.authClient) var authClient
+        
         self.message = message
         self.user = authClient.getAuthenticatedUser() ?? User()
     }

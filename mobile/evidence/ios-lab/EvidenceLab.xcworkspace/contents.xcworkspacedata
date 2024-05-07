@@ -23,9 +23,6 @@
                   location = "group:ClientsSetup.swift">
                </FileRef>
                <FileRef
-                  location = "group:StockClient.swift">
-               </FileRef>
-               <FileRef
                   location = "group:DataClient.swift">
                </FileRef>
                <FileRef
@@ -156,6 +153,26 @@
             name = "Models">
             <FileRef
                location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Clients/Sources/Models/Models.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:StockClient"
+            name = "StockClient">
+            <FileRef
+               location = "group:InstallationClient.swift">
+            </FileRef>
+            <FileRef
+               location = "group:/Users/vinicius.rodrigues/Development/evidence/mobile/evidence/ios-lab/Clients/Sources/StockClient/StockClient.swift">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:StockClientLive"
+            name = "StockClientLive">
+            <FileRef
+               location = "group:InstallationClient+Live.swift">
+            </FileRef>
+            <FileRef
+               location = "group:StockClient+Live.swift">
             </FileRef>
          </Group>
       </Group>

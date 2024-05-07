@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630A733E2BEAC56900E24A61 /* StockClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = 630A733D2BEAC56900E24A61 /* StockClientLive */; };
+		630A73402BEAC60400E24A61 /* AuthClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = 630A733F2BEAC60400E24A61 /* AuthClientLive */; };
+		630A73422BEAC60400E24A61 /* StockClientLive in Frameworks */ = {isa = PBXBuildFile; productRef = 630A73412BEAC60400E24A61 /* StockClientLive */; };
 		6357BD302BCDA9B300640706 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */; };
 		6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */; };
 		6369AD672BB36C850067E2EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD662BB36C850067E2EC /* Assets.xcassets */; };
@@ -52,7 +55,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				630A733E2BEAC56900E24A61 /* StockClientLive in Frameworks */,
 				63F4B5BB2BE4231C00BD3FF1 /* ChatKit in Frameworks */,
+				630A73422BEAC60400E24A61 /* StockClientLive in Frameworks */,
+				630A73402BEAC60400E24A61 /* AuthClientLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +161,9 @@
 			name = EvidenceLab;
 			packageProductDependencies = (
 				63F4B5BA2BE4231C00BD3FF1 /* ChatKit */,
+				630A733D2BEAC56900E24A61 /* StockClientLive */,
+				630A733F2BEAC60400E24A61 /* AuthClientLive */,
+				630A73412BEAC60400E24A61 /* StockClientLive */,
 			);
 			productName = EvidenceLab;
 			productReference = 6369AD5F2BB36C840067E2EC /* EvidenceLab.app */;
@@ -230,6 +239,7 @@
 			mainGroup = 6369AD562BB36C840067E2EC;
 			packageReferences = (
 				63F4B5B92BE4231C00BD3FF1 /* XCLocalSwiftPackageReference "../ChatKit" */,
+				630A733C2BEAC56900E24A61 /* XCLocalSwiftPackageReference "../Clients" */,
 			);
 			productRefGroup = 6369AD602BB36C840067E2EC /* Products */;
 			projectDirPath = "";
@@ -613,6 +623,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		630A733C2BEAC56900E24A61 /* XCLocalSwiftPackageReference "../Clients" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Clients;
+		};
 		63F4B5B92BE4231C00BD3FF1 /* XCLocalSwiftPackageReference "../ChatKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../ChatKit;
@@ -620,6 +634,18 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		630A733D2BEAC56900E24A61 /* StockClientLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StockClientLive;
+		};
+		630A733F2BEAC60400E24A61 /* AuthClientLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AuthClientLive;
+		};
+		630A73412BEAC60400E24A61 /* StockClientLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StockClientLive;
+		};
 		63F4B5BA2BE4231C00BD3FF1 /* ChatKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ChatKit;

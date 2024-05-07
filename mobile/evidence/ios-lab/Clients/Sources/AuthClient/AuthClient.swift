@@ -1,4 +1,5 @@
 import Combine
+import Dependencies
 import Models
 import Foundation
 
@@ -10,6 +11,26 @@ public struct AuthClient {
         case invalidCredentials
         case credentialAlreadyInUse
         case unknown(Swift.Error)
+    }
+    
+    public init(
+        getAuthenticatedUser: @escaping () -> User?,
+        authenticate: @escaping (String, String) -> AnyPublisher<User, Error>
+    ) {
+        self.getAuthenticatedUser = getAuthenticatedUser
+        self.authenticate = authenticate
+    }
+}
+
+extension AuthClient: TestDependencyKey {
+    public static let testValue = AuthClient.authenticated()
+    public static let previewValue = AuthClient.authenticated()
+}
+
+extension DependencyValues {
+    public var authClient: AuthClient {
+        get { self[AuthClient.self] }
+        set { self[AuthClient.self] = newValue }
     }
 }
 

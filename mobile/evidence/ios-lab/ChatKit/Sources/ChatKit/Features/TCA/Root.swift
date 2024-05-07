@@ -2,9 +2,11 @@ import Combine
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer 
+@Reducer
 public struct RootFeature {
-    @ObservableState 
+    @Dependency(\.authClient) static var authClient
+    
+    @ObservableState
     public enum State {
         case home(HomeFeature.State)
         case login(LoginFeature.State)

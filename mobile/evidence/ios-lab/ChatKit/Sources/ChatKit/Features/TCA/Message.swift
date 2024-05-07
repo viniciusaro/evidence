@@ -4,6 +4,8 @@ import SwiftUI
 
 @Reducer
 public struct MessageFeature {
+    @Dependency(\.authClient) static var authClient
+    
     @ObservableState
     public struct State: Equatable, Identifiable {
         @Shared var message: Message
