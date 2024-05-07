@@ -10,33 +10,23 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AuthClient",
-            targets: ["AuthClient"]
+            name: "Clients",
+            targets: [
+                "AuthClient",
+                "DataClient",
+                "PreviewClient",
+                "StockClient"
+            ]
         ),
         .library(
-            name: "AuthClientLive",
-            targets: ["AuthClientLive"]
-        ),
-        .library(
-            name: "DataClient",
-            targets: ["DataClient"]
-        ),
-        .library(
-            name: "Models",
-            targets: ["Models"]
-        ),
-        .library(
-            name: "PreviewClient",
-            targets: ["PreviewClient"]
-        ),
-        .library(
-            name: "StockClient",
-            targets: ["StockClient"]
-        ),
-        .library(
-            name: "StockClientLive",
-            targets: ["StockClientLive"]
-        ),
+            name: "ClientsLive",
+            targets: [
+                "AuthClientLive",
+                "DataClient",
+                "PreviewClient",
+                "StockClientLive"
+            ]
+        )
     ],
     dependencies: [
         .package(
@@ -71,7 +61,8 @@ let package = Package(
             ]
         ),
         .target(
-            name: "PreviewClient"
+            name: "PreviewClient",
+            dependencies: ["Models"]
         ),
         .target(
             name: "StockClient",

@@ -5,6 +5,7 @@ import SwiftUI
 @Reducer 
 public struct NewChatSetupFeature {
     @Dependency(\.authClient) static var authClient
+    @Dependency(\.dismiss) var dismiss
     
     @ObservableState
     public struct State: Equatable {
@@ -32,7 +33,6 @@ public struct NewChatSetupFeature {
             case onNewChatSetup(Chat)
         }
     }
-    @Dependency(\.dismiss) var dismiss
     
     public var body: some ReducerOf<Self> {
         Reduce { state, action in

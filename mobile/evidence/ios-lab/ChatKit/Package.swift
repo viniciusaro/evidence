@@ -11,7 +11,8 @@ let package = Package(
     products: [
         .library(
             name: "ChatKit",
-            targets: ["ChatKit"]),
+            targets: ["ChatKit"]
+        )
     ],
     dependencies: [
         .package(
@@ -24,10 +25,7 @@ let package = Package(
         .target(
             name: "ChatKit",
             dependencies: [
-                .product(name: "AuthClient", package: "Clients"),
-                .product(name: "DataClient", package: "Clients"),
-                .product(name: "PreviewClient", package: "Clients"),
-                .product(name: "StockClient", package: "Clients"),
+                .product(name: "Clients", package: "Clients"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
         )

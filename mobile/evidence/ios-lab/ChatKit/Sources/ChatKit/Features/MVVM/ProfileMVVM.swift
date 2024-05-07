@@ -1,3 +1,4 @@
+import AuthClient
 import Dependencies
 import Models
 import SwiftUI
