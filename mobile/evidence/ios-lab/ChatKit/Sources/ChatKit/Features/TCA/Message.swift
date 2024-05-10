@@ -4,6 +4,12 @@ import Models
 import PreviewClient
 import SwiftUI
 
+#Preview {
+    MessageView(store: Store(initialState: .init(message: Shared(.hi))) {
+        MessageFeature()
+    })
+}
+
 @Reducer
 public struct MessageFeature {
     @Dependency(\.authClient) static var authClient

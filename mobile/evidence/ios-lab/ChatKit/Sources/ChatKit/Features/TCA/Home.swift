@@ -1,7 +1,13 @@
 import ComposableArchitecture
 import SwiftUI
 
-@Reducer 
+#Preview {
+    HomeView(store: Store(initialState: .init()) {
+        HomeFeature()
+    })
+}
+
+@Reducer
 public struct HomeFeature {
     @ObservableState 
     public struct State: Equatable {
