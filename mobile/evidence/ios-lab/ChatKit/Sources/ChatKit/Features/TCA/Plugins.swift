@@ -9,13 +9,11 @@ public enum PluginAction {
 }
 
 struct PluginReducer<State, Action>: Reducer {
-    typealias State = State
-    typealias Action = Action
     let action: CaseKeyPath<Action, PluginAction>
     let child: () -> any Reducer<Void, PluginAction>
     
-    var body: some ReducerOf<Self> {
-        Reduce { state, action in
+    var body: some Reducer<State, Action> {
+        Reduce { _, action in
             if let childAction = AnyCasePath(self.action).extract(from: action) {
                 var fakeState: Void = ()
                 let effect = child().reduce(into: &fakeState, action: childAction)
@@ -25,33 +23,6 @@ struct PluginReducer<State, Action>: Reducer {
                 return parentEffect
             }
             return .none
-        }
-    }
-}
-
-@Reducer
-struct OpenAIPlugin {
-    @Dependency(\.openAIClient) var openAIClient
-    
-    var body: some Reducer<Void, PluginAction> {
-        Reduce { state, action in
-            switch action {
-            case let .onMessageReceived(chatUpdate):
-                if chatUpdate.message.sender == .cris {
-                    return .publisher {
-                        openAIClient.send(chatUpdate.message.content)
-                            .receive(on: DispatchQueue.main)
-                            .map {
-                                var update = chatUpdate
-                                update.message = Message(content: $0, sender: .openAI)
-                                return .onMessageReceived(update)
-                            }
-                    }
-                }
-                return .none
-            default:
-                return .none
-            }
         }
     }
 }
@@ -78,6 +49,33 @@ struct PingPlugin {
                         .send(.onMessageReceived(ping3)),
                         .send(.onMessageReceived(ping4))
                     )
+                }
+                return .none
+            default:
+                return .none
+            }
+        }
+    }
+}
+
+@Reducer
+struct OpenAIPlugin {
+    @Dependency(\.openAIClient) var openAIClient
+    
+    var body: some Reducer<Void, PluginAction> {
+        Reduce { state, action in
+            switch action {
+            case let .onMessageReceived(chatUpdate):
+                if chatUpdate.message.sender == .cris {
+                    return .publisher {
+                        openAIClient.send(chatUpdate.message.content)
+                            .receive(on: DispatchQueue.main)
+                            .map {
+                                var update = chatUpdate
+                                update.message = Message(content: $0, sender: .openAI)
+                                return .onMessageReceived(update)
+                            }
+                    }
                 }
                 return .none
             default:
