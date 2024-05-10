@@ -47,10 +47,11 @@ extension ChatListModel {
     }
     
     private func onNewMessageReceived(_ chatUpdate: ChatUpdate) {
-        guard var existingChat = chats[id: chatUpdate.chatId] else {
+        guard let _ = chats[id: chatUpdate.chatId] else {
             chats.insert(chatUpdate.toChat(), at: 0)
             return
         }
+        
         if let detail = detail, detail.chat.id == chatUpdate.chatId {
             detail.chat.messages.append(chatUpdate.message)
             detail.messages.append(MessageModel(message: chatUpdate.message))

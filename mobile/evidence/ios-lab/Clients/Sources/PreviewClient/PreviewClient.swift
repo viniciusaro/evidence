@@ -44,7 +44,7 @@ extension URLPreviewClient: DependencyKey {
 }
 
 public extension URLPreviewClient {
-    public static func sync(_ value: (image: URL, title: String)?) -> URLPreviewClient {
+    static func sync(_ value: (image: URL, title: String)?) -> URLPreviewClient {
         URLPreviewClient { _ in
             Just(value).eraseToAnyPublisher()
         }

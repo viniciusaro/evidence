@@ -78,7 +78,7 @@ public struct ChatListFeature {
                     state.chats.insert(chatUpdate.toChat(), at: 0)
                     return .none
                 }
-                guard var shared = state.$chats[id: existingChat.id] else {
+                guard let shared = state.$chats[id: existingChat.id] else {
                     return .none
                 }
                 shared.wrappedValue.messages.append(chatUpdate.message)
