@@ -3,6 +3,12 @@ import Models
 import StockClient
 import SwiftUI
 
+#Preview {
+    ChatListView(store: Store(initialState: .init()) {
+        ChatListFeature()
+    })
+}
+
 @Reducer
 public struct ChatListFeature {
     @Dependency(\.stockClient) var stockClient

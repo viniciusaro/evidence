@@ -110,6 +110,10 @@
                </FileRef>
             </Group>
          </Group>
+         <Group
+            location = "group:ChatKit/Tests"
+            name = "Tests">
+         </Group>
       </Group>
    </Group>
    <Group
@@ -176,6 +180,10 @@
                location = "group:StockClient+Live.swift">
             </FileRef>
          </Group>
+      </Group>
+      <Group
+         location = "group:Tests"
+         name = "Tests">
       </Group>
    </Group>
 </Workspace>
