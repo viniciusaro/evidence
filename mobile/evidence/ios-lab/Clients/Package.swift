@@ -14,6 +14,7 @@ let package = Package(
             targets: [
                 "AuthClient",
                 "DataClient",
+                "OpenAIClient",
                 "PreviewClient",
                 "StockClient"
             ]
@@ -23,6 +24,7 @@ let package = Package(
             targets: [
                 "AuthClientLive",
                 "DataClient",
+                "OpenAIClientLive",
                 "PreviewClient",
                 "StockClientLive"
             ]
@@ -59,6 +61,14 @@ let package = Package(
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]
+        ),
+        .target(
+            name: "OpenAIClient",
+            dependencies: ["Models"]
+        ),
+        .target(
+            name: "OpenAIClientLive",
+            dependencies: ["OpenAIClient"]
         ),
         .target(
             name: "PreviewClient",

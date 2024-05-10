@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Models
+import OpenAIClient
 import StockClient
 import SwiftUI
 
@@ -12,6 +13,7 @@ import SwiftUI
 @Reducer
 public struct ChatListFeature {
     @Dependency(\.stockClient) var stockClient
+    @Dependency(\.openAIClient) var openAIClient
     
     @ObservableState
     public struct State: Equatable {
@@ -90,6 +92,26 @@ public struct ChatListFeature {
                         .receive(on: DispatchQueue.main)
                         .map { .onNewMessageReceived($0) }
                 }
+            }
+        }
+        Reduce { state, action in
+            switch action {
+            case let .onNewMessageReceived(chatUpdate):
+                if chatUpdate.message.sender == .cris {
+                    return .publisher {
+                        openAIClient.send(chatUpdate.message.content)
+                            .receive(on: DispatchQueue.main)
+                            .map {
+                                let message = Message(content: $0, sender: .openAI)
+                                var update = chatUpdate
+                                update.message = message
+                                return .onNewMessageReceived(update)
+                            }
+                    }
+                }
+                return .none
+            default:
+                return .none
             }
         }
         .ifLet(\.$detail, action: \.detail) {

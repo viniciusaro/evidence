@@ -5,11 +5,12 @@ public typealias MessageID = String
 public typealias ChatID = String
 public typealias UserID = String
 public typealias AuthorID = String
+public typealias PluginID = String
 
 public struct ChatUpdate: Codable {
     public let chatId: ChatID
     public let name: String
-    public let message: Message
+    public var message: Message
     public let participants: IdentifiedArrayOf<User>
     public let createdAt: Date
 }
@@ -84,7 +85,7 @@ public struct Message: Identifiable, Equatable, Hashable, Codable {
     public var preview: Preview?
     public var isSent: Bool
     
-    public static func == (lhs: Message, rhs: Message) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
     }
     
@@ -125,6 +126,20 @@ public struct Preview: Equatable, Hashable, Codable {
 public struct User: Equatable, Hashable, Identifiable, Codable {
     public let id: UserID
     public let name: String
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+public struct Plugin: Identifiable, Equatable {
+    public let id: PluginID
+    public let name: String
+    public let icon: String
 }
 
 public extension User {
@@ -143,6 +158,7 @@ public extension User {
     static let vini = User(name: "Vini", id: UserID("HGlLyOjM7vTsX1DZtACoh808SHG2"))
     static let cris = User(name: "Cris", id: UserID("llX9JYSoaxNH77sCmIH6b0xcq6w2"))
     static let lili = User(name: "Lili ❤️‍🔥", id: UserID("0A8F38BA-9484-4889-A74D-46444F3FE52B"))
+    static let openAI = User(name: "OpenAI ❤️‍🔥", id: UserID("OpenAI"))
 }
 
 
@@ -206,7 +222,6 @@ public extension Chat {
     ]
 }
 
-
 public extension Message {
     static let hi = Message(
         id: MessageID(UUID().uuidString),
@@ -222,6 +237,14 @@ public extension Message {
         content: "https://www.pointfree.co/episodes/ep274-shared-state-user-defaults-part-2",
         preview: nil,
         isSent: false
+    )
+}
+
+public extension Plugin {
+    static let openAI = Plugin(
+        id: "open ai",
+        name: "OpenAI",
+        icon: "circle.hexagongrid.circle"
     )
 }
 

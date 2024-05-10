@@ -15,7 +15,7 @@ public struct ChatDetailFeature {
         @Shared var chat: Chat
         var user: User
         var inputText: String = ""
-        
+
         init(chat: Shared<Chat>) {
             self._chat = chat
             self.user = authClient.getAuthenticatedUser() ?? User()
@@ -86,12 +86,29 @@ struct ChatDetailView: View {
     
     var body: some View {
         VStack {
-            List {
-                ForEach($store.chat.messages) { $message in
-                    MessageView(user: store.user, message: $message)
-                        .onViewDidLoad {
-                            store.send(.onMessageViewDidLoad(message))
+            ScrollViewReader{ proxy in
+                List {
+                    ForEach($store.chat.messages) { $message in
+                        MessageView(user: store.user, message: $message)
+                            .onViewDidLoad {
+                                store.send(.onMessageViewDidLoad(message))
+                            }
+                            .id(message.id)
+                    }
+                }
+                .onChange(of: store.chat.messages) { _, messages in
+                    if let id = messages.last?.id {
+                        withAnimation {
+                            proxy.scrollTo(id)
                         }
+                    }
+                }
+                .onViewDidLoad {
+                    if let id = store.chat.messages.last?.id {
+                        withAnimation {
+                            proxy.scrollTo(id)
+                        }
+                    }
                 }
             }
             HStack(spacing: 12) {

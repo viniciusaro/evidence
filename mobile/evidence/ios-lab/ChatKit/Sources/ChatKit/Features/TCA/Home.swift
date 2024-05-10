@@ -12,11 +12,13 @@ public struct HomeFeature {
     @ObservableState 
     public struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
+        var plugins: PluginsFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
         public enum Tab: String, Codable {
             case chatList = "Conversas"
+            case plugins = "Plugins"
             case profile = "Perfil"
             
             var title: String {
@@ -27,9 +29,9 @@ public struct HomeFeature {
     
     public enum Action: BindableAction {
         case onNewChatButtonTapped
-        
         case binding(BindingAction<State>)
         case chatList(ChatListFeature.Action)
+        case plugins(PluginsFeature.Action)
         case profile(ProfileFeature.Action)
     }
     
@@ -46,12 +48,18 @@ public struct HomeFeature {
             case .chatList:
                 return .none
                 
+            case .plugins:
+                return .none
+                
             case .profile:
                 return .none
             }
         }
         Scope(state: \.chatList, action: \.chatList) {
             ChatListFeature()
+        }
+        Scope(state: \.plugins, action: \.plugins) {
+            PluginsFeature()
         }
         Scope(state: \.profile, action: \.profile) {
             ProfileFeature()
@@ -76,6 +84,15 @@ struct HomeView: View {
                         )
                     }
                     .tag(HomeFeature.State.Tab.chatList)
+                
+                PluginsView(store: store.scope(state: \.plugins, action: \.plugins))
+                    .tabItem {
+                        Label(
+                            HomeFeature.State.Tab.plugins.title,
+                            systemImage: "brain.filled.head.profile"
+                        )
+                    }
+                    .tag(HomeFeature.State.Tab.plugins)
                     
                 ProfileView(store: store.scope(state: \.profile, action: \.profile))
                     .tabItem {
