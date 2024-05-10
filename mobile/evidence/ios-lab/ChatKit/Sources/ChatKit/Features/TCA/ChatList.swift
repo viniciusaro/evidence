@@ -10,6 +10,58 @@ import SwiftUI
     })
 }
 
+public enum PluginAction {
+    case onMessageSent(ChatUpdate)
+    case onMessageReceived(ChatUpdate)
+}
+
+@Reducer
+struct OpenAIPlugin {
+    @Dependency(\.openAIClient) var openAIClient
+    
+    var body: some Reducer<Void, PluginAction> {
+        Reduce { state, action in
+            switch action {
+            case let .onMessageReceived(chatUpdate):
+                if chatUpdate.message.sender == .cris {
+                    return .publisher {
+                        openAIClient.send(chatUpdate.message.content)
+                            .receive(on: DispatchQueue.main)
+                            .map {
+                                var update = chatUpdate
+                                update.message = Message(content: $0, sender: .openAI)
+                                return .onMessageReceived(update)
+                            }
+                    }
+                }
+                return .none
+            default:
+                return .none
+            }
+        }
+    }
+}
+
+struct PluginReducer<State, Action>: Reducer {
+    typealias State = State
+    typealias Action = Action
+    let fromAction: (Action) -> PluginAction?
+    let toAction: (PluginAction) -> Action
+    let child: () -> any Reducer<Void, PluginAction>
+    
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            if let childAction = fromAction(action) {
+                var fakeState: Void = ()
+                let effect = child().reduce(into: &fakeState, action: childAction)
+                let parentEffect = effect.map(toAction)
+                return parentEffect
+            }
+            return .none
+        }
+    }
+}
+
 @Reducer
 public struct ChatListFeature {
     @Dependency(\.stockClient) var stockClient
@@ -22,6 +74,7 @@ public struct ChatListFeature {
         @Presents var newChatSetup: NewChatSetupFeature.State? = nil
     }
 
+    @CasePathable
     public enum Action {
         case detail(PresentationAction<ChatDetailFeature.Action>)
         case newChatSetup(PresentationAction<NewChatSetupFeature.Action>)
@@ -94,26 +147,21 @@ public struct ChatListFeature {
                 }
             }
         }
-        Reduce { state, action in
-            switch action {
-            case let .onNewMessageReceived(chatUpdate):
-                if chatUpdate.message.sender == .cris {
-                    return .publisher {
-                        openAIClient.send(chatUpdate.message.content)
-                            .receive(on: DispatchQueue.main)
-                            .map {
-                                let message = Message(content: $0, sender: .openAI)
-                                var update = chatUpdate
-                                update.message = message
-                                return .onNewMessageReceived(update)
-                            }
-                    }
-                }
-                return .none
-            default:
-                return .none
+        PluginReducer(fromAction: { action in
+            if case let .onNewMessageReceived(chatUpdate) = action {
+                return .onMessageReceived(chatUpdate)
             }
-        }
+            return nil
+        }, toAction: { pluginAction in
+            switch pluginAction {
+            case .onMessageSent(_):
+                return .onViewDidLoad
+            case let .onMessageReceived(chatUpdate):
+                return .onNewMessageReceived(chatUpdate)
+            }
+        }, child: {
+            OpenAIPlugin()
+        })
         .ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
         }
