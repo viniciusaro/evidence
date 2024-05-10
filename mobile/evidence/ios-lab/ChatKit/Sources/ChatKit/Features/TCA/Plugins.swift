@@ -59,6 +59,24 @@ struct PingPlugin {
 }
 
 @Reducer
+struct AutoCorrectPlugin {
+    var body: some Reducer<Void, PluginAction> {
+        Reduce { state, action in
+            switch action {
+            case var .onMessageReceived(chatUpdate):
+                if chatUpdate.message.content.lowercased() == "🏏 pong" {
+                    chatUpdate.message.content = "🏏 pongui (auto corrected)"
+                    return .send(.onMessageReceived(chatUpdate))
+                }
+                return .none
+            default:
+                return .none
+            }
+        }
+    }
+}
+
+@Reducer
 struct OpenAIPlugin {
     @Dependency(\.openAIClient) var openAIClient
     

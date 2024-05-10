@@ -43,11 +43,7 @@ public struct ChatListFeature {
                 
                 let message = Message(content: detail.inputText, sender: detail.user)
                 detail.chat.messages.append(message)
-
-                let chatUpdate = ChatUpdate.from(
-                    chat: detail.chat,
-                    message: message
-                )
+                let chatUpdate = ChatUpdate.from(chat: detail.chat, message: message)
                 
                 return .merge(
                     .publisher {
@@ -100,7 +96,11 @@ public struct ChatListFeature {
                 guard let shared = state.$chats[id: existingChat.id] else {
                     return .none
                 }
-                shared.wrappedValue.messages.append(chatUpdate.message)
+                if let existingMessage = shared.messages[id: chatUpdate.message.id] {
+                    shared.wrappedValue.messages[id: existingMessage.id] = chatUpdate.message
+                } else {
+                    shared.wrappedValue.messages.append(chatUpdate.message)
+                }
                 return .send(.onChatMoveUpRequested(existingChat))
                 
             case .plugin(.onMessageSent):
@@ -119,6 +119,9 @@ public struct ChatListFeature {
         }
         PluginReducer(action: \.plugin) {
             OpenAIPlugin()
+        }
+        PluginReducer(action: \.plugin) {
+            AutoCorrectPlugin()
         }
         .ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()
