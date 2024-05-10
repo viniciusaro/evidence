@@ -61,20 +61,8 @@ public struct ChatDetailFeature {
                 return .none
                 
             case .send:
-                let message = Message(content: state.inputText, sender: state.user)
-                state.chat.messages.append(message)
                 state.inputText = ""
-
-                let chatUpdate = ChatUpdate.from(
-                    chat: state.chat,
-                    message: message
-                )
-                
-                return .publisher {
-                    stockClient.send(chatUpdate)
-                        .receive(on: DispatchQueue.main)
-                        .map { .onMessageSentConfirmation(message) }
-                }
+                return .none
             }
         }
         BindingReducer()

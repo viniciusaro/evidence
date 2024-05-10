@@ -12,13 +12,13 @@ public struct HomeFeature {
     @ObservableState 
     public struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
-        var plugins: PluginsFeature.State = .init()
+        var pluginsList: PluginsListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
         
         public enum Tab: String, Codable {
             case chatList = "Conversas"
-            case plugins = "Plugins"
+            case pluginsList = "Plugins"
             case profile = "Perfil"
             
             var title: String {
@@ -31,7 +31,7 @@ public struct HomeFeature {
         case onNewChatButtonTapped
         case binding(BindingAction<State>)
         case chatList(ChatListFeature.Action)
-        case plugins(PluginsFeature.Action)
+        case pluginsList(PluginsListFeature.Action)
         case profile(ProfileFeature.Action)
     }
     
@@ -48,7 +48,7 @@ public struct HomeFeature {
             case .chatList:
                 return .none
                 
-            case .plugins:
+            case .pluginsList:
                 return .none
                 
             case .profile:
@@ -58,8 +58,8 @@ public struct HomeFeature {
         Scope(state: \.chatList, action: \.chatList) {
             ChatListFeature()
         }
-        Scope(state: \.plugins, action: \.plugins) {
-            PluginsFeature()
+        Scope(state: \.pluginsList, action: \.pluginsList) {
+            PluginsListFeature()
         }
         Scope(state: \.profile, action: \.profile) {
             ProfileFeature()
@@ -85,14 +85,14 @@ struct HomeView: View {
                     }
                     .tag(HomeFeature.State.Tab.chatList)
                 
-                PluginsView(store: store.scope(state: \.plugins, action: \.plugins))
+                PluginsListView(store: store.scope(state: \.pluginsList, action: \.pluginsList))
                     .tabItem {
                         Label(
-                            HomeFeature.State.Tab.plugins.title,
-                            systemImage: "brain.filled.head.profile"
+                            HomeFeature.State.Tab.pluginsList.title,
+                            systemImage: "circle.hexagongrid.circle"
                         )
                     }
-                    .tag(HomeFeature.State.Tab.plugins)
+                    .tag(HomeFeature.State.Tab.pluginsList)
                     
                 ProfileView(store: store.scope(state: \.profile, action: \.profile))
                     .tabItem {
