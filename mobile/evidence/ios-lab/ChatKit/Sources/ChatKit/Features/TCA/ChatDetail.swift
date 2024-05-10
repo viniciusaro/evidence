@@ -6,27 +6,27 @@ import SwiftUI
 
 @Reducer
 public struct ChatDetailFeature {
-    @Dependency(\.authClient) var authClient
+    @Dependency(\.authClient) static var authClient
     @Dependency(\.stockClient) var stockClient
+    @Dependency(\.previewClient) var previewClient
     
     @ObservableState
     public struct State: Equatable {
         @Shared var chat: Chat
+        var user: User
         var inputText: String = ""
-        var messages: IdentifiedArrayOf<MessageFeature.State>
         
         init(chat: Shared<Chat>) {
             self._chat = chat
-            self.messages = IdentifiedArray(uniqueElements: chat.wrappedValue.messages.map {
-                MessageFeature.State(message: chat.messages[id: $0.id]!)
-            })
+            self.user = authClient.getAuthenticatedUser() ?? User()
         }
     }
     
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case message(IdentifiedActionOf<MessageFeature>)
         case onMessageSentConfirmation(Message)
+        case onMessageViewDidLoad(Message)
+        case onMessagePreviewDidLoad(Message, Models.Preview)
         case send
     }
     
@@ -36,36 +36,46 @@ public struct ChatDetailFeature {
             case .binding:
                 return .none
                 
-            case .message:
+            case let .onMessageViewDidLoad(message):
+                guard
+                    let url = URL(string: message.content),
+                    url.host() != nil,
+                    message.preview == nil else {
+                    return .none
+                }
+                
+                return .publisher {
+                    previewClient.get(url)
+                        .receive(on: DispatchQueue.main)
+                        .filter { $0 != nil }
+                        .map { $0! }
+                        .map { Preview(image: $0.image, title: $0.title) }
+                        .map { .onMessagePreviewDidLoad(message, $0) }
+                }
+                
+            case let .onMessagePreviewDidLoad(message, preview):
+                state.chat.messages[id: message.id]?.preview = preview
                 return .none
                 
             case .onMessageSentConfirmation:
                 return .none
                 
             case .send:
-                let user = authClient.getAuthenticatedUser() ?? User()
-                let newMessage = Message(content: state.inputText, sender: user)
-                state.chat.messages.append(newMessage)
+                let message = Message(content: state.inputText, sender: state.user)
+                state.chat.messages.append(message)
                 state.inputText = ""
 
-                let sharedMessage = state.$chat.messages[id: newMessage.id]!
-                let newMessageState = MessageFeature.State(message: sharedMessage)
-                state.messages.append(newMessageState)
-                
                 let chatUpdate = ChatUpdate.from(
                     chat: state.chat,
-                    message: newMessage
+                    message: message
                 )
                 
                 return .publisher {
                     stockClient.send(chatUpdate)
                         .receive(on: DispatchQueue.main)
-                        .map { .onMessageSentConfirmation(newMessage) }
+                        .map { .onMessageSentConfirmation(message) }
                 }
             }
-        }
-        .forEach(\.messages, action: \.message) {
-            MessageFeature()
         }
         BindingReducer()
     }
@@ -77,8 +87,11 @@ struct ChatDetailView: View {
     var body: some View {
         VStack {
             List {
-                ForEach(store.scope(state: \.messages, action: \.message)) { store in
-                    MessageView(store: store)
+                ForEach($store.chat.messages) { $message in
+                    MessageView(user: store.user, message: $message)
+                        .onViewDidLoad {
+                            store.send(.onMessageViewDidLoad(message))
+                        }
                 }
             }
             HStack(spacing: 12) {

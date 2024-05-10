@@ -82,15 +82,6 @@ public struct ChatListFeature {
                     return .none
                 }
                 shared.wrappedValue.messages.append(chatUpdate.message)
-                
-                if
-                    let detail = state.detail,
-                    detail.chat.id == chatUpdate.chatId,
-                    let sharedMessage = shared.messages[id: chatUpdate.message.id]
-                {
-                    state.detail?.messages.append(MessageFeature.State(message: sharedMessage))
-                }
-                
                 return .send(.onChatMoveUpRequested(existingChat))
                 
             case .onViewDidLoad:
