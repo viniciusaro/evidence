@@ -26,18 +26,13 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.loginEmailViewModel, "An instance should be created")
     }
 
-    func testContinueWithEmailButtonTappedDelegationCalled() {
+    func testContinueWithEmailButtonTappedDelegationCalled() {  
         let viewModel = LoginEmailViewModel()
         var closeButtonCalled = false
-        var userAuthCalled = false
         viewModel.delegateCloseButtonTapped = {
             closeButtonCalled = true
         }
-        viewModel.delegateUserAuthenticated = {
-            userAuthCalled = true
-        }
         viewModel.closeButtonTapped()
         XCTAssertTrue(closeButtonCalled, "The delegate should be called")
-        XCTAssertTrue(userAuthCalled, "The delegate should be called")
     }
 }

@@ -124,5 +124,4 @@ final class LoginEmailViewModelTests: XCTestCase {
         let viewModel = LoginEmailViewModel()
         XCTAssertFalse(viewModel.isValidEmail(""))
     }
-
 }
