@@ -10,19 +10,36 @@ public enum PluginAction {
     case send(ChatUpdate)
 }
 
-struct PluginReducer<State, Action>: Reducer {
+struct PluginsMapperReducer<State, Action>: Reducer {
+    let state: WritableKeyPath<State, IdentifiedArrayOf<Chat>>
     let action: CaseKeyPath<Action, PluginAction>
-    let child: () -> any Reducer<Void, PluginAction>
+    let child: () -> any Reducer<Chat, PluginAction>
+    
+    init(
+        _ state: WritableKeyPath<State, IdentifiedArrayOf<Chat>>,
+         action: CaseKeyPath<Action, PluginAction>,
+         child: @escaping () -> any Reducer<Chat, PluginAction>
+    ) {
+        self.state = state
+        self.action = action
+        self.child = child
+    }
     
     var body: some Reducer<State, Action> {
-        Reduce { _, action in
+        Reduce { state, action in
             if let childAction = AnyCasePath(self.action).extract(from: action) {
-                var fakeState: Void = ()
-                let effect = child().reduce(into: &fakeState, action: childAction)
-                let parentEffect = effect.map { pluginAction in
-                    AnyCasePath(self.action).embed(pluginAction)
+                let chats = state[keyPath: self.state]
+                var effects = [Effect<Action>]()
+                for var chat in chats {
+                    let effect = child().reduce(into: &chat, action: childAction)
+                    state[keyPath: self.state][id: chat.id] = chat
+                    
+                    let parentEffect = effect.map { pluginAction in
+                        AnyCasePath(self.action).embed(pluginAction)
+                    }
+                    effects.append(parentEffect)
                 }
-                return parentEffect
+                return .merge(effects)
             }
             return .none
         }
@@ -30,20 +47,46 @@ struct PluginReducer<State, Action>: Reducer {
 }
 
 @Reducer
+struct PluginMapper {
+    private func reducer(for plugin: Plugin) -> any Reducer<Plugin, PluginAction> {
+        switch plugin.id {
+        case .openAI:
+            OpenAIPlugin()
+        case .ping:
+            PingPlugin()
+        case .chaves:
+            PingPlugin()
+        }
+    }
+    
+    var body: some Reducer<Chat, PluginAction> {
+        Reduce { state, action in
+            var effects: [Effect<PluginAction>] = []
+            for var plugin in state.plugins {
+                let pluginReducer = reducer(for: plugin)
+                let effect = pluginReducer.reduce(into: &plugin, action: action)
+                effects.append(effect)
+            }
+            return .merge(effects)
+        }
+    }
+}
+
+@Reducer
 struct PingPlugin {
-    var body: some Reducer<Void, PluginAction> {
+    var body: some Reducer<Plugin, PluginAction> {
         Reduce { state, action in
             switch action {
             case let .onMessageReceived(chatUpdate):
-                if chatUpdate.message.content.lowercased() == "/ping" {
+                if chatUpdate.message.content == "Ping" {
                     var ping1 = chatUpdate
                     var ping2 = chatUpdate
                     var ping3 = chatUpdate
                     var ping4 = chatUpdate
-                    ping1.message = Message(content: "ping 🏓", sender: .echo)
-                    ping2.message = Message(content: "🏏 pong", sender: .echo)
-                    ping3.message = Message(content: "ping 🏓", sender: .echo)
-                    ping4.message = Message(content: "🏏 pong", sender: .echo)
+                    ping1.message = Message(content: "ping 🏓", sender: state.user)
+                    ping2.message = Message(content: "🏏 pong", sender: state.user)
+                    ping3.message = Message(content: "ping 🏓", sender: state.user)
+                    ping4.message = Message(content: "🏏 pong", sender: state.user)
                     
                     return .concatenate(
                         .send(.onMessageReceived(ping1)),
@@ -62,7 +105,7 @@ struct PingPlugin {
 
 @Reducer
 struct AutoCorrectPlugin {
-    var body: some Reducer<Void, PluginAction> {
+    var body: some Reducer<Plugin, PluginAction> {
         Reduce { state, action in
             if case var .onMessageReceived(chatUpdate) = action {
                 if chatUpdate.message.content.lowercased() == "🏏 pong" {
@@ -80,7 +123,7 @@ struct OpenAIPlugin {
     @Dependency(\.openAIClient) var openAIClient
     @Dependency(\.mainQueue) var queue
     
-    var body: some Reducer<Void, PluginAction> {
+    var body: some Reducer<Plugin, PluginAction> {
         Reduce { state, action in
             switch action {
             case let .onMessageReceived(chatUpdate):
@@ -99,11 +142,11 @@ struct OpenAIPlugin {
                     return .merge(
                         .send(.onMessageReceived(update)),
                         .publisher {
-                            openAIClient.send(update.message.content)
+                            openAIClient.send(update.message.content + " em 5 linhas")
                                 .receive(on: DispatchQueue.main)
-                                .flatMap {
+                                .flatMap { [user = state.user] in
                                     var update = chatUpdate
-                                    update.message = Message(content: $0, sender: .openAI)
+                                    update.message = Message(content: $0, sender: user)
                                     return [
                                         PluginAction.send(update),
                                         PluginAction.onMessageReceived(update)

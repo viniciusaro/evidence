@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Models
 import StockClient
+import DataClient
 import SwiftUI
 
 #Preview {
@@ -40,7 +41,7 @@ public struct ChatListFeature {
                 }
                 
                 let message = Message(content: detail.inputText, sender: detail.user)
-                detail.chat.messages.append(message)
+                detail.$chat.wrappedValue.messages.append(message)
                 let chatUpdate = ChatUpdate.from(chat: detail.chat, message: message)
 
                 return .send(.plugin(.send(chatUpdate)))
@@ -115,14 +116,8 @@ public struct ChatListFeature {
                 }
             }
         }
-        PluginReducer(action: \.plugin) {
-            PingPlugin()
-        }
-        PluginReducer(action: \.plugin) {
-            OpenAIPlugin()
-        }
-        PluginReducer(action: \.plugin) {
-            AutoCorrectPlugin()
+        PluginsMapperReducer(\.chats, action: \.plugin) {
+            PluginMapper()
         }
         .ifLet(\.$detail, action: \.detail) {
             ChatDetailFeature()

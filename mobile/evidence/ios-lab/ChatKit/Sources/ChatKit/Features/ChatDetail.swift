@@ -4,6 +4,14 @@ import Models
 import StockClient
 import SwiftUI
 
+#Preview {
+    NavigationStack {
+        ChatDetailView(store: Store(initialState: .init(chat: Shared(.lili))) {
+            ChatDetailFeature()
+        })
+    }
+}
+
 @Reducer
 public struct ChatDetailFeature {
     @Dependency(\.authClient) static var authClient
@@ -15,6 +23,7 @@ public struct ChatDetailFeature {
         @Shared var chat: Chat
         var user: User
         var inputText: String = ""
+        @Presents var settings: ChatDetailSettingsFeature.State? = nil
 
         init(chat: Shared<Chat>) {
             self._chat = chat
@@ -27,7 +36,9 @@ public struct ChatDetailFeature {
         case onMessageSentConfirmation(Message)
         case onMessageViewDidLoad(Message)
         case onMessagePreviewDidLoad(Message, Models.Preview)
+        case onSettingsButtonTapped
         case send
+        case settings(PresentationAction<ChatDetailSettingsFeature.Action>)
     }
     
     public var body: some ReducerOf<Self> {
@@ -60,10 +71,20 @@ public struct ChatDetailFeature {
             case .onMessageSentConfirmation:
                 return .none
                 
+            case .onSettingsButtonTapped:
+                state.settings = ChatDetailSettingsFeature.State(chat: state.$chat)
+                return .none
+                
             case .send:
                 state.inputText = ""
                 return .none
+            
+            case .settings:
+                return .none
             }
+        }
+        .ifLet(\.$settings, action: \.settings) {
+            ChatDetailSettingsFeature()
         }
         BindingReducer()
     }
@@ -128,5 +149,24 @@ struct ChatDetailView: View {
         }
         .listStyle(.plain)
         .navigationTitle(store.chat.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Button(action: {
+                store.send(.onSettingsButtonTapped)
+            }, label: {
+                Label("", systemImage: "gearshape")
+                    .labelStyle(.iconOnly)
+                    .font(.title)
+                    .foregroundStyle(.primary)
+            })
+        }
+        .sheet(item: $store.scope(
+            state: \.settings,
+            action: \.settings
+        )) { store in
+            NavigationStack {
+                ChatDetailsSettingsView(store: store)
+            }
+        }
     }
 }

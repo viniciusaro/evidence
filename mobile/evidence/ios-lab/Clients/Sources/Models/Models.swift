@@ -5,7 +5,6 @@ public typealias MessageID = String
 public typealias ChatID = String
 public typealias UserID = String
 public typealias AuthorID = String
-public typealias PluginID = String
 
 public struct ChatUpdate: Codable {
     public let chatId: ChatID
@@ -20,6 +19,7 @@ public struct Chat: Identifiable, Equatable, Hashable, Codable {
     public var name: String
     public var participants: IdentifiedArrayOf<User>
     public var messages: IdentifiedArrayOf<Message>
+    public var plugins: IdentifiedArrayOf<Plugin> = []
 }
 
 public extension Chat {
@@ -136,10 +136,26 @@ public struct User: Equatable, Hashable, Identifiable, Codable {
     }
 }
 
-public struct Plugin: Identifiable, Equatable {
-    public let id: PluginID
-    public let name: String
+public struct Plugin: Identifiable, Equatable, Codable, Hashable {
+    public let id: ID
+    public let user: User
     public let icon: String
+    
+    public var name: String {
+        id.rawValue.capitalized
+    }
+    
+    public enum ID: String, Codable {
+        case openAI
+        case ping
+        case chaves
+    }
+    
+    public static let values: IdentifiedArrayOf<Plugin> = [
+        .openAI,
+        .ping,
+        .chaves
+    ]
 }
 
 public extension User {
@@ -159,7 +175,8 @@ public extension User {
     static let cris = User(name: "Cris", id: UserID("llX9JYSoaxNH77sCmIH6b0xcq6w2"))
     static let lili = User(name: "Lili ❤️‍🔥", id: UserID("0A8F38BA-9484-4889-A74D-46444F3FE52B"))
     static let openAI = User(name: "🙇 OpenAI ", id: UserID("OpenAI"))
-    static let echo = User(name: "🌬️ Echo ", id: UserID("Echo"))
+    static let ping = User(name: "🌬️ Ping ", id: UserID("Ping"))
+    static let chaves = User(name: "🪖 Chaves", id: UserID("Chaves"))
 }
 
 
@@ -243,9 +260,21 @@ public extension Message {
 
 public extension Plugin {
     static let openAI = Plugin(
-        id: "open ai",
-        name: "OpenAI",
+        id: .openAI,
+        user: .openAI,
         icon: "circle.hexagongrid.circle"
+    )
+    
+    static let ping = Plugin(
+        id: .ping,
+        user: .ping,
+        icon: "lasso"
+    )
+    
+    static let chaves = Plugin(
+        id: .chaves,
+        user: .chaves,
+        icon: "homepod"
     )
 }
 
