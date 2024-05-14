@@ -62,6 +62,17 @@ struct PluginMapper {
     var body: some Reducer<Chat, PluginAction> {
         Reduce { state, action in
             var effects: [Effect<PluginAction>] = []
+            switch action {
+                
+            case 
+                .onMessageSent(let update),
+                .onMessageReceived(let update),
+                .send(let update):
+                if update.chatId != state.id {
+                    return .none
+                }
+            }
+            
             for var plugin in state.plugins {
                 let pluginReducer = reducer(for: plugin)
                 let effect = pluginReducer.reduce(into: &plugin, action: action)
