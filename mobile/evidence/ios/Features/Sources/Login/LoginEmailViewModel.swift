@@ -8,7 +8,7 @@
 import Foundation
 import Dependencies
 
-public class LoginEmailViewModel: ObservableObject, Identifiable {
+final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Published var emailInput: String
@@ -18,7 +18,7 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published var isLoginEmailButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
     @Published var loginResetPassword: LoginResetPasswordViewModel?
-    @Published private(set) var offSetY: CGFloat
+    @Published private(set) var AlertOffSetY: CGFloat
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
@@ -37,13 +37,13 @@ public class LoginEmailViewModel: ObservableObject, Identifiable {
         self.isValidPassword = isValidPassword
         self.isLoginEmailButtonPressed = isLoginEmailButtonPressed
         self.isEmailInputFocused = isEmailInputFocused
-        self.offSetY = offSetY
+        self.AlertOffSetY = offSetY
     }
 
     func confirmationPopupAppears() {
-        offSetY = 0
+        AlertOffSetY = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-            self?.offSetY = 1000
+            self?.AlertOffSetY = 1000
         }
     }
 
