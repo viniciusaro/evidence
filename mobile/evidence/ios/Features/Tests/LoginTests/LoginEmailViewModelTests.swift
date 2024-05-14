@@ -17,7 +17,7 @@ final class LoginEmailViewModelTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Confirmation popup should appear")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            XCTAssertEqual(viewModel.AlertOffSetY, 1000, "OffsetY should be updated to 1000")
+            XCTAssertEqual(viewModel.alertOffSetY, 1000, "OffsetY should be updated to 1000")
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)

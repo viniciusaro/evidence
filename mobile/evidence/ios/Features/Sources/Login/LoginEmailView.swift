@@ -42,7 +42,7 @@ public struct LoginEmailView: View {
 
                 LeafPopup(state: .confirmation)
                     .frame(width: 230 , height: 200)
-                    .offset(x: 0, y: viewModel.AlertOffSetY)
+                    .offset(x: 0, y: viewModel.alertOffSetY)
             }
         }
     }
