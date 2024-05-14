@@ -6,7 +6,6 @@ import GoogleGenerativeAI
 extension OpenAIClient: DependencyKey {
     public static let liveValue = OpenAIClient { message in
         let subject = CurrentValueSubject<String, Never>("...")
-        let message = message.replacingOccurrences(of: "/openai", with: "")
         
         let model = GenerativeModel(
             name: "gemini-pro",

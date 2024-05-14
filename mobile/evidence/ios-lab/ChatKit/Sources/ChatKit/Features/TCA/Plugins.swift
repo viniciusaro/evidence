@@ -2,6 +2,7 @@ import Combine
 import ComposableArchitecture
 import Foundation
 import Models
+import OpenAIClient
 
 public enum PluginAction {
     case onMessageSent(ChatUpdate)
@@ -33,8 +34,8 @@ struct PingPlugin {
     var body: some Reducer<Void, PluginAction> {
         Reduce { state, action in
             switch action {
-            case let .onMessageSent(chatUpdate):
-                if chatUpdate.message.content.lowercased() == "ping" {
+            case let .onMessageReceived(chatUpdate):
+                if chatUpdate.message.content.lowercased() == "/ping" {
                     var ping1 = chatUpdate
                     var ping2 = chatUpdate
                     var ping3 = chatUpdate
@@ -63,16 +64,13 @@ struct PingPlugin {
 struct AutoCorrectPlugin {
     var body: some Reducer<Void, PluginAction> {
         Reduce { state, action in
-            switch action {
-            case var .onMessageReceived(chatUpdate):
+            if case var .onMessageReceived(chatUpdate) = action {
                 if chatUpdate.message.content.lowercased() == "🏏 pong" {
                     chatUpdate.message.content = "🏏 pongui (auto corrected)"
                     return .send(.onMessageReceived(chatUpdate))
                 }
-                return .none
-            default:
-                return .none
             }
+            return .none
         }
     }
 }
@@ -80,6 +78,7 @@ struct AutoCorrectPlugin {
 @Reducer
 struct OpenAIPlugin {
     @Dependency(\.openAIClient) var openAIClient
+    @Dependency(\.mainQueue) var queue
     
     var body: some Reducer<Void, PluginAction> {
         Reduce { state, action in
@@ -94,13 +93,13 @@ struct OpenAIPlugin {
                 
             case let .onMessageSent(chatUpdate):
                 if chatUpdate.message.content.starts(with: "/openai")  {
-                    var copy = chatUpdate
-                    copy.message.content = copy.message.content.replacingOccurrences(of: "/openai ", with: "")
+                    var update = chatUpdate
+                    update.message.content = update.message.content.replacingOccurrences(of: "/openai ", with: "")
                     
                     return .merge(
-                        .send(.onMessageReceived(copy)),
+                        .send(.onMessageReceived(update)),
                         .publisher {
-                            openAIClient.send(chatUpdate.message.content)
+                            openAIClient.send(update.message.content)
                                 .receive(on: DispatchQueue.main)
                                 .flatMap {
                                     var update = chatUpdate

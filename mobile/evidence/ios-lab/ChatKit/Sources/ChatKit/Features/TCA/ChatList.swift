@@ -1,6 +1,5 @@
 import ComposableArchitecture
 import Models
-import OpenAIClient
 import StockClient
 import SwiftUI
 
@@ -13,7 +12,6 @@ import SwiftUI
 @Reducer
 public struct ChatListFeature {
     @Dependency(\.stockClient) var stockClient
-    @Dependency(\.openAIClient) var openAIClient
     
     @ObservableState
     public struct State: Equatable {
