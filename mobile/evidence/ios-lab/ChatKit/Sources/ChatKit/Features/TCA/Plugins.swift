@@ -6,6 +6,7 @@ import Models
 public enum PluginAction {
     case onMessageSent(ChatUpdate)
     case onMessageReceived(ChatUpdate)
+    case send(ChatUpdate)
 }
 
 struct PluginReducer<State, Action>: Reducer {
@@ -84,16 +85,33 @@ struct OpenAIPlugin {
         Reduce { state, action in
             switch action {
             case let .onMessageReceived(chatUpdate):
-                if chatUpdate.message.sender == .cris {
-                    return .publisher {
-                        openAIClient.send(chatUpdate.message.content)
-                            .receive(on: DispatchQueue.main)
-                            .map {
-                                var update = chatUpdate
-                                update.message = Message(content: $0, sender: .openAI)
-                                return .onMessageReceived(update)
-                            }
-                    }
+                if chatUpdate.message.content.starts(with: "/openai")  {
+                    var update = chatUpdate
+                    update.message.content = update.message.content.replacingOccurrences(of: "/openai ", with: "")
+                    return .send(.onMessageReceived(update))
+                }
+                return .none
+                
+            case let .onMessageSent(chatUpdate):
+                if chatUpdate.message.content.starts(with: "/openai")  {
+                    var copy = chatUpdate
+                    copy.message.content = copy.message.content.replacingOccurrences(of: "/openai ", with: "")
+                    
+                    return .merge(
+                        .send(.onMessageReceived(copy)),
+                        .publisher {
+                            openAIClient.send(chatUpdate.message.content)
+                                .receive(on: DispatchQueue.main)
+                                .flatMap {
+                                    var update = chatUpdate
+                                    update.message = Message(content: $0, sender: .openAI)
+                                    return [
+                                        PluginAction.send(update),
+                                        PluginAction.onMessageReceived(update)
+                                    ].publisher
+                                }
+                        }
+                    )
                 }
                 return .none
             default:

@@ -29,7 +29,7 @@ public struct ChatListFeature {
         case onListItemDelete(IndexSet)
         case onListItemTapped(Chat)
         case onViewDidLoad
-        case onChatMoveUpRequested(Chat)
+        case onChatMoveUpRequested(ChatID)
         case plugin(PluginAction)
     }
     
@@ -44,15 +44,8 @@ public struct ChatListFeature {
                 let message = Message(content: detail.inputText, sender: detail.user)
                 detail.chat.messages.append(message)
                 let chatUpdate = ChatUpdate.from(chat: detail.chat, message: message)
-                
-                return .merge(
-                    .publisher {
-                        stockClient.send(chatUpdate)
-                            .receive(on: DispatchQueue.main)
-                            .map { .onChatMoveUpRequested(detail.chat) }
-                    },
-                    .send(.plugin(.onMessageSent(chatUpdate)))
-                )
+
+                return .send(.plugin(.send(chatUpdate)))
             
             case .detail:
                 return .none
@@ -81,8 +74,8 @@ public struct ChatListFeature {
                 state.detail = ChatDetailFeature.State(chat: shared)
                 return .none
                 
-            case let .onChatMoveUpRequested(chat):
-                guard let index = state.chats.firstIndex(where: { $0.id == chat.id }) else {
+            case let .onChatMoveUpRequested(chatID):
+                guard let index = state.chats.firstIndex(where: { $0.id == chatID }) else {
                     return .none
                 }
                 state.chats.move(fromOffsets: IndexSet(integer: index), toOffset: 0)
@@ -101,10 +94,20 @@ public struct ChatListFeature {
                 } else {
                     shared.wrappedValue.messages.append(chatUpdate.message)
                 }
-                return .send(.onChatMoveUpRequested(existingChat))
+                return .send(.onChatMoveUpRequested(existingChat.id))
                 
             case .plugin(.onMessageSent):
                 return .none
+                
+            case let .plugin(.send(chatUpdate)):
+                return .merge(
+                    .publisher {
+                        stockClient.send(chatUpdate)
+                            .receive(on: DispatchQueue.main)
+                            .map { .onChatMoveUpRequested(chatUpdate.chatId) }
+                    },
+                    .send(.plugin(.onMessageSent(chatUpdate)))
+                )
                 
             case .onViewDidLoad:
                 return .publisher {
@@ -144,7 +147,9 @@ struct ChatListView: View {
                     VStack(alignment: .leading) {
                         Text(chat.name)
                         if let content = chat.messages.last?.content {
-                            Text(content).font(.caption)
+                            Text(content)
+                                .font(.caption)
+                                .lineLimit(1)
                         }
                     }
                 })

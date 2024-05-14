@@ -3,6 +3,10 @@ import Dependencies
 
 public struct OpenAIClient {
     public let send: (String) -> AnyPublisher<String, Never>
+    
+    public init(send: @escaping (String) -> AnyPublisher<String, Never>) {
+        self.send = send
+    }
 }
 
 extension OpenAIClient: TestDependencyKey {

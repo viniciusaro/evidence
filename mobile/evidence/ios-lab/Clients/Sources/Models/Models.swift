@@ -158,8 +158,8 @@ public extension User {
     static let vini = User(name: "Vini", id: UserID("HGlLyOjM7vTsX1DZtACoh808SHG2"))
     static let cris = User(name: "Cris", id: UserID("llX9JYSoaxNH77sCmIH6b0xcq6w2"))
     static let lili = User(name: "Lili ❤️‍🔥", id: UserID("0A8F38BA-9484-4889-A74D-46444F3FE52B"))
-    static let openAI = User(name: "OpenAI ⊛", id: UserID("OpenAI"))
-    static let echo = User(name: "Echo 🌬️", id: UserID("Echo"))
+    static let openAI = User(name: "🙇 OpenAI ", id: UserID("OpenAI"))
+    static let echo = User(name: "🌬️ Echo ", id: UserID("Echo"))
 }
 
 
