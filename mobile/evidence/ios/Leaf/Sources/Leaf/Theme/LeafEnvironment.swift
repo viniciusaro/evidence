@@ -31,7 +31,8 @@ public let defaultLeafTheme = LeafTheme(
         ),
         backgrond: LeafTheme.BackgroundColors(
             aubergine: Color(red: 74/255, green: 21/255, blue: 75/255), 
-            red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1)
+            red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1),
+            dark: Color(red: 29/255, green: 28/255, blue: 29/255)
         ),
         state: LeafTheme.StateColors(
             active: Color(red: 29/255, green: 28/255, blue: 29/255, opacity: 0.4),
@@ -67,7 +68,8 @@ public let darkLeafTheme = LeafTheme(
         ),
         backgrond: LeafTheme.BackgroundColors(
             aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),
-            red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1)
+            red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1),
+            dark: Color(red: 29/255, green: 28/255, blue: 29/255)
         ),
         state: LeafTheme.StateColors(
             active: Color(red: 244/255, green: 237/255, blue: 228/255, opacity: 0.5),

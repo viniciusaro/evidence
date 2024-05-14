@@ -48,6 +48,7 @@ private struct LeafSecondaryButton: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .circular))
     }
 }
+
 public struct LeafGoogleLoginButtonStyle: ButtonStyle {
     public init() {}
 
@@ -72,18 +73,40 @@ private struct LeafGoogleLoginButton: View {
     }
 }
 
+public struct LeaflinkButtonStyle: ButtonStyle {
+    public init() {}
+
+    public func makeBody(configuration: Configuration) -> some View {
+        LeaflinkButton(configuration: configuration)
+    }
+}
+
+private struct LeaflinkButton: View {
+    @Environment(\.leafTheme) private var theme
+    let configuration: LeafGoogleLoginButtonStyle.Configuration
+
+    var body: some View {
+        configuration
+            .label
+            .frame(maxWidth: .infinity, maxHeight: 40)
+            .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24))
+            .foregroundColor(theme.color.text.secondary)
+            .subtitle()
+    }
+}
+
 
 #Preview {
     VStack {
         LeafThemeView {
-            Button("Getting started") {
+            Button("Reset password") {
 
             }
-            .buttonStyle(LeafGoogleLoginButtonStyle())
+            .buttonStyle(LeaflinkButtonStyle())
 
         }
         .padding(20)
-        .background(.green)
+//        .background(.green)
         .previewCustomFonts()
     }
 

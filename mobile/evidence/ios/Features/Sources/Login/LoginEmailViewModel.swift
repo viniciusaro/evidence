@@ -8,7 +8,7 @@
 import Foundation
 import Dependencies
 
-final public class LoginEmailViewModel: ObservableObject, Identifiable {
+public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Published var emailInput: String
@@ -17,6 +17,8 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     @Published private(set) var isValidPassword: Bool
     @Published var isLoginEmailButtonPressed: Bool
     @Published var isEmailInputFocused: Bool
+    @Published var loginResetPassword: LoginResetPasswordViewModel?
+    @Published private(set) var offSetY: CGFloat
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
@@ -26,24 +28,22 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isValidEmail: Bool = false,
         isValidPassword: Bool = false,
         isLoginEmailButtonPressed: Bool = false,
-        isInputEmailFocused: Bool = false
+        isEmailInputFocused: Bool = false,
+        offSetY: CGFloat = 1000
     ) {
         self.emailInput = emailInput
         self.passwordInput = passwordInput
         self.isValidEmail = isValidEmail
         self.isValidPassword = isValidPassword
         self.isLoginEmailButtonPressed = isLoginEmailButtonPressed
-        self.isEmailInputFocused = isInputEmailFocused
+        self.isEmailInputFocused = isEmailInputFocused
+        self.offSetY = offSetY
     }
-    
-    @MainActor func signIn() {
-        Task {
-            do {
-                _ = try await loginManager.signIn(email: emailInput, password: passwordInput)
-                delegateUserAuthenticated()
-            } catch {
-                print(error)
-            }
+
+    func confirmationPopupAppears() {
+        offSetY = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            self?.offSetY = 1000
         }
     }
 
@@ -64,6 +64,17 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     func inputEmailTapped() {
         isLoginEmailButtonPressed = false
     }
+    
+    @MainActor func signIn() {
+        Task {
+            do {
+                _ = try await loginManager.signIn(email: emailInput, password: passwordInput)
+                delegateUserAuthenticated()
+            } catch {
+                print(error)
+            }
+        }
+    }
 
     @MainActor func loginEmailButtonTapped() {
         isValidEmail = isValidEmail(emailInput)
@@ -72,6 +83,14 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isLoginEmailButtonPressed = true
         if isValidEmail && isValidPassword {
             signIn()
+        }
+    }
+
+    func resetPassworButtonTapped() {
+        loginResetPassword = LoginResetPasswordViewModel()
+        loginResetPassword?.delegateCloseButtonTapped = {
+            self.loginResetPassword = nil
+            self.confirmationPopupAppears()
         }
     }
 
