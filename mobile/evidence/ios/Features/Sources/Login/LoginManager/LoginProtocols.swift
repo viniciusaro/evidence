@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
-import Models
 
 protocol LoginManager {
     func creatUser(email: String, password: String) async throws -> Login
     func getAuthenticationUser() throws -> Login
+    func signIn(email: String, password: String) async throws -> Login
     func signOut() throws
+    func resetPassword(email: String) async throws
 }

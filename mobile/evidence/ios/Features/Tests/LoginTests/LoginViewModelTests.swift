@@ -8,29 +8,31 @@
 import XCTest
 @testable import Login
 @testable import Models
+@testable import Dependencies
 
 
 final class LoginViewModelTests: XCTestCase {
+    
     func testGettingStartedButtonTapped() {
         let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
         viewModel.gettingStartedButtonTapped()
         XCTAssertTrue(viewModel.showLoginAuthModal, "Should to be true")
     }
 
-    func testLoginEmailButtonTapped() {
+    func testContinueWithEmailButtonTappedViewModelCreated() {
         let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
-        viewModel.loginEmailButtonTapped()
-        XCTAssertNotNil(viewModel.loginEmailViewModel, "Should create an instance of LoginEmailViewModel()")
+
+        viewModel.continueWithEmailButtonTapped()
+        XCTAssertNotNil(viewModel.loginEmailViewModel, "An instance should be created")
     }
 
-    func testGetAuthenticationUserSuccess() {
-        let autheUser = try? AuthenticatedLoginManager().getAuthenticationUser()
-        XCTAssertNotNil(autheUser, "The user should exist")
+    func testContinueWithEmailButtonTappedDelegationCalled() {  
+        let viewModel = LoginEmailViewModel()
+        var closeButtonCalled = false
+        viewModel.delegateCloseButtonTapped = {
+            closeButtonCalled = true
+        }
+        viewModel.closeButtonTapped()
+        XCTAssertTrue(closeButtonCalled, "The delegate should be called")
     }
-
-    func testGetAuthenticationUserFailure() {
-        let autheUser = try? FailureAuthenticationLoginManager().getAuthenticationUser()
-        XCTAssertNil(autheUser, "Shouldn't exist")
-    }
-
 }

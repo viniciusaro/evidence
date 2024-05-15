@@ -8,13 +8,7 @@
 import Foundation
 
 public struct Login {
-    public let uid: String
-    public let email: String?
-    public let photoUrl: String?
-
-    public init(uid: String, email: String?, photoUrl: String?) {
-        self.uid = uid
-        self.email = email
-        self.photoUrl = photoUrl
-    }
+    let uid: String
+    let email: String?
+    let photoUrl: String?
 }

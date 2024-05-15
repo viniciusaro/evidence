@@ -1,58 +1,51 @@
 //
-//  LoginEmailView.swift
+//  CreateAccountEmailView.swift
 //
 //
-//  Created by Cris Messias on 02/04/24.
+//  Created by Cris Messias on 23/01/24.
 //
 
 import SwiftUI
 import Leaf
 
-public struct LoginEmailView: View {
+
+public struct CreateAccountEmailView: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
 
     public var body: some View {
         NavigationStack {
             Divider()
-            ZStack() {
-                VStack(alignment:.leading, spacing: 24) {
-                    LoginEmailInput(viewModel: viewModel)
-                    LoginEmailPasswordInput(viewModel: viewModel)
-                    VStack(alignment:.leading, spacing: 8) {
-                        LoginEmailButton(viewModel: viewModel)
-                        LoginResetPassordButton(viewModel: viewModel)
-                    }
-                    Spacer()
-                }
-                .padding(.top, 24)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
-                            viewModel.closeButtonTapped()
-                        }) {
-                            Image(systemName: "xmark")
-                                .foregroundStyle(theme.color.text.primary)
-                        }
-                    }
-                }
-                .padding([.leading,.trailing], 16)
-                .navigationTitle("Continue with Email")
-                .navigationBarTitleDisplayMode(.inline)
-
-                LeafPopup(state: .confirmation)
-                    .frame(width: 230 , height: 200)
-                    .offset(x: 0, y: viewModel.alertOffSetY)
+            VStack(alignment:.leading, spacing: 24) {
+                EmailInput(viewModel: viewModel)
+                PasswordInput(viewModel: viewModel)
+                CreateAccountButton(viewModel: viewModel)
+                Spacer()
             }
+            .padding(.top, 24)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        viewModel.closeButtonTapped()
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(theme.color.text.primary)
+                    }
+                }
+            }
+            .padding([.leading,.trailing], 16)
+            .navigationTitle("Create account with Email")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
 #Preview {
-    LoginEmailView(viewModel: LoginEmailViewModel())
+    CreateAccountEmailView(viewModel: CreateAccountEmailViewModel())
+        .previewCustomFonts()
 }
 
-struct LoginEmailLabel: View {
+struct Label: View {
     @Environment(\.leafTheme) private var theme
 
     var body: some View {
@@ -62,31 +55,29 @@ struct LoginEmailLabel: View {
     }
 }
 
-struct LoginEmailButton: View {
+struct CreateAccountButton: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
 
     var body: some View {
         NavigationStack {
-            Button("Continue") {
-                viewModel.loginEmailButtonTapped()
+            Button("Create Account") {
+                viewModel.createAccountButtonTapped()
             }
             .buttonStyle(LeafPrimaryButtonStyle())
-
         }
     }
 }
 
-struct LoginEmailInput: View {
+struct EmailInput: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
     @FocusState private var isFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Enter Your Email Address")
                 .body()
-
             HStack {
                 TextField("nome@email. com", text: $viewModel.emailInput)
                     .focused($isFocused)
@@ -105,7 +96,6 @@ struct LoginEmailInput: View {
                         }
                         self.isFocused = viewModel.isEmailInputFocused
                     }
-
                 Button(action: {
                     viewModel.clearEmailInputTapped()
                 }) {
@@ -114,27 +104,24 @@ struct LoginEmailInput: View {
                             .foregroundStyle(theme.color.text.secondary)
                     }
                 }
-
             }
             .padding([.leading, .trailing], 16)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
-
         }
     }
 }
 
-struct LoginEmailPasswordInput: View {
+struct PasswordInput: View {
     @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
+    @ObservedObject var viewModel: CreateAccountEmailViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Enter Your Password")
+            Text("Create Your Password")
                 .body()
-
             HStack {
                 SecureField("password", text: $viewModel.passwordInput)
                     .textInputAutocapitalization(.never)
@@ -162,7 +149,6 @@ struct LoginEmailPasswordInput: View {
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
             Label()
-
         }
         if let errorMessage = viewModel.errorMessage() {
             LeafErrorMessage(message: errorMessage)
@@ -170,17 +156,4 @@ struct LoginEmailPasswordInput: View {
     }
 }
 
-struct LoginResetPassordButton: View {
-    @Environment(\.leafTheme) private var theme
-    @ObservedObject var viewModel: LoginEmailViewModel
 
-    var body: some View {
-            Button("Reset password") {
-                viewModel.resetPassworButtonTapped()
-            }
-            .buttonStyle(LeaflinkButtonStyle())
-            .sheet(item: $viewModel.loginResetPassword) { loginResetPassword in
-                LoginResetPasswordView(viewModel: loginResetPassword)
-            }
-    }
-}

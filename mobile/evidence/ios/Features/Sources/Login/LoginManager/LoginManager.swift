@@ -1,24 +1,27 @@
 //
+//  File.swift
+//
 //  LoginManager.swift
-//
-//  Created by Cris Messias on 01/02/24.
-//
 
 import Foundation
 import FirebaseAuth
-import Models
+
+struct Login {
+    let uid: String
+    let email: String?
+    let photoURL: String?
+}
 
 extension Login {
     init(user: User) {
-        self = Login(
-            uid: user.uid,
-            email: user.email,
-            photoUrl: user.photoURL?.absoluteString
-        )
+        self.uid = user.uid
+        self.email = user.email
+        self.photoURL = user.photoURL?.absoluteString
     }
 }
 
 final public class FirebaseLoginManager: LoginManager {
+    
     func creatUser(email: String, password: String) async throws -> Login {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return Login(user: authDataResult.user)
@@ -29,10 +32,15 @@ final public class FirebaseLoginManager: LoginManager {
             print("Not authenticated")
             throw URLError(.badServerResponse)
         }
-        
+
         return Login(user: user)
     }
-    
+
+    func signIn(email: String, password: String) async throws -> Login {
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
+        return Login(user: authDataResult.user)
+    }
+
     func signOut() throws {
         do {
             try Auth.auth().signOut()
@@ -41,45 +49,65 @@ final public class FirebaseLoginManager: LoginManager {
             print("Logout error: \(error.localizedDescription)")
         }
     }
+
+    func resetPassword(email: String) async throws {
+        try await Auth.auth().sendPasswordReset(withEmail: email)
+    }
 }
 
 final public class AuthenticatedLoginManager: LoginManager {
+    var resetPasswordCalled = false
     var authenticatedUser: Login?
 
     func creatUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
-    
+
     func getAuthenticationUser() throws -> Login {
         let uid = UUID().uuidString
-        let userAuth = Login(uid: uid, email: "email@test.com", photoUrl: "photo_url")
+        let userAuth = Login(uid: uid, email: "email@test.com", photoURL: "photo_url")
         authenticatedUser = userAuth
-        
+
         guard let user = authenticatedUser else {
             throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
         }
         return user
     }
-    
+
+    func signIn(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
     func signOut() throws {
-        guard authenticatedUser != nil else {
-            throw NSError(domain: "signOut", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
-        }
-        authenticatedUser = nil
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
+    func resetPassword(email: String) {
+        print("Simulated password reset for email: \(email)")
+        resetPasswordCalled = true
     }
 }
 
 final public class FailureAuthenticationLoginManager: LoginManager {
-    
+
     func creatUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
-    
+
     func getAuthenticationUser() throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
-    
+
+
+    func signIn(email: String, password: String) async throws -> Login {
+        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
     func signOut() throws {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    }
+
+    func resetPassword(email: String) {
+
     }
 }

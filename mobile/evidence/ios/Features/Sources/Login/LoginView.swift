@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  LoginViewModel.swift
 //
 //
 //  Created by Cris Messias on 19/01/24.
@@ -63,7 +63,7 @@ struct GettingStartedButton: View {
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 40, trailing: 16))
         .sheet(isPresented: $viewModel.showLoginAuthModal) {
             LoginAuthModal(viewModel: viewModel)
-                .presentationDetents([.height(220)])
+                .presentationDetents([.height(274)])
         }
     }
 }
@@ -81,14 +81,22 @@ struct LoginAuthModal: View {
                 .buttonStyle(LeafGoogleLoginButtonStyle())
 
                 Button("Continue with Email") {
-                    viewModel.loginEmailButtonTapped()
+                    viewModel.continueWithEmailButtonTapped()
                 }
                 .buttonStyle(LeafPrimaryButtonStyle())
-                .sheet(item: $viewModel.loginEmailViewModel) { loginEmailViewModel in
-                    LoginEmailView(viewModel: loginEmailViewModel)
+                .sheet(item: $viewModel.loginEmailViewModel) { loginEmailview in LoginEmailView(viewModel: loginEmailview)
+                }
+
+                Button("Create Account") {
+                    viewModel.createAccountButtonTapped()
+                }
+                .buttonStyle(LeafSecondaryButtonStyle())
+                .sheet(item: $viewModel.createAccountEmail) { createAccountEmailView in
+                    CreateAccountEmailView(viewModel: createAccountEmailView)
                 }
             }
             .padding([.leading, .trailing], 16)
+            .padding([.top, .bottom], 24)
         }
     }
 }
@@ -97,5 +105,3 @@ struct LoginAuthModal: View {
     LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
         .previewCustomFonts()
 }
-
-
