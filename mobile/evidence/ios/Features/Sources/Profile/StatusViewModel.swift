@@ -12,7 +12,7 @@ import Leaf
 public class StatusViewModel: ObservableObject {
     @Published private(set) var status: Profile
     @Published private(set) var offSetY: CGFloat
-    @Published private(set) var popupState: PopupState
+    @Published private(set) var popupState: AlertState
     @Published var setStatusViewModel: SetStatusViewModel?
     @Published var statusInput: String {
         didSet {
@@ -31,7 +31,7 @@ public class StatusViewModel: ObservableObject {
     public init(
         status: Profile = .active,
         offSetY: CGFloat = 1000,
-        popupState: PopupState = .clear,
+        popupState: AlertState = .clear,
         setStatusViewModel: SetStatusViewModel? = nil,
         statusInput: String = ""
     ) {

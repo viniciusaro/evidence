@@ -22,7 +22,7 @@ public struct StatusView: View {
         }) {
             ZStack() {
                 StatusButtonView(model: model)
-                LeafPopup(state: model.popupState)
+                LeaAlert(state: model.popupState)
                     .frame(width: 170, height: 150)
                     .offset(x: 0, y: model.offSetY)
             }
