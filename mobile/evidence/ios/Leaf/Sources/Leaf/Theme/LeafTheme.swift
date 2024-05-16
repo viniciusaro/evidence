@@ -36,6 +36,8 @@ extension LeafTheme {
 
     public struct BackgroundColors {
         public let aubergine: SwiftUI.Color
+        public let blue: SwiftUI.Color
+        public let yellow: SwiftUI.Color
         public let red: SwiftUI.Color
         public let dark: SwiftUI.Color
     }
