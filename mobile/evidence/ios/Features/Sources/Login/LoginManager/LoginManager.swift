@@ -22,7 +22,7 @@ extension Login {
 
 final public class FirebaseLoginManager: LoginManager {
     
-    func creatUser(email: String, password: String) async throws -> Login {
+    func createUser(email: String, password: String) async throws -> Login {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return Login(user: authDataResult.user)
     }
@@ -59,7 +59,7 @@ final public class AuthenticatedLoginManager: LoginManager {
     var resetPasswordCalled = false
     var authenticatedUser: Login?
 
-    func creatUser(email: String, password: String) async throws -> Login {
+    func createUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 
@@ -90,7 +90,7 @@ final public class AuthenticatedLoginManager: LoginManager {
 
 final public class FailureAuthenticationLoginManager: LoginManager {
 
-    func creatUser(email: String, password: String) async throws -> Login {
+    func createUser(email: String, password: String) async throws -> Login {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
 

@@ -40,7 +40,7 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
      private func signUp() {
         Task {
             do {
-                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
+                let returnUserData = try await loginManager.createUser(email: emailInput, password: passwordInput)
                 print("User created!")
                 print(returnUserData)
             } catch {
