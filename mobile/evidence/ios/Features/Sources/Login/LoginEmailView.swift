@@ -39,7 +39,6 @@ public struct LoginEmailView: View {
                 .padding([.leading,.trailing], 16)
                 .navigationTitle("Continue with Email")
                 .navigationBarTitleDisplayMode(.inline)
-
                 LeaAlert(state: .confirmation)
                     .frame(width: 230 , height: 200)
                     .offset(x: 0, y: viewModel.AlertOffSetY)

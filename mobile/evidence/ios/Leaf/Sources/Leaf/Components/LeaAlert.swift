@@ -37,12 +37,12 @@ struct AlertView: View {
     @Environment(\.leafTheme) private var theme
     private var image: String
     private var text: String
-    
+
     init(image: String, text: String) {
         self.image = image
         self.text = text
     }
-    
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)

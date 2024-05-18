@@ -72,6 +72,7 @@ public let darkLeafTheme = LeafTheme(
             aubergine: Color(red: 74/255, green: 21/255, blue: 75/255),
             blue: Color(red: 18/255, green: 100/255, blue: 163/255, opacity: 0.1),
             yellow: Color(red: 236/255, green: 178/255, blue: 46/255, opacity: 0.1),
+
             red: Color(red: 224/255, green: 30/255, blue: 90/255, opacity: 0.1),
             dark: Color(red: 29/255, green: 28/255, blue: 29/255)
         ),

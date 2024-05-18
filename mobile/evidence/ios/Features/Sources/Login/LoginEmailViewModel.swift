@@ -92,7 +92,6 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     func resetPassworButtonTapped() {
         loginResetPassword = LoginResetPasswordViewModel()
         loginResetPassword?.delegateCloseButtonTapped = {
-
             self.loginResetPassword = nil
             self.confirmationPopupAppears()
         }
