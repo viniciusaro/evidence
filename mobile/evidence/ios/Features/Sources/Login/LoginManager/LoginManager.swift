@@ -21,7 +21,32 @@ extension Login {
 }
 
 final public class FirebaseLoginManager: LoginManager {
-    
+    private let firebaseAuth = Auth.auth()
+    func signIn(email: String, password: String) async -> Result<Login, LoginError> {
+        do {
+            let result = try await firebaseAuth.signIn(withEmail: email, password: password)
+            return Result.success(Login(user: result.user))
+        } catch let error as NSError {
+            if let errorCode = AuthErrorCode.Code(rawValue: error.code) {
+                switch errorCode {
+                case.invalidCredential: 
+                    return Result.failure(LoginError.invalidEmailOrPassword)
+                case.userNotFound:
+                    return Result.failure(LoginError.userNotFound)
+                case.networkError:
+                    return Result.failure(LoginError.networkError)
+                case.userDisabled:
+                    return Result.failure(LoginError.userDisabled)
+                case.tooManyRequests:
+                    return Result.failure(LoginError.tooManyRequests)
+                default:
+                    return Result.failure(LoginError.unknown)
+                }
+            }
+            return Result.failure(LoginError.unknown)
+        }
+    }
+
     func createUser(email: String, password: String) async throws -> Login {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         return Login(user: authDataResult.user)
@@ -34,11 +59,6 @@ final public class FirebaseLoginManager: LoginManager {
         }
 
         return Login(user: user)
-    }
-
-    func signIn(email: String, password: String) async throws -> Login {
-        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        return Login(user: authDataResult.user)
     }
 
     func signOut() throws {
@@ -74,9 +94,17 @@ final public class AuthenticatedLoginManager: LoginManager {
         return user
     }
 
-    func signIn(email: String, password: String) async throws -> Login {
-        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    func signIn(email: String, password: String) async -> Result<Login, LoginError> {
+        do {
+            throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+        } catch {
+            return Result.failure(LoginError.emailOrPasswordNotProvide)
+        }
     }
+
+//    func signIn(email: String, password: String) async throws -> Login {
+//        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+//    }
 
     func signOut() throws {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
@@ -99,10 +127,13 @@ final public class FailureAuthenticationLoginManager: LoginManager {
     }
 
 
-    func signIn(email: String, password: String) async throws -> Login {
-        throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+    func signIn(email: String, password: String) async -> Result<Login, LoginError> {
+        do {
+            throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+        } catch {
+            return Result.failure(LoginError.emailOrPasswordNotProvide)
+        }
     }
-
     func signOut() throws {
         throw NSError(domain: "AuthenticationError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
     }
