@@ -11,6 +11,7 @@ import Dependencies
 final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
+    @Dependency(\.inputValidator) private var inputValidator
     @Published var emailInput: String
     @Published var passwordInput: String
     var signInMessageError: String? = nil
@@ -78,10 +79,9 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         }
     }
 
-    @MainActor 
-    func loginEmailButtonTapped() {
-        isValidEmail = isValidEmail(emailInput)
-        isValidPassword = isValidPassword(passwordInput)
+    @MainActor func loginEmailButtonTapped() {
+        isValidEmail = inputValidator.isValidEmail(emailInput)
+        isValidPassword = inputValidator.isValidPassword(passwordInput)
 
         isLoginEmailButtonPressed = true
         if isValidEmail && isValidPassword {
@@ -104,15 +104,5 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
             return message
         }
         return nil
-    }
-
-    func isValidEmail(_ email: String) -> Bool {
-        let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", options: [.caseInsensitive])
-        return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
-    }
-
-    func isValidPassword(_ password: String) -> Bool {
-        let passwordRegex = #"^.{8,}$"#
-        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)
     }
 }

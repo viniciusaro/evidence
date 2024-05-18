@@ -8,6 +8,7 @@
 import XCTest
 @testable import Login
 @testable import Models
+import Dependencies
 
 final class LoginEmailViewModelTests: XCTestCase {
 
@@ -62,17 +63,6 @@ final class LoginEmailViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isLoginEmailButtonPressed, "Should set false")
     }
 
-    @MainActor func testResetPassworButtonTappedValid() {
-        let viewModel = LoginEmailViewModel()
-        viewModel.emailInput = "email@valid.com"
-        viewModel.passwordInput = "12345678"
-        viewModel.isEmailInputFocused = true
-
-        viewModel.loginEmailButtonTapped()
-        XCTAssertTrue(viewModel.isValidEmail(viewModel.emailInput), "Shoud set true")
-        XCTAssertTrue(viewModel.isValidPassword(viewModel.passwordInput), "Shoud set true")
-    }
-
     func testErrorMessageNoEmailProvided() {
         let viewModel = LoginEmailViewModel()
         viewModel.isLoginEmailButtonPressed = true
@@ -108,20 +98,5 @@ final class LoginEmailViewModelTests: XCTestCase {
         let result = viewModel.errorMessage()
         XCTAssertTrue(viewModel.isValidEmail, "Shoud set true")
         XCTAssertNil(result, "Should not return any message")
-    }
-
-    func testIsValidEmailValid() {
-        let viewModel = LoginEmailViewModel()
-        XCTAssertTrue(viewModel.isValidEmail("test@example.com"))
-    }
-
-    func testIsValidEmailInvalid() {
-        let viewModel = LoginEmailViewModel()
-        XCTAssertFalse(viewModel.isValidEmail("invalid-email"))
-    }
-
-    func testIsValidEmailEmpty() {
-        let viewModel = LoginEmailViewModel()
-        XCTAssertFalse(viewModel.isValidEmail(""))
     }
 }

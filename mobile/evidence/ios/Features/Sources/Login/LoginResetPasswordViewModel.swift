@@ -11,6 +11,7 @@ import Dependencies
 class LoginResetPasswordViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
+    @Dependency(\.inputValidator) private var inputValidator
     @Published var emailInput: String
     @Published var isEmailInputFocused: Bool
     @Published private(set) var isValidEmail: Bool
@@ -53,7 +54,7 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
     }
 
     func resetPasswordButtonTapped() {
-        isValidEmail = isValidEmail(emailInput)
+        isValidEmail = inputValidator.isValidEmail(emailInput)
         isResetPasswordButtonPressed = true
         
         if isValidEmail {
@@ -69,10 +70,5 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
             return "Email not valid."
         }
         return nil
-    }
-
-    func isValidEmail(_ email: String) -> Bool {
-        let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", options: [.caseInsensitive])
-        return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
     }
 }

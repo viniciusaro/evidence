@@ -10,12 +10,12 @@ import FirebaseAuth
 import Dependencies
 
 final public class LoginViewModel: ObservableObject {
+    @Dependency(\.loginManager) private var loginManager
     @Published var showLoginAuthModal: Bool
     @Published public var isUserNotAuthenticated: Bool
     @Published var createAccountEmail: CreateAccountEmailViewModel?
     @Published var loginEmailViewModel: LoginEmailViewModel?
     public let loginSettingViewModel:  LoginSettingViewModel
-    @Dependency(\.loginManager) private var loginManager
 
     public init(
         showLoginAuth: Bool = false,
