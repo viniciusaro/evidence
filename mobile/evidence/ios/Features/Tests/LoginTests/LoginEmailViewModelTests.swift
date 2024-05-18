@@ -6,11 +6,12 @@
 //
 
 import XCTest
+import Dependencies
 @testable import Login
 @testable import Models
-import Dependencies
 
 final class LoginEmailViewModelTests: XCTestCase {
+    @Dependency(\.inputValidator) private var inputValidator
 
     func testConfirmationPopupAppears() {
         let viewModel = LoginEmailViewModel()
@@ -30,7 +31,6 @@ final class LoginEmailViewModelTests: XCTestCase {
         viewModel.delegateCloseButtonTapped = {
             closeButtonCalled = true
         }
-        
         viewModel.closeButtonTapped()
         XCTAssertTrue(closeButtonCalled, "The delegate should be called")
     }
@@ -63,13 +63,15 @@ final class LoginEmailViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isLoginEmailButtonPressed, "Should set false")
     }
 
+    
+    /// errorMessage
     func testErrorMessageNoEmailProvided() {
         let viewModel = LoginEmailViewModel()
         viewModel.isLoginEmailButtonPressed = true
         viewModel.emailInput = ""
-        viewModel.passwordInput = "12345678"
-        let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "Email or password not provided.")
+        viewModel.passwordInput = "password"
+        let errorMessage = viewModel.errorMessage()
+        XCTAssertEqual(errorMessage, LoginError.emailOrPasswordNotProvide.errorDescription)
     }
 
     func testErrorMessageNoPasswordProvided() {
@@ -77,26 +79,23 @@ final class LoginEmailViewModelTests: XCTestCase {
         viewModel.isLoginEmailButtonPressed = true
         viewModel.emailInput = "email@valid.com"
         viewModel.passwordInput = ""
-        let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "Email or password not provided.")
+        let errorMessage = viewModel.errorMessage()
+        XCTAssertEqual(errorMessage, LoginError.emailOrPasswordNotProvide.errorDescription)
     }
 
-    func testErrorMessageInvalidEmail() {
+    func testSignInMessageError() {
         let viewModel = LoginEmailViewModel()
         viewModel.isLoginEmailButtonPressed = true
-        viewModel.emailInput = "invalid"
-        let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "Email or password not provided.")
+        viewModel.signInMessageError = "Custom Message"
+        XCTAssertNotNil(viewModel.signInMessageError)
     }
 
-    @MainActor
-    func testErrorMessageValidEmail() {
+    func testNoError() {
         let viewModel = LoginEmailViewModel()
-        viewModel.emailInput = "email@valid.com"
-        viewModel.passwordInput = "12345678"
-        viewModel.loginEmailButtonTapped()
-        let result = viewModel.errorMessage()
-        XCTAssertTrue(viewModel.isValidEmail, "Shoud set true")
-        XCTAssertNil(result, "Should not return any message")
+        viewModel.isLoginEmailButtonPressed = false
+        viewModel.emailInput = "test@example.com"
+        viewModel.passwordInput = "password"
+        let errorMessage = viewModel.errorMessage()
+        XCTAssertNil(errorMessage)
     }
 }

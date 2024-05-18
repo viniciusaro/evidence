@@ -38,3 +38,4 @@ enum LoginError: Error {
         }
     }
 }
+

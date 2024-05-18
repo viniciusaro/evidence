@@ -12,9 +12,9 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Dependency(\.inputValidator) private var inputValidator
+    var signInMessageError: String?
     @Published var emailInput: String
     @Published var passwordInput: String
-    var signInMessageError: String? = nil
     @Published private(set) var isValidEmail: Bool
     @Published private(set) var isValidPassword: Bool
     @Published var isLoginEmailButtonPressed: Bool
@@ -25,6 +25,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
     public init(
+        signInMessageError: String? = nil,
         emailInput: String = "",
         passwordInput: String = "",
         isValidEmail: Bool = false,
@@ -33,6 +34,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isEmailInputFocused: Bool = false,
         offSetY: CGFloat = 1000
     ) {
+        self.signInMessageError = signInMessageError
         self.emailInput = emailInput
         self.passwordInput = passwordInput
         self.isValidEmail = isValidEmail
@@ -100,9 +102,10 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     func errorMessage() -> String? {
         if isLoginEmailButtonPressed && (emailInput.isEmpty || passwordInput.isEmpty){
             return LoginError.emailOrPasswordNotProvide.errorDescription ?? nil
-        } else if let message = signInMessageError, isLoginEmailButtonPressed == true {
+        } else if let message = signInMessageError, isLoginEmailButtonPressed {
             return message
         }
         return nil
     }
 }
+
