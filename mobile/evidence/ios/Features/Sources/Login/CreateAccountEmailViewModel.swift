@@ -10,6 +10,7 @@ import Dependencies
 
 final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
+    var signUpMessageError: String? = nil
     @Dependency(\.loginManager) private var loginManager
     @Dependency(\.inputValidator) private var inputValidator
     @Published var emailInput: String
@@ -38,17 +39,28 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         self.isEmailInputFocused = isInputEmailFocused
     }
 
-     private func signUp() {
+    private func signUp() {
         Task {
-            do {
-                let returnUserData = try await loginManager.createUser(email: emailInput, password: passwordInput)
-                print("User created!")
-                print(returnUserData)
-            } catch {
-                print("Error: \(error)")
+            let result = await loginManager.createUser(email: emailInput, password: passwordInput)
+            switch result {
+            case .success(_): break
+            case let .failure(error):
+                signUpMessageError = error.errorDescription
             }
         }
     }
+
+//     private func signUp() {
+//        Task {
+//            do {
+//                let returnUserData = try await loginManager.createUser(email: emailInput, password: passwordInput)
+//                print("User created!")
+//                print(returnUserData)
+//            } catch {
+//                print("Error: \(error)")
+//            }
+//        }
+//    }
 
     func closeButtonTapped() {
         delegateCloseButtonTapped()

@@ -11,7 +11,8 @@ import Dependencies
 class LoginResetPasswordViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
-    @Dependency(\.inputValidator) private var inputValidator
+    @Dependency(\.inputValidator) var inputValidator
+    var resetMessageError: String?
     @Published var emailInput: String
     @Published var isEmailInputFocused: Bool
     @Published private(set) var isValidEmail: Bool
@@ -45,10 +46,11 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
 
     func resetPassword() {
         Task {
-            do {
-                try await loginManager.resetPassword(email: emailInput)
-            } catch {
-                print("Reset Password failed!", error)
+            let result = await loginManager.resetPassword(email: emailInput)
+            switch result {
+            case .success(_): break
+            case let .failure(error):
+                resetMessageError = error.errorDescription
             }
         }
     }
@@ -65,9 +67,11 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
 
     func errorMessage() -> String? {
         if isResetPasswordButtonPressed && (emailInput.isEmpty){
-            return "Email not provided."
+            return LoginError.emailNotProvide.errorDescription ?? nil
         } else if isResetPasswordButtonPressed == true && (isValidEmail == false) {
-            return "Email not valid."
+            return LoginError.invalidEmail.errorDescription ?? nil
+        } else if let message = resetMessageError, isResetPasswordButtonPressed {
+            return message
         }
         return nil
     }
