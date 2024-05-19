@@ -9,7 +9,7 @@ import SwiftUI
 
 protocol LoginManager {
     func createUser(email: String, password: String) async -> Result<Login, LoginError>
-    func getAuthenticationUser() throws -> Login
+    func getAuthenticationUser() -> Result<Login, LoginError>
     func signIn(email: String, password: String) async -> Result<Login, LoginError>
     func signOut() throws
     func resetPassword(email: String) async -> Result<Void, LoginError>

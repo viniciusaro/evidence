@@ -19,6 +19,7 @@ enum LoginError: Error {
     case internalError
     case tooManyRequests
     case userDisabled
+    case userAuthenticationFailed
     case unknown
 
     var errorDescription: String? {
@@ -45,6 +46,8 @@ enum LoginError: Error {
             "Too many requests. Please try again later."
         case .userDisabled:
             "The user account has been disabled by an administrator."
+        case .userAuthenticationFailed:
+            "Failed to authenticate user."
         case .unknown:
             "Something get wrong, call the manager."
         }
