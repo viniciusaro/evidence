@@ -11,6 +11,6 @@ protocol LoginManager {
     func createUser(email: String, password: String) async -> Result<Login, LoginError>
     func getAuthenticationUser() -> Result<Login, LoginError>
     func signIn(email: String, password: String) async -> Result<Login, LoginError>
-    func signOut() throws
+    func signOut() -> Result<Void, LoginError>
     func resetPassword(email: String) async -> Result<Void, LoginError>
 }
