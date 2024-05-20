@@ -5,12 +5,15 @@
 //  Created by Cris Messias on 19/04/24.
 //
 
-import XCTest
+import AuthClient
 @testable import ChatKit
-@testable import Models
+import Dependencies
+import Models
+import XCTest
 
 final class LoginResetPasswordViewModelTests: XCTestCase {
-
+    @Dependency(\.inputValidator) private var inputValidator
+    
     func testCloseButtonTapped() {
         let viewModel = LoginResetPasswordViewModel()
         var closeButtonCalled = false
@@ -39,7 +42,6 @@ final class LoginResetPasswordViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isResetPasswordButtonPressed, "Should set to false")
     }
 
-
     func testResetPasswordButtonTappedValidEmail() {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.emailInput = "email@valid.com"
@@ -51,41 +53,40 @@ final class LoginResetPasswordViewModelTests: XCTestCase {
         }
 
         viewModel.resetPasswordButtonTapped()
-        XCTAssertTrue(viewModel.isValidEmail(viewModel.emailInput), "Shoud set totrue")
+        XCTAssertTrue(viewModel.inputValidator.isValidEmail(viewModel.emailInput), "Shoud set totrue")
         XCTAssertTrue(viewModel.isResetPasswordButtonPressed, "Should set to true")
         XCTAssertTrue(closeButtonTappedCalled, "Should set to true")
     }
 
-    func testErrorMessageEmailNotProvided() {
+    /// errorMessage
+    func testErrorMessageNoEmailProvided() {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.isResetPasswordButtonPressed = true
         viewModel.emailInput = ""
-
-        let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "Email not provided.", "The return message should be the same.")
+        let errorMessage = viewModel.errorMessage()
+        XCTAssertEqual(errorMessage, LoginError.emailNotProvide.errorDescription)
     }
 
     func testErrorMessageEmailNotValid() {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.isResetPasswordButtonPressed = true
-        viewModel.emailInput = "invalid"
-
+        viewModel.emailInput = "user@email"
         let result = viewModel.errorMessage()
-        XCTAssertEqual(result, "Email not valid.", "The return message should be the same.")
+        XCTAssertEqual(result, LoginError.invalidEmail.errorDescription)
     }
 
-    func testErrorMessageNoError() {
+    func testSignInMessageError() {
+        let viewModel = LoginResetPasswordViewModel()
+        viewModel.isResetPasswordButtonPressed = true
+        viewModel.resetMessageError = "Custom Message"
+        XCTAssertNotNil(viewModel.resetMessageError)
+    }
+
+    func testNoError() {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.isResetPasswordButtonPressed = false
-        viewModel.emailInput = "email@valid.com"
-
-        let result = viewModel.errorMessage()
-        XCTAssertTrue(viewModel.isValidEmail(viewModel.emailInput), "Shoud set true")
-        XCTAssertNil(result, "Should not return any message")
-    }
-
-    func testIsValidEmailValid() {
-        let viewModel = LoginResetPasswordViewModel()
-        XCTAssertTrue(viewModel.isValidEmail("test@example.com"))
+        viewModel.emailInput = "test@example.com"
+        let errorMessage = viewModel.errorMessage()
+        XCTAssertNil(errorMessage)
     }
 }

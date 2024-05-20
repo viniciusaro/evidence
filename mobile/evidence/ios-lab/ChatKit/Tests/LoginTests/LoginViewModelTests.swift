@@ -7,8 +7,8 @@
 
 import XCTest
 @testable import ChatKit
-@testable import Models
-@testable import Dependencies
+import Models
+import Dependencies
 
 
 final class LoginViewModelTests: XCTestCase {
