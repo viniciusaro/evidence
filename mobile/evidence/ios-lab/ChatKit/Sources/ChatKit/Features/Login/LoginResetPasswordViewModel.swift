@@ -1,14 +1,12 @@
 //
 //  LoginResetPasswordViewModel.swift
-//  
+//
 //
 //  Created by Cris Messias on 17/04/24.
 //
 
-import AuthClient
-import Combine
-import Dependencies
 import Foundation
+import Dependencies
 
 class LoginResetPasswordViewModel: ObservableObject, Identifiable {
     public var id = UUID()

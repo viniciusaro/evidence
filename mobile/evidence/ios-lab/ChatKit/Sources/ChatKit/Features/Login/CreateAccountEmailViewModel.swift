@@ -5,10 +5,8 @@
 //  Created by Cris Messias on 24/01/24.
 //
 
-import AuthClient
-import Combine
-import Dependencies
 import Foundation
+import Dependencies
 
 final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
@@ -21,6 +19,7 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     @Published var isEmailInputFocused: Bool
     var delegateCloseButtonTapped: () -> Void = { fatalError() }
     var delegateUserAuthenticated: () -> Void = { fatalError() }
+
 
     public init(
         emailInput: String = "",
@@ -39,15 +38,15 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     }
 
      private func signUp() {
-         Task {
-             do {
-                 let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
-                 print("User created!")
-                 print(returnUserData)
-             } catch {
-                 print("Error: \(error)")
-             }
-         }
+        Task {
+            do {
+                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
+                print("User created!")
+                print(returnUserData)
+            } catch {
+                print("Error: \(error)")
+            }
+        }
     }
 
     func closeButtonTapped() {

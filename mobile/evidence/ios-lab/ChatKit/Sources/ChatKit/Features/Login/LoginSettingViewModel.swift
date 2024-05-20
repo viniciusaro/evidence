@@ -7,7 +7,6 @@
 
 import Foundation
 import Dependencies
-import AuthClient
 
 public class LoginSettingViewModel: ObservableObject {
     @Dependency(\.loginManager) private var loginManager

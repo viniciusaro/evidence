@@ -14,7 +14,6 @@ final public class LoginViewModel: ObservableObject {
     @Published var loginEmailViewModel: LoginEmailViewModel?
     public let loginSettingViewModel:  LoginSettingViewModel
     var delegateUserAuthenticated: () -> Void = { fatalError() }
-    @Dependency(\.authClient) private var authClient
 
     public init(
         showLoginAuth: Bool = false,
