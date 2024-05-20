@@ -1,11 +1,11 @@
 import Dependencies
 
 public protocol LoginManager {
-    func creatUser(email: String, password: String) async throws -> Login
-    func getAuthenticationUser() throws -> Login
-    func signIn(email: String, password: String) async throws -> Login
-    func signOut() throws
-    func resetPassword(email: String) async throws
+    func createUser(email: String, password: String) async -> Result<Login, LoginError>
+    func getAuthenticationUser() -> Result<Login, LoginError>
+    func signIn(email: String, password: String) async -> Result<Login, LoginError>
+    func signOut() -> Result<Void, LoginError>
+    func resetPassword(email: String) async -> Result<Void, LoginError>
 }
 
 public struct Login {

@@ -10,7 +10,9 @@ import Dependencies
 
 final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
+    var signUpMessageError: String? = nil
     @Dependency(\.loginManager) private var loginManager
+    @Dependency(\.inputValidator) private var inputValidator
     @Published var emailInput: String
     @Published var passwordInput: String
     @Published private(set) var isValidEmail: Bool
@@ -37,17 +39,28 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         self.isEmailInputFocused = isInputEmailFocused
     }
 
-     private func signUp() {
+    private func signUp() {
         Task {
-            do {
-                let returnUserData = try await loginManager.creatUser(email: emailInput, password: passwordInput)
-                print("User created!")
-                print(returnUserData)
-            } catch {
-                print("Error: \(error)")
+            let result = await loginManager.createUser(email: emailInput, password: passwordInput)
+            switch result {
+            case .success(_): break
+            case let .failure(error):
+                signUpMessageError = error.errorDescription
             }
         }
     }
+
+//     private func signUp() {
+//        Task {
+//            do {
+//                let returnUserData = try await loginManager.createUser(email: emailInput, password: passwordInput)
+//                print("User created!")
+//                print(returnUserData)
+//            } catch {
+//                print("Error: \(error)")
+//            }
+//        }
+//    }
 
     func closeButtonTapped() {
         delegateCloseButtonTapped()
@@ -68,8 +81,8 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     }
 
     func createAccountButtonTapped() {
-        isValidEmail = isValidEmail(emailInput)
-        isValidPassword = isValidPassword(passwordInput)
+        isValidEmail = inputValidator.isValidEmail(emailInput)
+        isValidPassword = inputValidator.isValidPassword(passwordInput)
 
         isCreateAccountButtonPressed = true
         if isValidEmail && isValidPassword {
@@ -85,17 +98,6 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
             return "Email or password not valid."
         }
         return nil
-    }
-
-    func isValidEmail(_ email: String) -> Bool {
-        let regex = try! NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", options: [.caseInsensitive])
-        return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
-    }
-
-
-    func isValidPassword(_ password: String) -> Bool {
-        let passwordRegex = #"^.{8,}$"#
-        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)
     }
 }
 

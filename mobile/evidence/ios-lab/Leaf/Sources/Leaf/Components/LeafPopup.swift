@@ -1,5 +1,5 @@
 //
-//  LeafPopup.swift
+//  LeaAlert.swift
 //
 //
 //  Created by Cris Messias on 12/11/23.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-public struct LeafPopup: View {
-    var state: PopupState
+public struct LeaAlert: View {
+    var state: AlertState
     @Environment(\.leafTheme) private var theme
 
-    public init(state: PopupState) {
+    public init(state: AlertState) {
         self.state = state
     }
 
@@ -19,30 +19,30 @@ public struct LeafPopup: View {
         VStack {
             switch state {
             case .save:
-                PopupView(image: "checkmark", text: "Set Status")
+                AlertView(image: "checkmark", text: "Set Status")
             case .clear:
-                PopupView(image: "checkmark", text: "Status Cleared")
+                AlertView(image: "checkmark", text: "Status Cleared")
             case .confirmation:
-                PopupView(image: "paperplane", text: "Password Reset Sent")
+                AlertView(image: "paperplane", text: "Password Reset Sent")
             }
         }
     }
 }
 
-public enum PopupState {
+public enum AlertState {
     case save, clear, confirmation
 }
 
-struct PopupView: View {
+struct AlertView: View {
     @Environment(\.leafTheme) private var theme
     private var image: String
     private var text: String
-    
+
     init(image: String, text: String) {
         self.image = image
         self.text = text
     }
-    
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
@@ -62,6 +62,6 @@ struct PopupView: View {
 }
 
 #Preview {
-    LeafPopup(state: .confirmation)
+    LeaAlert(state: .confirmation)
         .previewCustomFonts()
 }
