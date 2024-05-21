@@ -151,7 +151,7 @@ struct PasswordInput: View {
             CreateAccountLabel()
         }
         if let errorMessage = viewModel.errorMessage() {
-            LeafErrorMessage(message: errorMessage)
+            LeafErrorMessageStyle(message: errorMessage)
         }
     }
 }

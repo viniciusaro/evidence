@@ -1,13 +1,13 @@
 //
 //  inputValidatorTests.swift
-//  
+//
 //
 //  Created by Cris Messias on 16/05/24.
 //
 
 import XCTest
 @testable import ChatKit
-import Models
+@testable import Models
 import Dependencies
 
 final class InputValidatorTests: XCTestCase {

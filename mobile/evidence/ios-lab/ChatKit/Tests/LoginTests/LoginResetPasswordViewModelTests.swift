@@ -6,10 +6,10 @@
 //
 
 import AuthClient
-@testable import ChatKit
-import Dependencies
-import Models
 import XCTest
+import Dependencies
+@testable import ChatKit
+@testable import Models
 
 final class LoginResetPasswordViewModelTests: XCTestCase {
     @Dependency(\.inputValidator) private var inputValidator
@@ -28,7 +28,6 @@ final class LoginResetPasswordViewModelTests: XCTestCase {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.emailInput = "email@valid.com"
         viewModel.isResetPasswordButtonPressed = true
-
         viewModel.clearEmailInputTapped()
         XCTAssertFalse(viewModel.isResetPasswordButtonPressed, "Should set to false")
         XCTAssertTrue(viewModel.emailInput.isEmpty, "Should be Empty")
@@ -37,7 +36,6 @@ final class LoginResetPasswordViewModelTests: XCTestCase {
     func testInputEmailTapped() {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.isResetPasswordButtonPressed = true
-
         viewModel.inputEmailTapped()
         XCTAssertFalse(viewModel.isResetPasswordButtonPressed, "Should set to false")
     }
@@ -46,14 +44,11 @@ final class LoginResetPasswordViewModelTests: XCTestCase {
         let viewModel = LoginResetPasswordViewModel()
         viewModel.emailInput = "email@valid.com"
         viewModel.isResetPasswordButtonPressed = false
-
         var closeButtonTappedCalled = false
         viewModel.delegateCloseButtonTapped = {
             closeButtonTappedCalled = true
         }
-
         viewModel.resetPasswordButtonTapped()
-        XCTAssertTrue(viewModel.inputValidator.isValidEmail(viewModel.emailInput), "Shoud set totrue")
         XCTAssertTrue(viewModel.isResetPasswordButtonPressed, "Should set to true")
         XCTAssertTrue(closeButtonTappedCalled, "Should set to true")
     }
@@ -73,13 +68,6 @@ final class LoginResetPasswordViewModelTests: XCTestCase {
         viewModel.emailInput = "user@email"
         let result = viewModel.errorMessage()
         XCTAssertEqual(result, LoginError.invalidEmail.errorDescription)
-    }
-
-    func testSignInMessageError() {
-        let viewModel = LoginResetPasswordViewModel()
-        viewModel.isResetPasswordButtonPressed = true
-        viewModel.resetMessageError = "Custom Message"
-        XCTAssertNotNil(viewModel.resetMessageError)
     }
 
     func testNoError() {

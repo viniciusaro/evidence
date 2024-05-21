@@ -27,10 +27,6 @@ final public class LoginViewModel: ObservableObject {
         self.createAccountEmail = createAccountEmail
         self.loginSettingViewModel = loginSettingViewModel
         self.loginEmailViewModel = loginEmailViewModel
-
-//        loginSettingViewModel.delegateIsUserAuthenticated = {
-//            self.isUserNotAuthenticated = true
-//        }
     }
 
     func gettingStartedButtonTapped() {
@@ -51,14 +47,5 @@ final public class LoginViewModel: ObservableObject {
             self.createAccountEmail = nil
         }
         createAccountEmail?.delegateUserAuthenticated = self.delegateUserAuthenticated
-    }
-
-    public func getAuthenticationUser() {
-        let result = loginManager.getAuthenticationUser()
-        switch result {
-        case .success(_):  delegateUserAuthenticated()
-        case let .failure(error):
-        autheticationMessageError = error.errorDescription
-        }
     }
 }
