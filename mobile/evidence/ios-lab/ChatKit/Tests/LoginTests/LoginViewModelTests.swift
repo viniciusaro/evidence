@@ -1,6 +1,6 @@
 //
 //  LoginTests.swift
-//  
+//
 //
 //  Created by Cris Messias on 19/01/24.
 //
@@ -12,7 +12,6 @@ import XCTest
 
 
 final class LoginViewModelTests: XCTestCase {
-    
     func testGettingStartedButtonTapped() {
         let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
         viewModel.gettingStartedButtonTapped()
@@ -21,12 +20,11 @@ final class LoginViewModelTests: XCTestCase {
 
     func testContinueWithEmailButtonTappedViewModelCreated() {
         let viewModel = LoginViewModel(loginSettingViewModel: LoginSettingViewModel())
-
         viewModel.continueWithEmailButtonTapped()
         XCTAssertNotNil(viewModel.loginEmailViewModel, "An instance should be created")
     }
 
-    func testContinueWithEmailButtonTappedDelegationCalled() {  
+    func testContinueWithEmailButtonTappedDelegationCalled() {
         let viewModel = LoginEmailViewModel()
         var closeButtonCalled = false
         viewModel.delegateCloseButtonTapped = {

@@ -106,7 +106,6 @@ private struct LeaflinkButton: View {
 
         }
         .padding(20)
-//        .background(.green)
         .previewCustomFonts()
     }
 

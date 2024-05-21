@@ -5,6 +5,7 @@
 //  Created by Cris Messias on 02/04/24.
 //
 
+import AuthClient
 import Foundation
 import Dependencies
 
@@ -12,6 +13,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Dependency(\.inputValidator) private var inputValidator
+    private var signInMessageError: String?
     @Published var emailInput: String
     @Published var passwordInput: String
     @Published private(set) var isValidEmail: Bool
@@ -24,6 +26,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
     public init(
+        signInMessageError: String? = nil,
         emailInput: String = "",
         passwordInput: String = "",
         isValidEmail: Bool = false,
@@ -32,6 +35,7 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
         isEmailInputFocused: Bool = false,
         offSetY: CGFloat = 1000
     ) {
+        self.signInMessageError = signInMessageError
         self.emailInput = emailInput
         self.passwordInput = passwordInput
         self.isValidEmail = isValidEmail
@@ -68,12 +72,13 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
     
     @MainActor func signIn() {
         Task {
-            do {
-                _ = try await loginManager.signIn(email: emailInput, password: passwordInput)
-                delegateUserAuthenticated()
-            } catch {
-                print(error)
+            let result = await loginManager.signIn(email: emailInput, password: passwordInput)
+            switch result {
+            case .success(_):  delegateUserAuthenticated()
+            case let .failure(error):
+                signInMessageError = error.errorDescription
             }
+
         }
     }
 
@@ -97,10 +102,11 @@ final public class LoginEmailViewModel: ObservableObject, Identifiable {
 
     func errorMessage() -> String? {
         if isLoginEmailButtonPressed && (emailInput.isEmpty || passwordInput.isEmpty){
-            return "Email or password not provided."
-        } else if isLoginEmailButtonPressed == true && (isValidEmail == false || isValidPassword == false) {
-            return "Email or password not valid."
+            return LoginError.credentialNotProvide.errorDescription ?? nil
+        } else if let message = signInMessageError, isLoginEmailButtonPressed {
+            return message
         }
         return nil
     }
 }
+

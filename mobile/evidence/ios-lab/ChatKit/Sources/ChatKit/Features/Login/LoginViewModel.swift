@@ -9,6 +9,8 @@ import Foundation
 import Dependencies
 
 final public class LoginViewModel: ObservableObject {
+    @Dependency(\.loginManager) private var loginManager
+    private var autheticationMessageError: String? = nil
     @Published var showLoginAuthModal: Bool
     @Published var createAccountEmail: CreateAccountEmailViewModel?
     @Published var loginEmailViewModel: LoginEmailViewModel?
@@ -25,10 +27,6 @@ final public class LoginViewModel: ObservableObject {
         self.createAccountEmail = createAccountEmail
         self.loginSettingViewModel = loginSettingViewModel
         self.loginEmailViewModel = loginEmailViewModel
-
-//        loginSettingViewModel.delegateIsUserAuthenticated = {
-//            self.isUserNotAuthenticated = true
-//        }
     }
 
     func gettingStartedButtonTapped() {

@@ -39,8 +39,7 @@ public struct LoginEmailView: View {
                 .padding([.leading,.trailing], 16)
                 .navigationTitle("Continue with Email")
                 .navigationBarTitleDisplayMode(.inline)
-
-                LeafPopup(state: .confirmation)
+                LeaAlert(state: .confirmation)
                     .frame(width: 230 , height: 200)
                     .offset(x: 0, y: viewModel.alertOffSetY)
             }
@@ -165,7 +164,7 @@ struct LoginEmailPasswordInput: View {
 
         }
         if let errorMessage = viewModel.errorMessage() {
-            LeafErrorMessage(message: errorMessage)
+            LeafErrorMessageStyle(message: errorMessage)
         }
     }
 }

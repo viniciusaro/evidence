@@ -28,10 +28,6 @@ public struct LoginView: View {
     }
 }
 
-#Preview {
-    LoginView(viewModel: LoginViewModel())
-}
-
 struct Title: View {
     var body: some View {
         Text("Slack brings teams together, wherever you are")
@@ -76,11 +72,6 @@ struct LoginAuthModal: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                Button("Continue with Gmail") {
-
-                }
-                .buttonStyle(LeafGoogleLoginButtonStyle())
-
                 Button("Continue with Email") {
                     viewModel.continueWithEmailButtonTapped()
                 }
