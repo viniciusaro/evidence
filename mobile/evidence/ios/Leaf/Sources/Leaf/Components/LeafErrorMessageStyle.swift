@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct LeafErrorMessage: View {
+public struct LeafErrorMessageStyle: View {
     @Environment(\.leafTheme) private var theme
     var message: String
 
@@ -16,7 +16,7 @@ public struct LeafErrorMessage: View {
     }
     
     public var body: some View {
-        MessageStyle(
+        Message(
             message: message,
             background: theme.color.backgrond.red,
             iconColor: theme.color.warning.error
@@ -24,7 +24,7 @@ public struct LeafErrorMessage: View {
     }
 }
 
-public struct LeafSuccessMessage: View {
+public struct LeafSuccessMessageStyle: View {
     @Environment(\.leafTheme) private var theme
     var message: String
 
@@ -33,7 +33,7 @@ public struct LeafSuccessMessage: View {
     }
 
     public var body: some View {
-        MessageStyle(
+        Message(
             message: message,
             background: theme.color.backgrond.blue,
             iconColor: theme.color.warning.success
@@ -41,7 +41,7 @@ public struct LeafSuccessMessage: View {
     }
 }
 
-public struct LeafAlertMessage: View {
+public struct LeafAlertMessageStyle: View {
     @Environment(\.leafTheme) private var theme
     var message: String
 
@@ -50,7 +50,7 @@ public struct LeafAlertMessage: View {
     }
 
     public var body: some View {
-        MessageStyle(
+        Message(
             message: message,
             background: theme.color.backgrond.yellow,
             iconColor: theme.color.warning.alert
@@ -58,7 +58,7 @@ public struct LeafAlertMessage: View {
     }
 }
 
-public struct MessageStyle: View {
+private struct Message: View {
     @Environment(\.leafTheme) private var theme
     let message: String
     let background: Color
@@ -83,9 +83,9 @@ public struct MessageStyle: View {
 
 #Preview {
     VStack {
-        LeafErrorMessage(message: "No email provided.")
-        LeafSuccessMessage(message: "You are connected!")
-        LeafAlertMessage(message: "Your connection is slow.")
+        LeafErrorMessageStyle(message: "No email provided.")
+        LeafSuccessMessageStyle(message: "You are connected!")
+        LeafAlertMessageStyle(message: "Your connection is slow.")
     }
     .padding(16)
     .previewCustomFonts()

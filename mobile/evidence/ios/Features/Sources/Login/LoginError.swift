@@ -8,12 +8,11 @@
 import Foundation
 
 enum LoginError: Error {
-    case emailOrPasswordNotProvide
-    case emailNotProvide
-    case invalidEmailOrPassword
+    case invalidCredential
+    case credentialNotProvide
+    case emailNotProvide //
     case invalidEmail
     case emailAlreadyInUse
-    case weakPassword
     case userNotFound
     case networkError
     case internalError
@@ -24,20 +23,18 @@ enum LoginError: Error {
 
     var errorDescription: String? {
         switch self {
-        case .emailOrPasswordNotProvide: 
+        case.invalidCredential:
+            "Email or password not valid."
+        case .credentialNotProvide:
             "Email or password not provided."
         case.emailNotProvide:
             "Email not provided."
-        case.invalidEmailOrPassword:
-            "Email or password not valid."
         case.invalidEmail:
             "The email address is badly formatted."
         case.emailAlreadyInUse:
             "The email address is already in use by another account."
         case .userNotFound:
             "There is no user record corresponding to this identifier. The user may have been deleted."
-        case .weakPassword:
-            "The password must be 6 characters long or more."
         case .networkError:
             "A network error has occurred. Please try again."
         case.internalError:

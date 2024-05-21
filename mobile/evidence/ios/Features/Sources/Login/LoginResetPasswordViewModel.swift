@@ -12,7 +12,7 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
     public var id = UUID()
     @Dependency(\.loginManager) private var loginManager
     @Dependency(\.inputValidator) var inputValidator
-    var resetMessageError: String?
+    private var resetMessageError: String?
     @Published var emailInput: String
     @Published var isEmailInputFocused: Bool
     @Published private(set) var isValidEmail: Bool
@@ -66,9 +66,9 @@ class LoginResetPasswordViewModel: ObservableObject, Identifiable {
     }
 
     func errorMessage() -> String? {
-        if isResetPasswordButtonPressed && (emailInput.isEmpty){
+        if isResetPasswordButtonPressed && (emailInput.isEmpty) {
             return LoginError.emailNotProvide.errorDescription ?? nil
-        } else if isResetPasswordButtonPressed == true && (isValidEmail == false) {
+        } else if isResetPasswordButtonPressed && (isValidEmail == false) {
             return LoginError.invalidEmail.errorDescription ?? nil
         } else if let message = resetMessageError, isResetPasswordButtonPressed {
             return message

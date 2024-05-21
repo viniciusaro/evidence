@@ -83,7 +83,7 @@ struct ResetPasswordEmail: View {
                     .stroke(theme.color.text.secondary, lineWidth: 0.5)
             }
             if let errorMessage = viewModel.errorMessage() {
-                LeafErrorMessage(message: errorMessage)
+                LeafErrorMessageStyle(message: errorMessage)
             }
         }
     }

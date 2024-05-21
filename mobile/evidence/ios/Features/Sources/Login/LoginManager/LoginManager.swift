@@ -30,8 +30,8 @@ final public class FirebaseLoginManager: LoginManager {
         } catch let error as NSError {
             if let errorCode = AuthErrorCode.Code(rawValue: error.code) {
                 switch errorCode {
-                case.invalidEmail:
-                    return Result.failure(LoginError.invalidEmail)
+                case.invalidCredential:
+                    return Result.failure(LoginError.invalidCredential)
                 case.emailAlreadyInUse:
                     return Result.failure(LoginError.emailAlreadyInUse)
                 case.networkError:
@@ -63,7 +63,7 @@ final public class FirebaseLoginManager: LoginManager {
             if let errorCode = AuthErrorCode.Code(rawValue: error.code) {
                 switch errorCode {
                 case.invalidCredential:
-                    return Result.failure(LoginError.invalidEmailOrPassword)
+                    return Result.failure(LoginError.invalidCredential)
                 case.userNotFound:
                     return Result.failure(LoginError.userNotFound)
                 case.networkError:

@@ -13,6 +13,7 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
     var signUpMessageError: String? = nil
     @Dependency(\.loginManager) private var loginManager
     @Dependency(\.inputValidator) private var inputValidator
+    private var createMessageError: String? = nil
     @Published var emailInput: String
     @Published var passwordInput: String
     @Published private(set) var isValidEmail: Bool
@@ -50,18 +51,6 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         }
     }
 
-//     private func signUp() {
-//        Task {
-//            do {
-//                let returnUserData = try await loginManager.createUser(email: emailInput, password: passwordInput)
-//                print("User created!")
-//                print(returnUserData)
-//            } catch {
-//                print("Error: \(error)")
-//            }
-//        }
-//    }
-
     func closeButtonTapped() {
         delegateCloseButtonTapped()
     }
@@ -93,9 +82,9 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
 
     func errorMessage() -> String? {
         if isCreateAccountButtonPressed && (emailInput.isEmpty || passwordInput.isEmpty){
-            return "Email or password not provided."
-        } else if isCreateAccountButtonPressed == true && (isValidEmail == false || isValidPassword == false) {
-            return "Email or password not valid."
+            return LoginError.credentialNotProvide.errorDescription ?? nil
+        } else if let message = createMessageError, isCreateAccountButtonPressed {
+            return message
         }
         return nil
     }

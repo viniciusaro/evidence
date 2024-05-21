@@ -17,9 +17,8 @@ final class LoginEmailViewModelTests: XCTestCase {
         let viewModel = LoginEmailViewModel()
         viewModel.confirmationPopupAppears()
         let expectation = XCTestExpectation(description: "Confirmation popup should appear")
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            XCTAssertEqual(viewModel.AlertOffSetY, 1000, "OffsetY should be updated to 1000")
+            XCTAssertEqual(viewModel.alertOffSetY, 1000, "OffsetY should be updated to 1000")
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)
@@ -39,7 +38,6 @@ final class LoginEmailViewModelTests: XCTestCase {
         let viewModel = LoginEmailViewModel()
         viewModel.emailInput = "email@valid.com"
         viewModel.isLoginEmailButtonPressed = true
-
         viewModel.clearEmailInputTapped()
         XCTAssertTrue(viewModel.emailInput.isEmpty, "Should be empty")
         XCTAssertFalse(viewModel.isLoginEmailButtonPressed,  "Should set false")
@@ -49,7 +47,6 @@ final class LoginEmailViewModelTests: XCTestCase {
         let viewModel = LoginEmailViewModel()
         viewModel.passwordInput = "12345678"
         viewModel.isLoginEmailButtonPressed = true
-
         viewModel.clearPasswordInputTapped()
         XCTAssertTrue(viewModel.passwordInput.isEmpty, "Should be empty")
         XCTAssertFalse(viewModel.isLoginEmailButtonPressed,  "Should set false")
@@ -58,7 +55,6 @@ final class LoginEmailViewModelTests: XCTestCase {
     func inputEmailTapped() {
         let viewModel = LoginEmailViewModel()
         viewModel.isLoginEmailButtonPressed = true
-        
         viewModel.clearEmailInputTapped()
         XCTAssertFalse(viewModel.isLoginEmailButtonPressed, "Should set false")
     }
@@ -71,7 +67,7 @@ final class LoginEmailViewModelTests: XCTestCase {
         viewModel.emailInput = ""
         viewModel.passwordInput = "password"
         let errorMessage = viewModel.errorMessage()
-        XCTAssertEqual(errorMessage, LoginError.emailOrPasswordNotProvide.errorDescription)
+        XCTAssertEqual(errorMessage, LoginError.credentialNotProvide.errorDescription)
     }
 
     func testErrorMessageNoPasswordProvided() {
@@ -80,14 +76,7 @@ final class LoginEmailViewModelTests: XCTestCase {
         viewModel.emailInput = "email@valid.com"
         viewModel.passwordInput = ""
         let errorMessage = viewModel.errorMessage()
-        XCTAssertEqual(errorMessage, LoginError.emailOrPasswordNotProvide.errorDescription)
-    }
-
-    func testSignInMessageError() {
-        let viewModel = LoginEmailViewModel()
-        viewModel.isLoginEmailButtonPressed = true
-        viewModel.signInMessageError = "Custom Message"
-        XCTAssertNotNil(viewModel.signInMessageError)
+        XCTAssertEqual(errorMessage, LoginError.credentialNotProvide.errorDescription)
     }
 
     func testNoError() {
