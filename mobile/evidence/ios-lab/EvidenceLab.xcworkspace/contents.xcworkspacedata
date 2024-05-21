@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:EvidenceLab/EvidenceLab.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ChatKit">
+   </FileRef>
+   <FileRef
+      location = "group:Clients">
+   </FileRef>
+   <FileRef
+      location = "group:Leaf">
+   </FileRef>
+</Workspace>
