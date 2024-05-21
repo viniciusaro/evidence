@@ -15,7 +15,7 @@ final public class InputValidator {
     }
 
     func isValidPassword(_ password: String) -> Bool {
-        let passwordRegex = #"^.{8,}$"#
+        let passwordRegex = #"^.{6,}$"#
         return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)
     }
 }
