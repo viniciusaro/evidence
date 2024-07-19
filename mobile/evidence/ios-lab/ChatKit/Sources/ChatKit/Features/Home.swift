@@ -1,4 +1,6 @@
+import AuthClient
 import ComposableArchitecture
+import Models
 import SwiftUI
 
 #Preview {
@@ -9,19 +11,31 @@ import SwiftUI
 
 @Reducer
 public struct HomeFeature {
-    @ObservableState 
+    @Dependency(\.authClient) static var authClient
+    
+    @ObservableState
     public struct State: Equatable {
         var chatList: ChatListFeature.State = .init()
         var profile: ProfileFeature.State = .init()
         var selectedTab: Tab = .chatList
+        var user: User
+        
+        var title: String {
+            switch selectedTab {
+            case .chatList:
+                return selectedTab.rawValue + " - \(user.name)"
+            case .profile:
+                return selectedTab.rawValue
+            }
+        }
+        
+        init() {
+            self.user = authClient.getAuthenticatedUser() ?? User()
+        }
         
         public enum Tab: String, Codable {
             case chatList = "Conversas"
             case profile = "Perfil"
-            
-            var title: String {
-                return rawValue.capitalized
-            }
         }
     }
     
@@ -70,7 +84,7 @@ struct HomeView: View {
                 ChatListView(store: store.scope(state: \.chatList, action: \.chatList))
                     .tabItem {
                         Label(
-                            HomeFeature.State.Tab.chatList.title,
+                            HomeFeature.State.Tab.chatList.rawValue,
                             systemImage: "bubble.right"
                         )
                     }
@@ -79,7 +93,7 @@ struct HomeView: View {
                 ProfileView(store: store.scope(state: \.profile, action: \.profile))
                     .tabItem {
                         Label(
-                            HomeFeature.State.Tab.profile.title,
+                            HomeFeature.State.Tab.profile.rawValue,
                             systemImage: "brain.filled.head.profile"
                         )
                     }
@@ -101,7 +115,7 @@ struct HomeView: View {
                         .navigationBarTitleDisplayMode(.inline)
                 }
             }
-            .navigationTitle(store.selectedTab.title)
+            .navigationTitle(store.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Button(action: {

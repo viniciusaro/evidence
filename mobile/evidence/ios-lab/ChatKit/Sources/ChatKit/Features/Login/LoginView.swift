@@ -76,16 +76,17 @@ struct LoginAuthModal: View {
                     viewModel.continueWithEmailButtonTapped()
                 }
                 .buttonStyle(LeafPrimaryButtonStyle())
-                .sheet(item: $viewModel.loginEmailViewModel) { loginEmailview in LoginEmailView(viewModel: loginEmailview)
-                }
-
                 Button("Create Account") {
                     viewModel.createAccountButtonTapped()
                 }
                 .buttonStyle(LeafSecondaryButtonStyle())
-                .sheet(item: $viewModel.createAccountEmail) { createAccountEmailView in
-                    CreateAccountEmailView(viewModel: createAccountEmailView)
-                }
+                
+            }
+            .sheet(item: $viewModel.loginEmailViewModel) { viewModel in
+                LoginEmailView(viewModel: viewModel)
+            }
+            .sheet(item: $viewModel.createAccountEmail) { viewModel in
+                CreateAccountEmailView(viewModel: viewModel)
             }
             .padding([.leading, .trailing], 16)
             .padding([.top, .bottom], 24)
@@ -94,6 +95,6 @@ struct LoginAuthModal: View {
 }
 
 #Preview {
-    LoginAuthModal(viewModel: LoginViewModel(loginSettingViewModel: LoginSettingViewModel()))
+    LoginAuthModal(viewModel: LoginViewModel())
         .previewCustomFonts()
 }

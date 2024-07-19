@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		630A73482BEACF5000E24A61 /* ClientsLive in Frameworks */ = {isa = PBXBuildFile; productRef = 630A73472BEACF5000E24A61 /* ClientsLive */; };
-		6357BD302BCDA9B300640706 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */; };
 		6369AD632BB36C840067E2EC /* EvidenceLabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */; };
 		6369AD672BB36C850067E2EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD662BB36C850067E2EC /* Assets.xcassets */; };
 		6369AD6A2BB36C850067E2EC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6369AD692BB36C850067E2EC /* Preview Assets.xcassets */; };
@@ -16,6 +15,7 @@
 		6369AD7E2BB36C850067E2EC /* EvidenceLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */; };
 		6369AD802BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */; };
 		63F4B5BB2BE4231C00BD3FF1 /* ChatKit in Frameworks */ = {isa = PBXBuildFile; productRef = 63F4B5BA2BE4231C00BD3FF1 /* ChatKit */; };
+		6E76CAE22C4ADDCC008D1142 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E76CAE12C4ADDCC008D1142 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +36,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6369AD5F2BB36C840067E2EC /* EvidenceLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvidenceLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabApp.swift; sourceTree = "<group>"; };
 		6369AD662BB36C850067E2EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -46,6 +45,7 @@
 		6369AD792BB36C850067E2EC /* EvidenceLabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EvidenceLabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITests.swift; sourceTree = "<group>"; };
 		6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		6E76CAE12C4ADDCC008D1142 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +99,9 @@
 		6369AD612BB36C840067E2EC /* EvidenceLab */ = {
 			isa = PBXGroup;
 			children = (
+				6E76CAE12C4ADDCC008D1142 /* GoogleService-Info.plist */,
 				6369AD622BB36C840067E2EC /* EvidenceLabApp.swift */,
 				6369AD662BB36C850067E2EC /* Assets.xcassets */,
-				6357BD2F2BCDA9B300640706 /* GoogleService-Info.plist */,
 				6369AD682BB36C850067E2EC /* Preview Content */,
 			);
 			path = EvidenceLab;
@@ -253,7 +253,7 @@
 			files = (
 				6369AD6A2BB36C850067E2EC /* Preview Assets.xcassets in Resources */,
 				6369AD672BB36C850067E2EC /* Assets.xcassets in Resources */,
-				6357BD302BCDA9B300640706 /* GoogleService-Info.plist in Resources */,
+				6E76CAE22C4ADDCC008D1142 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

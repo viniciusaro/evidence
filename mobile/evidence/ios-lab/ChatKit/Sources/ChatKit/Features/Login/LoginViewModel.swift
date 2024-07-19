@@ -14,18 +14,15 @@ final public class LoginViewModel: ObservableObject {
     @Published var showLoginAuthModal: Bool
     @Published var createAccountEmail: CreateAccountEmailViewModel?
     @Published var loginEmailViewModel: LoginEmailViewModel?
-    public let loginSettingViewModel:  LoginSettingViewModel
     var delegateUserAuthenticated: () -> Void = { fatalError() }
 
     public init(
         showLoginAuth: Bool = false,
         createAccountEmail: CreateAccountEmailViewModel? = nil,
-        loginSettingViewModel: LoginSettingViewModel = LoginSettingViewModel(),
-        loginEmailViewModel: LoginEmailViewModel = LoginEmailViewModel()
+        loginEmailViewModel: LoginEmailViewModel? = nil
     ) {
         self.showLoginAuthModal = showLoginAuth
         self.createAccountEmail = createAccountEmail
-        self.loginSettingViewModel = loginSettingViewModel
         self.loginEmailViewModel = loginEmailViewModel
     }
 

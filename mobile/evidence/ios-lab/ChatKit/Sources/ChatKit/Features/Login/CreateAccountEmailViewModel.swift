@@ -41,11 +41,12 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
         self.isEmailInputFocused = isInputEmailFocused
     }
 
-    private func signUp() {
+    private func signUp(_ onSuccess: @escaping () -> ()) {
         Task {
             let result = await loginManager.createUser(email: emailInput, password: passwordInput)
             switch result {
-            case .success(_): break
+            case .success(_):
+                onSuccess()
             case let .failure(error):
                 signUpMessageError = error.errorDescription
             }
@@ -76,8 +77,9 @@ final public class CreateAccountEmailViewModel: ObservableObject, Identifiable {
 
         isCreateAccountButtonPressed = true
         if isValidEmail && isValidPassword {
-            signUp()
-            delegateUserAuthenticated()
+            signUp { [weak self] in
+                self?.delegateUserAuthenticated()
+            }
         }
     }
 

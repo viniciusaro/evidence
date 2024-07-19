@@ -207,9 +207,9 @@ public extension User {
 }
 
 public extension User {
-    static let vini = User(name: "Vini", id: UserID("HGlLyOjM7vTsX1DZtACoh808SHG2"))
-    static let cris = User(name: "Cris", id: UserID("llX9JYSoaxNH77sCmIH6b0xcq6w2"))
-    static let lili = User(name: "Lili ❤️‍🔥", id: UserID("2qxe6aoTcwcLmYBrj96lsl1tGCg2"))
+    static let vini = User(name: "Vini", id: UserID("mO9WlIK0PgSuL0hBoupOu6rjjjP2"))
+    static let cris = User(name: "Cris", id: UserID("r2lCKBjh8ZTLgkggNzm2hAyH5lI3"))
+    static let lili = User(name: "Lili ❤️‍🔥", id: UserID("FH6sdyLGEEfuZDhLEnhE8HrkZix2"))
     static let openAI = User(name: "🙇 OpenAI ", id: UserID("OpenAI"))
     static let ping = User(name: "🌬️ Ping ", id: UserID("Ping"))
     static let split = User(name: "💰 Split", id: UserID("Split"))

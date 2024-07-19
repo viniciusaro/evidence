@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCqbFFRcxPszpxJ2U9syeTnUSAjMmQb69A</string>
+	<string>AIzaSyBtS13d5fJzeYQ2MSBTQVdQKTTqahMh_OA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>936450785106</string>
+	<string>726522924397</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>br.com.evidence.app</string>
 	<key>PROJECT_ID</key>
-	<string>evidence-c496b</string>
+	<string>evidence-9f05e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>evidence-c496b.appspot.com</string>
+	<string>evidence-9f05e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:936450785106:ios:16f16146e55f58d334c48b</string>
+	<string>1:726522924397:ios:e86c0166ac67e4425ede64</string>
 </dict>
 </plist>
