@@ -73,13 +73,12 @@ public struct ChatListFeature {
             case let .newChatSetup(.presented(.delegate(.onNewChatSetup(chat)))):
                 state.newChatSetup = nil
                 state.chats.insert(chat, at: 0)
-                guard let shared = state.$chats[id: chat.id] else {
+                guard let shared = Shared(state.$chats[id: chat.id]) else {
                     return .none
                 }
                 state.newChatSetup = nil
                 state.detail = ChatDetailFeature.State(chat: shared)
                 return .none
-                
             case .newChatSetup:
                 return .none
                 
@@ -88,12 +87,12 @@ public struct ChatListFeature {
                 return .none
                 
             case let .onListItemTapped(chat):
-                guard let shared = state.$chats[id: chat.id] else {
+                guard let shared = Shared(state.$chats[id: chat.id]) else {
                     return .none
                 }
                 state.detail = ChatDetailFeature.State(chat: shared)
                 return .none
-                
+
             case let .onChatMoveUpRequested(chatID):
                 guard let index = state.chats.firstIndex(where: { $0.id == chatID }) else {
                     return .none
@@ -106,14 +105,14 @@ public struct ChatListFeature {
                     state.chats.insert(chatUpdate.toChat(), at: 0)
                     return .none
                 }
-                guard let shared = state.$chats[id: existingChat.id] else {
+                guard let shared = Shared(state.$chats[id: existingChat.id]) else {
                     return .none
                 }
                 
                 shared.wrappedValue.participants = chatUpdate.participants
                 shared.wrappedValue.plugins = chatUpdate.plugins
                 
-                if let existingMessage = shared.messages[id: chatUpdate.message.id] {
+                if let existingMessage = Shared(shared.messages[id: chatUpdate.message.id]) {
                     shared.wrappedValue.messages[id: existingMessage.id] = chatUpdate.message
                 } else {
                     shared.wrappedValue.messages.append(chatUpdate.message)

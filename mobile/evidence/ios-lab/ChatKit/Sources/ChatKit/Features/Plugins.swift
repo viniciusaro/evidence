@@ -130,9 +130,14 @@ struct OpenAIPlugin {
                 var effects: [Effect<PluginAction>] = []
                 
                 if chatUpdate.message.content.starts(with: "/chat") {
+                    let message = chatUpdate
+                        .message
+                        .content
+                        .replacingOccurrences(of: "/chat ", with: "") + " em 5 linhas"
+                    
                     effects.append(
                         .publisher {
-                            openAIClient.send(chatUpdate.message.content + " em 5 linhas")
+                            openAIClient.send(message)
                                 .receive(on: DispatchQueue.main)
                                 .flatMap { [user = state.user] in
                                     let openAIChatUpdate = ChatUpdate.from(

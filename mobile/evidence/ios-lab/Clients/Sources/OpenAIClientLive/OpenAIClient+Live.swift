@@ -8,7 +8,7 @@ extension OpenAIClient: DependencyKey {
         let subject = CurrentValueSubject<String, Never>("...")
         
         let model = GenerativeModel(
-            name: "gemini-pro",
+            name: "gemini-1.5-flash-latest",
             apiKey: "AIzaSyAef5as2EWkxe9rUNw7NORHaMAZeroRD80"
         )
         
