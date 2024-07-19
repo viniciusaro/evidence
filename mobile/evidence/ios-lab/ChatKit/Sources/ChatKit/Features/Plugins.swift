@@ -89,7 +89,7 @@ struct PingPlugin {
         Reduce { state, action in
             switch action {
             case let .onMessageReceived(chatUpdate):
-                if chatUpdate.message.content == "/ping" {
+                if chatUpdate.message.content.starts(with: "/ping") {
                     var ping1 = chatUpdate
                     var ping2 = chatUpdate
                     var ping3 = chatUpdate

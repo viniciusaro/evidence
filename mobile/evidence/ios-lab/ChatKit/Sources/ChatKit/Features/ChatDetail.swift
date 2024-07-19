@@ -33,13 +33,13 @@ public struct ChatDetailFeature {
         var user: User
         var inputText: String = ""
         var inputFocused: Bool = false
-        var commandSelectionList: [Plugin.Command] = []
+        var commandSelectionList: [Plugin.Command]? = nil
         @Presents var settings: ChatDetailSettingsFeature.State? = nil
 
         init(
             chat: Shared<Chat>,
             inputText: String = "",
-            commandSelectionList: [Plugin.Command] = [],
+            commandSelectionList: [Plugin.Command]? = nil,
             settings: ChatDetailSettingsFeature.State? = nil
         ) {
             self._chat = chat
@@ -70,7 +70,7 @@ public struct ChatDetailFeature {
                 
             case let .onCommandSelectionListItemTapped(command):
                 state.inputText = "/\(command.name) "
-                state.commandSelectionList = []
+                state.commandSelectionList = nil
                 return .none
                 
             case let .onMessageViewDidLoad(message):
@@ -109,7 +109,7 @@ public struct ChatDetailFeature {
                             cleanedUpText.isEmpty || $0.name.contains(cleanedUpText)
                         }
                 } else {
-                    state.commandSelectionList = []
+                    state.commandSelectionList = nil
                 }
                 return .none
                 
@@ -119,9 +119,22 @@ public struct ChatDetailFeature {
                 
             case .send:
                 state.inputText = ""
-                state.commandSelectionList = []
+                state.commandSelectionList = nil
                 return .none
             
+            case .settings(.presented(.onPluginToggle(_, _))):
+                guard state.commandSelectionList != nil else {
+                    return .none
+                }
+                
+                let cleanedUpText = state.inputText
+                    .replacingOccurrences(of: "/", with: "")
+                
+                state.commandSelectionList = state.chat.plugins
+                    .flatMap { $0.commands }
+                    .filter { cleanedUpText.isEmpty || $0.name.contains(cleanedUpText) }
+                return .none
+                
             case .settings:
                 return .none
             }
@@ -213,7 +226,10 @@ private struct InputView: View {
     var body: some View {
         VStack(spacing: 6) {
             LazyVStack {
-                ForEach(store.commandSelectionList) { command in
+                if store.commandSelectionList?.isEmpty == false {
+                    Spacer().frame(height: 8)
+                }
+                ForEach(store.commandSelectionList ?? []) { command in
                     Button(action: {
                         store.send(.onCommandSelectionListItemTapped(command))
                     }, label: {
