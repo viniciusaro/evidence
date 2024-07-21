@@ -38,10 +38,6 @@ let package = Package(
         .package(
             url: "git@github.com:firebase/firebase-ios-sdk.git",
             from: "10.24.0"
-        ),
-        .package(
-            url: "https://github.com/google/generative-ai-swift",
-            from: "0.5.3"
         )
     ],
     targets: [
@@ -73,8 +69,7 @@ let package = Package(
         .target(
             name: "OpenAIClientLive",
             dependencies: [
-                "OpenAIClient",
-                .product(name: "GoogleGenerativeAI", package: "generative-ai-swift")
+                "OpenAIClient"
             ]
         ),
         .target(
