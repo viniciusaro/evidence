@@ -29,7 +29,7 @@ export const geminiBot = onRequest(async (request, response) => {
   logger.info("message received: " + message);
 
   const model = genAI.getGenerativeModel({model: "gemini-1.5-flash"});
-  const result = await model.generateContent(message);
+  const result = await model.generateContent("Em poucas linhas: " + message);
   const responseText = result.response.text();
   response.send(responseText);
 });
