@@ -69,7 +69,8 @@ let package = Package(
         .target(
             name: "OpenAIClientLive",
             dependencies: [
-                "OpenAIClient"
+                "OpenAIClient",
+                .product(name: "FirebaseFunctions", package: "firebase-ios-sdk"),
             ]
         ),
         .target(
