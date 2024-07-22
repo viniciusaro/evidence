@@ -7,11 +7,14 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import {onRequest} from "firebase-functions/v2/https";
+import {onCall} from "firebase-functions/v2/https";
 import {GoogleGenerativeAI} from "@google/generative-ai";
 import {defineSecret} from "firebase-functions/params";
 import {onInit} from "firebase-functions/v2/core";
+import admin = require("firebase-admin")
 import * as logger from "firebase-functions/logger";
+
+admin.initializeApp();
 
 const apiKey = defineSecret("GEMINI_API_KEY");
 let genAI: GoogleGenerativeAI;
@@ -23,13 +26,18 @@ onInit(() => {
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-export const geminiBot = onRequest(async (request, response) => {
+export const geminiBotCallable = onCall(async (request) => {
   logger.info("on request");
-  const message = request.body["message"];
+  logger.info("user_id: " + request.auth?.token.uid);
+
+  const idToken = request.rawRequest.headers.authorization?.split("Bearer ")[1];
+  await admin.auth().verifyIdToken(idToken ?? "");
+
+  const message = request.data["message"] as string;
   logger.info("message received: " + message);
 
   const model = genAI.getGenerativeModel({model: "gemini-1.5-flash"});
   const result = await model.generateContent("Em poucas linhas: " + message);
   const responseText = result.response.text();
-  response.send(responseText);
+  return responseText;
 });
