@@ -34,6 +34,7 @@ public struct ChatDetailFeature {
         var inputText: String = ""
         var inputFocused: Bool = false
         var commandSelectionList: [Plugin.Command]? = nil
+        var userSelectionList: [User]? = nil
         @Presents var settings: ChatDetailSettingsFeature.State? = nil
 
         init(
@@ -53,6 +54,7 @@ public struct ChatDetailFeature {
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case onCommandSelectionListItemTapped(Plugin.Command)
+        case onUserSelectionListItemTapped(User)
         case onMessageSentConfirmation(Message)
         case onMessageViewDidLoad(Message)
         case onMessagePreviewDidLoad(Message, Models.Preview)
@@ -71,6 +73,16 @@ public struct ChatDetailFeature {
             case let .onCommandSelectionListItemTapped(command):
                 state.inputText = "/\(command.name) "
                 state.commandSelectionList = nil
+                return .none
+                
+            case let .onUserSelectionListItemTapped(user):
+                var split = state.inputText.split(separator: "@")
+                if !split.isEmpty {
+                    split.removeLast()
+                }
+                
+                state.inputText = "\(split.joined(separator: "@"))@\(user.name) "
+                state.userSelectionList = nil
                 return .none
                 
             case let .onMessageViewDidLoad(message):
@@ -111,6 +123,19 @@ public struct ChatDetailFeature {
                 } else {
                     state.commandSelectionList = nil
                 }
+                
+                if text.hasSuffix("@") {
+                    state.userSelectionList = state.chat.participants.elements
+                } else {
+                    var split = "@_\(text)".split(separator: "@")
+                    split.removeFirst()
+                    if let lastPossibleUser = split.last {
+                        state.userSelectionList = state.chat.participants
+                            .filter { $0.name.lowercased().hasPrefix(lastPossibleUser.lowercased()) }
+                    } else {
+                        state.userSelectionList = nil
+                    }
+                }
                 return .none
                 
             case .onSettingsButtonTapped:
@@ -120,6 +145,7 @@ public struct ChatDetailFeature {
             case .send:
                 state.inputText = ""
                 state.commandSelectionList = nil
+                state.userSelectionList = nil
                 return .none
             
             case .settings(.presented(.onPluginToggle(_, _))):
@@ -237,6 +263,23 @@ private struct InputView: View {
                             Text("/\(command.name)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Text("\(command.description)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.caption)
+                            Divider()
+                        }
+                    })
+                }
+                if store.userSelectionList?.isEmpty == false {
+                    Spacer().frame(height: 8)
+                }
+                ForEach(store.userSelectionList ?? []) { user in
+                    Button(action: {
+                        store.send(.onUserSelectionListItemTapped(user))
+                    }, label: {
+                        VStack(alignment: .leading) {
+                            Text("@\(user.name)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("\(user.id)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .font(.caption)
                             Divider()
