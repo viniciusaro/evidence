@@ -148,6 +148,9 @@ public struct Preview: Equatable, Hashable, Codable {
 public struct User: Equatable, Hashable, Identifiable, Codable {
     public let id: UserID
     public let name: String
+    public var simpleName: String {
+        return String(name.split(separator: "@").first!)
+    }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id

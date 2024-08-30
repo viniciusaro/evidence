@@ -76,12 +76,15 @@ public struct ChatDetailFeature {
                 return .none
                 
             case let .onUserSelectionListItemTapped(user):
-                var split = state.inputText.split(separator: "@")
-                if !split.isEmpty {
+                var split = "@_\(state.inputText)".split(separator: "@")
+                if !split.isEmpty && !state.inputText.hasSuffix("@") {
                     split.removeLast()
                 }
                 
-                state.inputText = "\(split.joined(separator: "@"))@\(user.name) "
+                state.inputText = "\(split.joined(separator: "@"))@\(user.simpleName) "
+                if state.inputText.hasPrefix("_") {
+                    state.inputText.removeFirst()
+                }
                 state.userSelectionList = nil
                 return .none
                 
@@ -131,7 +134,7 @@ public struct ChatDetailFeature {
                     split.removeFirst()
                     if let lastPossibleUser = split.last {
                         state.userSelectionList = state.chat.participants
-                            .filter { $0.name.lowercased().hasPrefix(lastPossibleUser.lowercased()) }
+                            .filter { $0.simpleName.lowercased().hasPrefix(lastPossibleUser.lowercased()) }
                     } else {
                         state.userSelectionList = nil
                     }
@@ -277,11 +280,11 @@ private struct InputView: View {
                         store.send(.onUserSelectionListItemTapped(user))
                     }, label: {
                         VStack(alignment: .leading) {
-                            Text("@\(user.name)")
+                            Text("@\(user.simpleName)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Text("\(user.id)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .font(.caption)
+                                .font(.caption2)
                             Divider()
                         }
                     })
