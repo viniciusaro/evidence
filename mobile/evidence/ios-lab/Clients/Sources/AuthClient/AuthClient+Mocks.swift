@@ -24,6 +24,10 @@ extension AuthClient {
             resetPassword: { email in
                 return Just(())
                     .eraseToAnyPublisher()
+            },
+            participantsList: {
+                return Just([])
+                    .eraseToAnyPublisher()
             }
         )
     }
@@ -49,6 +53,10 @@ extension AuthClient {
             },
             resetPassword: { email in
                 return Just(())
+                    .eraseToAnyPublisher()
+            },
+            participantsList: {
+                return Just([])
                     .eraseToAnyPublisher()
             }
         )

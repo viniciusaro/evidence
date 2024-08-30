@@ -50,6 +50,7 @@ let package = Package(
             dependencies: [
                 "AuthClient",
                 .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseFunctions", package: "firebase-ios-sdk"),
             ]
         ),
         .target(

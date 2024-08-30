@@ -9,6 +9,7 @@ public struct AuthClient {
     public let createUser: (String, String) -> AnyPublisher<User, Error>
     public let signOut: () -> Void
     public let resetPassword: (String) -> AnyPublisher<Void, Never>
+    public let participantsList: () -> AnyPublisher<[User], Never>
     
     public enum Error: Swift.Error {
         case invalidCredentials
@@ -21,13 +22,15 @@ public struct AuthClient {
         authenticate: @escaping (String, String) -> AnyPublisher<User, Error>,
         signOut: @escaping () -> Void,
         createUser: @escaping (String, String) -> AnyPublisher<User, Error>,
-        resetPassword: @escaping (String) -> AnyPublisher<Void, Never>
+        resetPassword: @escaping (String) -> AnyPublisher<Void, Never>,
+        participantsList: @escaping () -> AnyPublisher<[User], Never>
     ) {
         self.getAuthenticatedUser = getAuthenticatedUser
         self.authenticate = authenticate
         self.signOut = signOut
         self.createUser = createUser
         self.resetPassword = resetPassword
+        self.participantsList = participantsList
     }
 }
 

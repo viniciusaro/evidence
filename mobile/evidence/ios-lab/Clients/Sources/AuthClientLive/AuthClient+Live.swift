@@ -3,6 +3,7 @@ import Combine
 import Dependencies
 import Foundation
 import FirebaseAuth
+import FirebaseFunctions
 import Models
 
 extension AuthClient: DependencyKey {
@@ -73,6 +74,27 @@ extension AuthClient: DependencyKey {
             }
             return subject
                 .handleEvents(receiveCancel: { token.cancel() })
+                .eraseToAnyPublisher()
+        },
+        participantsList: {
+            let subject = PassthroughSubject<[Models.User], Never>()
+            
+            let functions = Functions.functions()
+            var callable: HTTPSCallable? = functions.httpsCallable("participantsList")
+                
+            callable?.call() { result, error in
+                if let data = result?.data as? [[String: Any]] {
+                    subject.send(data.map { User(name: $0["email"] as! String, id: $0["uid"] as! String) })
+//                    subject.send(data)
+                } else if let error = error {
+//                    subject.send("error: \(error.localizedDescription)")
+                } else {
+//                    subject.send("error: unknown")
+                }
+            }
+            
+            return subject
+                .handleEvents(receiveCancel: { callable = nil })
                 .eraseToAnyPublisher()
         }
     )

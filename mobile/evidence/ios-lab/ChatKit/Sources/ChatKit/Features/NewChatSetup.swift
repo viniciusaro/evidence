@@ -1,10 +1,11 @@
+import AuthClient
 import ComposableArchitecture
 import Models
 import SwiftUI
 
 @Reducer 
 public struct NewChatSetupFeature {
-    @Dependency(\.authClient) static var authClient
+    @Dependency(\.authClient) var authClient
     @Dependency(\.dismiss) var dismiss
     
     @ObservableState
@@ -15,8 +16,10 @@ public struct NewChatSetupFeature {
         var currentUser: User
         
         init() {
+            @Dependency(\.authClient) var authClient
+            
             self.chat = .empty()
-            self.users = [.vini, .lili, .cris]
+            self.users = []
             self.alertIsPresented = true
             self.currentUser = authClient.getAuthenticatedUser() ?? User()
         }
@@ -27,6 +30,8 @@ public struct NewChatSetupFeature {
         case onAlertCancel
         case onAlertConfirm
         case onUserSelected(User)
+        case onUsersLoaded([User])
+        case onViewDidLoad
         case delegate(Delegate)
         
         public enum Delegate {
@@ -55,6 +60,17 @@ public struct NewChatSetupFeature {
             case let .onUserSelected(user):
                 state.chat.participants = [state.currentUser, user]
                 return .send(.delegate(.onNewChatSetup(state.chat)))
+        
+            case let .onUsersLoaded(users):
+                state.users = users
+                return .none
+                
+            case .onViewDidLoad:
+                return .publisher {
+                    authClient.participantsList()
+                        .receive(on: DispatchQueue.main)
+                        .map { .onUsersLoaded($0) }
+                }
             }
         }
         BindingReducer()
@@ -76,6 +92,9 @@ struct NewChatSetupView: View {
                     }
                 }
             }
+        }
+        .onViewDidLoad {
+            store.send(.onViewDidLoad)
         }
         .listStyle(.plain)
         .alert(

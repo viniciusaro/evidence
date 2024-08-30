@@ -41,3 +41,15 @@ export const geminiBotCallable = onCall(async (request) => {
   const responseText = result.response.text();
   return responseText;
 });
+
+export const participantsList = onCall(async (request) => {
+  logger.info("on request");
+  logger.info("user_id: " + request.auth?.token.uid);
+
+  const idToken = request.rawRequest.headers.authorization?.split("Bearer ")[1];
+  await admin.auth().verifyIdToken(idToken ?? "");
+
+  const users = await admin.auth().listUsers();
+  return users.users;
+});
+

@@ -6,8 +6,6 @@ import OpenAIClient
 
 extension OpenAIClient: DependencyKey {
     public static let liveValue = OpenAIClient { message in
-        @Dependency(\.urlSession) var urlSession
-        
         let subject = CurrentValueSubject<String, Never>("...")
         
         let functions = Functions.functions()
