@@ -10,7 +10,7 @@ import SwiftUI
         NavigationStack {
             ChatDetailView(store: Store(
                 initialState: .init(
-                    chat: Shared(.evidence),
+                    chat: Shared(Chat.evidence),
                     inputText: "/",
                     commandSelectionList: Plugin.openAI.commands
                 )

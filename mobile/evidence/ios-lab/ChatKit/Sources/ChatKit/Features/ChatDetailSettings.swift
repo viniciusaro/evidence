@@ -4,7 +4,7 @@ import SwiftUI
 
 #Preview {
     NavigationStack {
-        ChatDetailsSettingsView(store: Store(initialState: .init(chat: Shared(.lili))) {
+        ChatDetailsSettingsView(store: Store(initialState: .init(chat: Shared(Chat.lili))) {
             ChatDetailSettingsFeature()
         })
     }
