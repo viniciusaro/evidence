@@ -15,6 +15,7 @@ let package = Package(
                 "AuthClient",
                 "DataClient",
                 "OpenAIClient",
+                "PhotoClient",
                 "PreviewClient",
                 "StockClient"
             ]
@@ -25,6 +26,7 @@ let package = Package(
                 "AuthClientLive",
                 "DataClient",
                 "OpenAIClientLive",
+                "PhotoClientLive",
                 "PreviewClient",
                 "StockClientLive"
             ]
@@ -73,6 +75,14 @@ let package = Package(
                 "OpenAIClient",
                 .product(name: "FirebaseFunctions", package: "firebase-ios-sdk"),
             ]
+        ),
+        .target(
+            name: "PhotoClient",
+            dependencies: ["Models"]
+        ),
+        .target(
+            name: "PhotoClientLive",
+            dependencies: ["PhotoClient"]
         ),
         .target(
             name: "PreviewClient",

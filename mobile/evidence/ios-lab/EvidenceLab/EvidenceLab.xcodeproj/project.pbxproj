@@ -46,6 +46,7 @@
 		6369AD7D2BB36C850067E2EC /* EvidenceLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITests.swift; sourceTree = "<group>"; };
 		6369AD7F2BB36C850067E2EC /* EvidenceLabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceLabUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		6E76CAE12C4ADDCC008D1142 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6EDE4AE82CADD47800256C91 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +79,7 @@
 		6369AD562BB36C840067E2EC = {
 			isa = PBXGroup;
 			children = (
+				6EDE4AE82CADD47800256C91 /* README.md */,
 				6369AD612BB36C840067E2EC /* EvidenceLab */,
 				6369AD722BB36C850067E2EC /* EvidenceLabTests */,
 				6369AD7C2BB36C850067E2EC /* EvidenceLabUITests */,
@@ -446,6 +448,7 @@
 				DEVELOPMENT_TEAM = Q3P9S9Y8NQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Vamos utilizar suas fotos para permitir sincroniza-lás entre todos os membros da viagem";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -479,6 +482,7 @@
 				DEVELOPMENT_TEAM = Q3P9S9Y8NQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Vamos utilizar suas fotos para permitir sincroniza-lás entre todos os membros da viagem";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

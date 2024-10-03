@@ -11,8 +11,9 @@ import SwiftUI
             ChatDetailView(store: Store(
                 initialState: .init(
                     chat: Shared(Chat.evidence),
-                    inputText: "/",
-                    commandSelectionList: Plugin.openAI.commands
+                    inputText: "",
+                    commandSelectionList: nil,
+                    photos: PhotosFeature.State()
                 )
             ) {
                 ChatDetailFeature()
@@ -35,18 +36,21 @@ public struct ChatDetailFeature {
         var inputFocused: Bool = false
         var commandSelectionList: [Plugin.Command]? = nil
         var userSelectionList: [User]? = nil
+        @Presents var photos: PhotosFeature.State? = nil
         @Presents var settings: ChatDetailSettingsFeature.State? = nil
 
         init(
             chat: Shared<Chat>,
             inputText: String = "",
             commandSelectionList: [Plugin.Command]? = nil,
+            photos: PhotosFeature.State? = nil,
             settings: ChatDetailSettingsFeature.State? = nil
         ) {
             self._chat = chat
             self.user = authClient.getAuthenticatedUser() ?? User()
             self.inputText = inputText
             self.commandSelectionList = commandSelectionList
+            self.photos = photos
             self.settings = settings
         }
     }
@@ -59,7 +63,10 @@ public struct ChatDetailFeature {
         case onMessageViewDidLoad(Message)
         case onMessagePreviewDidLoad(Message, Models.Preview)
         case onTextFieldValueChanged(String)
+        case onDocumentsButtonTapped
+        case onPhotosButtonTapped
         case onSettingsButtonTapped
+        case photos(PresentationAction<PhotosFeature.Action>)
         case send
         case settings(PresentationAction<ChatDetailSettingsFeature.Action>)
     }
@@ -141,8 +148,18 @@ public struct ChatDetailFeature {
                 }
                 return .none
                 
+            case .onDocumentsButtonTapped:
+                return .none
+                
+            case .onPhotosButtonTapped:
+                state.photos = PhotosFeature.State()
+                return .none
+                
             case .onSettingsButtonTapped:
                 state.settings = ChatDetailSettingsFeature.State(chat: state.$chat)
+                return .none
+                
+            case .photos:
                 return .none
                 
             case .send:
@@ -170,6 +187,9 @@ public struct ChatDetailFeature {
         }
         .ifLet(\.$settings, action: \.settings) {
             ChatDetailSettingsFeature()
+        }
+        .ifLet(\.$photos, action: \.photos) {
+            PhotosFeature()
         }
         BindingReducer()
     }
@@ -227,14 +247,32 @@ struct ChatDetailView: View {
         .navigationTitle(store.chat.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            Button(action: {
-                store.send(.onSettingsButtonTapped)
-            }, label: {
-                Label("", systemImage: "gearshape")
-                    .labelStyle(.iconOnly)
-                    .font(.title)
-                    .foregroundStyle(theme.color.text.primary, .primary)
-            })
+            HStack {
+                Button(action: {
+                    store.send(.onSettingsButtonTapped)
+                }, label: {
+                    Label("", systemImage: "gearshape")
+                        .labelStyle(.iconOnly)
+                        .font(.headline)
+                        .foregroundStyle(theme.color.text.primary, .primary)
+                })
+                Button(action: {
+                    store.send(.onPhotosButtonTapped)
+                }, label: {
+                    Label("", systemImage: "photo.stack")
+                        .labelStyle(.iconOnly)
+                        .font(.headline)
+                        .foregroundStyle(theme.color.text.primary, .primary)
+                })
+                Button(action: {
+                    store.send(.onDocumentsButtonTapped)
+                }, label: {
+                    Label("", systemImage: "document.on.document")
+                        .labelStyle(.iconOnly)
+                        .font(.headline)
+                        .foregroundStyle(theme.color.text.primary, .primary)
+                })
+            }
         }
         .sheet(item: $store.scope(
             state: \.settings,
@@ -242,6 +280,14 @@ struct ChatDetailView: View {
         )) { store in
             NavigationStack {
                 ChatDetailsSettingsView(store: store)
+            }
+        }
+        .sheet(item: $store.scope(
+            state: \.photos,
+            action: \.photos
+        )) { store in
+            NavigationStack {
+                PhotosView(store: store)
             }
         }
     }
